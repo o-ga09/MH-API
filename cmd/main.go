@@ -1,8 +1,8 @@
 package main
 
-import "mh-api/api"
+import "mh-api/api/handler"
 
 func main() {
-	s := api.NewServer()
+	s := handler.NewServer()
 	s.Run()
 }
