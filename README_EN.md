@@ -1,61 +1,91 @@
 # MH-API (Monster Hunter API)
 
-MH-API is an open-source project that aims to provide information about Monster Hunter games through an API. The project aims to make it easy for players to access in-game information related to the Monster Hunter games.
+MH-API is an open source project that provides strategy information and other information related to the Monster Hunter series. This project is developing an API to allow players of the Monster Hunter series to access game strategy information, etc., and to easily create secondary works and tools, etc.
 
 ## Introduction
 
-This README.md provides guidelines and instructions on how to contribute to the MH-API project. We welcome your participation following the guidelines outlined below.
+This README.md describes the guidelines and usage of the MH-API project. You are welcome to participate in the project according to the following guidelines.
+
+The Code of Conduct for this project can be found [here](. /CODE_OF_CONDUCT.md)
 
 ## Getting Started
 
-To contribute to the MH-API project, please follow these steps:
+To join the MH-API project, please follow the steps below.
 
-1. Fork the project: Fork the MH-API repository. This will create a copy of the project in your own GitHub account.
+### Preparation
 
-2. Clone the repository locally: Clone the forked repository to your local environment. This will allow you to edit the project files and code.
+- Review the Contribute Guide. [Click here for the Contribute Guide](./CONTRIBUTING.md)
 
-3. Create a branch: Create a new branch for development. This branch will be used to make changes and develop new features.
+### Set up the environment
 
-4. Make changes and commit: Modify the project's code and documentation, and commit the changes. Make sure to write clear commit messages.
+1. go to the repository directory
 
-5. Push and create a pull request: Push the changes to GitHub and create a pull request against the original MH-API repository. Through the pull request, your changes can be integrated into the main project.
+    ```bash
+        cd MH-API
+    ```
 
-6. Review and merge: Once the pull request is created, other contributors and members will review the changes. Address any comments or feedback provided during the review and make necessary code modifications. Once the review is complete, project members will merge the changes.
+2. Open the directory in an editor
+3. Create a new branch.
 
-7. Continuously improve the project: The MH-API project grows through community contributions. Actively share feedback, ideas, and suggestions to improve the quality of the project.
+    ```bash
+        git checkout -b "[new branch]"
+    ```
 
-## Community and Communication
+4. Check that it works.
 
-To engage with the MH-API project and its community, you can utilize the following communication channels:
+   ```bash
+        # start up docker
+        make up
 
-- Slack Channel: Join [slack.mhapi.org](https://slack.mhapi.org) to interact with other contributors and members.
+        # Make sure the response is {"message": "ok"}.
+        curl http://localhost:8080/v1/system/healthcheck
+   ````
+
+5. Run the test
+
+    ```bash
+        # All tests should return "ok".
+        make test
+    ```
+
+## Communicate with the community
+
+In this community, you can find the CODE_OF_CONDUCT.md file [here](/CODE_OF_CONDUCT.md)
+
+To participate in the MH-API project, the following communication channels are available
+
+- Slack channel: join [slack.mhapi.org](https://slack.mhapi.org) to interact with other contributors and members.
 
 - Issue Tracker: Use the [MH-API Issue Tracker](https://github.com/mhapi/issues) to report bugs and suggest new features.
 
-- Mailing List: Join [mhapi-dev@groups.com](mailto:mhapi-dev@groups.com) to participate in email discussions and receive important project updates.
+- Mailing Lists: Join [mhapi-dev@groups.com](mailto:mhapi-dev@groups.com) to receive discussions and important announcements via email.
 
 ## License
 
-The MH-API project is released under the [MIT License](https://opensource.org/licenses/MIT). For detailed license information, please refer to the LICENSE file within the project.
+The MH-API project is released under the [MIT License](https://opensource.org/licenses/MIT). Please see the LICENSE file in the project for detailed license information.
 
 ## Contribution Guidelines
 
-To contribute to the MH-API project, please follow the guidelines outlined in [CONTRIBUTING.md](https://github.com/mhapi/CONTRIBUTING.md). Before contributing code or documentation to the project, please read the guidelines.
+Please refer to [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on contributing to the MH-API project. Please read the guidelines before contributing code or documentation to the project.
 
-## Support
+## SUPPORT
 
-If you require any support or have questions related to the MH-API project, please contact [support@mhapi.org](mailto:support@mhapi.org).
+If you need support regarding the MH-API project, please contact [support@mhapi.org](mailto:support@mhapi.org).
 
 ## Acknowledgements
 
-This project is made possible by the contributions of the open-source community and the MH-API users. We express our gratitude to all individuals involved.
+This project is made possible by contributors from the open source community and MH-API users. Many people deserve our thanks.
 
-Monster Hunter™ is a registered trademark of Capcom Co., Ltd. Please include the appropriate rights statement.
+For more information about the project and updates, please visit the [official MH-API website](https://mhapi.org).
 
-For more information and updates on the project, please visit the [MH-API official website](https://mhapi.org).
+This project uses the Monster Hunter Series™, a trademark and registered trademark of Capcom Co. Ltd . The Monster Hunter Series™ is the intellectual property of Capcom Co. Ltd . We hereby express our gratitude to Capcom.
 
-This project utilizes the Monster Hunter™ trademark, which is the registered trademark of Capcom Co., Ltd. We acknowledge and respect the rights of Capcom Co., Ltd. as the rightful owner of the Monster Hunter™ trademark. This project is created and maintained by independent developers and is not officially supported or endorsed by Capcom Co., Ltd.
+This project is unofficial and has nothing to do with Capcom Co Ltd .
 
-**Happy coding!**
+**Happy coding!
 
-this project has started from 2023/5/21
+### References
+
+<https://opensource.guide/ja/starting-a-project/>
+
+This project has started from 2023/5/21

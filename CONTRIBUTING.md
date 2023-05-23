@@ -10,19 +10,27 @@ To contribute to this repository:
 
 - Download the project using git clone:
 
-```
-git clone git@github.com:<YOUR_USERNAME>/MH-API.git
+```bash
+    git clone git@github.com:<YOUR_USERNAME>/MH-API.git
 ```
 
 - Create a new branch with a descriptive name:
 
-```
-git checkout -b my_new_branch
+```bash
+    git checkout -b my_new_branch
 ```
 
 - Write some code, fix something, and add a test to prove that it works. **No pull request will be accepted without tests passing, or without new tests if new features are added.**
 
+- Run test
+
+```bash
+    # 全てのテストがokとなること
+    make test
+```
+
 - Commit your code and push it to GitHub
+  - At this time, the issue number should be attached to the commit message.
 
 - [Open a new pull request](https://help.github.com/articles/creating-a-pull-request/) and describe the changes you have made.
 
