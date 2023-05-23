@@ -1,8 +1,6 @@
-package api
+package handler
 
 import (
-	"mh-api/api/handler"
-
 	"github.com/gin-gonic/gin"
 )
 
@@ -11,7 +9,7 @@ func NewServer() *gin.Engine {
 	v1 := r.Group("/api/v1")
 
 	{
-		systemHandler := handler.NewSystemHandler()
+		systemHandler := NewSystemHandler()
 		v1.GET("/system/health",systemHandler.Health)
 	}
 
