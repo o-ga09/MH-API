@@ -1,4 +1,4 @@
-module github.com/MH-API/mh-api
+module mh-api
 
 go 1.20
 

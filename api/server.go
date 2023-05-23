@@ -1,7 +1,8 @@
 package api
 
 import (
-	"github.com/MH-API/mh-api/api/handler"
+	"mh-api/api/handler"
+
 	"github.com/gin-gonic/gin"
 )
 
