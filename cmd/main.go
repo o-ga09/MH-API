@@ -1,8 +1,11 @@
 package main
 
-import "mh-api/api/handler"
+import "mh-api/api/handler/controller"
 
 func main() {
-	s := handler.NewServer()
+	s, err := controller.NewServer()
+	if err != nil {
+		panic(err)
+	}
 	s.Run()
 }
