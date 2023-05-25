@@ -11,7 +11,7 @@ import (
 
 func New(ctx context.Context, cfg *config.Config) (*gorm.DB, error) {
 	db, err := gorm.Open(mysql.Open(fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8&parseTime=True&loc=Local",
-		cfg.DBName, cfg.DBPassword,
+		cfg.DBUser, cfg.DBPassword,
 		cfg.DBHost, cfg.DBPort,
 		cfg.DBName,
 	)),&gorm.Config{})
