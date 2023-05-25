@@ -5,15 +5,15 @@ import (
 )
 
 type Config struct {
-	Env string `env:"TODO_ENV" envDefault:"dev"`
+	Env string `env:"ENV" envDefault:"dev"`
 	Port int `env:"PORT" envDefault:"80"`
-	DBHost string `env:"TODO_DB_HOST" envDefault:"127.0.0.1"`
-	DBPort int `env:"TODO_DB_PORT" envDefault:"3306"` 
-	DBUser string `env:"TODO_DB_USER" envDefault:"todo"`
-	DBPassword string `env:"TODO_DB_PASSWORD" envDefault:"P@ssw0rd"`
-	DBName string `env:"TODO_DB_NAME" envDefault:"todo"`
-	RedisHost string `env:"TODO_REDIS_HOST" envDefault:"127.0.0.1"`
-	RedisPort int `env:"TODO_REDIS_PORT" envDefault:"36379"`
+	DBHost string `env:"DB_HOST" envDefault:"127.0.0.1"`
+	DBPort int `env:"DB_PORT" envDefault:"3306"` 
+	DBUser string `env:"DB_USER" envDefault:"todo"`
+	DBPassword string `env:"DB_PASSWORD" envDefault:"P@ssw0rd"`
+	DBName string `env:"DB_NAME" envDefault:"todo"`
+	RedisHost string `env:"REDIS_HOST" envDefault:"127.0.0.1"`
+	RedisPort int `env:"REDIS_PORT" envDefault:"36379"`
 }
 
 func New() (*Config,error) {
