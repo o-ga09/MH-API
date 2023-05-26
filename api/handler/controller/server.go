@@ -39,7 +39,7 @@ func NewServer() (*gin.Engine, error) {
 		monsterHandler := NewMonsterHandler(monsterService)
 		tagJa.GET("/system/health",systemHandler.Health)
 
-		tagJa.GET("/monster",monsterHandler.GetMonsterById)
+		tagJa.GET("/monster/:id",monsterHandler.GetMonsterById)
 		tagJa.GET("/monsters",monsterHandler.GetMonsterAll)
 	}
 
