@@ -12,3 +12,5 @@ build-local: ## Build docker image to local development
 	docker compose build --no-cache
 logs: ## Tail docker compose logs
 	docker compose logs -f
+rm:
+	docker compose down all --volumes --remove-orphans

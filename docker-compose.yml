@@ -1,7 +1,25 @@
 version: "3.9"
 services:
+  mh-api-dbsrv01:
+    image: mysql:8.0.29
+    platform: linux/amd64
+    container_name:  mh-api-dbsrv01
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_USER: mh-api
+      MYSQL_PASSWORD: P@ssw0rd
+      MYSQL_DATABASE: mh-api
+      MYSQL_TCP_PORT: 3306
+    volumes:
+      - mh-api-dbsrv01-data:/var/lib/mysql
+      - ./_tool/db/conf.d/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./_tool/db/sql:/docker-entrypoint-initdb.d
+    ports:
+      - '3306:3306'
   app:
     image: mh-api-srv
+    depends_on:
+      - mh-api-dbsrv01
     build:
       args:
         - target=dev
@@ -17,22 +35,5 @@ services:
       - .:/app
     ports:
       - '8080:8080'
-  mh-api-dbsrv01:
-    image: mysql:8.0.29
-    platform: linux/amd64
-    container_name:  mh-api-dbsrv01
-    environment:
-      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
-      MYSQL_USER: mh-api
-      MYSQL_PASSWORD: P@ssw0rd
-      MYSQL_DATABASE: mh-api
-      MYSQL_TCP_PORT: 3306
-    volumes:
-      - mh-api-dbsrv01-data:/var/lib/mysql
-      - ./_tool/db/conf.d:/etc/mysql/conf.d:cached
-      - ./_tool/db/sql:/docker-entrypoint-initdb.d
-    ports:
-      - '3306:3306'
-    command: --port 3306
 volumes:
   mh-api-dbsrv01-data:
