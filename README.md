@@ -1,5 +1,8 @@
 # MH-API (モンスターハンターAPI)
 
+[![Run Tests](https://github.com/o-ga09/MH-API/actions/workflows/test.yml/badge.svg)](https://github.com/o-ga09/MH-API/actions/workflows/test.yml)
+
+
 English version is [here](./README_EN.md)
 
 MH-APIは、モンスターハンターシリーズに関する攻略情報等を提供するオープンソースのプロジェクトです。このプロジェクトでは、モンスターハンターシリーズのプレイヤーがゲームの攻略情報等にアクセスし、二次創作やツール等の制作を簡単にできるようにするためのAPIを開発しています。
