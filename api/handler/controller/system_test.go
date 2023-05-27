@@ -1,43 +1,40 @@
 package controller
 
 import (
-	"reflect"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"net/http/httptest"
 	"testing"
 
 	"github.com/gin-gonic/gin"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestSystemHandler_Health(t *testing.T) {
-	type args struct {
-		c *gin.Context
-	}
-	tests := []struct {
-		name string
-		s    *SystemHandler
-		args args
-	}{
-		{"ケース1",&SystemHandler{},args{c: &gin.Context{}}},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			s := &SystemHandler{}
-			s.Health(tt.args.c)
-		})
-	}
-}
+	// テスト用のContextとGinのContextを作成
+	gin.SetMode(gin.TestMode)
+	response := httptest.NewRecorder()
+	ginCtx, _ := gin.CreateTestContext(response)
+	ginCtx.Request, _ = http.NewRequest(http.MethodGet, "/api/v1/system/healthcheck", nil)
 
-func TestNewSystemHandler(t *testing.T) {
-	tests := []struct {
-		name string
-		want *SystemHandler
+	// テスト実行
+	handler := NewSystemHandler()
+	handler.Health(ginCtx)
+
+	// 構造体をJSONに変換
+	jsonData := struct {
+		Message string
 	}{
-		// TODO: Add test cases.
+		Message: "ok",
 	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := NewSystemHandler(); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("NewSystemHandler() = %v, want %v", got, tt.want)
-			}
-		})
+	resJson, err := json.Marshal(jsonData)
+	if err != nil {
+		fmt.Println("JSON marshal error:", err)
+		return
 	}
+
+	// レスポンスを検証
+	assert.Equal(t, http.StatusOK, ginCtx.Writer.Status())
+	assert.Equal(t, string(resJson), response.Body.String())
 }
