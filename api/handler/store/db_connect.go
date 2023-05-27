@@ -14,10 +14,9 @@ import (
 var db *gorm.DB
 
 func New(ctx context.Context, cfg *config.Config) (*gorm.DB, error) {
-	dialector := mysql.Open(fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8&parseTime=True&loc=Local",
+	dialector := mysql.Open(fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True&loc=Local",
 		cfg.DBUser, cfg.DBPassword,
-		cfg.DBHost, cfg.DBPort,
-		cfg.DBName,
+		cfg.DBHost, cfg.DBName,
 	))
 	var err error
 	if db,err = gorm.Open(dialector,&gorm.Config{NamingStrategy: schema.NamingStrategy{
