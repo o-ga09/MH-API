@@ -14,3 +14,5 @@ logs: ## Tail docker compose logs
 	docker compose logs -f
 rm:
 	docker compose down all --volumes --remove-orphans
+test:
+	go test -race ./...
