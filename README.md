@@ -56,11 +56,11 @@ MH-APIプロジェクトに参加するためには、以下の手順に従っ�
 
 MH-APIプロジェクトに参加するには、以下のコミュニケーションチャンネルを利用できます。
 
-- Slackチャンネル: [slack.mhapi.org](https://slack.mhapi.org) に参加して、他のコントリビューターやメンバーと交流しましょう。
+- Slackチャンネル: [slack.mhapi.org](https://mh-api.slack.com) に参加して、他のコントリビューターやメンバーと交流しましょう。
 
-- Issueトラッカー: [MH-API Issueトラッカー](https://github.com/mhapi/issues) を使用して、バグ報告や新しい機能の提案を行ってください。
+- Issueトラッカー: [MH-API Issueトラッカー](https://github.com/o-ga09/MH-API/issues) を使用して、バグ報告や新しい機能の提案を行ってください。
 
-- メーリングリスト: [mhapi-dev@groups.com](mailto:mhapi-dev@groups.com) に参加して、メールを通じたディスカッションや重要なお知らせを受け取りましょう。
+- メーリングリスト: [mhapi-dev@groups.com](mailto:mhapiadm@gmail.com) に参加して、メールを通じたディスカッションや重要なお知らせを受け取りましょう。
 
 ## ライセンス
 
@@ -72,13 +72,13 @@ MH-APIプロジェクトへの貢献に関するガイドラインについて�
 
 ## サポート
 
-MH-APIプロジェクトに関するサポートが必要な場合は、[support@mhapi.org](mailto:support@mhapi.org)までお問い合わせください。
+MH-APIプロジェクトに関するサポートが必要な場合は、[mhapiadm@gmail.com](mailto:mhapiadm@gmail.com)までお問い合わせください。
 
 ## 謝辞
 
 このプロジェクトは、オープンソースコミュニティの貢献者やMH-APIユーザーのご協力によって成り立っています。多くの人々に感謝の意を表します。
 
-プロジェクトの詳細や最新情報については、[MH-API公式ウェブサイト](https://mhapi.org)をご覧ください。
+<!-- プロジェクトの詳細や最新情報については、[MH-API公式ウェブサイト](https://mhapi.org)をご覧ください。 -->
 
 このプロジェクトは、株式会社カプコンの商標および登録商標であるモンスターハンターシリーズ™を利用しています。モンスターハンターシリーズ™は株式会社カプコンの知的財産です。ここにカプコン様へ感謝の意を表します。
 

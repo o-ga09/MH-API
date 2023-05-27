@@ -54,11 +54,11 @@ In this community, you can find the CODE_OF_CONDUCT.md file [here](/CODE_OF_COND
 
 To participate in the MH-API project, the following communication channels are available
 
-- Slack channel: join [slack.mhapi.org](https://slack.mhapi.org) to interact with other contributors and members.
+- Slack channel: join [slack.mhapi.org](https://mh-api.slack.com) to interact with other contributors and members.
 
-- Issue Tracker: Use the [MH-API Issue Tracker](https://github.com/mhapi/issues) to report bugs and suggest new features.
+- Issue Tracker: Use the [MH-API Issue Tracker](https://github.com/o-ga09/MH-API/issues) to report bugs and suggest new features.
 
-- Mailing Lists: Join [mhapi-dev@groups.com](mailto:mhapi-dev@groups.com) to receive discussions and important announcements via email.
+- Mailing Lists: Join [mhapi-dev@groups.com](mailto:mhapiadm@gmail.com) to receive discussions and important announcements via email.
 
 ## License
 
@@ -70,13 +70,13 @@ Please refer to [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on contribut
 
 ## SUPPORT
 
-If you need support regarding the MH-API project, please contact [support@mhapi.org](mailto:support@mhapi.org).
+If you need support regarding the MH-API project, please contact [support@mhapi.org](mailto:mhapiadm@gmail.com).
 
 ## Acknowledgements
 
 This project is made possible by contributors from the open source community and MH-API users. Many people deserve our thanks.
 
-For more information about the project and updates, please visit the [official MH-API website](https://mhapi.org).
+<!-- For more information about the project and updates, please visit the [official MH-API website](https://mhapi.org). -->
 
 This project uses the Monster Hunter Series™, a trademark and registered trademark of Capcom Co. Ltd . The Monster Hunter Series™ is the intellectual property of Capcom Co. Ltd . We hereby express our gratitude to Capcom.
 
