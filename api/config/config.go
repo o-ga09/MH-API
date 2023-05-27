@@ -6,9 +6,8 @@ import (
 
 type Config struct {
 	Env string `env:"ENV" envDefault:"dev"`
-	Port int `env:"PORT" envDefault:"80"`
+	Port string `env:"PORT" envDefault:"80"`
 	DBHost string `env:"DB_HOST" envDefault:"127.0.0.1"`
-	DBPort int `env:"DB_PORT" envDefault:"3306"` 
 	DBUser string `env:"DB_USER" envDefault:"todo"`
 	DBPassword string `env:"DB_PASSWORD" envDefault:"P@ssw0rd"`
 	DBName string `env:"DB_NAME" envDefault:"todo"`
