@@ -40,9 +40,7 @@ func (m *monsterHandler) GetMonsterById(c *gin.Context) {
 		})
 	}
 
-	c.JSON(200,gin.H{
-		"res": res,
-	})
+	c.JSON(200,res)
 }
 
 func (m *monsterHandler) GetMonsterAll(c *gin.Context) {
@@ -52,7 +50,5 @@ func (m *monsterHandler) GetMonsterAll(c *gin.Context) {
 			"err": "can not get records",
 		})
 	}
-	c.JSON(200,gin.H{
-		"res": res,
-	})
+	c.JSON(200,res)
 }
