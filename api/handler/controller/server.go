@@ -6,7 +6,9 @@ import (
 	"mh-api/api/handler/store"
 	"mh-api/api/interface/monster"
 	"mh-api/api/service"
+	"time"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -18,6 +20,23 @@ const (
 
 func NewServer() (*gin.Engine, error) {
 	r := gin.Default()
+
+	//setting a CORS
+	r.Use(cors.New(cors.Config{
+		AllowOrigins: []string{
+			"*",
+		},
+		AllowMethods: []string{
+			"POST",
+			"GET",
+			"OPTIONS",
+		},
+		AllowHeaders: []string{
+			"Content-Type",
+		},
+		AllowCredentials: false,
+		MaxAge: 24 * time.Hour,
+	}))
 
 	cfg, err := config.New()
 	if err != nil {
