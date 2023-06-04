@@ -28,3 +28,8 @@ func (s MonsterService) GetById(id entity.MonsterId) (entity.Monster,error) {
 	}
 	return res, nil
 }
+
+func (s MonsterService) Create(monsterJson entity.MonsterJson) error {
+	err := s.monsterInterface.Create(monsterJson)
+	return err
+}

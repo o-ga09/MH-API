@@ -24,3 +24,12 @@ func Test_GetById(t *testing.T) {
 	actual, _ := service.GetById(id)
 	assert.Equal(t ,entity.Monster{},actual)
 }
+
+func Test_Create(t *testing.T) {
+	monsterInterface := new(MockMonsterInterface)
+	service := MonsterService{monsterInterface}
+	monsterJson := entity.MonsterJson{Name: entity.MonsterName{Value: "ジンオウガ"},Desc: entity.MonsterDesc{Value: "渓流に生息する牙竜種"},Location: entity.MonsterLocation{Value: "渓流"},Specify: entity.MonsterSpecify{Value: "牙竜種"},Weakness_attack: entity.MonsterWeakness_A{Value: "頭部"},Weakness_element: entity.MonsterWeakness_E{Value: "氷"}}
+	monsterInterface.On("Create",monsterJson).Return(nil)
+	actual := service.Create(monsterJson)
+	assert.Equal(t,nil,actual)
+}

@@ -46,7 +46,39 @@ func (m *MonsterHandler) GetById(c *gin.Context) {
 	c.JSON(200,res)
 }
 
+func (m *MonsterHandler) Create(c *gin.Context) {
+	name := c.PostForm("name")
+	desc := c.PostForm("desc")
+	Location := c.PostForm("location")
+	specify := c.PostForm("specify")
+	weak_a := c.PostForm("weakness_A")
+	weak_e := c.PostForm("weakness_E")
+	
+	monsterJson := entity.MonsterJson{
+		Name: entity.MonsterName{Value: name},
+		Desc: entity.MonsterDesc{Value: desc},
+		Location: entity.MonsterLocation{Value: Location},
+		Specify: entity.MonsterSpecify{Value: specify},
+		Weakness_attack: entity.MonsterWeakness_A{Value: weak_a},
+		Weakness_element: entity.MonsterWeakness_E{Value: weak_e},
+	}
+
+	err := m.monsterService.Create(monsterJson)
+	if err != nil {
+		c.JSON(500,gin.H{
+			"err": "can not create record",
+		})
+		log.Printf("err: %v",err)
+		return
+	}
+	c.JSON(200,Messageresponse{Message: "success!"})
+}
+
 
 func ProvideMonsterHandler(monsterService service.MonsterService) MonsterHandler {
 	return MonsterHandler{monsterService: monsterService}
+}
+
+type Messageresponse struct {
+	Message string `json:"message"`
 }

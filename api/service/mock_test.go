@@ -19,3 +19,8 @@ func (m *MockMonsterInterface) GetById(id entity.MonsterId) (entity.Monster, err
 	args := m.Called(id)
 	return args.Get(0).(entity.Monster), args.Error(1)
 }
+
+func (m *MockMonsterInterface) Create(monsterJson entity.MonsterJson) error {
+	args := m.Called(monsterJson)
+	return args.Error(0)
+}

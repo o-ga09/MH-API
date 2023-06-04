@@ -19,3 +19,8 @@ func (m *MockMonsterDriver) GetById(id int) (driver.Monster) {
 	args := m.Called(id)
 	return args.Get(0).(driver.Monster)
 }
+
+func (m *MockMonsterDriver) Create(monsterJson driver.MonsterJson) error {
+	args := m.Called(monsterJson)
+	return args.Error(0)
+}

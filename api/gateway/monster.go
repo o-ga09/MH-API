@@ -57,6 +57,20 @@ func (g MonsterGateway) GetById(id entity.MonsterId) (entity.Monster, error) {
 	return result, nil
 } 
 
+func (g MonsterGateway) Create(monsterJson entity.MonsterJson) error {
+	driverJson := driver.MonsterJson{
+		Name: monsterJson.Name.Value,
+		Desc: monsterJson.Desc.Value,
+		Location: monsterJson.Location.Value,
+		Specify: monsterJson.Specify.Value,
+		Weakness_attack: monsterJson.Weakness_attack.Value,
+		Weakness_element: monsterJson.Weakness_element.Value,
+	}
+
+	err := g.monsterDriver.Create(driverJson)
+	return err
+}
+
 func ProvideMonsterDriver(monsterDriver driver.MonsterDriver) MonsterGateway {
 	return MonsterGateway{monsterDriver: monsterDriver}
 }
