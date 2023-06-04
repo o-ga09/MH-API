@@ -24,3 +24,8 @@ func (m *MockMonsterInterface) Create(monsterJson entity.MonsterJson) error {
 	args := m.Called(monsterJson)
 	return args.Error(0)
 }
+
+func (m *MockMonsterInterface) Update(id entity.MonsterId,monsterJson entity.MonsterJson) error {
+	args := m.Called(id,monsterJson)
+	return args.Error(0)
+}

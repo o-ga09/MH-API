@@ -33,3 +33,8 @@ func (s MonsterService) Create(monsterJson entity.MonsterJson) error {
 	err := s.monsterInterface.Create(monsterJson)
 	return err
 }
+
+func (s MonsterService) Update(id entity.MonsterId,monsterJson entity.MonsterJson) error {
+	err := s.monsterInterface.Update(id,monsterJson)
+	return err
+}

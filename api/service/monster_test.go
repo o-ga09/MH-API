@@ -33,3 +33,13 @@ func Test_Create(t *testing.T) {
 	actual := service.Create(monsterJson)
 	assert.Equal(t,nil,actual)
 }
+
+func Test_Update(t *testing.T) {
+	mockInterface := new(MockMonsterInterface)
+	service := MonsterService{mockInterface}
+	id := entity.MonsterId{Value: 1}
+	monsterJson := entity.MonsterJson{Name: entity.MonsterName{Value: "ジンオウガ"},Desc: entity.MonsterDesc{Value: "渓流に生息する牙竜種"},Location: entity.MonsterLocation{Value: "渓流"},Specify: entity.MonsterSpecify{Value: "牙竜種"},Weakness_attack: entity.MonsterWeakness_A{Value: "頭部"},Weakness_element: entity.MonsterWeakness_E{Value: "氷"}}
+	mockInterface.On("Update",id,monsterJson).Return(nil)
+	err := service.Update(id,monsterJson)
+	assert.Equal(t,nil,err)
+}
