@@ -2,7 +2,9 @@ package handler
 
 import (
 	"log"
+	"mh-api/api/entity"
 	"mh-api/api/service"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -29,30 +31,20 @@ func (m *MonsterHandler) GetrAll(c *gin.Context) {
 	c.JSON(200,res)
 }
 
-// func (m *MonsterHandler) GetMonsterById(c *gin.Context) {
-// 	param := c.Params
-// 	id_str, ok := param.Get("id")
-// 	if !ok {
-// 		c.JSON(500,gin.H{
-// 			"err": "id is not understanded",
-// 		})
-// 	}
-// 	id, err := strconv.Atoi(id_str)
-// 	if err != nil {
-// 		c.JSON(500,gin.H{
-// 			"err": "id is not converted",
-// 		})
-// 	}
+func (m *MonsterHandler) GetById(c *gin.Context) {
+	id := c.Param("id")
+	i, _ := strconv.Atoi(id)
+	monsterId := entity.MonsterId{Value: i}
 
-// 	res, err := m.Service.FindMonsterById(context.Background(),id)
-// 	if err != nil {
-// 		c.JSON(500,gin.H{
-// 			"err": "can not get record",
-// 		})
-// 	}
+	res, err := m.monsterService.GetById(monsterId)
+	if err != nil {
+		c.JSON(500,gin.H{
+			"err": "can not get record",
+		})
+	}
 
-// 	c.JSON(200,res)
-// }
+	c.JSON(200,res)
+}
 
 
 func ProvideMonsterHandler(monsterService service.MonsterService) MonsterHandler {

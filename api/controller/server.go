@@ -26,7 +26,7 @@ func NewServer() (*gin.Engine, error) {
 	{
 		monsterHandler := di.InitMonstersHandler()
 		monsters.GET("",monsterHandler.GetrAll)
-		// monsters.GET("/:id",monsterHandler.GetById)
+		monsters.GET("/:id",monsterHandler.GetById)
 		// monsters.POST("",monsterHandler.Create)
 		// monsters.PATCH("/:id",monsterHandler.Update)
 		// monsters.DELETE("/:id",monsterHandler.Delete)

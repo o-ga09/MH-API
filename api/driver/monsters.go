@@ -1,10 +1,12 @@
 package driver
 
-import "gorm.io/gorm"
+import (
+	"gorm.io/gorm"
+)
 
 type MonsterDriver interface {
 	GetAll() ([]Monster)
-	// GetByID(id int) (Monster,error)
+	GetById(id int) (Monster)
 	// Create(monsterJson) error
 	// Update(id int, monsterJson MonsterJson) error
 	// Delete(id int) error
@@ -17,6 +19,12 @@ type MonsterDriverimpl struct {
 func (d MonsterDriverimpl) GetAll() []Monster {
 	monster := []Monster{}
 	d.conn.Find(&monster)
+	return monster
+}
+
+func (d MonsterDriverimpl) GetById(id int) Monster {
+	monster := Monster{}
+	d.conn.First(&monster,id)
 	return monster
 }
 

@@ -2,6 +2,7 @@ package gateway
 
 import (
 	"errors"
+	"fmt"
 	"mh-api/api/driver"
 	"mh-api/api/entity"
 )
@@ -35,6 +36,26 @@ func (g MonsterGateway) GetAll() (entity.Monsters,error) {
 
 	return result,nil
 }
+
+func (g MonsterGateway) GetById(id entity.MonsterId) (entity.Monster, error) {
+	monsterId := id.Value
+	res := g.monsterDriver.GetById(monsterId)
+	if res.Id == 0 {
+		return entity.Monster{}, fmt.Errorf("{%d} のレコードはありませんでした！",id)
+	}
+
+	result := entity.Monster{
+		Id: entity.MonsterId{Value: res.Id},
+		Name: entity.MonsterName{Value: res.Name},
+		Desc: entity.MonsterDesc{Value: res.Desc},
+		Location: entity.MonsterLocation{Value: res.Location},
+		Specify: entity.MonsterSpecify{Value: res.Specify},
+		Weakness_attack: entity.MonsterWeakness_A{Value: res.Weakness_attack},
+		Weakness_element: entity.MonsterWeakness_E{Value: res.Weakness_element},
+	}
+
+	return result, nil
+} 
 
 func ProvideMonsterDriver(monsterDriver driver.MonsterDriver) MonsterGateway {
 	return MonsterGateway{monsterDriver: monsterDriver}

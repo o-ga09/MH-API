@@ -14,3 +14,8 @@ func (m *MockMonsterDriver) GetAll() ([]driver.Monster) {
 	args := m.Called()
 	return args.Get(0).([]driver.Monster)
 }
+
+func (m *MockMonsterDriver) GetById(id int) (driver.Monster) {
+	args := m.Called(id)
+	return args.Get(0).(driver.Monster)
+}

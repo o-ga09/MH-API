@@ -20,3 +20,11 @@ func (s MonsterService) GetAll() (entity.Monsters, error) {
 	}
 	return res,nil
 }
+
+func (s MonsterService) GetById(id entity.MonsterId) (entity.Monster,error) {
+	res, err := s.monsterInterface.GetById(id)
+	if err != nil {
+		return entity.Monster{}, err
+	}
+	return res, nil
+}
