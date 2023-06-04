@@ -43,3 +43,12 @@ func Test_Update(t *testing.T) {
 	err := service.Update(id,monsterJson)
 	assert.Equal(t,nil,err)
 }
+
+func Test_Delete(t *testing.T) {
+	mockInterface := new(MockMonsterInterface)
+	service := MonsterService{mockInterface}
+	id := entity.MonsterId{Value: 1}
+	mockInterface.On("Delete",id).Return(nil)
+	err := service.Delete(id)
+	assert.Equal(t,nil,err)
+}

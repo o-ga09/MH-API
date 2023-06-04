@@ -56,3 +56,12 @@ func Test_Update(t *testing.T) {
 	err := gateway.Update(id,monsterJson)
 	assert.Equal(t,nil,err)
 }
+
+func Test_Delete(t *testing.T) {
+	mockDriver := new(MockMonsterDriver)
+	gateway := MonsterGateway{mockDriver}
+	id := entity.MonsterId{Value: 1}
+	mockDriver.On("Delete",1).Return(nil)
+	err := gateway.Delete(id)
+	assert.Equal(t,nil,err)
+}

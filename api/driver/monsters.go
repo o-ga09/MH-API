@@ -9,7 +9,7 @@ type MonsterDriver interface {
 	GetById(id int) (Monster)
 	Create(MonsterJson) error
 	Update(id int, monsterJson MonsterJson) error
-	// Delete(id int) error
+	Delete(id int) error
 }
 
 type MonsterDriverimpl struct {
@@ -35,6 +35,11 @@ func (d MonsterDriverimpl) Create(driverJson MonsterJson) error {
 
 func (d MonsterDriverimpl) Update(id int, driverJson MonsterJson) error {
 	err := d.conn.Model(&Monster{}).Where("id = ?",id).Updates(&driverJson)
+	return err.Error
+}
+
+func (d MonsterDriverimpl) Delete(id int) error {
+	err := d.conn.Delete(&Monster{},id)
 	return err.Error
 }
 

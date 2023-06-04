@@ -106,6 +106,22 @@ func (m MonsterHandler) Update(c *gin.Context) {
 	c.JSON(200,Messageresponse{Message: "success!"})
 }
 
+func (m MonsterHandler) Delete(c *gin.Context) {
+	id := c.Param("id")
+	i, _ := strconv.Atoi(id)
+	monsterId := entity.MonsterId{Value: i}
+
+	err := m.monsterService.Delete(monsterId)
+	if err != nil {
+		c.JSON(500,gin.H{
+			"err": "can not delete record",
+		})
+		log.Printf("err: %v",err)
+		return
+	}
+	c.JSON(200,Messageresponse{Message: "success!"})
+}
+
 
 func ProvideMonsterHandler(monsterService service.MonsterService) MonsterHandler {
 	return MonsterHandler{monsterService: monsterService}

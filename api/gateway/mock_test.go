@@ -29,3 +29,8 @@ func (m *MockMonsterDriver) Update(id int,monsterJson driver.MonsterJson) error 
 	args := m.Called(id,monsterJson)
 	return args.Error(0)
 }
+
+func (m *MockMonsterDriver) Delete(id int) error {
+	args := m.Called(id)
+	return args.Error(0)
+}

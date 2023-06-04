@@ -29,7 +29,7 @@ func NewServer() (*gin.Engine, error) {
 		monsters.GET("/:id",monsterHandler.GetById)
 		monsters.POST("",monsterHandler.Create)
 		monsters.PATCH("/:id",monsterHandler.Update)
-		// monsters.DELETE("/:id",monsterHandler.Delete)
+		monsters.DELETE("/:id",monsterHandler.Delete)
 	}
 
 	return r,nil

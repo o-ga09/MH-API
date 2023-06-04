@@ -38,3 +38,8 @@ func (s MonsterService) Update(id entity.MonsterId,monsterJson entity.MonsterJso
 	err := s.monsterInterface.Update(id,monsterJson)
 	return err
 }
+
+func (s MonsterService) Delete(id entity.MonsterId) error {
+	err := s.monsterInterface.Delete(id)
+	return err
+}

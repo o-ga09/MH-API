@@ -86,6 +86,13 @@ func (g MonsterGateway) Update(id entity.MonsterId,monsterJson entity.MonsterJso
 	return err
 }
 
+func (g MonsterGateway) Delete(id entity.MonsterId) error {
+	monsterId := id.Value
+
+	err := g.monsterDriver.Delete(monsterId)
+	return err
+}
+
 func ProvideMonsterDriver(monsterDriver driver.MonsterDriver) MonsterGateway {
 	return MonsterGateway{monsterDriver: monsterDriver}
 }

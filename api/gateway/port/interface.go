@@ -7,4 +7,5 @@ type MonsterInterface interface {
 	GetById(id entity.MonsterId) (entity.Monster, error)
 	Create(monsterJson entity.MonsterJson) error
 	Update(id entity.MonsterId,monsterJson entity.MonsterJson) error
+	Delete(id entity.MonsterId) error
 }

@@ -29,3 +29,8 @@ func (m *MockMonsterInterface) Update(id entity.MonsterId,monsterJson entity.Mon
 	args := m.Called(id,monsterJson)
 	return args.Error(0)
 }
+
+func (m *MockMonsterInterface) Delete(id entity.MonsterId) error {
+	args := m.Called(id)
+	return args.Error(0)
+}
