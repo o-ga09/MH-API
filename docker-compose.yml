@@ -30,6 +30,8 @@ services:
       DB_USER: mh-api
       DB_PASSWORD: P@ssw0rd
       DB_NAME: mh-api
+      SECRET_KEY: 4y2rLkn1j+p979YcG0GlSGYr7zM7tKUrl7O/BzrcnTQ=
+      TOKEN_LIFETIME: 3600
     volumes:
       - .:/app
     ports:

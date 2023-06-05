@@ -3,9 +3,8 @@ package controller
 import (
 	di "mh-api/api/DI"
 	"mh-api/api/controller/handler"
-	"time"
+	"mh-api/api/controller/middleware"
 
-	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -13,42 +12,31 @@ func NewServer() (*gin.Engine, error) {
 	r := gin.Default()
 
 	//setting a CORS
-	cors := CORS()
+	cors := middleware.CORS()
 	r.Use(cors)
 
 	v1 := r.Group("/v1")
 	{
 		systemHandler := handler.NewSystemHandler()
+		authHandler := handler.NewAuthHandler()
 		v1.GET("/health",systemHandler.Health)
+		v1.POST("/auth",authHandler.SignUpHandler)
 	}
 
 	monsters := v1.Group("/monsters")
+	monsterHandler := di.InitMonstersHandler()
 	{
-		monsterHandler := di.InitMonstersHandler()
 		monsters.GET("",monsterHandler.GetrAll)
 		monsters.GET("/:id",monsterHandler.GetById)
-		monsters.POST("",monsterHandler.Create)
-		monsters.PATCH("/:id",monsterHandler.Update)
-		monsters.DELETE("/:id",monsterHandler.Delete)
+	}
+	
+	auth := v1.Group("/auth/monsters")
+	auth.Use(middleware.AuthMiddleware)
+	{
+		auth.POST("",monsterHandler.Create)
+		auth.PATCH("/:id",monsterHandler.Update)
+		auth.DELETE("/:id",monsterHandler.Delete)
 	}
 
 	return r,nil
-}
-
-func CORS() gin.HandlerFunc {
-	return cors.New(cors.Config{
-		AllowOrigins: []string{
-			"*",
-		},
-		AllowMethods: []string{
-			"POST",
-			"GET",
-			"OPTIONS",
-		},
-		AllowHeaders: []string{
-			"Content-Type",
-		},
-		AllowCredentials: false,
-		MaxAge: 24 * time.Hour,
-	})
 }
