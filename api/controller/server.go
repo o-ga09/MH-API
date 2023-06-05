@@ -28,12 +28,14 @@ func NewServer() (*gin.Engine, error) {
 	{
 		monsters.GET("",monsterHandler.GetrAll)
 		monsters.GET("/:id",monsterHandler.GetById)
+		monsters.POST("/json",monsterHandler.CreateJson)
 	}
 	
 	auth := v1.Group("/auth/monsters")
 	auth.Use(middleware.AuthMiddleware)
 	{
 		auth.POST("",monsterHandler.Create)
+		auth.POST("/json",monsterHandler.CreateJson)
 		auth.PATCH("/:id",monsterHandler.Update)
 		auth.DELETE("/:id",monsterHandler.Delete)
 	}
