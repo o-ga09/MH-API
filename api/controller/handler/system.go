@@ -1,8 +1,10 @@
 package handler
 
 import (
+	"fmt"
 	"mh-api/api/controller/middleware"
 	"net/http"
+	"os"
 
 	"github.com/gin-gonic/gin"
 )
@@ -31,6 +33,22 @@ func (h *AuthHandler) SignUpHandler(ctx *gin.Context) {
 		return
 	}
 
+	user := os.Getenv("USER")
+	password := os.Getenv("PASSWORD")
+
+	fmt.Println(user)
+	fmt.Println(password)
+
+	fmt.Println(h.Name)
+	fmt.Println(h.Password)
+
+	if h.Name != user || h.Password != password {
+		ctx.JSON(http.StatusUnauthorized, gin.H{
+			"message": "unauthorized",
+		})
+		return
+	}
+
 	token, err := middleware.GenerateToken(h.Name)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
@@ -43,7 +61,7 @@ func (h *AuthHandler) SignUpHandler(ctx *gin.Context) {
 	ctx.SetCookie("token", token, cookieMaxAge, "/", "localhost", false, true)
 	ctx.JSON(http.StatusOK, gin.H{
 		"user_id": h.Name,
-		"message": "Successfully created user",
+		"message": "Successfully",
 	})
 }
 
