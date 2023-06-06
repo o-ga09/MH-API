@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	"mh-api/api/controller/middleware"
 	"net/http"
 	"os"
@@ -35,12 +34,6 @@ func (h *AuthHandler) SignUpHandler(ctx *gin.Context) {
 
 	user := os.Getenv("USER")
 	password := os.Getenv("PASSWORD")
-
-	fmt.Println(user)
-	fmt.Println(password)
-
-	fmt.Println(h.Name)
-	fmt.Println(h.Password)
 
 	if h.Name != user || h.Password != password {
 		ctx.JSON(http.StatusUnauthorized, gin.H{

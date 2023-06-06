@@ -26,9 +26,8 @@ func NewServer() (*gin.Engine, error) {
 	monsters := v1.Group("/monsters")
 	monsterHandler := di.InitMonstersHandler()
 	{
-		monsters.GET("",monsterHandler.GetrAll)
+		monsters.GET("",monsterHandler.GetAll)
 		monsters.GET("/:id",monsterHandler.GetById)
-		monsters.POST("/json",monsterHandler.CreateJson)
 	}
 	
 	auth := v1.Group("/auth/monsters")

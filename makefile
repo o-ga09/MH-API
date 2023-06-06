@@ -21,5 +21,6 @@ post:
 
 
 # curl -X POST -H "Content-Type: application/json" -d '{"req": [{"name": "value1","desc": "value2","location": "value3","specify": "value4","weakness_attack": "value5","weakness_element": "value6"},{"name": "value7","desc": "value8","location": "value9","specify": "value10","weakness_attack": "value11","weakness_element": "value12"}]}' http://localhost:8080/v1/monsters/json
-# curl -X DELETE -b "token='token'" http://localhost:8080/v1/auth/monsters/7
+# curl -X DELETE -b "token==eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTkwMTUwNjIsInVzZXJfaWQiOiJhZG1pbiJ9.KegTxEWkHNFcMrmuuWZ3L6ZEQuEXjG8MTS6DaboK6LA" http://localhost:8080/v1/auth/monsters/7
 # curl -X POST -H 'Content-type: application/json' -d '{"name":"admin","password":"password"}' http://localhost:8080/v1/auth
+# curl -X POST -b "token=token" --data @./data/output/data.json http://localhost:8080/v1/auth/monsters/json

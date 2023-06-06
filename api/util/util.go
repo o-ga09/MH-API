@@ -8,6 +8,19 @@ import (
 	"path/filepath"
 )
 
+type RequestJson struct {
+	Req []Json `json:"req"`
+}
+
+type Json struct {
+  	Name             string       `json:"name"`
+    Desc             string       `json:"desc"`
+    Location         string   `json:"location"`
+    Specify          string    `json:"specify"`
+    Weakness_attack  string `json:"weakness_attack"`
+    Weakness_element string `json:"weakness_element"`
+}
+
 func CsvToJson() {
 	// CSVファイルのパス
 	inputPath := "data/input/data.csv"
@@ -32,18 +45,20 @@ func CsvToJson() {
 	}
 
 	// JSONに変換するデータのスライス
-	data := make([]map[string]string, 0)
-
+	data := RequestJson{}
 	// CSVの各行を処理してデータを作成
 	for i, record := range records {
 		if i == 0 {continue}
-		row := make(map[string]string)
-		for i, value := range record {
-			// 各カラムのヘッダーをキーとして、値をマップに格納
-			header := records[0][i]
-			row[header] = value
+		// 各カラムのヘッダーをキーとして、値をマップに格納
+		row := Json{
+			Name: record[0],
+			Desc: record[1],
+			Location: record[2],
+			Specify: record[3],
+			Weakness_attack: record[4],
+			Weakness_element: record[5],
 		}
-		data = append(data, row)
+		data.Req = append(data.Req, row)
 	}
 
 	// JSONに変換

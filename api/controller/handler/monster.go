@@ -20,7 +20,7 @@ func NewMonsterHandler(s service.MonsterService) *MonsterHandler {
 	}
 }
 
-func (m *MonsterHandler) GetrAll(c *gin.Context) {
+func (m *MonsterHandler) GetAll(c *gin.Context) {
 	res, err := m.monsterService.GetAll()
 	if err != nil {
 		c.JSON(500,gin.H{
