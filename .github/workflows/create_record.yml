@@ -6,13 +6,15 @@ on:
       - "data/input/data.csv"
   
 jobs:
-  runs-on: ubuntu-latest
-  steps:
-    - name: Checkout the repository
-      uses: actions/checkout@v2
+  create-json:
+    name: create-json
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v2
 
-    - name: create json
-      uses: ./cmd/csvtojson
-    
-    - name: display json
-      uses: cat data/output/data.json | jq
+      - name: create json
+        uses: ./cmd/csvtojson
+      
+      - name: display json
+        uses: cat data/output/data.json | jq
