@@ -5,7 +5,6 @@ name: test
 jobs:
   test:
     runs-on: ubuntu-latest
-    services:
     steps:
     - uses: actions/setup-go@v3
       with:
