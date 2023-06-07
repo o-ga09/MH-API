@@ -2,6 +2,7 @@
 on:
   push:
     branches:
+      - main
     paths:
       - "data/input/data.csv"
   
@@ -18,3 +19,17 @@ jobs:
       
       - name: display json
         run: cat data/output/data.json | jq
+
+      - name: get authentication token
+        run: |
+              toke=$(curl -X POST \
+              -H "Content-type: application/json" \
+              -d '{"name":"${{ secrets.ADMIN }}","password":"${{ secrets.PASSOWRD }}"}' \
+              http://localhost:8080/v1/auth　| jq -r '.token')
+              echo "TOKEN=$(token)" >> $GITHUB_ENV
+      - name: call API  
+        run: |
+              curl -X POST \
+              -b "token={{ env.TOKEN }}" \
+              --data @./data/output/data.json \
+              http://localhost:8080/v1/auth/monsters/json
