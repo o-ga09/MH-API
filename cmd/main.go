@@ -1,11 +1,14 @@
 package main
 
-import "mh-api/api/controller"
+import (
+	"mh-api/api/util"
+)
 
 func main() {
-	s, err := controller.NewServer()
-	if err != nil {
-		panic(err)
-	}
-	s.Run()
+	util.CsvToJson()
+	// s, err := controller.NewServer()
+	// if err != nil {
+	// 	panic(err)
+	// }
+	// s.Run()
 }
