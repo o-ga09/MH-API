@@ -25,11 +25,11 @@ type MonsterSpecify struct {
 } 
 
 type MonsterWeakness_A struct {
-	Value string       //モンスターの弱点(物理肉質)
+	Value map[string]string       //モンスターの弱点(物理肉質)
 } 
 
 type MonsterWeakness_E struct {
-	Value string       //モンスターの弱点(属性肉質)
+	Value map[string]string       //モンスターの弱点(属性肉質)
 } 
 
 type Monster struct {
