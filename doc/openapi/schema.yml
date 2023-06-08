@@ -1,0 +1,65 @@
+openapi: 3.0.0
+info:
+  title: MH-API
+  version: 1.0.0
+paths:
+  /v1/system/healthcheck:
+    get:
+      summary: ヘルスチェックエンドポイント
+      responses:
+        '200':
+          description: OK
+  /v1/ja/monster/{id}:
+    get:
+      summary: モンスター情報を取得する (日本語)
+      parameters:
+        - name: id
+          in: path
+          description: モンスターのID
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: モンスター情報の取得に成功
+        '404':
+          description: モンスターが見つかりません
+  /v1/ja/monster/ids:
+    get:
+      summary: 全てのモンスターのIDを取得する (日本語)
+      responses:
+        '200':
+          description: モンスターIDの取得に成功
+  /v1/ja/monster/all:
+    get:
+      summary: 全てのモンスター情報を取得する (日本語)
+      responses:
+        '200':
+          description: モンスター情報の取得に成功
+  /v1/en/monster/{id}:
+    get:
+      summary: Get Monster Information (English)
+      parameters:
+        - name: id
+          in: path
+          description: ID of the monster
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response with monster information
+        '404':
+          description: Monster not found
+  /v1/en/monster/ids:
+    get:
+      summary: Get IDs of all monsters (English)
+      responses:
+        '200':
+          description: Successful response with monster IDs
+  /v1/en/monster/all:
+    get:
+      summary: Get information of all monsters (English)
+      responses:
+        '200':
+          description: Successful response with monster information
