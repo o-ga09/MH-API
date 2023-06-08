@@ -30,6 +30,7 @@ type MonsterWeakness_A struct {
 
 type MonsterWeakness_E struct {
 	Value map[string]string       //モンスターの弱点(属性肉質)
+
 } 
 
 type Monster struct {
