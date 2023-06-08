@@ -11,6 +11,10 @@ type Config struct {
 	DBUser string `env:"DB_USER" envDefault:"todo"`
 	DBPassword string `env:"DB_PASSWORD" envDefault:"P@ssw0rd"`
 	DBName string `env:"DB_NAME" envDefault:"todo"`
+	USER string `env:"USER" envDefault:"admin"`
+	PASSWORD string `env:"PASSWORD" envDefault:"password"`
+	SECRET_KEY string `env:"SECRET_KEY" envDefault:"secret_key"`
+	TOKEN_LIFETIME string `env:"TOKEN_LIFETIME" envDefault:"token_lifetime"`
 }
 
 func New() (*Config,error) {

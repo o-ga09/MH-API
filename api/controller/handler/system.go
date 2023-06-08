@@ -1,9 +1,9 @@
 package handler
 
 import (
+	"mh-api/api/config"
 	"mh-api/api/controller/middleware"
 	"net/http"
-	"os"
 
 	"github.com/gin-gonic/gin"
 )
@@ -15,6 +15,7 @@ type SystemHandler struct {}
 type AuthHandler struct {
 	Name     string `json:"name"`
 	Password string `json:"password"`
+	cfg *config.Config
 }
 
 func (s * SystemHandler) Health(c *gin.Context) {
@@ -32,8 +33,8 @@ func (h *AuthHandler) SignUpHandler(ctx *gin.Context) {
 		return
 	}
 
-	user := os.Getenv("USER")
-	password := os.Getenv("PASSWORD")
+	user := h.cfg.USER
+	password := h.cfg.PASSWORD
 
 	if h.Name != user || h.Password != password {
 		ctx.JSON(http.StatusUnauthorized, gin.H{
@@ -42,7 +43,7 @@ func (h *AuthHandler) SignUpHandler(ctx *gin.Context) {
 		return
 	}
 
-	token, err := middleware.GenerateToken(h.Name)
+	token, err := middleware.GenerateToken(h.Name,h.cfg)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"message": "Failed to sign up",
