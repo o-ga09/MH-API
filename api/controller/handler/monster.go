@@ -29,7 +29,12 @@ func (m *MonsterHandler) GetAll(c *gin.Context) {
 		log.Printf("err: %v",err)
 		return
 	}
-	c.JSON(200,res)
+
+	response := Monsters{
+		Total: len(res.Values),
+		Monsters: res,
+	}
+	c.JSON(200,response)
 }
 
 func (m *MonsterHandler) GetById(c *gin.Context) {
@@ -39,12 +44,13 @@ func (m *MonsterHandler) GetById(c *gin.Context) {
 
 	res, err := m.monsterService.GetById(monsterId)
 	if err != nil {
-		c.JSON(500,gin.H{
-			"err": "can not get record",
-		})
+		c.JSON(500,MessageResponse{Message: err.Error()})
 	}
 
-	c.JSON(200,res)
+	response := Monster{
+		Monster: res,	
+	}
+	c.JSON(200,response)
 }
 
 func (m *MonsterHandler) Create(c *gin.Context) {
@@ -66,13 +72,11 @@ func (m *MonsterHandler) Create(c *gin.Context) {
 
 	err := m.monsterService.Create(monsterJson)
 	if err != nil {
-		c.JSON(500,gin.H{
-			"err": "can not create record",
-		})
+		c.JSON(500,MessageResponse{Message: err.Error()})
 		log.Printf("err: %v",err)
 		return
 	}
-	c.JSON(200,Messageresponse{Message: "success!"})
+	c.JSON(200,MessageResponse{Message: "success!"})
 }
 
 func (m MonsterHandler) Update(c *gin.Context) {
@@ -98,13 +102,11 @@ func (m MonsterHandler) Update(c *gin.Context) {
 
 	err := m.monsterService.Update(monsterId,monsterJson)
 	if err != nil {
-		c.JSON(500,gin.H{
-			"err": "can not create record",
-		})
+		c.JSON(500,MessageResponse{Message: err.Error()})
 		log.Printf("err: %v",err)
 		return
 	}
-	c.JSON(200,Messageresponse{Message: "success!"})
+	c.JSON(200,MessageResponse{Message: "success!"})
 }
 
 func (m MonsterHandler) Delete(c *gin.Context) {
@@ -114,13 +116,11 @@ func (m MonsterHandler) Delete(c *gin.Context) {
 
 	err := m.monsterService.Delete(monsterId)
 	if err != nil {
-		c.JSON(500,gin.H{
-			"err": "can not delete record",
-		})
+		c.JSON(500,MessageResponse{Message: err.Error()})
 		log.Printf("err: %v",err)
 		return
 	}
-	c.JSON(200,Messageresponse{Message: "success!"})
+	c.JSON(200,MessageResponse{Message: "success!"})
 }
 
 func (m *MonsterHandler) CreateJson(c *gin.Context) {
@@ -142,15 +142,13 @@ func (m *MonsterHandler) CreateJson(c *gin.Context) {
 		}
 		err := m.monsterService.Create(monsterJson)
 		if err != nil {
-			c.JSON(500,gin.H{
-				"err": "can not create record",
-			})
+			c.JSON(500,MessageResponse{Message: err.Error()})
 			log.Printf("err: %v",err)
 			return
 		}
 	}
 
-	c.JSON(200,Messageresponse{Message: "success!"})
+	c.JSON(200,MessageResponse{Message: "success!"})
 }
 
 
@@ -158,7 +156,20 @@ func ProvideMonsterHandler(monsterService service.MonsterService) MonsterHandler
 	return MonsterHandler{monsterService: monsterService}
 }
 
-type Messageresponse struct {
+type Monsters struct {
+	Total    int             `json:"total"`
+	Monsters entity.Monsters `json:"monsters"`
+}
+
+type Monster struct {
+	Monster entity.Monster `json:"monster"`
+}
+
+type MessageResponse struct {
+	Message string `json:"message"`
+}
+
+type MessageRequest struct {
 	Message string `json:"message"`
 }
 
