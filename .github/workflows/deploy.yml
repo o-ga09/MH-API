@@ -44,10 +44,11 @@ jobs:
               --platform=managed \
               --allow-unauthenticated \
               --quiet \
-              --update-secrets=DB_HOST \
-              --update-secrets=DB_PORT \
-              --update-secrets=DB_USER \
-              --update-secrets=DB_PASSWORD \
-              --update-secrets=DB_NAME \
-              --update-secrets=USER \
-              --update-secrets=PASSWORD
+              --update-secrets=DB_HOST=DB_HOST:latest \
+              --update-secrets=DB_USER=DB_USER:latest \
+              --update-secrets=DB_PASSWORD=DB_PASSWORD:latest \
+              --update-secrets=DB_NAME=DB_NAME:latest \
+              --update-secrets=USER=USER:latest \
+              --update-secrets=PASSWORD=PASSWORD:latest \
+              --update-secrets=TOKEN_LIFETIME=TOKEN_LIFETIME:latest \
+              --update-secrets=SECRET_KEY=SECRET_KEY:latest
