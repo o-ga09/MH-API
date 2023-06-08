@@ -28,7 +28,7 @@ jobs:
         run: gcloud auth configure-docker --quiet
 
       - name: Build a docker image
-        run: docker build --platform linux/amd64 -t {{ env.IMAGE }} --target deploy ./
+        run: docker build --platform linux/amd64 -t ${{ env.IMAGE }} --target deploy ./
 
       - name: Push the docker image
         run: docker push ${{ env.IMAGE }}
