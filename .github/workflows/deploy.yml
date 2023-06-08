@@ -11,6 +11,7 @@ env:
   GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
   GCP_REGION: ${{ secrets.GCP_REGION }}
   GCP_REPOSITORY: ${{ secrets.GCP_REPOSITORY }}
+  GCP_SERVICE_ACCOUNT: ${{ secrets.GCP_SERVICE_ACCOUNT }}
   IMAGE: asia-northeast1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_REPOSITORY }}/${{ secrets.SERVICE_NAME }}:${{ github.sha }}
 
 jobs:
@@ -43,6 +44,7 @@ jobs:
               --region ${{ env.GCP_REGION }} \
               --platform=managed \
               --allow-unauthenticated \
+              --service-account=${{ secrets.SERVICE_ACCOUNT }} \
               --quiet \
               --update-secrets=DB_HOST=DB_HOST:latest \
               --update-secrets=DB_USER=DB_USER:latest \
