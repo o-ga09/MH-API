@@ -10,7 +10,8 @@ env:
   PORT: ${{ secrets.PORT }}
   GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
   GCP_REGION: ${{ secrets.GCP_REGION }}
-  IMAGE: asia.gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.SERVICE_NAME }}:${{ github.sha }}
+  GCP_REPOSITORY: ${{ secrets.GCP_REPOSITORY }}
+  IMAGE: asia-northeast1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ GCP_REPOSITORY }}/${{ secrets.SERVICE_NAME }}:${{ github.sha }}
 
 jobs:
   deploy-to-cloud-run:
@@ -24,8 +25,9 @@ jobs:
         with:
           credentials_json: "${{ secrets.GCP_SA_KEY }}"
 
-      - name: Configure docker to use the gcloud cli
-        run: gcloud auth configure-docker --quiet
+      - name: Configure docker for artifact registry
+        run: |
+          gcloud auth configure-docker asia-northeast1-docker.pkg.dev
 
       - name: Build a docker image
         run: docker build --platform linux/amd64 -t ${{ env.IMAGE }} --target deploy ./
