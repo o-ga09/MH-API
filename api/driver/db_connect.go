@@ -1,4 +1,4 @@
-package store
+package driver
 
 import (
 	"context"
@@ -13,18 +13,23 @@ import (
 
 var db *gorm.DB
 
-func New(ctx context.Context, cfg *config.Config) (*gorm.DB, error) {
+func New(ctx context.Context) *gorm.DB {
+	cfg, err := config.New()
+	if err != nil {
+		panic(err)
+	}
+
 	dialector := mysql.Open(fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True&loc=Local",
 		cfg.DBUser, cfg.DBPassword,
 		cfg.DBHost, cfg.DBName,
 	))
-	var err error
+	
 	if db,err = gorm.Open(dialector,&gorm.Config{NamingStrategy: schema.NamingStrategy{
 		SingularTable: true,
 	}}); err != nil {
 		connect(dialector,100)
 	}
-	return db,  nil
+	return db
 }
 
 func connect(dialector gorm.Dialector, count uint) {
