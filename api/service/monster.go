@@ -2,30 +2,44 @@ package service
 
 import (
 	"mh-api/api/entity"
-	"mh-api/api/interface/monster"
-
-	"golang.org/x/net/context"
+	"mh-api/api/gateway/port"
 )
 
-type MonsterService interface {
-	FindAllMonsters(ctx context.Context) (entity.Monsters, error)
-	FindMonsterById(ctx context.Context,id int) (entity.Monster,error)
+type MonsterService struct {
+	monsterInterface port.MonsterInterface
 }
 
-type monsterService struct {
-	use monster.IMonsterService
+func ProvideMonsterDriver(monsterGateway port.MonsterInterface) MonsterService {
+	return MonsterService{monsterInterface: monsterGateway}
 }
 
-func NewMonsterUsecase(u monster.IMonsterService) MonsterService {
-	return &monsterService{
-		use: u,
+func (s MonsterService) GetAll() (entity.Monsters, error) {
+	res, err := s.monsterInterface.GetAll()
+	if err != nil {
+		return entity.Monsters{}, err
 	}
+	return res,nil
 }
 
-func (u *monsterService) FindAllMonsters(ctx context.Context) (entity.Monsters,error) {
-	return u.use.FindAllMonsters(ctx)
+func (s MonsterService) GetById(id entity.MonsterId) (entity.Monster,error) {
+	res, err := s.monsterInterface.GetById(id)
+	if err != nil {
+		return entity.Monster{}, err
+	}
+	return res, nil
 }
 
-func (u *monsterService) FindMonsterById(ctx context.Context, id int) (entity.Monster,error) {
-	return u.use.FindMonsterById(ctx,id)
+func (s MonsterService) Create(monsterJson entity.MonsterJson) error {
+	err := s.monsterInterface.Create(monsterJson)
+	return err
+}
+
+func (s MonsterService) Update(id entity.MonsterId,monsterJson entity.MonsterJson) error {
+	err := s.monsterInterface.Update(id,monsterJson)
+	return err
+}
+
+func (s MonsterService) Delete(id entity.MonsterId) error {
+	err := s.monsterInterface.Delete(id)
+	return err
 }
