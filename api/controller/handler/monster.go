@@ -4,6 +4,8 @@ import (
 	"log"
 	"mh-api/api/entity"
 	"mh-api/api/service"
+
+	"mh-api/api/util"
 	"net/http"
 	"strconv"
 
@@ -61,13 +63,17 @@ func (m *MonsterHandler) Create(c *gin.Context) {
 	weak_a := c.PostForm("weakness_A")
 	weak_e := c.PostForm("weakness_E")
 	
+	weak_map_a := util.Mapping(weak_a)
+	weak_map_e := util.Mapping(weak_e)
+
 	monsterJson := entity.MonsterJson{
 		Name: entity.MonsterName{Value: name},
 		Desc: entity.MonsterDesc{Value: desc},
 		Location: entity.MonsterLocation{Value: Location},
 		Specify: entity.MonsterSpecify{Value: specify},
-		Weakness_attack: entity.MonsterWeakness_A{Value: weak_a},
-		Weakness_element: entity.MonsterWeakness_E{Value: weak_e},
+		Weakness_attack: entity.MonsterWeakness_A{Value: weak_map_a},
+		Weakness_element: entity.MonsterWeakness_E{Value: weak_map_e},
+
 	}
 
 	err := m.monsterService.Create(monsterJson)
@@ -91,13 +97,18 @@ func (m MonsterHandler) Update(c *gin.Context) {
 	weak_a := c.PostForm("weakness_A")
 	weak_e := c.PostForm("weakness_E")
 
+	weak_map_a := util.Mapping(weak_a)
+	weak_map_e := util.Mapping(weak_e)
+
 	monsterJson := entity.MonsterJson{
 		Name: entity.MonsterName{Value: name},
 		Desc: entity.MonsterDesc{Value: desc},
 		Location: entity.MonsterLocation{Value: Location},
 		Specify: entity.MonsterSpecify{Value: specify},
-		Weakness_attack: entity.MonsterWeakness_A{Value: weak_a},
-		Weakness_element: entity.MonsterWeakness_E{Value: weak_e},
+
+		Weakness_attack: entity.MonsterWeakness_A{Value: weak_map_a},
+		Weakness_element: entity.MonsterWeakness_E{Value: weak_map_e},
+
 	}
 
 	err := m.monsterService.Update(monsterId,monsterJson)
@@ -132,13 +143,17 @@ func (m *MonsterHandler) CreateJson(c *gin.Context) {
 
 	for _, record := range data.Req {
 
+		weak_map_a := util.Mapping(record.Weakness_attack)
+		weak_map_e := util.Mapping(record.Weakness_element)
+
 		monsterJson := entity.MonsterJson{
 			Name: entity.MonsterName{Value: record.Name},
 			Desc: entity.MonsterDesc{Value: record.Desc},
 			Location: entity.MonsterLocation{Value: record.Location},
 			Specify: entity.MonsterSpecify{Value: record.Specify},
-			Weakness_attack: entity.MonsterWeakness_A{Value: record.Weakness_attack},
-			Weakness_element: entity.MonsterWeakness_E{Value: record.Weakness_element},
+			Weakness_attack: entity.MonsterWeakness_A{Value: weak_map_a},
+			Weakness_element: entity.MonsterWeakness_E{Value: weak_map_e},
+
 		}
 		err := m.monsterService.Create(monsterJson)
 		if err != nil {
