@@ -63,6 +63,8 @@ func NewSystemHandler() *SystemHandler {
 	return &SystemHandler{}
 }
 
-func NewAuthHandler() *AuthHandler {
-	return &AuthHandler{}
+func NewAuthHandler(cfg *config.Config) *AuthHandler {
+	return &AuthHandler{
+		cfg: cfg,
+	}
 }

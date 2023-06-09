@@ -19,7 +19,7 @@ func New(ctx context.Context) *gorm.DB {
 		panic(err)
 	}
 
-	dialector := mysql.Open(fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True&loc=Local",
+	dialector := mysql.Open(fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True&loc=Local&tls=true",
 		cfg.DBUser, cfg.DBPassword,
 		cfg.DBHost, cfg.DBName,
 	))
