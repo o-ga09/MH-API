@@ -38,7 +38,7 @@ To join the MH-API project, please follow the steps below.
         make up
 
         # Make sure the response is {"message": "ok"}.
-        curl http://localhost:8080/v1/system/healthcheck
+        curl http://localhost:8080/v1/system/health
    ````
 
 5. Run the test
