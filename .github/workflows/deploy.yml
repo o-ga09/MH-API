@@ -44,7 +44,7 @@ jobs:
               --region ${{ env.GCP_REGION }} \
               --platform=managed \
               --allow-unauthenticated \
-              --service-account=${{ secrets.SERVICE_ACCOUNT }} \
+              --service-account=${{ env.GCP_SERVICE_ACCOUNT }} \
               --quiet \
               --update-secrets=DB_HOST=DB_HOST:latest \
               --update-secrets=DB_USER=DB_USER:latest \
