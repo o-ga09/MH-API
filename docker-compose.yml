@@ -24,7 +24,7 @@ services:
       args:
         - target=dev
     environment:
-      ENV: prod
+      ENV: DEV
       PORT: 8080
       DB_HOST: "mh-api-dbsrv01:3306"
       DB_USER: mh-api
