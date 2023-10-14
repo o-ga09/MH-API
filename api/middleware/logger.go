@@ -10,7 +10,7 @@ import (
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/trace"
 
-	"golang.org/x/exp/slog"
+	"log/slog"
 )
 
 // cloud logging の Log level 定義
