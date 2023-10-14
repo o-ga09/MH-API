@@ -1,6 +1,9 @@
 name: Test
 on:
   push:
+    paths:
+    - "**.go"
+    - .github/workflows/test.yml
   pull_request:
     branches:
     - release
