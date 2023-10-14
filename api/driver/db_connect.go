@@ -19,18 +19,7 @@ func New(ctx context.Context) *gorm.DB {
 		panic(err)
 	}
 
-	var dialector gorm.Dialector
-	if cfg.Env == "PROD" {
-		dialector = mysql.Open(fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True&loc=Local&tls=true",
-		cfg.DBUser, cfg.DBPassword,
-		cfg.DBHost, cfg.DBName,
-		))
-	} else {
-		dialector = mysql.Open(fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True&loc=Local",
-		cfg.DBUser, cfg.DBPassword,
-		cfg.DBHost, cfg.DBName,
-		))
-	}
+	dialector := mysql.Open(cfg.Database_url)
 	
 	if db,err = gorm.Open(dialector,&gorm.Config{NamingStrategy: schema.NamingStrategy{
 		SingularTable: true,
