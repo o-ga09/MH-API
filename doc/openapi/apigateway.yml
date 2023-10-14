@@ -4,6 +4,18 @@ info:
   title: MH-API
   description: モンハンAPIゲートウェイ
   version: 1.0.0
+securityDefinitions:
+  auth0_jwk:
+    authorizationUrl: "https://dev-8pmkik25y0obts0r.us.auth0.com/"
+    flow: "implicit"
+    type: "oauth2"
+    # Replace YOUR-ACCOUNT-NAME with your Auth0 account name.
+    x-google-issuer: "https://dev-8pmkik25y0obts0r.us.auth0.com/"
+    x-google-jwks_uri: "https://dev-8pmkik25y0obts0r.us.auth0.com/.well-known/jwks.json"
+    # Optional. Replace YOUR-CLIENT-ID with your client ID
+    x-google-audiences: "https://mh-api-gateway-8aznfogc.an.gateway.dev"
+security:
+  - auth0_jwk: []
 schemes:
   - https
 produces:
