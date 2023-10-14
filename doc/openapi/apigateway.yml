@@ -1,0 +1,22 @@
+# openapi2-functions.yaml
+swagger: '2.0'
+info:
+  title: MH-API
+  description: モンハンAPIゲートウェイ
+  version: 1.0.0
+schemes:
+  - https
+produces:
+  - application/json
+paths:
+  /v1/health:
+    get:
+      summary: ヘルスチェック
+      operationId: health
+      x-google-backend:
+        address: https://mh-api-xpzdc5i4rq-an.a.run.app/v1/health
+      responses:
+        '200':
+          description: ヘルスチェック
+          schema:
+            type: string
