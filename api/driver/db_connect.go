@@ -2,12 +2,14 @@ package driver
 
 import (
 	"context"
-	"fmt"
+	"log/slog"
 	"mh-api/api/config"
+	"mh-api/api/middleware"
 	"time"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 	"gorm.io/gorm/schema"
 )
 
@@ -16,7 +18,7 @@ var db *gorm.DB
 func New(ctx context.Context) *gorm.DB {
 	cfg, err := config.New()
 	if err != nil {
-		panic(err)
+		slog.Log(context.Background(),middleware.SeverityError,"environment variable error","error",err)
 	}
 
 	dialector := mysql.Open(cfg.Database_url)
@@ -26,6 +28,8 @@ func New(ctx context.Context) *gorm.DB {
 	}}); err != nil {
 		connect(dialector,100)
 	}
+	db.Logger = db.Logger.LogMode(logger.Silent)
+	slog.Log(context.Background(),middleware.SeverityInfo,"db connected")
 	return db
 }
 
@@ -37,10 +41,11 @@ func connect(dialector gorm.Dialector, count uint) {
 		if count > 1 {
 			time.Sleep(time.Second * 2)
 			count--
-			fmt.Printf("retry... count:%v\n", count)
+			slog.Log(context.Background(),middleware.SeverityInfo,"db connection retry")
 			connect(dialector, count)
 			return
 		}
+		slog.Log(context.Background(),middleware.SeverityInfo,"db connection retry count 100")
 		panic(err.Error())
 	}
 }

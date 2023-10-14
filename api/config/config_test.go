@@ -11,12 +11,13 @@ func TestNew(t *testing.T) {
 		want    *Config
 		wantErr bool
 	}{
-		{name: "正常系",want: &Config{Env: "dev",Port: "8080",Database_url: "user:password@tcp(localhost)/test?charset=utf8&parseTime=True&loc=Local&tls=true"},wantErr: false},
+		{name: "正常系",want: &Config{Env: "dev",Port: "8080",Database_url: "user:password@tcp(localhost)/test?charset=utf8&parseTime=True&loc=Local&tls=true",ProjectID: "00000"},wantErr: false},
 	}
 	for _, tt := range tests {
 		t.Setenv("ENV",tt.want.Env)
 		t.Setenv("PORT",tt.want.Port)
 		t.Setenv("DATABASE_URL",tt.want.Database_url)
+		t.Setenv("PROJECTID",tt.want.ProjectID)
 
 		t.Run(tt.name, func(t *testing.T) {
 			got, err := New()

@@ -8,6 +8,7 @@ type Config struct {
 	Env string `env:"ENV" envDefault:"dev"`
 	Port string `env:"PORT" envDefault:"80"`
 	Database_url string `env:"DATABASE_URL" envDefult:""`
+	ProjectID string `env:"PROJECTID" envDefault:""`
 }
 
 func New() (*Config,error) {

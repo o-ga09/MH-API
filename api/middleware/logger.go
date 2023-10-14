@@ -2,12 +2,11 @@ package middleware
 
 import (
 	"context"
-	"errors"
 	"fmt"
+	"mh-api/api/config"
 	"os"
 
 	"cloud.google.com/go/logging"
-	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/trace"
 
 	"log/slog"
@@ -52,7 +51,7 @@ func (h *traceHandler) WithGroup(g string) slog.Handler {
 }
 
 // logger 生成関数
-func New() {
+func New() *slog.Logger {
 	replacer := func(groups []string, a slog.Attr) slog.Attr {
 		if a.Key == slog.MessageKey {
 			a.Key = "message"
@@ -69,26 +68,16 @@ func New() {
 
 		return a
 	}
-
-	tracer := otel.Tracer("example.com/example-service")
-	// 新しいSpanを開始
-	ctx, _ := tracer.Start(context.Background(), "example-operation")
-
-	projectID := "32423553"
-	se := NewStackError(errors.New("Error"))
-
-	h := traceHandler{slog.NewJSONHandler(os.Stdout,&slog.HandlerOptions{ReplaceAttr: replacer}),projectID}
+	cfg, _ := config.New()
+	projectID := cfg.ProjectID
+	h := traceHandler{slog.NewJSONHandler(os.Stdout,&slog.HandlerOptions{AddSource: true ,ReplaceAttr: replacer}),projectID}
 	newh := h.WithAttr([]slog.Attr{
 		slog.Group("logging.googleapis.com/labels",
-					slog.String("app","REST API"),
-					slog.String("env","prod"),
+					slog.String("app","MH-API"),
+					slog.String("env",cfg.Env),
 		),
 	})
-	slog.SetDefault(slog.New(newh))
-
-	slog.Log(ctx,SeverityWarn,"Hello")
-	slog.Log(ctx,SeverityWarn,"Hello")
-	slog.Log(ctx,SeverityError,"Hello")
-	slog.Log(ctx,SeverityNotice,"Hello")
-	slog.Log(ctx,SeverityError,"something wrong !","stack_trace",se.Error()+"\n\n"+string(se.stack))
+	logger := slog.New(newh)
+	slog.SetDefault(logger)
+	return logger
 }
