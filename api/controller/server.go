@@ -26,14 +26,10 @@ func NewServer() (*gin.Engine, error) {
 	{
 		monsters.GET("",monsterHandler.GetAll)
 		monsters.GET("/:id",monsterHandler.GetById)
-	}
-	
-	auth := v1.Group("/auth/monsters")
-	{
-		auth.POST("",monsterHandler.Create)
-		auth.POST("/json",monsterHandler.CreateJson)
-		auth.PATCH("/:id",monsterHandler.Update)
-		auth.DELETE("/:id",monsterHandler.Delete)
+		monsters.POST("",monsterHandler.Create)
+		monsters.POST("/json",monsterHandler.CreateJson)
+		monsters.PATCH("/:id",monsterHandler.Update)
+		monsters.DELETE("/:id",monsterHandler.Delete)
 	}
 
 	return r,nil
