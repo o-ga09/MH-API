@@ -26,7 +26,14 @@ services:
     environment:
       ENV: DEV
       PORT: 8080
-      DATABASE_URL: mh-api:P@ssw0rd@tcp(mh-api-dbsrv01)/mh-api?charset=utf8&parseTime=True&loc=Local
+      DB_HOST: "mh-api-dbsrv01:3306"
+      DB_USER: mh-api
+      DB_PASSWORD: P@ssw0rd
+      DB_NAME: mh-api
+      SECRET_KEY: 4y2rLkn1j+p979YcG0GlSGYr7zM7tKUrl7O/BzrcnTQ=
+      TOKEN_LIFETIME: 3600
+      USER: admin
+      PASSWORD: password
     volumes:
       - .:/app
     ports:

@@ -2,14 +2,19 @@ package controller
 
 import (
 	di "mh-api/api/DI"
+	"mh-api/api/config"
 	"mh-api/api/controller/handler"
-	"mh-api/api/middleware"
+	"mh-api/api/controller/middleware"
 
 	"github.com/gin-gonic/gin"
 )
 
 func NewServer() (*gin.Engine, error) {
 	r := gin.Default()
+	cfg, err := config.New()
+	if err != nil {
+		panic(err)
+	}
 
 	//setting a CORS
 	cors := middleware.CORS()
@@ -18,7 +23,9 @@ func NewServer() (*gin.Engine, error) {
 	v1 := r.Group("/v1")
 	{
 		systemHandler := handler.NewSystemHandler()
+		authHandler := handler.NewAuthHandler(cfg)
 		v1.GET("/health",systemHandler.Health)
+		v1.POST("/auth",authHandler.SignUpHandler)
 	}
 
 	monsters := v1.Group("/monsters")
@@ -29,6 +36,7 @@ func NewServer() (*gin.Engine, error) {
 	}
 	
 	auth := v1.Group("/auth/monsters")
+	auth.Use(middleware.AuthMiddleware)
 	{
 		auth.POST("",monsterHandler.Create)
 		auth.POST("/json",monsterHandler.CreateJson)

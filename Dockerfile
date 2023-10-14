@@ -23,7 +23,7 @@ CMD ["./app"]
 
 #-----------------------------------------------
 #ローカル開発環境で利用するホットリロード環境
-FROM golang:1.21 as dev
+FROM golang:1.18.2 as dev
 
 WORKDIR /app
 
