@@ -1,0 +1,339 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "MH-API",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://mh-api-xpzdc5i4rq-an.a.run.app",
+      "description": "PROD環境"
+    }
+  ],
+  "paths": {
+    "/v1/health": {
+      "get": {
+        "summary": "ヘルスチェックエンドポイント",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/v1/monsters": {
+      "get": {
+        "summary": "全てのモンスター情報を取得する",
+        "requestBody": {
+          "$ref": "#/components/schemas/Monsters"
+        },
+        "responses": {
+          "200": {
+            "description": "モンスター情報の取得に成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Monsters"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "モンスターが見つかりません",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FailedResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "モンスターの情報を追加する",
+        "responses": {
+          "200": {
+            "description": "モンスターの情報の登録に成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "認証失敗",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FailedResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "サーバエラーにより更新失敗",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FailedResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/monsters/{id}": {
+      "get": {
+        "summary": "モンスター情報を取得する",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/PathId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "モンスター情報の取得に成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Monster"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "モンスターの情報が見つかりません",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FailedResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/monsters/json": {
+      "post": {
+        "summary": "jsonを使用してモンスターの情報一括追加する",
+        "responses": {
+          "200": {
+            "description": "モンスターの情報の登録に成功"
+          },
+          "403": {
+            "description": "認証失敗",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FailedResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "サーバエラーによ登録失敗",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FailedResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/monsters/{updateid}": {
+      "patch": {
+        "summary": "モンスターの情報を更新する",
+        "parameters": [
+          {
+            "$ref": "#/components/schemas/Monster"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "モンスターの情報の更新に成功"
+          },
+          "403": {
+            "description": "認証失敗",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FailedResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "サーバエラーにより更新失敗",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FailedResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/monsters/{deleteid}": {
+      "get": {
+        "summary": "モンスターの情報を削除する",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/PathId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "モンスターの情報の削除に成功"
+          },
+          "403": {
+            "description": "認証失敗",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FailedResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "サーバエラーにより削除失敗",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FailedResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "parameters": {
+      "PathId": {
+        "name": "id",
+        "in": "path",
+        "description": "モンスターのID",
+        "required": true,
+        "schema": {
+          "type": "integer"
+        }
+      }
+    },
+    "requestBodies": {
+      "Monster": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "name"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "desc": {
+                  "type": "string"
+                },
+                "location": {
+                  "type": "string"
+                },
+                "specify": {
+                  "type": "string"
+                },
+                "weakness_attack": {
+                  "type": "string"
+                },
+                "weakness_element": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "Monster": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "desc": {
+            "type": "string"
+          },
+          "location": {
+            "type": "string"
+          },
+          "specify": {
+            "type": "string"
+          },
+          "weakness_attack": {
+            "type": "string"
+          },
+          "weakness_element": {
+            "type": "string"
+          }
+        }
+      },
+      "Monsters": {
+        "type": "array",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "desc": {
+            "type": "string"
+          },
+          "location": {
+            "type": "string"
+          },
+          "specify": {
+            "type": "string"
+          },
+          "weakness_attack": {
+            "type": "string"
+          },
+          "weakness_element": {
+            "type": "string"
+          }
+        }
+      },
+      "SuccessResponse": {
+        "type": "string",
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "FailedResponse": {
+        "type": "string",
+        "properties": {
+          "error": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
