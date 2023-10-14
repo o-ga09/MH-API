@@ -4,28 +4,32 @@ import (
 	di "mh-api/api/DI"
 	"mh-api/api/config"
 	"mh-api/api/controller/handler"
-	"mh-api/api/controller/middleware"
+	"mh-api/api/middleware"
 
 	"github.com/gin-gonic/gin"
 )
 
 func NewServer() (*gin.Engine, error) {
-	r := gin.Default()
-	cfg, err := config.New()
-	if err != nil {
-		panic(err)
+	r := gin.New()
+	cfg, _ := config.New()
+	if cfg.Env == "PROD" {
+		gin.SetMode(gin.ReleaseMode)
 	}
 
+	// setting logger
+	logger := middleware.New()
+	httpLogger := middleware.RequestLogger(logger)
+	
 	//setting a CORS
 	cors := middleware.CORS()
+	
 	r.Use(cors)
+	r.Use(httpLogger)
 
 	v1 := r.Group("/v1")
 	{
 		systemHandler := handler.NewSystemHandler()
-		authHandler := handler.NewAuthHandler(cfg)
 		v1.GET("/health",systemHandler.Health)
-		v1.POST("/auth",authHandler.SignUpHandler)
 	}
 
 	monsters := v1.Group("/monsters")
@@ -33,15 +37,10 @@ func NewServer() (*gin.Engine, error) {
 	{
 		monsters.GET("",monsterHandler.GetAll)
 		monsters.GET("/:id",monsterHandler.GetById)
-	}
-	
-	auth := v1.Group("/auth/monsters")
-	auth.Use(middleware.AuthMiddleware)
-	{
-		auth.POST("",monsterHandler.Create)
-		auth.POST("/json",monsterHandler.CreateJson)
-		auth.PATCH("/:id",monsterHandler.Update)
-		auth.DELETE("/:id",monsterHandler.Delete)
+		monsters.POST("",monsterHandler.Create)
+		monsters.POST("/json",monsterHandler.CreateJson)
+		monsters.PATCH("/:id",monsterHandler.Update)
+		monsters.DELETE("/:id",monsterHandler.Delete)
 	}
 
 	return r,nil

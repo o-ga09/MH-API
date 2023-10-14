@@ -1,8 +1,10 @@
 package handler
 
 import (
-	"log"
+	"fmt"
+	"log/slog"
 	"mh-api/api/entity"
+	"mh-api/api/middleware"
 	"mh-api/api/service"
 
 	"mh-api/api/util"
@@ -28,7 +30,7 @@ func (m *MonsterHandler) GetAll(c *gin.Context) {
 		c.JSON(500,gin.H{
 			"err": "can not get records",
 		})
-		log.Printf("err: %v",err)
+		slog.Log(c,middleware.SeverityError,"err",err)
 		return
 	}
 
@@ -46,7 +48,8 @@ func (m *MonsterHandler) GetById(c *gin.Context) {
 
 	res, err := m.monsterService.GetById(monsterId)
 	if err != nil {
-		c.JSON(500,MessageResponse{Message: err.Error()})
+		c.JSON(500,MessageResponse{Message: fmt.Sprintf("can not get id : %d",i)})
+		slog.Log(c,middleware.SeverityError,"error","error",err.Error())
 	}
 
 	response := Monster{
@@ -78,8 +81,8 @@ func (m *MonsterHandler) Create(c *gin.Context) {
 
 	err := m.monsterService.Create(monsterJson)
 	if err != nil {
-		c.JSON(500,MessageResponse{Message: err.Error()})
-		log.Printf("err: %v",err)
+		c.JSON(500,MessageResponse{Message: "can not create"})
+		slog.Log(c,middleware.SeverityError,"err",err)
 		return
 	}
 	c.JSON(200,MessageResponse{Message: "success!"})
@@ -113,8 +116,8 @@ func (m MonsterHandler) Update(c *gin.Context) {
 
 	err := m.monsterService.Update(monsterId,monsterJson)
 	if err != nil {
-		c.JSON(500,MessageResponse{Message: err.Error()})
-		log.Printf("err: %v",err)
+		c.JSON(500,MessageResponse{Message: "can not update"})
+		slog.Log(c,middleware.SeverityError,"err",err)
 		return
 	}
 	c.JSON(200,MessageResponse{Message: "success!"})
@@ -127,8 +130,8 @@ func (m MonsterHandler) Delete(c *gin.Context) {
 
 	err := m.monsterService.Delete(monsterId)
 	if err != nil {
-		c.JSON(500,MessageResponse{Message: err.Error()})
-		log.Printf("err: %v",err)
+		c.JSON(500,MessageResponse{Message: "can not delete"})
+		slog.Log(c,middleware.SeverityError,"err",err)
 		return
 	}
 	c.JSON(200,MessageResponse{Message: "success!"})
@@ -137,7 +140,7 @@ func (m MonsterHandler) Delete(c *gin.Context) {
 func (m *MonsterHandler) CreateJson(c *gin.Context) {
 	var data RequestJson
 	if err := c.ShouldBindJSON(&data); err != nil {
-        c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+        c.JSON(http.StatusBadRequest, gin.H{"error": "can not create"})
         return
     }
 
@@ -158,7 +161,7 @@ func (m *MonsterHandler) CreateJson(c *gin.Context) {
 		err := m.monsterService.Create(monsterJson)
 		if err != nil {
 			c.JSON(500,MessageResponse{Message: err.Error()})
-			log.Printf("err: %v",err)
+			slog.Log(c,middleware.SeverityError,"err",err)
 			return
 		}
 	}

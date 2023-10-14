@@ -1,6 +1,11 @@
 package driver
 
 import (
+	"context"
+	"mh-api/api/middleware"
+
+	"log/slog"
+
 	"gorm.io/gorm"
 )
 
@@ -24,22 +29,34 @@ func (d MonsterDriverimpl) GetAll() []Monster {
 
 func (d MonsterDriverimpl) GetById(id int) Monster {
 	monster := Monster{}
-	d.conn.First(&monster,id)
+	err := d.conn.First(&monster,id).Error
+	if err != nil {
+		slog.Log(context.Background(),middleware.SeverityError,"Driver Error","error",err)
+	}
 	return monster
 }
 
 func (d MonsterDriverimpl) Create(driverJson MonsterJson) error {
 	err := d.conn.Create(&driverJson)
+	if err != nil {
+		slog.Log(context.Background(),middleware.SeverityError,"Driver Error","error",err.Error)
+	}
 	return err.Error
 }
 
 func (d MonsterDriverimpl) Update(id int, driverJson MonsterJson) error {
 	err := d.conn.Model(&Monster{}).Where("id = ?",id).Updates(&driverJson)
+	if err != nil {
+		slog.Log(context.Background(),middleware.SeverityError,"Driver Error","error",err.Error)
+	}
 	return err.Error
 }
 
 func (d MonsterDriverimpl) Delete(id int) error {
 	err := d.conn.Delete(&Monster{},id)
+	if err != nil {
+		slog.Log(context.Background(),middleware.SeverityError,"Driver Error","error",err.Error)
+	}
 	return err.Error
 }
 

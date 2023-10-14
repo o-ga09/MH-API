@@ -1,9 +1,9 @@
 name: Deploy
 
-# on:
-#   push:
-#     branches:
-#       - master
+on:
+  push:
+    branches:
+      - master
 
 env:
   SERVICE_NAME: ${{ secrets.SERVICE_NAME }}
@@ -46,11 +46,5 @@ jobs:
               --allow-unauthenticated \
               --service-account=${{ env.GCP_SERVICE_ACCOUNT }} \
               --quiet \
-              --update-secrets=DB_HOST=DB_HOST:latest \
-              --update-secrets=DB_USER=DB_USER:latest \
-              --update-secrets=DB_PASSWORD=DB_PASSWORD:latest \
-              --update-secrets=DB_NAME=DB_NAME:latest \
-              --update-secrets=USER=USER:latest \
-              --update-secrets=PASSWORD=PASSWORD:latest \
-              --update-secrets=TOKEN_LIFETIME=TOKEN_LIFETIME:latest \
-              --update-secrets=SECRET_KEY=SECRET_KEY:latest
+              --update-secrets=DATABASE_URL=DATABASE_URL:latest
+              --update-secrets=ENV=ENV:latest
