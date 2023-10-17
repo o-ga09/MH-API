@@ -13,9 +13,7 @@ securityDefinitions:
     x-google-issuer: "https://dev-8pmkik25y0obts0r.us.auth0.com/"
     x-google-jwks_uri: "https://dev-8pmkik25y0obts0r.us.auth0.com/.well-known/jwks.json"
     # Optional. Replace YOUR-CLIENT-ID with your client ID
-    x-google-audiences: "https://mh-api-gateway-8aznfogc.an.gateway.dev"
-security:
-  - auth0_jwk: []
+    x-google-audiences: "https://mh-api-v2-8aznfogc.an.gateway.dev"
 schemes:
   - https
 produces:
@@ -32,3 +30,38 @@ paths:
           description: ヘルスチェック
           schema:
             type: string
+  /v1/monsters:
+    get:
+      description: 全てのモンスター情報を取得する
+      operationId: getMonsters
+      x-google-backend:
+        address: https://mh-api-xpzdc5i4rq-an.a.run.app/v1/monsters
+      responses:
+        '200':
+          description: モンスター情報の取得に成功
+          schema:
+            type: object
+        '500':
+          description: モンスターが見つかりません
+          schema:
+            type: object
+    post:
+      summary: モンスターの情報を追加する
+      operationId: createMonsters
+      x-google-backend:
+        address: https://mh-api-xpzdc5i4rq-an.a.run.app/v1/monsters
+      responses:
+        '200':
+          description: モンスターの情報の登録に成功
+          schema:
+            type: object
+        '403':
+          description: 認証失敗
+          schema:
+            type: object
+        '500':
+          description: サーバエラーにより更新失敗
+          schema:
+            type:  object
+      security:
+      - auth0_jwk: []
