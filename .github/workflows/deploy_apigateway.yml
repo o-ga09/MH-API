@@ -15,6 +15,7 @@ env:
   GCP_API: ${{ secrets.GCP_API }}
   GCP_API_CONFIG: ${{ secrets.GCP_API_CONFIG }}
   GCP_API_GATEWAY: ${{ secrets.GCP_API_GATEWAY }}
+  GCP_TAG: ${{ github.sha }}
 
 jobs:
   deploy-to-apigateway:
@@ -30,10 +31,10 @@ jobs:
 
       - name: Deploy Config apigateway
         run: |
-          gcloud api-gateway api-configs create ${{ env.GCP_API_CONFIG }}-${{ github.sha }} --api=${{ env.GCP_API_GATEWAY }} --openapi-spec=./doc/openapi/apigateway.yml
+          gcloud api-gateway api-configs create ${{ env.GCP_API_CONFIG }}-${{ env.GCP_TAG }} --api=${{ env.GCP_API_GATEWAY }} --openapi-spec=./doc/openapi/apigateway.yml
 
       - name: Deploy apigateway
         run: |
-          gcloud api-gateway gateways update ${{ env.GCP_API }} --project=${{ env.GCP_PROJECT_ID }} --api-config=${{ env.GCP_API_CONFIG }} --api=${{ env.GCP_API_GATEWAY }} --location=${{ env.GCP_REGION }}
+          gcloud api-gateway gateways update ${{ env.GCP_API }} --project=${{ env.GCP_PROJECT_ID }} --api-config=${{ env.GCP_API_CONFIG }}-${{ env.GCP_TAG }} --api=${{ env.GCP_API_GATEWAY }} --location=${{ env.GCP_REGION }}
             
 
