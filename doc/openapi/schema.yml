@@ -12,45 +12,89 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              example:
+                status: OK
   /v1/monsters:
     get:
       summary: 全てのモンスター情報を取得する
-      requestBody:
-        $ref: '#/components/schemas/Monsters'
       responses:
         '200':
           description: モンスター情報の取得に成功
           content:
             application/json:
-              schema:
-                $ref: '#/components/schemas/Monsters'
+                example:
+                  Monsters:
+                  - id: 1
+                    name: ジンオウガ
+                    desc: 別名雷狼竜とよばれる電気を操る牙竜種
+                    location: 渓流
+                    specify: 牙竜種
+                    weakness_attack: 頭部
+                    weakness_element: 氷
+                  - id: 2
+                    name: タマミツネ
+                    desc: 別名泡狐竜と呼ばれる泡状の液体を操る海竜種
+                    location: 渓流
+                    specify: 泡狐竜
+                    weakness_attack: 頭部
+                    weakness_element: 火
         '404':
           description: モンスターが見つかりません
           content:
             application/json:
-              schema:
-                $ref: '#/components/schemas/FailedResponse'
+                example:
+                  message: Not Found
     post:
       summary: モンスターの情報を追加する
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                desc:
+                  type: string
+                location:
+                  type: string
+                specify:
+                  type: string
+                weakness_attack:
+                  type: string
+                weakness_element:
+                  type: string
+            example:
+                name: ジンオウガ
+                desc: 別名雷狼竜とよばれる電気を操る牙竜種
+                location: 渓流
+                specify: 牙竜種
+                weakness_attack: 頭部
+                weakness_element: 氷
       responses:
         '200':
           description: モンスターの情報の登録に成功
           content:
             application/json:
-              schema:
-                $ref: '#/components/schemas/SuccessResponse'
+              example:
+                message: success
+
         '403':
           description: 認証失敗
           content:
             application/json:
-              schema:
-                $ref: '#/components/schemas/FailedResponse'
+              example:
+                message: Authentication error
+
         '500':
           description: サーバエラーにより更新失敗
           content:
             application/json:
-              schema:
-                $ref: '#/components/schemas/FailedResponse'
+              example:
+                message: Internal Server Error
   /v1/monsters/{id}:
     get:
       summary: モンスター情報を取得する
@@ -61,52 +105,118 @@ paths:
           description: モンスター情報の取得に成功
           content:
             application/json:
-              schema:
-                $ref: '#/components/schemas/Monster'
+              example:
+                name: ジンオウガ
+                desc: 別名雷狼竜とよばれる電気を操る牙竜種
+                location: 渓流
+                specify: 牙竜種
+                weakness_attack: 頭部
+                weakness_element: 氷
         '404':
           description: モンスターの情報が見つかりません
           content:
             application/json:
-              schema:
-                $ref: '#/components/schemas/FailedResponse'
+              example:
+                message: Not Found
   /v1/monsters/json:
     post:
       summary: jsonを使用してモンスターの情報一括追加する
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                desc:
+                  type: string
+                location:
+                  type: string
+                specify:
+                  type: string
+                weakness_attack:
+                  type: string
+                weakness_element:
+                  type: string
+            example:
+              req:
+                - name: ジンオウガ
+                  desc: 別名雷狼竜とよばれる電気を操る牙竜種
+                  location: 渓流
+                  specify: 牙竜種
+                  weakness_attack: 頭部
+                  weakness_element: 氷
       responses:
         '200':
           description: モンスターの情報の登録に成功
+          content:
+            application/json:
+              example:
+                message: success
         '403':
           description: 認証失敗
           content:
             application/json:
-              schema:
-                $ref: '#/components/schemas/FailedResponse'
+              example:
+                message: Authentication error
         '500':
           description: サーバエラーによ登録失敗
           content:
             application/json:
-              schema:
-                $ref: '#/components/schemas/FailedResponse'
+              example:
+                message: Internal Server Error
   /v1/monsters/{updateid}:
     patch:
       summary: モンスターの情報を更新する
       parameters:
-        - $ref: '#/components/schemas/Monster'
+        - $ref: '#/components/parameters/PathId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                desc:
+                  type: string
+                location:
+                  type: string
+                specify:
+                  type: string
+                weakness_attack:
+                  type: string
+                weakness_element:
+                  type: string
+            example:
+                name: ジンオウガ
+                desc: 別名雷狼竜とよばれる電気を操る牙竜種
+                location: 渓流
+                specify: 牙竜種
+                weakness_attack: 頭部
+                weakness_element: 氷
       responses:
         '200':
           description: モンスターの情報の更新に成功
+          content:
+            application/json:
+              example:
+                message: success
         '403':
           description: 認証失敗
           content:
             application/json:
-              schema:
-                $ref: '#/components/schemas/FailedResponse'
+              example:
+                meesage: Authentication error
         '500':
           description: サーバエラーにより更新失敗
           content:
             application/json:
-              schema:
-                $ref: '#/components/schemas/FailedResponse'
+              example:
+                message: Internal Server Errorr
   /v1/monsters/{deleteid}:
     get:
       summary: モンスターの情報を削除する
@@ -115,19 +225,22 @@ paths:
       responses:
         '200':
           description: モンスターの情報の削除に成功
+          content:
+            application/json:
+              example:
+                message: success
         '403':
           description: 認証失敗
           content:
             application/json:
-              schema:
-                $ref: '#/components/schemas/FailedResponse'
+              example:
+                message: Authentication error
         '500':
           description: サーバエラーにより削除失敗
           content:
             application/json:
-              schema:
-                $ref: '#/components/schemas/FailedResponse'
-
+              example:
+                message: Internal Server Error
 components:
   parameters:
     PathId:
@@ -136,7 +249,8 @@ components:
       description: モンスターのID
       required: true
       schema:
-        type: integer
+        type: string
+
   requestBodies:
     Monster:
       content:
@@ -164,7 +278,7 @@ components:
       type: object
       properties:
         id:
-          type: integer
+          type: string
         name:
           type: string
         desc:
@@ -195,15 +309,5 @@ components:
           type: string
         weakness_element:
           type: string
-    
-    SuccessResponse:
+    message:
       type: string
-      properties:
-        message:
-          type: string
-
-    FailedResponse:
-      type: string
-      properties:
-        error:
-          type: string
