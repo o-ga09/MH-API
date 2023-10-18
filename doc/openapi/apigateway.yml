@@ -101,7 +101,7 @@ paths:
           name: requestId
           in: path
           required: true
-          type: integer
+          type: string
       x-google-backend:
         address: https://mh-api-xpzdc5i4rq-an.a.run.app/v1/monsters
       responses:
@@ -123,7 +123,7 @@ paths:
           name: requestId
           in: path
           required: true
-          type: integer
+          type: string
         - 
           name: requestJson
           in: body
@@ -175,7 +175,7 @@ paths:
           name: requestId
           in: path
           required: true
-          type: integer
+          type: string
       x-google-backend:
         address: https://mh-api-xpzdc5i4rq-an.a.run.app/v1/monsters
       responses:
