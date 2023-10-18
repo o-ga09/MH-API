@@ -1,11 +1,11 @@
-name: Deploy
+name: Deploy apigateway
 
 on:
   push:
     branches:
       - master
-    paths:
-      - "doc/openapi/apigateway.yml"
+    # paths:
+    #   - "doc/openapi/apigateway.yml"
 
 env:
   SERVICE_NAME: ${{ secrets.SERVICE_NAME }}
@@ -17,7 +17,7 @@ env:
   GCP_API_GATEWAY: ${{ secrets.GCP_API_GATEWAY }}
 
 jobs:
-  deploy-to-cloud-run:
+  deploy-to-apigateway:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repository
@@ -30,10 +30,10 @@ jobs:
 
       - name: Deploy Config apigateway
         run: |
-          gcloud api-gateway api-configs create ${{ GCP_API_CONFIG }}-${{ github.sha }} --api=${{ GCP_API_GATEWAY }} --openapi-spec=./doc/openapi/apigateway.yml
+          gcloud api-gateway api-configs create ${{ env.GCP_API_CONFIG }}-${{ github.sha }} --api=${{ env.GCP_API_GATEWAY }} --openapi-spec=./doc/openapi/apigateway.yml
 
       - name: Deploy apigateway
         run: |
-          gcloud api-gateway gateways update ${{ GCP_API }} --project=${{ GCP_PROJECT_ID }} --api-config=${{ GCP_API_CONFIG }} --api=${{ GCP_API_GATEWAY }} --location=${{ GCP_REGION }}
+          gcloud api-gateway gateways update ${{ env.GCP_API }} --project=${{ env.GCP_PROJECT_ID }} --api-config=${{ env.GCP_API_CONFIG }} --api=${{ env.GCP_API_GATEWAY }} --location=${{ env.GCP_REGION }}
             
 
