@@ -13,9 +13,7 @@ securityDefinitions:
     x-google-issuer: "https://dev-8pmkik25y0obts0r.us.auth0.com/"
     x-google-jwks_uri: "https://dev-8pmkik25y0obts0r.us.auth0.com/.well-known/jwks.json"
     # Optional. Replace YOUR-CLIENT-ID with your client ID
-    x-google-audiences: "https://mh-api-gateway-8aznfogc.an.gateway.dev"
-security:
-  - auth0_jwk: []
+    x-google-audiences: "https://mh-api-v2-8aznfogc.an.gateway.dev"
 schemes:
   - https
 produces:
@@ -32,3 +30,212 @@ paths:
           description: ヘルスチェック
           schema:
             type: string
+  /v1/monsters:
+    get:
+      description: 全てのモンスター情報を取得する
+      operationId: getMonsters
+      x-google-backend:
+        address: https://mh-api-xpzdc5i4rq-an.a.run.app/v1/monsters
+      responses:
+        '200':
+          description: モンスター情報の取得に成功
+          schema:
+            type: object
+        '500':
+          description: モンスターが見つかりません
+          schema:
+            type: object
+    post:
+      summary: モンスターの情報を追加する
+      operationId: createMonsters
+      parameters:
+        - 
+          name: requestJson
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - name
+              - desc
+              - location
+              - specify
+              - weakness_attack
+              - weakness_element
+            properties: 
+              name:
+                type: string
+              desc:
+                type: string
+              location :
+                type: string
+              specify:
+                type: string
+              weakness_attack:
+                type: string
+              weakness_element:
+                type: string
+      x-google-backend:
+        address: https://mh-api-xpzdc5i4rq-an.a.run.app/v1/monsters
+      responses:
+        '200':
+          description: モンスターの情報の登録に成功
+          schema:
+            type: object
+        '403':
+          description: 認証失敗
+          schema:
+            type: object
+        '500':
+          description: サーバエラーにより更新失敗
+          schema:
+            type:  object
+      security:
+      - auth0_jwk: []
+  /v1/monsters/{requestId}:
+    get:
+      summary: idのモンスター情報を取得する
+      operationId: id
+      parameters:
+        - 
+          name: requestId
+          in: path
+          required: true
+          type: integer
+      x-google-backend:
+        address: https://mh-api-xpzdc5i4rq-an.a.run.app/v1/monsters/:id
+      responses:
+        '200':
+          description: モンスター情報の取得に成功
+          schema:
+            type: object
+        '500':
+          description: モンスターが見つかりません
+          schema:
+            type: object
+    patch:
+      summary: モンスターの情報を更新する
+      operationId: updateMonsters
+      security:
+      - auth0_jwk: []
+      parameters:
+        - 
+          name: requestId
+          in: path
+          required: true
+          type: integer
+        - 
+          name: requestJson
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - name
+              - desc
+              - location
+              - specify
+              - weakness_attack
+              - weakness_element
+            properties: 
+              name:
+                type: string
+              desc:
+                type: string
+              location :
+                type: string
+              specify:
+                type: string
+              weakness_attack:
+                type: string
+              weakness_element:
+                type: string
+      x-google-backend:
+        address: https://mh-api-xpzdc5i4rq-an.a.run.app/v1/monsters/:id
+      responses:
+        '200':
+          description: モンスターの情報の更新に成功
+          schema:
+            type: object
+        '403':
+          description: 認証失敗
+          schema:
+            type: object
+        '500':
+          description: サーバエラーにより更新失敗
+          schema:
+            type:  object
+    delete:
+      summary: モンスターの情報を削除する
+      operationId: deleteMonsters
+      security:
+      - auth0_jwk: []
+      parameters:
+        - 
+          name: requestId
+          in: path
+          required: true
+          type: integer
+      x-google-backend:
+        address: https://mh-api-xpzdc5i4rq-an.a.run.app/v1/monsters/:id
+      responses:
+        '200':
+            description: モンスターの情報の削除に成功
+            schema:
+              type: object
+        '403':
+          description: 認証失敗
+          schema:
+            type: object
+        '500':
+          description: サーバエラーにより削除失敗
+          schema:
+            type:  object
+  /v1/monsters/json:
+    post:
+      summary: モンスターの情報をjsonで一括追加する
+      operationId: createMonstersJson
+      security:
+      - auth0_jwk: []
+      parameters:
+        - 
+          name: requestJson
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - name
+              - desc
+              - location
+              - specify
+              - weakness_attack
+              - weakness_element
+            properties: 
+              name:
+                type: string
+              desc:
+                type: string
+              location :
+                type: string
+              specify:
+                type: string
+              weakness_attack:
+                type: string
+              weakness_element:
+                type: string
+      x-google-backend:
+        address: https://mh-api-xpzdc5i4rq-an.a.run.app/v1/monsters/json
+      responses:
+        '200':
+          description: モンスターの情報の登録に成功
+          schema:
+            type: object
+        '403':
+          description: 認証失敗
+          schema:
+            type: object
+        '500':
+          description: サーバエラーにより更新失敗
+          schema:
+            type:  object

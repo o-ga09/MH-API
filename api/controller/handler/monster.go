@@ -34,9 +34,15 @@ func (m *MonsterHandler) GetAll(c *gin.Context) {
 		return
 	}
 
+	monsters := []ResponseJson{}
+	for _, r := range res.Values {
+		new := ResponseJson{r.Id.Value,r.Name.Value,r.Desc.Value,r.Location.Value,r.Specify.Value,r.Weakness_attack.Value,r.Weakness_element.Value}
+		monsters = append(monsters, new)
+	}
+
 	response := Monsters{
 		Total: len(res.Values),
-		Monsters: res,
+		Monsters: monsters,
 	}
 	c.JSON(200,response)
 }
@@ -51,9 +57,9 @@ func (m *MonsterHandler) GetById(c *gin.Context) {
 		c.JSON(500,MessageResponse{Message: fmt.Sprintf("can not get id : %d",i)})
 		slog.Log(c,middleware.SeverityError,"error","error",err.Error())
 	}
-
+	monster := ResponseJson{res.Id.Value,res.Name.Value,res.Desc.Value,res.Location.Value,res.Specify.Value,res.Weakness_attack.Value,res.Weakness_element.Value}
 	response := Monster{
-		Monster: res,	
+		Monster: monster,	
 	}
 	c.JSON(200,response)
 }
@@ -176,11 +182,11 @@ func ProvideMonsterHandler(monsterService service.MonsterService) MonsterHandler
 
 type Monsters struct {
 	Total    int             `json:"total"`
-	Monsters entity.Monsters `json:"monsters"`
+	Monsters []ResponseJson `json:"monsters"`
 }
 
 type Monster struct {
-	Monster entity.Monster `json:"monster"`
+	Monster ResponseJson `json:"monster"`
 }
 
 type MessageResponse struct {
@@ -202,4 +208,14 @@ type Json struct {
     Specify          string    `json:"specify"`
     Weakness_attack  string `json:"weakness_attack"`
     Weakness_element string `json:"weakness_element"`
+}
+
+type ResponseJson struct {
+	Id               int         		`json:"id,omitempty"`
+	Name             string       		`json:"name,omitempty"`
+	Desc             string       		`json:"desc,omitempty"`
+	Location         string   			`json:"location,omitempty"`
+	Specify          string    			`json:"specify,omitempty"`
+	Weakness_attack  map[string]string  `json:"weakness___attack,omitempty"`
+	Weakness_element map[string]string  `json:"weakness___element,omitempty"`
 }
