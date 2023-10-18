@@ -95,7 +95,7 @@ paths:
   /v1/monsters/{requestId}:
     get:
       summary: idのモンスター情報を取得する
-      operationId: id
+      operationId: requestId
       parameters:
         - 
           name: requestId
@@ -103,7 +103,7 @@ paths:
           required: true
           type: integer
       x-google-backend:
-        address: https://mh-api-xpzdc5i4rq-an.a.run.app/v1/monsters/:id
+        address: https://mh-api-xpzdc5i4rq-an.a.run.app/v1/monsters
       responses:
         '200':
           description: モンスター情報の取得に成功
@@ -151,7 +151,7 @@ paths:
               weakness_element:
                 type: string
       x-google-backend:
-        address: https://mh-api-xpzdc5i4rq-an.a.run.app/v1/monsters/:id
+        address: https://mh-api-xpzdc5i4rq-an.a.run.app/v1/monsters
       responses:
         '200':
           description: モンスターの情報の更新に成功
@@ -177,7 +177,7 @@ paths:
           required: true
           type: integer
       x-google-backend:
-        address: https://mh-api-xpzdc5i4rq-an.a.run.app/v1/monsters/:id
+        address: https://mh-api-xpzdc5i4rq-an.a.run.app/v1/monsters
       responses:
         '200':
             description: モンスターの情報の削除に成功
