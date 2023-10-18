@@ -4,15 +4,15 @@ import "runtime"
 
 type stackError struct {
 	stack []byte
-	err error
+	err   error
 }
 
 func NewStackError(err error) *stackError {
 	var buf [16 * 1024]byte
-	n := runtime.Stack(buf[:],false)
+	n := runtime.Stack(buf[:], false)
 	return &stackError{
 		stack: buf[:n],
-		err: err,
+		err:   err,
 	}
 }
 

@@ -4,8 +4,8 @@ on:
   push:
     branches:
       - master
-    # paths:
-    #   - "doc/openapi/apigateway.yml"
+    paths:
+      - "doc/openapi/apigateway.yml"
 
 env:
   SERVICE_NAME: ${{ secrets.SERVICE_NAME }}

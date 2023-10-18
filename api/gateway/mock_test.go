@@ -10,12 +10,12 @@ type MockMonsterDriver struct {
 	mock.Mock
 }
 
-func (m *MockMonsterDriver) GetAll() ([]driver.Monster) {
+func (m *MockMonsterDriver) GetAll() []driver.Monster {
 	args := m.Called()
 	return args.Get(0).([]driver.Monster)
 }
 
-func (m *MockMonsterDriver) GetById(id int) (driver.Monster) {
+func (m *MockMonsterDriver) GetById(id int) driver.Monster {
 	args := m.Called(id)
 	return args.Get(0).(driver.Monster)
 }
@@ -25,8 +25,8 @@ func (m *MockMonsterDriver) Create(monsterJson driver.MonsterJson) error {
 	return args.Error(0)
 }
 
-func (m *MockMonsterDriver) Update(id int,monsterJson driver.MonsterJson) error {
-	args := m.Called(id,monsterJson)
+func (m *MockMonsterDriver) Update(id int, monsterJson driver.MonsterJson) error {
+	args := m.Called(id, monsterJson)
 	return args.Error(0)
 }
 

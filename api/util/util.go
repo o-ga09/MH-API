@@ -14,12 +14,12 @@ type RequestJson struct {
 }
 
 type Json struct {
-  	Name             string       `json:"name"`
-    Desc             string       `json:"desc"`
-    Location         string   `json:"location"`
-    Specify          string    `json:"specify"`
-    Weakness_attack  string `json:"weakness_attack"`
-    Weakness_element string `json:"weakness_element"`
+	Name             string `json:"name"`
+	Desc             string `json:"desc"`
+	Location         string `json:"location"`
+	Specify          string `json:"specify"`
+	Weakness_attack  string `json:"weakness_attack"`
+	Weakness_element string `json:"weakness_element"`
 }
 
 func CsvToJson() {
@@ -49,14 +49,16 @@ func CsvToJson() {
 	data := RequestJson{}
 	// CSVの各行を処理してデータを作成
 	for i, record := range records {
-		if i == 0 {continue}
+		if i == 0 {
+			continue
+		}
 		// 各カラムのヘッダーをキーとして、値をマップに格納
 		row := Json{
-			Name: record[0],
-			Desc: record[1],
-			Location: record[2],
-			Specify: record[3],
-			Weakness_attack: record[4],
+			Name:             record[0],
+			Desc:             record[1],
+			Location:         record[2],
+			Specify:          record[3],
+			Weakness_attack:  record[4],
 			Weakness_element: record[5],
 		}
 		data.Req = append(data.Req, row)
@@ -84,8 +86,8 @@ func CsvToJson() {
 
 func Mapping(str string) map[string]string {
 	arr := strings.Split(str, " ")
-	result :=  make(map[string]string)
-	keys := [5]string{"頭部","前脚","胴体","後脚","尻尾"}
+	result := make(map[string]string)
+	keys := [5]string{"頭部", "前脚", "胴体", "後脚", "尻尾"}
 
 	for i, value := range arr {
 		result[keys[i]] = value

@@ -21,6 +21,6 @@ func CORS() gin.HandlerFunc {
 			"Content-Type",
 		},
 		AllowCredentials: false,
-		MaxAge: 24 * time.Hour,
+		MaxAge:           24 * time.Hour,
 	})
 }

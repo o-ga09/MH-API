@@ -18,10 +18,10 @@ func (s MonsterService) GetAll() (entity.Monsters, error) {
 	if err != nil {
 		return entity.Monsters{}, err
 	}
-	return res,nil
+	return res, nil
 }
 
-func (s MonsterService) GetById(id entity.MonsterId) (entity.Monster,error) {
+func (s MonsterService) GetById(id entity.MonsterId) (entity.Monster, error) {
 	res, err := s.monsterInterface.GetById(id)
 	if err != nil {
 		return entity.Monster{}, err
@@ -34,8 +34,8 @@ func (s MonsterService) Create(monsterJson entity.MonsterJson) error {
 	return err
 }
 
-func (s MonsterService) Update(id entity.MonsterId,monsterJson entity.MonsterJson) error {
-	err := s.monsterInterface.Update(id,monsterJson)
+func (s MonsterService) Update(id entity.MonsterId, monsterJson entity.MonsterJson) error {
+	err := s.monsterInterface.Update(id, monsterJson)
 	return err
 }
 

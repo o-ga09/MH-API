@@ -19,29 +19,29 @@ func NewServer() (*gin.Engine, error) {
 	// setting logger
 	logger := middleware.New()
 	httpLogger := middleware.RequestLogger(logger)
-	
+
 	//setting a CORS
 	cors := middleware.CORS()
-	
+
 	r.Use(cors)
 	r.Use(httpLogger)
 
 	v1 := r.Group("/v1")
 	{
 		systemHandler := handler.NewSystemHandler()
-		v1.GET("/health",systemHandler.Health)
+		v1.GET("/health", systemHandler.Health)
 	}
 
 	monsters := v1.Group("/monsters")
 	monsterHandler := di.InitMonstersHandler()
 	{
-		monsters.GET("",monsterHandler.GetAll)
-		monsters.GET("/:id",monsterHandler.GetById)
-		monsters.POST("",monsterHandler.Create)
-		monsters.POST("/json",monsterHandler.CreateJson)
-		monsters.PATCH("/:id",monsterHandler.Update)
-		monsters.DELETE("/:id",monsterHandler.Delete)
+		monsters.GET("", monsterHandler.GetAll)
+		monsters.GET("/:id", monsterHandler.GetById)
+		monsters.POST("", monsterHandler.Create)
+		monsters.POST("/json", monsterHandler.CreateJson)
+		monsters.PATCH("/:id", monsterHandler.Update)
+		monsters.DELETE("/:id", monsterHandler.Delete)
 	}
 
-	return r,nil
+	return r, nil
 }

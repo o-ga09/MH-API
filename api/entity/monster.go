@@ -5,33 +5,33 @@ type Monsters struct {
 }
 
 type MonsterId struct {
-	Value int           //モンスターID
+	Value int //モンスターID
 }
 
 type MonsterName struct {
-	Value string       //モンスターの名前
+	Value string //モンスターの名前
 }
 
 type MonsterDesc struct {
-	Value string       //モンスターの説明文
-} 
+	Value string //モンスターの説明文
+}
 
 type MonsterLocation struct {
-	Value string       //モンスターの生息地
-} 
+	Value string //モンスターの生息地
+}
 
 type MonsterSpecify struct {
-	Value string       //モンスターの分類
-} 
+	Value string //モンスターの分類
+}
 
 type MonsterWeakness_A struct {
-	Value map[string]string       //モンスターの弱点(物理肉質)
-} 
+	Value map[string]string //モンスターの弱点(物理肉質)
+}
 
 type MonsterWeakness_E struct {
-	Value map[string]string       //モンスターの弱点(属性肉質)
+	Value map[string]string //モンスターの弱点(属性肉質)
 
-} 
+}
 
 type Monster struct {
 	Id               MonsterId         `db:"id" json:"id,omitempty"`
