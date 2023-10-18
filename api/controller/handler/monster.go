@@ -27,24 +27,24 @@ func NewMonsterHandler(s service.MonsterService) *MonsterHandler {
 func (m *MonsterHandler) GetAll(c *gin.Context) {
 	res, err := m.monsterService.GetAll()
 	if err != nil {
-		c.JSON(500,gin.H{
+		c.JSON(500, gin.H{
 			"err": "can not get records",
 		})
-		slog.Log(c,middleware.SeverityError,"err",err)
+		slog.Log(c, middleware.SeverityError, "err", err)
 		return
 	}
 
 	monsters := []ResponseJson{}
 	for _, r := range res.Values {
-		new := ResponseJson{r.Id.Value,r.Name.Value,r.Desc.Value,r.Location.Value,r.Specify.Value,r.Weakness_attack.Value,r.Weakness_element.Value}
+		new := ResponseJson{r.Id.Value, r.Name.Value, r.Desc.Value, r.Location.Value, r.Specify.Value, r.Weakness_attack.Value, r.Weakness_element.Value}
 		monsters = append(monsters, new)
 	}
 
 	response := Monsters{
-		Total: len(res.Values),
+		Total:    len(res.Values),
 		Monsters: monsters,
 	}
-	c.JSON(200,response)
+	c.JSON(200, response)
 }
 
 func (m *MonsterHandler) GetById(c *gin.Context) {
@@ -54,14 +54,14 @@ func (m *MonsterHandler) GetById(c *gin.Context) {
 
 	res, err := m.monsterService.GetById(monsterId)
 	if err != nil {
-		c.JSON(500,MessageResponse{Message: fmt.Sprintf("can not get id : %d",i)})
-		slog.Log(c,middleware.SeverityError,"error","error",err.Error())
+		c.JSON(500, MessageResponse{Message: fmt.Sprintf("can not get id : %d", i)})
+		slog.Log(c, middleware.SeverityError, "error", "error", err.Error())
 	}
-	monster := ResponseJson{res.Id.Value,res.Name.Value,res.Desc.Value,res.Location.Value,res.Specify.Value,res.Weakness_attack.Value,res.Weakness_element.Value}
+	monster := ResponseJson{res.Id.Value, res.Name.Value, res.Desc.Value, res.Location.Value, res.Specify.Value, res.Weakness_attack.Value, res.Weakness_element.Value}
 	response := Monster{
-		Monster: monster,	
+		Monster: monster,
 	}
-	c.JSON(200,response)
+	c.JSON(200, response)
 }
 
 func (m *MonsterHandler) Create(c *gin.Context) {
@@ -71,27 +71,26 @@ func (m *MonsterHandler) Create(c *gin.Context) {
 	specify := c.PostForm("specify")
 	weak_a := c.PostForm("weakness_A")
 	weak_e := c.PostForm("weakness_E")
-	
+
 	weak_map_a := util.Mapping(weak_a)
 	weak_map_e := util.Mapping(weak_e)
 
 	monsterJson := entity.MonsterJson{
-		Name: entity.MonsterName{Value: name},
-		Desc: entity.MonsterDesc{Value: desc},
-		Location: entity.MonsterLocation{Value: Location},
-		Specify: entity.MonsterSpecify{Value: specify},
-		Weakness_attack: entity.MonsterWeakness_A{Value: weak_map_a},
+		Name:             entity.MonsterName{Value: name},
+		Desc:             entity.MonsterDesc{Value: desc},
+		Location:         entity.MonsterLocation{Value: Location},
+		Specify:          entity.MonsterSpecify{Value: specify},
+		Weakness_attack:  entity.MonsterWeakness_A{Value: weak_map_a},
 		Weakness_element: entity.MonsterWeakness_E{Value: weak_map_e},
-
 	}
 
 	err := m.monsterService.Create(monsterJson)
 	if err != nil {
-		c.JSON(500,MessageResponse{Message: "can not create"})
-		slog.Log(c,middleware.SeverityError,"err",err)
+		c.JSON(500, MessageResponse{Message: "can not create"})
+		slog.Log(c, middleware.SeverityError, "err", err)
 		return
 	}
-	c.JSON(200,MessageResponse{Message: "success!"})
+	c.JSON(200, MessageResponse{Message: "success!"})
 }
 
 func (m MonsterHandler) Update(c *gin.Context) {
@@ -110,23 +109,22 @@ func (m MonsterHandler) Update(c *gin.Context) {
 	weak_map_e := util.Mapping(weak_e)
 
 	monsterJson := entity.MonsterJson{
-		Name: entity.MonsterName{Value: name},
-		Desc: entity.MonsterDesc{Value: desc},
+		Name:     entity.MonsterName{Value: name},
+		Desc:     entity.MonsterDesc{Value: desc},
 		Location: entity.MonsterLocation{Value: Location},
-		Specify: entity.MonsterSpecify{Value: specify},
+		Specify:  entity.MonsterSpecify{Value: specify},
 
-		Weakness_attack: entity.MonsterWeakness_A{Value: weak_map_a},
+		Weakness_attack:  entity.MonsterWeakness_A{Value: weak_map_a},
 		Weakness_element: entity.MonsterWeakness_E{Value: weak_map_e},
-
 	}
 
-	err := m.monsterService.Update(monsterId,monsterJson)
+	err := m.monsterService.Update(monsterId, monsterJson)
 	if err != nil {
-		c.JSON(500,MessageResponse{Message: "can not update"})
-		slog.Log(c,middleware.SeverityError,"err",err)
+		c.JSON(500, MessageResponse{Message: "can not update"})
+		slog.Log(c, middleware.SeverityError, "err", err)
 		return
 	}
-	c.JSON(200,MessageResponse{Message: "success!"})
+	c.JSON(200, MessageResponse{Message: "success!"})
 }
 
 func (m MonsterHandler) Delete(c *gin.Context) {
@@ -136,19 +134,19 @@ func (m MonsterHandler) Delete(c *gin.Context) {
 
 	err := m.monsterService.Delete(monsterId)
 	if err != nil {
-		c.JSON(500,MessageResponse{Message: "can not delete"})
-		slog.Log(c,middleware.SeverityError,"err",err)
+		c.JSON(500, MessageResponse{Message: "can not delete"})
+		slog.Log(c, middleware.SeverityError, "err", err)
 		return
 	}
-	c.JSON(200,MessageResponse{Message: "success!"})
+	c.JSON(200, MessageResponse{Message: "success!"})
 }
 
 func (m *MonsterHandler) CreateJson(c *gin.Context) {
 	var data RequestJson
 	if err := c.ShouldBindJSON(&data); err != nil {
-        c.JSON(http.StatusBadRequest, gin.H{"error": "can not create"})
-        return
-    }
+		c.JSON(http.StatusBadRequest, gin.H{"error": "can not create"})
+		return
+	}
 
 	for _, record := range data.Req {
 
@@ -156,32 +154,30 @@ func (m *MonsterHandler) CreateJson(c *gin.Context) {
 		weak_map_e := util.Mapping(record.Weakness_element)
 
 		monsterJson := entity.MonsterJson{
-			Name: entity.MonsterName{Value: record.Name},
-			Desc: entity.MonsterDesc{Value: record.Desc},
-			Location: entity.MonsterLocation{Value: record.Location},
-			Specify: entity.MonsterSpecify{Value: record.Specify},
-			Weakness_attack: entity.MonsterWeakness_A{Value: weak_map_a},
+			Name:             entity.MonsterName{Value: record.Name},
+			Desc:             entity.MonsterDesc{Value: record.Desc},
+			Location:         entity.MonsterLocation{Value: record.Location},
+			Specify:          entity.MonsterSpecify{Value: record.Specify},
+			Weakness_attack:  entity.MonsterWeakness_A{Value: weak_map_a},
 			Weakness_element: entity.MonsterWeakness_E{Value: weak_map_e},
-
 		}
 		err := m.monsterService.Create(monsterJson)
 		if err != nil {
-			c.JSON(500,MessageResponse{Message: err.Error()})
-			slog.Log(c,middleware.SeverityError,"err",err)
+			c.JSON(500, MessageResponse{Message: err.Error()})
+			slog.Log(c, middleware.SeverityError, "err", err)
 			return
 		}
 	}
 
-	c.JSON(200,MessageResponse{Message: "success!"})
+	c.JSON(200, MessageResponse{Message: "success!"})
 }
-
 
 func ProvideMonsterHandler(monsterService service.MonsterService) MonsterHandler {
 	return MonsterHandler{monsterService: monsterService}
 }
 
 type Monsters struct {
-	Total    int             `json:"total"`
+	Total    int            `json:"total"`
 	Monsters []ResponseJson `json:"monsters"`
 }
 
@@ -202,20 +198,20 @@ type RequestJson struct {
 }
 
 type Json struct {
-  	Name             string       `json:"name"`
-    Desc             string       `json:"desc"`
-    Location         string   `json:"location"`
-    Specify          string    `json:"specify"`
-    Weakness_attack  string `json:"weakness_attack"`
-    Weakness_element string `json:"weakness_element"`
+	Name             string `json:"name"`
+	Desc             string `json:"desc"`
+	Location         string `json:"location"`
+	Specify          string `json:"specify"`
+	Weakness_attack  string `json:"weakness_attack"`
+	Weakness_element string `json:"weakness_element"`
 }
 
 type ResponseJson struct {
-	Id               int         		`json:"id,omitempty"`
-	Name             string       		`json:"name,omitempty"`
-	Desc             string       		`json:"desc,omitempty"`
-	Location         string   			`json:"location,omitempty"`
-	Specify          string    			`json:"specify,omitempty"`
-	Weakness_attack  map[string]string  `json:"weakness___attack,omitempty"`
-	Weakness_element map[string]string  `json:"weakness___element,omitempty"`
+	Id               int               `json:"id,omitempty"`
+	Name             string            `json:"name,omitempty"`
+	Desc             string            `json:"desc,omitempty"`
+	Location         string            `json:"location,omitempty"`
+	Specify          string            `json:"specify,omitempty"`
+	Weakness_attack  map[string]string `json:"weakness___attack,omitempty"`
+	Weakness_element map[string]string `json:"weakness___element,omitempty"`
 }
