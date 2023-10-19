@@ -49,4 +49,5 @@ jobs:
               --service-account=${{ env.GCP_SERVICE_ACCOUNT }} \
               --quiet \
               --update-secrets=DATABASE_URL=DATABASE_URL:latest \
-              --update-secrets=ENV=ENV:latest
+              --update-secrets=ENV=ENV:latest \
+              --update-secrets=ALLOW_URL=ALLOW_URL:latest
