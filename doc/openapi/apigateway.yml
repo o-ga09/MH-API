@@ -18,6 +18,8 @@ schemes:
   - https
 produces:
   - application/json
+x-google-backend:
+  address: https://mh-api-xpzdc5i4rq-an.a.run.app
 paths:
   /v1/health:
     get:
@@ -75,8 +77,6 @@ paths:
                 type: string
               weakness_element:
                 type: string
-      x-google-backend:
-        address: https://mh-api-xpzdc5i4rq-an.a.run.app/v1/monsters
       responses:
         '200':
           description: モンスターの情報の登録に成功
@@ -102,8 +102,6 @@ paths:
           in: path
           required: true
           type: string
-      x-google-backend:
-        address: https://mh-api-xpzdc5i4rq-an.a.run.app/v1/monsters/:id
       responses:
         '200':
           description: モンスター情報の取得に成功
@@ -150,8 +148,6 @@ paths:
                 type: string
               weakness_element:
                 type: string
-      x-google-backend:
-        address: https://mh-api-xpzdc5i4rq-an.a.run.app/v1/monsters/:id
       responses:
         '200':
           description: モンスターの情報の更新に成功
@@ -176,8 +172,6 @@ paths:
           in: path
           required: true
           type: string
-      x-google-backend:
-        address: https://mh-api-xpzdc5i4rq-an.a.run.app/v1/monsters/:id
       responses:
         '200':
             description: モンスターの情報の削除に成功
@@ -224,8 +218,6 @@ paths:
                 type: string
               weakness_element:
                 type: string
-      x-google-backend:
-        address: https://mh-api-xpzdc5i4rq-an.a.run.app/v1/monsters/json
       responses:
         '200':
           description: モンスターの情報の登録に成功
