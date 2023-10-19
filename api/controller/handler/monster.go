@@ -27,7 +27,7 @@ func NewMonsterHandler(s service.MonsterService) *MonsterHandler {
 func (m *MonsterHandler) GetAll(c *gin.Context) {
 	res, err := m.monsterService.GetAll()
 	if err != nil {
-		c.JSON(500, gin.H{
+		c.JSON(http.StatusInternalServerError, gin.H{
 			"err": "can not get records",
 		})
 		slog.Log(c, middleware.SeverityError, "err", err)
@@ -44,7 +44,7 @@ func (m *MonsterHandler) GetAll(c *gin.Context) {
 		Total:    len(res.Values),
 		Monsters: monsters,
 	}
-	c.JSON(200, response)
+	c.JSON(http.StatusOK, response)
 }
 
 func (m *MonsterHandler) GetById(c *gin.Context) {
@@ -54,14 +54,14 @@ func (m *MonsterHandler) GetById(c *gin.Context) {
 
 	res, err := m.monsterService.GetById(monsterId)
 	if err != nil {
-		c.JSON(500, MessageResponse{Message: fmt.Sprintf("can not get id : %d", i)})
+		c.JSON(http.StatusInternalServerError, MessageResponse{Message: fmt.Sprintf("can not get id : %d", i)})
 		slog.Log(c, middleware.SeverityError, "error", "error", err.Error())
 	}
 	monster := ResponseJson{res.Id.Value, res.Name.Value, res.Desc.Value, res.Location.Value, res.Specify.Value, res.Weakness_attack.Value, res.Weakness_element.Value}
 	response := Monster{
 		Monster: monster,
 	}
-	c.JSON(200, response)
+	c.JSON(http.StatusOK, response)
 }
 
 func (m *MonsterHandler) Create(c *gin.Context) {
@@ -86,11 +86,11 @@ func (m *MonsterHandler) Create(c *gin.Context) {
 
 	err := m.monsterService.Create(monsterJson)
 	if err != nil {
-		c.JSON(500, MessageResponse{Message: "can not create"})
+		c.JSON(http.StatusInternalServerError, MessageResponse{Message: "can not create"})
 		slog.Log(c, middleware.SeverityError, "err", err)
 		return
 	}
-	c.JSON(200, MessageResponse{Message: "success!"})
+	c.JSON(http.StatusOK, MessageResponse{Message: "success!"})
 }
 
 func (m MonsterHandler) Update(c *gin.Context) {
@@ -120,11 +120,11 @@ func (m MonsterHandler) Update(c *gin.Context) {
 
 	err := m.monsterService.Update(monsterId, monsterJson)
 	if err != nil {
-		c.JSON(500, MessageResponse{Message: "can not update"})
+		c.JSON(http.StatusInternalServerError, MessageResponse{Message: "can not update"})
 		slog.Log(c, middleware.SeverityError, "err", err)
 		return
 	}
-	c.JSON(200, MessageResponse{Message: "success!"})
+	c.JSON(http.StatusOK, MessageResponse{Message: "success!"})
 }
 
 func (m MonsterHandler) Delete(c *gin.Context) {
@@ -134,11 +134,11 @@ func (m MonsterHandler) Delete(c *gin.Context) {
 
 	err := m.monsterService.Delete(monsterId)
 	if err != nil {
-		c.JSON(500, MessageResponse{Message: "can not delete"})
+		c.JSON(http.StatusInternalServerError, MessageResponse{Message: "can not delete"})
 		slog.Log(c, middleware.SeverityError, "err", err)
 		return
 	}
-	c.JSON(200, MessageResponse{Message: "success!"})
+	c.JSON(http.StatusOK, MessageResponse{Message: "success!"})
 }
 
 func (m *MonsterHandler) CreateJson(c *gin.Context) {
@@ -163,13 +163,13 @@ func (m *MonsterHandler) CreateJson(c *gin.Context) {
 		}
 		err := m.monsterService.Create(monsterJson)
 		if err != nil {
-			c.JSON(500, MessageResponse{Message: err.Error()})
+			c.JSON(http.StatusInternalServerError, MessageResponse{Message: err.Error()})
 			slog.Log(c, middleware.SeverityError, "err", err)
 			return
 		}
 	}
 
-	c.JSON(200, MessageResponse{Message: "success!"})
+	c.JSON(http.StatusOK, MessageResponse{Message: "success!"})
 }
 
 func ProvideMonsterHandler(monsterService service.MonsterService) MonsterHandler {
