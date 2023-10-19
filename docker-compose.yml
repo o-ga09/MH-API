@@ -27,6 +27,7 @@ services:
       ENV: DEV
       PORT: 8080
       DATABASE_URL: mh-api:P@ssw0rd@tcp(mh-api-dbsrv01)/mh-api?charset=utf8&parseTime=True&loc=Local
+      ALLOW_URL: "*"
     volumes:
       - .:/app
     ports:

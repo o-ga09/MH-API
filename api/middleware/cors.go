@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"mh-api/api/config"
 	"time"
 
 	"github.com/gin-contrib/cors"
@@ -8,9 +9,10 @@ import (
 )
 
 func CORS() gin.HandlerFunc {
+	cfg, _ := config.New()
 	return cors.New(cors.Config{
 		AllowOrigins: []string{
-			"*",
+			cfg.ALLOW_URL,
 		},
 		AllowMethods: []string{
 			"POST",
