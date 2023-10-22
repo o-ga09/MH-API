@@ -6,7 +6,6 @@ on:
       - master
     paths:
       - "**.go"
-      - "!*_test.go"
 
 env:
   SERVICE_NAME: ${{ secrets.SERVICE_NAME }}
