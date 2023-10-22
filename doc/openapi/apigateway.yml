@@ -20,7 +20,6 @@ produces:
 x-google-backend:
   address: https://mh-api-xpzdc5i4rq-an.a.run.app
   jwt_audience: "https://www.googleapis.com/robot/v1/metadata/x509/auto-deploy%40mh-api-389212.iam.gserviceaccount.com"
-  jwt_issuer: "auto-deploy@mh-api-389212.iam.gserviceaccount.com"
 
 paths:
   /v1/health:
