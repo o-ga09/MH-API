@@ -19,6 +19,10 @@ produces:
   - application/json
 x-google-backend:
   address: https://mh-api-xpzdc5i4rq-an.a.run.app
+  x-google-issuer: "auto-deploy@mh-api-389212.iam.gserviceaccount.com"
+  x-google-jwks_uri: "https://accounts.google.com/o/oauth2/auth"
+  x-google-audiences: "https://www.googleapis.com/robot/v1/metadata/x509/auto-deploy%40mh-api-389212.iam.gserviceaccount.com"
+
 paths:
   /v1/health:
     get:
