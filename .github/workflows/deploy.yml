@@ -3,7 +3,7 @@ name: Deploy
 on:
   push:
     branches:
-      - master
+      - main
     paths:
       - "**.go"
 
@@ -40,14 +40,14 @@ jobs:
 
       - name: Deploy to Cloud Run
         run: |
-            gcloud run deploy ${{ env.SERVICE_NAME }} \
-              --image ${{ env.IMAGE }} \
-              --project ${{ env.GCP_PROJECT_ID }} \
-              --region ${{ env.GCP_REGION }} \
-              --platform=managed \
-              --allow-unauthenticated \
-              --service-account=${{ env.GCP_SERVICE_ACCOUNT }} \
-              --quiet \
-              --update-secrets=DATABASE_URL=DATABASE_URL:latest \
-              --update-secrets=ENV=ENV:latest \
-              --update-secrets=ALLOW_URL=ALLOW_URL:latest
+          gcloud run deploy ${{ env.SERVICE_NAME }} \
+            --image ${{ env.IMAGE }} \
+            --project ${{ env.GCP_PROJECT_ID }} \
+            --region ${{ env.GCP_REGION }} \
+            --platform=managed \
+            --allow-unauthenticated \
+            --service-account=${{ env.GCP_SERVICE_ACCOUNT }} \
+            --quiet \
+            --update-secrets=DATABASE_URL=DATABASE_URL:latest \
+            --update-secrets=ENV=ENV:latest \
+            --update-secrets=ALLOW_URL=ALLOW_URL:latest

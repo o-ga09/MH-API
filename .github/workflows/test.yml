@@ -2,18 +2,17 @@ name: Test
 on:
   push:
     paths:
-    - "**.go"
-    - .github/workflows/test.yml
+      - "**.go"
+      - .github/workflows/test.yml
   pull_request:
-    branches:
-    - release
+
 jobs:
   golang-test:
     name: test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      
+
       - name: Set up Go
         uses: actions/setup-go@v2
         with:

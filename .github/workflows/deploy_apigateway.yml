@@ -3,7 +3,7 @@ name: Deploy apigateway
 on:
   push:
     branches:
-      - master
+      - main
     paths:
       - "doc/openapi/apigateway.yml"
 
@@ -36,5 +36,3 @@ jobs:
       - name: Deploy apigateway
         run: |
           gcloud api-gateway gateways update ${{ env.GCP_API }} --project=${{ env.GCP_PROJECT_ID }} --api-config=${{ env.GCP_API_CONFIG }}-${{ env.GCP_TAG }} --api=${{ env.GCP_API_GATEWAY }} --location=${{ env.GCP_REGION }}
-            
-
