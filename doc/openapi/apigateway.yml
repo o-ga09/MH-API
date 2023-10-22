@@ -10,9 +10,9 @@ securityDefinitions:
     type: "oauth2"
     # Replace YOUR-ACCOUNT-NAME with your Auth0 account name.
     x-google-issuer: "auto-deploy@mh-api-389212.iam.gserviceaccount.com"
-    x-google-jwks_uri: "https://www.googleapis.com/oauth2/v3/certs"
+    x-google-jwks_uri: "https://accounts.google.com/o/oauth2/auth"
     # Optional. Replace YOUR-CLIENT-ID with your client ID
-    x-google-audiences: "650836814988-90khq9h2lr0lt0c6hpv0bhoi5phm7bg4.apps.googleusercontent.com"
+    x-google-audiences: "https://www.googleapis.com/robot/v1/metadata/x509/auto-deploy%40mh-api-389212.iam.gserviceaccount.com"
 schemes:
   - https
 produces:
