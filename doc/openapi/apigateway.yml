@@ -1,19 +1,23 @@
 # openapi2-functions.yaml
-swagger: '2.0'
+swagger: "2.0"
 info:
   title: MH-API
   description: モンハンAPIゲートウェイ
   version: 1.0.0
 securityDefinitions:
-  auth0_jwk:
-    authorizationUrl: "https://dev-8pmkik25y0obts0r.us.auth0.com/"
-    flow: "implicit"
-    type: "oauth2"
-    # Replace YOUR-ACCOUNT-NAME with your Auth0 account name.
-    x-google-issuer: "https://dev-8pmkik25y0obts0r.us.auth0.com/"
-    x-google-jwks_uri: "https://dev-8pmkik25y0obts0r.us.auth0.com/.well-known/jwks.json"
-    # Optional. Replace YOUR-CLIENT-ID with your client ID
-    x-google-audiences: "https://mh-api-v2-8aznfogc.an.gateway.dev"
+  api_key:
+    type: "apiKey"
+    name: "key"
+    in: "query"
+  # auth0_jwk:
+  #   authorizationUrl: "https://dev-8pmkik25y0obts0r.us.auth0.com/"
+  #   flow: "implicit"
+  #   type: "oauth2"
+  #   # Replace YOUR-ACCOUNT-NAME with your Auth0 account name.
+  #   x-google-issuer: "https://dev-8pmkik25y0obts0r.us.auth0.com/"
+  #   x-google-jwks_uri: "https://dev-8pmkik25y0obts0r.us.auth0.com/.well-known/jwks.json"
+  #   # Optional. Replace YOUR-CLIENT-ID with your client ID
+  #   x-google-audiences: "https://mh-api-v2-8aznfogc.an.gateway.dev"
 schemes:
   - https
 produces:
@@ -28,7 +32,7 @@ paths:
       x-google-backend:
         address: https://mh-api-xpzdc5i4rq-an.a.run.app/v1/health
       responses:
-        '200':
+        "200":
           description: ヘルスチェック
           schema:
             type: string
@@ -39,11 +43,11 @@ paths:
       x-google-backend:
         address: https://mh-api-xpzdc5i4rq-an.a.run.app/v1/monsters
       responses:
-        '200':
+        "200":
           description: モンスター情報の取得に成功
           schema:
             type: object
-        '500':
+        "500":
           description: モンスターが見つかりません
           schema:
             type: object
@@ -51,8 +55,7 @@ paths:
       summary: モンスターの情報を追加する
       operationId: createMonsters
       parameters:
-        - 
-          name: requestJson
+        - name: requestJson
           in: body
           required: true
           schema:
@@ -64,12 +67,12 @@ paths:
               - specify
               - weakness_attack
               - weakness_element
-            properties: 
+            properties:
               name:
                 type: string
               desc:
                 type: string
-              location :
+              location:
                 type: string
               specify:
                 type: string
@@ -78,36 +81,35 @@ paths:
               weakness_element:
                 type: string
       responses:
-        '200':
+        "200":
           description: モンスターの情報の登録に成功
           schema:
             type: object
-        '403':
+        "403":
           description: 認証失敗
           schema:
             type: object
-        '500':
+        "500":
           description: サーバエラーにより更新失敗
           schema:
-            type:  object
+            type: object
       security:
-      - auth0_jwk: []
+        - api_key: []
   /v1/monsters/{requestId}:
     get:
       summary: idのモンスター情報を取得する
       operationId: requestId
       parameters:
-        - 
-          name: requestId
+        - name: requestId
           in: path
           required: true
           type: string
       responses:
-        '200':
+        "200":
           description: モンスター情報の取得に成功
           schema:
             type: object
-        '500':
+        "500":
           description: モンスターが見つかりません
           schema:
             type: object
@@ -115,15 +117,13 @@ paths:
       summary: モンスターの情報を更新する
       operationId: updateMonsters
       security:
-      - auth0_jwk: []
+        - api_key: []
       parameters:
-        - 
-          name: requestId
+        - name: requestId
           in: path
           required: true
           type: string
-        - 
-          name: requestJson
+        - name: requestJson
           in: body
           required: true
           schema:
@@ -135,12 +135,12 @@ paths:
               - specify
               - weakness_attack
               - weakness_element
-            properties: 
+            properties:
               name:
                 type: string
               desc:
                 type: string
-              location :
+              location:
                 type: string
               specify:
                 type: string
@@ -149,51 +149,49 @@ paths:
               weakness_element:
                 type: string
       responses:
-        '200':
+        "200":
           description: モンスターの情報の更新に成功
           schema:
             type: object
-        '403':
+        "403":
           description: 認証失敗
           schema:
             type: object
-        '500':
+        "500":
           description: サーバエラーにより更新失敗
           schema:
-            type:  object
+            type: object
     delete:
       summary: モンスターの情報を削除する
       operationId: deleteMonsters
       security:
-      - auth0_jwk: []
+        - api_key: []
       parameters:
-        - 
-          name: requestId
+        - name: requestId
           in: path
           required: true
           type: string
       responses:
-        '200':
-            description: モンスターの情報の削除に成功
-            schema:
-              type: object
-        '403':
+        "200":
+          description: モンスターの情報の削除に成功
+          schema:
+            type: object
+        "403":
           description: 認証失敗
           schema:
             type: object
-        '500':
+        "500":
           description: サーバエラーにより削除失敗
           schema:
-            type:  object
+            type: object
   /v1/monsters/json:
     post:
       summary: モンスターの情報をjsonで一括追加する
       operationId: createMonstersJson
       security:
-      - auth0_jwk: []
+        - auth0_jwk: []
       parameters:
-        - 
-          name: requestJson
+        - name: requestJson
           in: body
           required: true
           schema:
@@ -205,12 +203,12 @@ paths:
               - specify
               - weakness_attack
               - weakness_element
-            properties: 
+            properties:
               name:
                 type: string
               desc:
                 type: string
-              location :
+              location:
                 type: string
               specify:
                 type: string
@@ -219,15 +217,15 @@ paths:
               weakness_element:
                 type: string
       responses:
-        '200':
+        "200":
           description: モンスターの情報の登録に成功
           schema:
             type: object
-        '403':
+        "403":
           description: 認証失敗
           schema:
             type: object
-        '500':
+        "500":
           description: サーバエラーにより更新失敗
           schema:
-            type:  object
+            type: object
