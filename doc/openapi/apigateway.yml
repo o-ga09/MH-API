@@ -5,7 +5,7 @@ info:
   version: 1.0.0
 securityDefinitions:
   sa_auth:
-    authorizationUrl: " "
+    authorizationUrl: ""
     flow: "implicit"
     type: "oauth2"
     # Replace YOUR-ACCOUNT-NAME with your Auth0 account name.
