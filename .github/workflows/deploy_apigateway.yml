@@ -31,7 +31,7 @@ jobs:
 
       - name: Deploy Config apigateway
         run: |
-          gcloud api-gateway api-configs create ${{ env.GCP_API_CONFIG }}-${{ env.GCP_TAG }} --api=${{ env.GCP_API_GATEWAY }} --openapi-spec=./doc/openapi/apigateway.yml --backend-auth-service-account=${{ GCP_SERVICE_ACCOUNT }}
+          gcloud api-gateway api-configs create ${{ env.GCP_API_CONFIG }}-${{ env.GCP_TAG }} --api=${{ env.GCP_API_GATEWAY }} --openapi-spec=./doc/openapi/apigateway.yml --backend-auth-service-account=${{ env.GCP_SERVICE_ACCOUNT }}
 
       - name: Deploy apigateway
         run: |
