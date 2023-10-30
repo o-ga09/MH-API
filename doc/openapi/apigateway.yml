@@ -4,22 +4,20 @@ info:
   description: モンハンAPIゲートウェイ
   version: 1.0.0
 securityDefinitions:
-  auth0_jwk:
-    authorizationUrl: ""
+  sa_auth:
+    authorizationUrl: " "
     flow: "implicit"
     type: "oauth2"
     # Replace YOUR-ACCOUNT-NAME with your Auth0 account name.
     x-google-issuer: "auto-deploy@mh-api-389212.iam.gserviceaccount.com"
-    x-google-jwks_uri: "https://accounts.google.com/o/oauth2/auth"
-    # Optional. Replace YOUR-CLIENT-ID with your client ID
-    x-google-audiences: "https://www.googleapis.com/robot/v1/metadata/x509/auto-deploy%40mh-api-389212.iam.gserviceaccount.com"
+    x-google-jwks_uri: "https://www.googleapis.com/robot/v1/metadata/x509/auto-deploy@mh-api-389212.iam.gserviceaccount.com"
+
 schemes:
   - https
 produces:
   - application/json
 x-google-backend:
   address: https://mh-api-xpzdc5i4rq-an.a.run.app
-  jwt_audience: "https://www.googleapis.com/robot/v1/metadata/x509/auto-deploy%40mh-api-389212.iam.gserviceaccount.com"
 
 paths:
   /v1/health:
@@ -91,7 +89,7 @@ paths:
           schema:
             type: object
       security:
-        - auth0_jwk: []
+        - sa_auth: []
   /v1/monsters/{requestId}:
     get:
       summary: idのモンスター情報を取得する
@@ -114,7 +112,7 @@ paths:
       summary: モンスターの情報を更新する
       operationId: updateMonsters
       security:
-        - auth0_jwk: []
+        - sa_auth: []
       parameters:
         - name: requestId
           in: path
@@ -162,7 +160,7 @@ paths:
       summary: モンスターの情報を削除する
       operationId: deleteMonsters
       security:
-        - auth0_jwk: []
+        - sa_auth: []
       parameters:
         - name: requestId
           in: path
@@ -186,7 +184,7 @@ paths:
       summary: モンスターの情報をjsonで一括追加する
       operationId: createMonstersJson
       security:
-        - auth0_jwk: []
+        - sa_auth: []
       parameters:
         - name: requestJson
           in: body
