@@ -42,8 +42,12 @@ paths:
           description: モンスター情報の取得に成功
           schema:
             type: object
-        "500":
+        "404":
           description: モンスターが見つかりません
+          schema:
+            type: object
+        "500":
+          description: モンスター情報の取得に失敗
           schema:
             type: object
     post:
@@ -104,8 +108,12 @@ paths:
           description: モンスター情報の取得に成功
           schema:
             type: object
-        "500":
+        "404":
           description: モンスターが見つかりません
+          schema:
+            type: object
+        "500":
+          description: モンスター情報の取得に失敗
           schema:
             type: object
     patch:
