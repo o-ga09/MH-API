@@ -13,5 +13,13 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.21
+
+      - name: Install scenarigo
+        run: go install github.com/zoncoen/scenarigo/cmd/scenarigo@v0.16.1
+
       - name: run scenario test
         run: scenarigo run
