@@ -1,0 +1,11 @@
+title: get scenarigo repository
+steps:
+  - title: ヘルスチェック
+    protocol: http
+    request:
+      method: GET
+      url: "https://mh-api-v2-8aznfogc.an.gateway.dev/v1/health"
+    expect:
+      code: OK
+      body:
+        Message: "ok"
