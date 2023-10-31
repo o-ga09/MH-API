@@ -1,0 +1,17 @@
+name: Scenario Test
+on:
+  push:
+    paths:
+      - "**.go"
+      - .github/workflows/scenario_test.yml
+  pull_request:
+
+jobs:
+  scenario_test:
+    name: scenario_test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: run scenario test
+        run: scenarigo run
