@@ -1,0 +1,12 @@
+on:
+  push:
+    branches-ignore:
+      - "**"
+    tags:
+      - "v*"
+
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+    steps:
+      - run: echo foo
