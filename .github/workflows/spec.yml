@@ -21,7 +21,9 @@ jobs:
       - name: Build ReDoc HTML
         run: |
           npm install -g redoc-cli
-          redoc-cli bundle /doc/openapi/schema.yml
+          cd "doc/openapi
+          ls
+          redoc-cli bundle schema.yml
           mkdir pages
           mv redoc-static.html pages/spec.html
 
