@@ -23,3 +23,6 @@ go.work
 tmp/
 contact.txt
 .DS_Store
+
+scenario/junit.xml
+scenario/report.json

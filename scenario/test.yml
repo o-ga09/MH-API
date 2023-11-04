@@ -1,0 +1,118 @@
+title: get scenarigo repository
+steps:
+  - title: ヘルスチェック
+    protocol: http
+    request:
+      method: GET
+      url: "https://mh-api-v2-8aznfogc.an.gateway.dev/v1/health"
+    expect:
+      code: OK
+      body:
+        Message: "ok"
+
+  - title: モンスター一覧取得
+    protocol: http
+    request:
+      method: GET
+      url: "http://localhost:8080/v1/monsters"
+      # url: "https://mh-api-v2-8aznfogc.an.gateway.dev/v1/monsters"
+    expect:
+      code: OK
+      body:
+        monsters:
+          - desc: 霊峰/渓流に生息する電気を扱う牙竜種
+            id: "1"
+            location: 霊峰
+            name: ジンオウガ
+            specify: 牙竜種
+            weakness___attack:
+              前脚: "10"
+              尻尾: "10"
+              後脚: "10"
+              胴体: "10"
+              頭部: "10"
+            weakness___element:
+              前脚: "10"
+              尻尾: "10"
+              後脚: "10"
+              胴体: "10"
+              頭部: "10"
+          - desc: 渓流に生息する水を扱う海竜種
+            id: "2"
+            location: 渓流
+            name: タマミツネ
+            specify: 海竜種
+            weakness___attack:
+              前脚: "10"
+              尻尾: "10"
+              後脚: "10"
+              胴体: "10"
+              頭部: "10"
+            weakness___element:
+              前脚: "10"
+              尻尾: "10"
+              後脚: "10"
+              胴体: "10"
+              頭部: "10"
+        total: "2"
+
+  - title: 各モンスター詳細情報取得
+    protocol: http
+    request:
+      method: GET
+      url: "http://localhost:8080/v1/monsters/1"
+      # url: "https://mh-api-v2-8aznfogc.an.gateway.dev/v1/monsters/1"
+    expect:
+      code: OK
+      body:
+        monster:
+          desc: 霊峰/渓流に生息する電気を扱う牙竜種
+          id: "1"
+          location: 霊峰
+          name: ジンオウガ
+          specify: 牙竜種
+          weakness___attack:
+            前脚: "10"
+            尻尾: "10"
+            後脚: "10"
+            胴体: "10"
+            頭部: "10"
+          weakness___element:
+            前脚: "10"
+            尻尾: "10"
+            後脚: "10"
+            胴体: "10"
+            頭部: "10"
+
+  - title: モンスター情報作成
+    protocol: http
+    request:
+      method: POST
+      url: "http://localhost:8080/v1/monsters"
+      # url: "https://mh-api-v2-8aznfogc.an.gateway.dev/v1/monsters"
+    expect:
+      code: OK
+      body:
+        message: "success!"
+
+  - title: モンスター情報更新
+    protocol: http
+    request:
+      method: PATCH
+      url: "http://localhost:8080/v1/monsters/1"
+      # url: "https://mh-api-v2-8aznfogc.an.gateway.dev/v1/monsters/1"
+    expect:
+      code: OK
+      body:
+        message: "success!"
+
+  - title: モンスター情報削除
+    protocol: http
+    request:
+      method: DELETE
+      url: "http://localhost:8080/v1/monsters/1"
+      # url: "https://mh-api-v2-8aznfogc.an.gateway.dev/v1/monsters/1"
+    expect:
+      code: OK
+      body:
+        message: "success!"

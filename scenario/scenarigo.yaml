@@ -1,17 +1,21 @@
 schemaVersion: config/v1
 
-scenarios: [] # Specify test scenario files and directories.
+# vars:
+#   endpoint: https://mh-api-v2-8aznfogc.an.gateway.dev
 
-pluginDirectory: ./gen      # Specify the root directory of plugins.
-# plugins:                  # Specify configurations to build plugins.
-#   plugin.so:              # Map keys specify plugin output file path from the root directory of plugins.
+scenarios: # Specify test scenario files and directories.
+  - test.yml
+
+pluginDirectory: ./gen # Specify the root directory of plugins.
+# plugins: # Specify configurations to build plugins.
+#   plugin.so: # Map keys specify plugin output file path from the root directory of plugins.
 #     src: ./path/to/plugin # Specify the source file, directory, or "go gettable" module path of the plugin.
 
 output:
-  verbose: false   # Enable verbose output.
-  # colored: false # Enable colored output with ANSI color escape codes. It is enabled by default but disabled when a NO_COLOR environment variable is set (regardless of its value).
-  # report:
-  #   json:
-  #     filename: ./report.json # Specify a filename for test report output in JSON.
-  #   junit:
-  #     filename: ./junit.xml   # Specify a filename for test report output in JUnit XML format.
+  verbose: false # Enable verbose output.
+  colored: false # Enable colored output with ANSI color escape codes. It is enabled by default but disabled when a NO_COLOR environment variable is set (regardless of its value).
+  report:
+    json:
+      filename: ./report.json # Specify a filename for test report output in JSON.
+    junit:
+      filename: ./junit.xml # Specify a filename for test report output in JUnit XML format.
