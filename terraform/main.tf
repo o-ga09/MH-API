@@ -24,7 +24,7 @@ terraform {
     }
     required_version = ">= 1.3.0"
     backend "gcs" {
-        bucket = "mh-api_terraform_state"
+        bucket = "terraform-state-mh-api"
         prefix = "terraform/state"
     }
 }

@@ -7,6 +7,8 @@ on:
   pull_request:
     paths:
       - "terraform/**"
+env:
+  GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
 
 defaults:
   run:
@@ -27,8 +29,8 @@ jobs:
         name: "Authenticate to Google Cloud"
         uses: "google-github-actions/auth@v1"
         with:
-          workload_identity_provider: "projects/${PROJECT_NUMBER}/locations/global/workloadIdentityPools/mypool/providers/myprovider"
-          service_account: "tf-exec@myproject.iam.gserviceaccount.com"
+          workload_identity_provider: "projects/${{ env.GCP_PROJECT_ID }}/locations/global/workloadIdentityPools/terraform-pool/providers/terraform-provider"
+          service_account: "terraform@mh-api-389212.iam.gserviceaccount.com"
 
       - uses: hashicorp/setup-terraform@v2
 
