@@ -50,7 +50,7 @@ resource "google_iam_workload_identity_pool" "terraform-pool" {
 resource "google_iam_workload_identity_pool_provider" "terraform-provider" {
     provider                           = google-beta
     project                            = local.project_id
-    workload_identity_pool_id          = google_iam_workload_identity_pool.mypool.workload_identity_pool_id
+    workload_identity_pool_id          = google_iam_workload_identity_pool.terraform-pool.workload_identity_pool_id
     workload_identity_pool_provider_id = "terraform-provider"
     display_name                       = "terraform-provider"
     description                        = "GitHub Actions で使用"
@@ -74,5 +74,5 @@ data "google_service_account" "terraform_sa" {
 resource "google_service_account_iam_member" "terraform_sa" {
     service_account_id = data.google_service_account.terraform_sa.id
     role               = "roles/iam.workloadIdentityUser"
-    member             = "principalSet://iam.googleapis.com/${google_iam_workload_identity_pool.mypool.name}/attribute.repository/${local.github_repository}"
+    member             = "principalSet://iam.googleapis.com/${google_iam_workload_identity_pool.terraform-pool.name}/attribute.repository/${local.github_repository}"
 }

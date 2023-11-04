@@ -26,3 +26,5 @@ contact.txt
 
 scenario/junit.xml
 scenario/report.json
+terraform/.terraform
+terraform/.terraform.lock.hcl
