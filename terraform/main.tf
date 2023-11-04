@@ -38,7 +38,7 @@ resource "google_project_service" "enable_api" {
 }
     
 # Workload Identity Pool 設定
-resource "google_iam_workload_identity_pool" "mypool" {
+resource "google_iam_workload_identity_pool" "terraform-pool" {
     provider                  = google-beta
     project                   = local.project_id
     workload_identity_pool_id = "terraform-pool"
@@ -47,7 +47,7 @@ resource "google_iam_workload_identity_pool" "mypool" {
 }
   
 # Workload Identity Provider 設定
-resource "google_iam_workload_identity_pool_provider" "myprovider" {
+resource "google_iam_workload_identity_pool_provider" "terraform-provider" {
     provider                           = google-beta
     project                            = local.project_id
     workload_identity_pool_id          = google_iam_workload_identity_pool.mypool.workload_identity_pool_id
