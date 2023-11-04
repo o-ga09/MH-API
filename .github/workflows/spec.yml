@@ -18,12 +18,13 @@ jobs:
         with:
           node-version: "18"
 
+      - name: Check out
+        uses: actions/checkout@v3
+
       - name: Build ReDoc HTML
         run: |
           npm install -g redoc-cli
-          ls
-          cd doc/openapi
-          redoc-cli bundle schema.yml
+          redoc-cli bundle doc/openapi/schema.yml
           mkdir pages
           mv redoc-static.html pages/spec.html
 
