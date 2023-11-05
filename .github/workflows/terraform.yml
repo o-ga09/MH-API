@@ -30,8 +30,7 @@ jobs:
       - name: terraform local varianle
         run: |
           echo "${{ secrets.SECRET_VALUE }}" | sed 's/"/\\"/g' > local.tf
-          ls -l local.tf
-          pwd
+          chmod 777 local.tf
 
       - id: "auth"
         name: "Authenticate to Google Cloud"
@@ -53,9 +52,7 @@ jobs:
 
       - name: Terraform Validate
         id: validate
-        run: |
-          pwd
-          terraform validate -no-color
+        run: terraform validate -no-color
 
       - name: Terraform Plan
         id: plan
