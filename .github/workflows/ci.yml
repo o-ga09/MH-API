@@ -3,11 +3,13 @@ on:
   push:
     paths:
       - "**.go"
-      - .github/workflows/golangci.yml
+      - .github/workflows/ci.yml
+      - ".golangci.yml"
   pull_request:
     paths:
       - "**.go"
-      - .github/workflows/golangci.yml
+      - ".github/workflows/ci.yml"
+      - ".golangci.yml"
 jobs:
   golangci-lint:
     name: golangci-lint
