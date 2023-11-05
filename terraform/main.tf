@@ -1,19 +1,3 @@
-# local 定義
-locals {
-    github_repository           = "o-ga09/MH-API"
-    project_id                  = "mh-api-389212"
-    region                      = "asia-northeast1"
-    terraform_service_account   = "terraform@mh-api-389212.iam.gserviceaccount.com"
-    
-    # api 有効化用
-    services = toset([                         # Workload Identity 連携用
-        "iam.googleapis.com",                  # IAM
-        "cloudresourcemanager.googleapis.com", # Resource Manager
-        "iamcredentials.googleapis.com",       # Service Account Credentials
-        "sts.googleapis.com"                   # Security Token Service API
-    ])
-}
-  
 # provider 設定
 terraform {
     required_providers {

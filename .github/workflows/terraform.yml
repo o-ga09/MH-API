@@ -2,13 +2,14 @@ name: terraform
 
 on:
   push:
-    # branches:
-    #   - main
+    branches:
+      - main
   pull_request:
     paths:
       - "terraform/**"
 env:
   GCP_PROJECT_NUMBER: ${{ secrets.GCP_PROJECT_NUMBER }}
+  TERRAFORM_LOCAL_VARIABLE: ${{ secrets.TERRAFORM_LOCAL_VARIABLE }}
 
 defaults:
   run:
@@ -25,6 +26,11 @@ jobs:
     # Workload Identity 連携
     steps:
       - uses: actions/checkout@v3
+
+      - name: terraform local varianle
+        run: |
+          echo "${{ secrets.TERRAFORM_LOCAL_VARIABLE }}" | sed 's/X/"/g' > local.tf
+
       - id: "auth"
         name: "Authenticate to Google Cloud"
         uses: "google-github-actions/auth@v1"
