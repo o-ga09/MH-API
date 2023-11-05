@@ -55,7 +55,7 @@ jobs:
       - name: terraform local varianle
         run: |
           echo "${{ secrets.TERRAFORM_LOCAL_VARIABLE }}" | sed 's/X/"/g' > local.txt
-          sed 's/latest/${{ github.sha }}/g' local.txt > local.tf
+          sed 's/latest/${{ env.IMAGE_TAG }}/g' local.txt > local.tf
 
       - id: "auth"
         name: "Authenticate to Google Cloud"
