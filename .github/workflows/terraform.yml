@@ -7,11 +7,11 @@ on:
   pull_request:
     paths:
       - "terraform/**"
+      - ".github/workflows/terraform.yml"
 env:
   GCP_PROJECT_NUMBER: ${{ secrets.GCP_PROJECT_NUMBER }}
   TERRAFORM_LOCAL_VARIABLE: ${{ secrets.TERRAFORM_LOCAL_VARIABLE }}
-  IMAGE_TAG: ${{ github.sha }}
-  IMAGE: asia-northeast1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_REPOSITORY }}/${{ secrets.SERVICE_NAME }}:${{ env.IMAGE_TAG}}
+  IMAGE: asia-northeast1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_REPOSITORY }}/${{ secrets.SERVICE_NAME }}:${{ github.sha }}
   TERRAFORM_SERVICE_ACCOUNT: ${{ secrets.TERRAFORM_SERVICE_ACCOUNT }}
 
 defaults:
@@ -21,6 +21,11 @@ defaults:
 jobs:
   build-containe-image:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+      pull-requests: write
+
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v2
@@ -31,6 +36,10 @@ jobs:
         with:
           workload_identity_provider: "projects/${{ env.GCP_PROJECT_NUMBER }}/locations/global/workloadIdentityPools/terraform-pool/providers/terraform-provider"
           service_account: "${{ env.TERRAFORM_SERVICE_ACCOUNT }}"
+
+      - name: Configure docker for artifact registry
+        run: |
+          gcloud auth configure-docker asia-northeast1-docker.pkg.dev
 
       - name: Build a docker image
         run: docker build --platform linux/amd64 -t ${{ env.IMAGE }} --target deploy ../
@@ -61,7 +70,7 @@ jobs:
         uses: "google-github-actions/auth@v1"
         with:
           workload_identity_provider: "projects/${{ env.GCP_PROJECT_NUMBER }}/locations/global/workloadIdentityPools/terraform-pool/providers/terraform-provider"
-          service_account: "terraform@mh-api-389212.iam.gserviceaccount.com"
+          service_account: "${{ env.TERRAFORM_SERVICE_ACCOUNT }}"
 
       - uses: hashicorp/setup-terraform@v2
 
