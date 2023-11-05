@@ -2,11 +2,12 @@ name: terraform
 
 on:
   push:
-    branches:
-      - main
+    branches-ignore:
+      - "**"
+    tags:
+      - "v*"
     paths:
-      - "terraform/**"
-      - ".github/workflows/terraform.yml"
+      - "**.go"
   pull_request:
     paths:
       - "terraform/**"

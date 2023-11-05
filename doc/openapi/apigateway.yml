@@ -17,14 +17,12 @@ schemes:
 produces:
   - application/json
 x-google-backend:
-  address: https://mh-api-xpzdc5i4rq-an.a.run.app
+  address: https://stg-mh-api-xpzdc5i4rq-an.a.run.app
 paths:
   /v1/health:
     get:
       summary: ヘルスチェック
       operationId: health
-      x-google-backend:
-        address: https://mh-api-xpzdc5i4rq-an.a.run.app/v1/health
       responses:
         "200":
           description: ヘルスチェック
@@ -34,8 +32,6 @@ paths:
     get:
       description: 全てのモンスター情報を取得する
       operationId: getMonsters
-      x-google-backend:
-        address: https://mh-api-xpzdc5i4rq-an.a.run.app/v1/monsters
       responses:
         "200":
           description: モンスター情報の取得に成功

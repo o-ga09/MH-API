@@ -5,6 +5,9 @@ on:
       - "**.go"
       - .github/workflows/test.yml
   pull_request:
+    paths:
+      - "**.go"
+      - .github/workflows/test.yml
 
 jobs:
   golang-test:
