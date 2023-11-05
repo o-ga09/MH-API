@@ -91,65 +91,69 @@ resource "google_cloud_run_service_iam_policy" "auth" {
 }
 
 # API Gateway作成用
-resource "google_api_gateway_api" "api" {
-    provider = google-beta
-    project = local.project_id
-    api_id = "mh-api"
-}
+# API Gatewayをterraform時管理から除外
+# 除外理由
+# --backend-auth-service-accountをterraformから設定できない
+# 2023.11.5
+# resource "google_api_gateway_api" "api" {
+#     provider = google-beta
+#     project = local.project_id
+#     api_id = "mh-api"
+# }
 
-resource "google_api_gateway_api_config" "api_cfg" {
-  provider = google-beta
-  project = local.project_id
-  api = google_api_gateway_api.api.api_id
-  api_config_id = "mh-api"
+# resource "google_api_gateway_api_config" "api_cfg" {
+#   provider = google-beta
+#   project = local.project_id
+#   api = google_api_gateway_api.api.api_id
+#   api_config_id = "mh-api"
 
-  openapi_documents {
-    document {
-      path = "../doc/openapi/apigateway.yml"
-      contents = filebase64("../doc/openapi/apigateway.yml")
-    }
-  }
-  lifecycle {
-    create_before_destroy = true
-  }
-}
+#   openapi_documents {
+#     document {
+#       path = "../doc/openapi/apigateway.yml"
+#       contents = filebase64("../doc/openapi/apigateway.yml")
+#     }
+#   }
+#   lifecycle {
+#     create_before_destroy = true
+#   }
+# }
 
-resource "google_api_gateway_gateway" "api_gw" {
-  provider = google-beta
-  project = local.project_id
-  region = local.region
-  api_config = google_api_gateway_api_config.api_cfg.id
-  gateway_id = "mh-api-gateway"
-}
+# resource "google_api_gateway_gateway" "api_gw" {
+#   provider = google-beta
+#   project = local.project_id
+#   region = local.region
+#   api_config = google_api_gateway_api_config.api_cfg.id
+#   gateway_id = "mh-api-gateway"
+# }
 
-data "google_iam_policy" "admin" {
-  provider = google-beta
-  binding {
-    role = "roles/apigateway.admin"
-    members = [
-      "serviceAccount:${local.cloud_run_invoke_service_account}",
-    ]
-  }
-}
+# data "google_iam_policy" "admin" {
+#   provider = google-beta
+#   binding {
+#     role = "roles/apigateway.admin"
+#     members = [
+#       "serviceAccount:${local.cloud_run_invoke_service_account}",
+#     ]
+#   }
+# }
 
-resource "google_api_gateway_api_iam_policy" "policy" {
-  provider = google-beta
-  project = google_api_gateway_api.api.project
-  api = google_api_gateway_api.api.api_id
-  policy_data = data.google_iam_policy.admin.policy_data
-}
+# resource "google_api_gateway_api_iam_policy" "policy" {
+#   provider = google-beta
+#   project = google_api_gateway_api.api.project
+#   api = google_api_gateway_api.api.api_id
+#   policy_data = data.google_iam_policy.admin.policy_data
+# }
 
-resource "google_api_gateway_api_config_iam_policy" "policy" {
-  provider = google-beta
-  api = google_api_gateway_api_config.api_cfg.api
-  api_config = google_api_gateway_api_config.api_cfg.api_config_id
-  policy_data = data.google_iam_policy.admin.policy_data
-}
+# resource "google_api_gateway_api_config_iam_policy" "policy" {
+#   provider = google-beta
+#   api = google_api_gateway_api_config.api_cfg.api
+#   api_config = google_api_gateway_api_config.api_cfg.api_config_id
+#   policy_data = data.google_iam_policy.admin.policy_data
+# }
 
-resource "google_api_gateway_gateway_iam_policy" "policy" {
-  provider = google-beta
-  project = google_api_gateway_gateway.api_gw.project
-  region = google_api_gateway_gateway.api_gw.region
-  gateway = google_api_gateway_gateway.api_gw.gateway_id
-  policy_data = data.google_iam_policy.admin.policy_data
-}
+# resource "google_api_gateway_gateway_iam_policy" "policy" {
+#   provider = google-beta
+#   project = google_api_gateway_gateway.api_gw.project
+#   region = google_api_gateway_gateway.api_gw.region
+#   gateway = google_api_gateway_gateway.api_gw.gateway_id
+#   policy_data = data.google_iam_policy.admin.policy_data
+# }
