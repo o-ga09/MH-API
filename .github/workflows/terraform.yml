@@ -9,13 +9,23 @@ on:
       - "terraform/**"
 env:
   GCP_PROJECT_NUMBER: ${{ secrets.GCP_PROJECT_NUMBER }}
+  TERRAFORM_LOCAL_VARIABLE: ${{ secrets.TERRAFORM_LOCAL_VARIABLE }}
 
 defaults:
   run:
     working-directory: ./terraform
 
 jobs:
+  teraform-local-variable:
+    runs-on: ubuntu-latest
+    steps:
+      - name: terraform local varianle
+        run: |
+          echo ${{ env.TERRAFORM_LOCAL_VARIABLE }} > local.tf
+
   terraform-workflow:
+    needs: terraform-local-variable
+    if: ${{ needs.terraform-local-variable.result == 'success' }}
     runs-on: ubuntu-latest
     permissions:
       id-token: write
