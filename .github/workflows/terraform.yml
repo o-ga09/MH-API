@@ -30,7 +30,7 @@ jobs:
       - name: terraform local varianle
         run: |
           echo "${{ secrets.SECRET_VALUE }}" | sed 's/"/\\"/g' > local.tf
-          chmod 777 local.tf
+          cat local.tf
 
       - id: "auth"
         name: "Authenticate to Google Cloud"
