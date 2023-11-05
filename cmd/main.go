@@ -7,5 +7,8 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	s.Run()
+	
+	if err := s.Run(); err != nil {
+		panic(err)
+	}
 }

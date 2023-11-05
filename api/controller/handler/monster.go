@@ -149,7 +149,6 @@ func (m *MonsterHandler) CreateJson(c *gin.Context) {
 	}
 
 	for _, record := range data.Req {
-
 		weak_map_a := util.Mapping(record.Weakness_attack)
 		weak_map_e := util.Mapping(record.Weakness_element)
 

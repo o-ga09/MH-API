@@ -22,7 +22,6 @@ func (g MonsterGateway) GetAll() (entity.Monsters, error) {
 	}
 
 	for _, r := range res {
-
 		weakness_a := util.Mapping(r.Weakness_attack)
 		weakness_e := util.Mapping(r.Weakness_element)
 		data := entity.Monster{
