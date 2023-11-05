@@ -68,13 +68,6 @@ jobs:
           echo "${{ secrets.TERRAFORM_LOCAL_VARIABLE }}" | sed 's/X/"/g' > local.txt
           sed 's/latest/${{ github.sha }}/g' local.txt > local.tf
 
-      - id: "auth"
-        name: "Authenticate to Google Cloud"
-        uses: "google-github-actions/auth@v1"
-        with:
-          workload_identity_provider: "projects/${{ env.GCP_PROJECT_NUMBER }}/locations/global/workloadIdentityPools/terraform-pool/providers/terraform-provider"
-          service_account: "${{ env.TERRAFORM_SERVICE_ACCOUNT }}"
-
       - uses: hashicorp/setup-terraform@v2
 
       - name: Terraform fmt
