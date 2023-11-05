@@ -16,7 +16,7 @@ defaults:
     working-directory: ./terraform
 
 jobs:
-  teraform-local-variable:
+  terraform-local-variable:
     runs-on: ubuntu-latest
     steps:
       - name: terraform local varianle
