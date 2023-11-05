@@ -11,8 +11,7 @@ on:
 env:
   GCP_PROJECT_NUMBER: ${{ secrets.GCP_PROJECT_NUMBER }}
   TERRAFORM_LOCAL_VARIABLE: ${{ secrets.TERRAFORM_LOCAL_VARIABLE }}
-  IMAGE_TAG: ${{ github.sha }}
-  IMAGE: asia-northeast1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_REPOSITORY }}/${{ secrets.SERVICE_NAME }}:${{ IMAGE_TAG}}
+  IMAGE: asia-northeast1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_REPOSITORY }}/${{ secrets.SERVICE_NAME }}:${{ github.sha }}
   TERRAFORM_SERVICE_ACCOUNT: ${{ secrets.TERRAFORM_SERVICE_ACCOUNT }}
 
 defaults:
@@ -55,7 +54,7 @@ jobs:
       - name: terraform local varianle
         run: |
           echo "${{ secrets.TERRAFORM_LOCAL_VARIABLE }}" | sed 's/X/"/g' > local.txt
-          sed 's/latest/${{ env.IMAGE_TAG }}/g' local.txt > local.tf
+          sed 's/latest/${{ github.sha }}/g' local.txt > local.tf
 
       - id: "auth"
         name: "Authenticate to Google Cloud"
