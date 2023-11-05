@@ -114,6 +114,13 @@ resource "google_api_gateway_api_config" "api_cfg" {
   }
 }
 
+resource "google_api_gateway_gateway" "api_gw" {
+  provider = google-beta
+  project = local.project_id
+  api_config = google_api_gateway_api_config.api_cfg.id
+  gateway_id = "mh-api-gateway"
+}
+
 data "google_iam_policy" "admin" {
   provider = google-beta
   binding {
