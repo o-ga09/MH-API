@@ -32,6 +32,12 @@ jobs:
           echo "${{ secrets.TERRAFORM_LOCAL_VARIABLE }}" | sed 's/"/\\"/g' > local.tf
           cat local.tf
 
+      - name: Upload local.tf
+        uses: actions/upload-artifact@v2
+        with:
+          name: local-tf-file
+          path: local.tf
+
       # - id: "auth"
       #   name: "Authenticate to Google Cloud"
       #   uses: "google-github-actions/auth@v1"
