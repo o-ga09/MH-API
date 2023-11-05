@@ -7,7 +7,7 @@ on:
   pull_request:
     paths:
       - "terraform/**"
-      - "./github/workflows/terraform.yml"
+      - ".github/workflows/terraform.yml"
 env:
   GCP_PROJECT_NUMBER: ${{ secrets.GCP_PROJECT_NUMBER }}
   TERRAFORM_LOCAL_VARIABLE: ${{ secrets.TERRAFORM_LOCAL_VARIABLE }}
