@@ -30,6 +30,7 @@ jobs:
       - name: terraform local varianle
         run: |
           echo "${{ secrets.TERRAFORM_LOCAL_VARIABLE }}" | sed 's/"/\\"/g' > local.tf
+          ls
 
       - name: Upload local.tf
         uses: actions/upload-artifact@v2
