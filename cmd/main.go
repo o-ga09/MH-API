@@ -7,7 +7,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	
+
 	if err := s.Run(); err != nil {
 		panic(err)
 	}
