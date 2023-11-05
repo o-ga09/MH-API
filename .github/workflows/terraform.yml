@@ -21,6 +21,11 @@ defaults:
 jobs:
   build-containe-image:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+      pull-requests: write
+
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v2
@@ -61,7 +66,7 @@ jobs:
         uses: "google-github-actions/auth@v1"
         with:
           workload_identity_provider: "projects/${{ env.GCP_PROJECT_NUMBER }}/locations/global/workloadIdentityPools/terraform-pool/providers/terraform-provider"
-          service_account: "terraform@mh-api-389212.iam.gserviceaccount.com"
+          service_account: "${{ env.TERRAFORM_SERVICE_ACCOUNT }}"
 
       - uses: hashicorp/setup-terraform@v2
 
