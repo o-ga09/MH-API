@@ -29,8 +29,7 @@ jobs:
 
       - name: terraform local varianle
         run: |
-          echo "${{ secrets.SECRET_VALUE }}" | sed 's/"/\\"/g' > local.tf
-          cat local.tf
+          echo "${{ scerets.TERRAFORM_LOCAL_VARIABLE }}" | sed 's/"/\\"/g' > local.tf
 
       - id: "auth"
         name: "Authenticate to Google Cloud"
