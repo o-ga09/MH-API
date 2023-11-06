@@ -4,20 +4,20 @@ info:
   description: モンハンAPIゲートウェイ
   version: 1.0.0
 securityDefinitions:
-  sa_auth:
+  auth0_jwk:
     authorizationUrl: ""
     flow: "implicit"
     type: "oauth2"
-    # Replace YOUR-ACCOUNT-NAME with your Auth0 account name.
-    x-google-issuer: "auto-deploy@mh-api-389212.iam.gserviceaccount.com"
-    x-google-jwks_uri: "https://www.googleapis.com/robot/v1/metadata/x509/auto-deploy@mh-api-389212.iam.gserviceaccount.com"
+    x-google-issuer: "https://dev-8pmkik25y0obts0r.us.auth0.com/"
+    x-google-jwks_uri: "https://dev-8pmkik25y0obts0r.us.auth0.com/.well-known/jwks.json"
+    x-google-audience: "https://mh-api-v2-8aznfogc.an.gateway.dev"
 
 schemes:
   - https
 produces:
   - application/json
 x-google-backend:
-  address: https://stg-mh-api-xpzdc5i4rq-an.a.run.app
+  address: https://mh-api-xpzdc5i4rq-an.a.run.app
 paths:
   /v1/health:
     get:
