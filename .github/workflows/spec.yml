@@ -6,7 +6,7 @@ on:
       - main
     paths:
       - ".github/workflows/spec.yml"
-      - "doc/openapi/*.yml"
+      - "doc/openapi/schema.yml"
 
 jobs:
   build:

@@ -18,7 +18,6 @@ produces:
   - application/json
 x-google-backend:
   address: https://mh-api-xpzdc5i4rq-an.a.run.app
-paths:
   /v1/health:
     get:
       summary: ヘルスチェック
@@ -88,7 +87,7 @@ paths:
           schema:
             type: object
       security:
-        - sa_auth: []
+        - auth0_jwk: []
   /v1/monsters/{requestId}:
     get:
       summary: idのモンスター情報を取得する
@@ -115,7 +114,7 @@ paths:
       summary: モンスターの情報を更新する
       operationId: updateMonsters
       security:
-        - sa_auth: []
+        - auth0_jwk: []
       parameters:
         - name: requestId
           in: path
@@ -163,7 +162,7 @@ paths:
       summary: モンスターの情報を削除する
       operationId: deleteMonsters
       security:
-        - sa_auth: []
+        - auth0_jwk: []
       parameters:
         - name: requestId
           in: path
@@ -187,7 +186,7 @@ paths:
       summary: モンスターの情報をjsonで一括追加する
       operationId: createMonstersJson
       security:
-        - sa_auth: []
+        - auth0_jwk: []
       parameters:
         - name: requestJson
           in: body
