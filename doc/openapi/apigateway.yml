@@ -18,6 +18,7 @@ produces:
   - application/json
 x-google-backend:
   address: https://mh-api-xpzdc5i4rq-an.a.run.app
+paths:
   /v1/health:
     get:
       summary: ヘルスチェック
