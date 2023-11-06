@@ -65,12 +65,19 @@ func (m *MonsterHandler) GetById(c *gin.Context) {
 }
 
 func (m *MonsterHandler) Create(c *gin.Context) {
-	name := c.PostForm("name")
-	desc := c.PostForm("desc")
-	Location := c.PostForm("location")
-	specify := c.PostForm("specify")
-	weak_a := c.PostForm("weakness_A")
-	weak_e := c.PostForm("weakness_E")
+	var requestBody map[string]interface{}
+
+	if err := c.BindJSON(&requestBody); err != nil {
+		c.JSON(http.StatusBadRequest, MessageResponse{Message: err.Error()})
+		return
+	}
+
+	name := requestBody["name"].(string)
+	desc := requestBody["desc"].(string)
+	Location := requestBody["location"].(string)
+	specify := requestBody["specify"].(string)
+	weak_a := requestBody["weakness_A"].(string)
+	weak_e := requestBody["weakness_E"].(string)
 
 	weak_map_a := util.Mapping(weak_a)
 	weak_map_e := util.Mapping(weak_e)
@@ -87,23 +94,31 @@ func (m *MonsterHandler) Create(c *gin.Context) {
 	err := m.monsterService.Create(monsterJson)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, MessageResponse{Message: "can not create"})
-		slog.Log(c, middleware.SeverityError, "err", err)
+		slog.Log(c, middleware.SeverityError, "err", "Error", err)
 		return
 	}
+	slog.Log(c, middleware.SeverityInfo, "success", "info", MessageResponse{Message: "Record Create"})
 	c.JSON(http.StatusOK, MessageResponse{Message: "success!"})
 }
 
 func (m MonsterHandler) Update(c *gin.Context) {
+	var requestBody map[string]interface{}
+
 	id := c.Param("id")
 	i, _ := strconv.Atoi(id)
 	monsterId := entity.MonsterId{Value: i}
 
-	name := c.PostForm("name")
-	desc := c.PostForm("desc")
-	Location := c.PostForm("location")
-	specify := c.PostForm("specify")
-	weak_a := c.PostForm("weakness_A")
-	weak_e := c.PostForm("weakness_E")
+	if err := c.BindJSON(&requestBody); err != nil {
+		c.JSON(http.StatusBadRequest, MessageResponse{Message: err.Error()})
+		return
+	}
+
+	name := requestBody["name"].(string)
+	desc := requestBody["desc"].(string)
+	Location := requestBody["location"].(string)
+	specify := requestBody["specify"].(string)
+	weak_a := requestBody["weakness_A"].(string)
+	weak_e := requestBody["weakness_E"].(string)
 
 	weak_map_a := util.Mapping(weak_a)
 	weak_map_e := util.Mapping(weak_e)
@@ -124,6 +139,7 @@ func (m MonsterHandler) Update(c *gin.Context) {
 		slog.Log(c, middleware.SeverityError, "err", err)
 		return
 	}
+	slog.Log(c, middleware.SeverityInfo, "success", "info", MessageResponse{Message: "Record Update"})
 	c.JSON(http.StatusOK, MessageResponse{Message: "success!"})
 }
 
@@ -138,6 +154,7 @@ func (m MonsterHandler) Delete(c *gin.Context) {
 		slog.Log(c, middleware.SeverityError, "err", err)
 		return
 	}
+	slog.Log(c, middleware.SeverityInfo, "success", "info", MessageResponse{Message: "Record Delete"})
 	c.JSON(http.StatusOK, MessageResponse{Message: "success!"})
 }
 
@@ -167,7 +184,7 @@ func (m *MonsterHandler) CreateJson(c *gin.Context) {
 			return
 		}
 	}
-
+	slog.Log(c, middleware.SeverityInfo, "success", "info", MessageResponse{Message: "Record Create"})
 	c.JSON(http.StatusOK, MessageResponse{Message: "success!"})
 }
 

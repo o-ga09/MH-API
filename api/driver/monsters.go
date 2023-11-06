@@ -2,6 +2,7 @@ package driver
 
 import (
 	"context"
+	"fmt"
 	"mh-api/api/middleware"
 
 	"log/slog"
@@ -37,27 +38,30 @@ func (d MonsterDriverimpl) GetById(id int) Monster {
 }
 
 func (d MonsterDriverimpl) Create(driverJson MonsterJson) error {
-	err := d.conn.Create(&driverJson)
+	err := d.conn.Create(&driverJson).Error
 	if err != nil {
-		slog.Log(context.Background(), middleware.SeverityError, "Driver Error", "error", err.Error)
+		slog.Log(context.Background(), middleware.SeverityError, "Driver Error", "error", err)
+		return fmt.Errorf(" Record Create Error : %v", err)
 	}
-	return err.Error
+	return nil
 }
 
 func (d MonsterDriverimpl) Update(id int, driverJson MonsterJson) error {
-	err := d.conn.Model(&Monster{}).Where("id = ?", id).Updates(&driverJson)
+	err := d.conn.Model(&Monster{}).Where("id = ?", id).Updates(&driverJson).Error
 	if err != nil {
-		slog.Log(context.Background(), middleware.SeverityError, "Driver Error", "error", err.Error)
+		slog.Log(context.Background(), middleware.SeverityError, "Driver Error", "error", err)
+		return fmt.Errorf(" Record Update Error : %v", err)
 	}
-	return err.Error
+	return nil
 }
 
 func (d MonsterDriverimpl) Delete(id int) error {
-	err := d.conn.Delete(&Monster{}, id)
+	err := d.conn.Delete(&Monster{}, id).Error
 	if err != nil {
-		slog.Log(context.Background(), middleware.SeverityError, "Driver Error", "error", err.Error)
+		slog.Log(context.Background(), middleware.SeverityError, "Driver Error", "error", err)
+		return fmt.Errorf(" Record Delete Error : %v", err)
 	}
-	return err.Error
+	return nil
 }
 
 func ProvideMonsterDriver(conn *gorm.DB) MonsterDriver {
