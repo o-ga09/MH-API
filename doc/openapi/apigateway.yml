@@ -10,7 +10,7 @@ securityDefinitions:
     type: "oauth2"
     x-google-issuer: "https://dev-8pmkik25y0obts0r.us.auth0.com/"
     x-google-jwks_uri: "https://dev-8pmkik25y0obts0r.us.auth0.com/.well-known/jwks.json"
-    x-google-audience: "https://mh-api-v2-8aznfogc.an.gateway.dev/"
+    x-google-audiences: "https://mh-api-v2-8aznfogc.an.gateway.dev/"
 
 schemes:
   - https
