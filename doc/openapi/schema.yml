@@ -3,7 +3,7 @@ info:
   title: MH-API
   version: 1.0.0
 servers:
-  - url: https://mh-api-xpzdc5i4rq-an.a.run.app
+  - url: https://mh-api-v2-8aznfogc.an.gateway.dev/
     description: PROD環境
 paths:
   /v1/health:
