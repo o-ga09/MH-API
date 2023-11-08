@@ -102,8 +102,8 @@ func Test_Create(t *testing.T) {
 		args entity.MonsterJson
 		err  error
 	}{
-		{name: "正常系 - リストの要素が2つ以上の場合", args: monsterJson, err: nil},
-		{name: "異常系 - リストの要素が空の場合", args: entity.MonsterJson{}, err: errors.New("FAILD TO REGISTERED")},
+		{name: "正常系 - モンスターの詳細情報を登録成功", args: monsterJson, err: nil},
+		{name: "異常系 - モンスターの詳細情報を登録失敗", args: entity.MonsterJson{}, err: errors.New("FAILD TO REGISTERED")},
 	}
 
 	for _, tt := range cases {
@@ -127,8 +127,8 @@ func Test_Update(t *testing.T) {
 		arg2 entity.MonsterJson
 		err  error
 	}{
-		{name: "正常系 - リストの要素が2つ以上の場合", arg1: entity.MonsterId{Value: 1}, arg2: monsterJson, err: nil},
-		{name: "異常系 - リストの要素が空の場合", arg1: entity.MonsterId{Value: 2}, arg2: monsterJson, err: errors.New("FAILD TO UPDATED")},
+		{name: "正常系 - モンスターの詳細情報を更新成功", arg1: entity.MonsterId{Value: 1}, arg2: monsterJson, err: nil},
+		{name: "異常系 - モンスターの詳細情報を更新失敗", arg1: entity.MonsterId{Value: 2}, arg2: monsterJson, err: errors.New("FAILD TO UPDATED")},
 	}
 
 	for _, tt := range cases {
@@ -151,8 +151,8 @@ func Test_Delete(t *testing.T) {
 		arg  entity.MonsterId
 		err  error
 	}{
-		{name: "正常系 - リストの要素が2つ以上の場合", arg: entity.MonsterId{Value: 1}, err: nil},
-		{name: "異常系 - リストの要素が空の場合", arg: entity.MonsterId{Value: 2}, err: errors.New("FAILD TO DELETED")},
+		{name: "正常系 - モンスターの詳細情報を削除成功", arg: entity.MonsterId{Value: 1}, err: nil},
+		{name: "異常系 - モンスターの詳細情報を削除失敗", arg: entity.MonsterId{Value: 2}, err: errors.New("FAILD TO DELETED")},
 	}
 
 	for _, tt := range cases {

@@ -43,7 +43,7 @@ func (g MonsterGateway) GetById(id entity.MonsterId) (entity.Monster, error) {
 	monsterId := id.Value
 	res := g.monsterDriver.GetById(monsterId)
 	if res.Id == 0 {
-		return entity.Monster{}, fmt.Errorf("{%d} のレコードはありませんでした！", id)
+		return entity.Monster{}, fmt.Errorf("id = %d のレコードはありませんでした！", id)
 	}
 
 	weakness_a := util.Mapping(res.Weakness_attack)
