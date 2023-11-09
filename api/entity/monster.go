@@ -5,7 +5,7 @@ type Monsters struct {
 }
 
 type MonsterId struct {
-	Value int //モンスターID
+	Value string //モンスターID
 }
 
 type MonsterName struct {
@@ -20,16 +20,20 @@ type MonsterLocation struct {
 	Value string //モンスターの生息地
 }
 
-type MonsterSpecify struct {
+type MonsterCategory struct {
 	Value string //モンスターの分類
 }
 
+type GameTitle struct {
+	Value string // 登場したゲームタイトル
+}
+
 type MonsterWeakness_A struct {
-	Value map[string]string //モンスターの弱点(物理肉質)
+	Value Weakness_attack //モンスターの弱点(物理肉質)
 }
 
 type MonsterWeakness_E struct {
-	Value map[string]string //モンスターの弱点(属性肉質)
+	Value Weakness_element //モンスターの弱点(属性肉質)
 
 }
 
@@ -38,16 +42,48 @@ type Monster struct {
 	Name             MonsterName       `db:"name" json:"name,omitempty"`
 	Desc             MonsterDesc       `db:"desc" json:"desc,omitempty"`
 	Location         MonsterLocation   `db:"location" json:"location,omitempty"`
-	Specify          MonsterSpecify    `db:"specify" json:"specify,omitempty"`
+	Category         MonsterCategory   `db:"category" json:"category,omitempty"`
+	Title            GameTitle         `db:"title,omitempty"`
 	Weakness_attack  MonsterWeakness_A `db:"weakness_attack" json:"weakness___attack,omitempty"`
 	Weakness_element MonsterWeakness_E `db:"weakness_element" json:"weakness___element,omitempty"`
 }
 
 type MonsterJson struct {
-	Name             MonsterName       `json:"name"`
-	Desc             MonsterDesc       `json:"desc"`
-	Location         MonsterLocation   `json:"location"`
-	Specify          MonsterSpecify    `json:"specify"`
-	Weakness_attack  MonsterWeakness_A `json:"weakness___attack"`
-	Weakness_element MonsterWeakness_E `json:"weakness___element"`
+	Name             MonsterName       `json:"name,omitempty"`
+	Desc             MonsterDesc       `json:"desc,omitempty"`
+	Location         MonsterLocation   `json:"location,omitempty"`
+	Category         MonsterCategory   `json:"category,omitempty"`
+	Title            GameTitle         `json:"title,omitempty"`
+	Weakness_attack  MonsterWeakness_A `json:"weakness_attack,omitempty"`
+	Weakness_element MonsterWeakness_E `json:"weakness_element,omitempty"`
+}
+
+type Weakness_attack struct {
+	FrontLegs AttackCatetgory `json:"front_legs,omitempty"`
+	Tail      AttackCatetgory `json:"tail,omitempty"`
+	HindLegs  AttackCatetgory `json:"hind_legs,omitempty"`
+	Body      AttackCatetgory `json:"body,omitempty"`
+	Head      AttackCatetgory `json:"head,omitempty"`
+}
+
+type Weakness_element struct {
+	FrontLegs Elements `json:"front_legs,omitempty"`
+	Tail      Elements `json:"tail,omitempty"`
+	HindLegs  Elements `json:"hind_legs,omitempty"`
+	Body      Elements `json:"body,omitempty"`
+	Head      Elements `json:"head,omitempty"`
+}
+
+type AttackCatetgory struct {
+	Slashing string `json:"slashing,omitempty"`
+	Blow     string `json:"blow,omitempty"`
+	Bullet   string `json:"bullet,omitempty"`
+}
+
+type Elements struct {
+	Fire      string `json:"fire,omitempty"`
+	Water     string `json:"water,omitempty"`
+	Lightning string `json:"lightning,omitempty"`
+	Ice       string `json:"ice,omitempty"`
+	Dragon    string `json:"dragon,omitempty"`
 }
