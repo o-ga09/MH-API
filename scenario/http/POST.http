@@ -1,0 +1,74 @@
+POST http://localhost:8080/v1/monsters HTTP/1.1
+content-type: application/json
+
+{
+  "name": "test",
+  "desc": "hogehoge",
+  "location": "piyo",
+  "category": "new",
+  "title": "var",
+  "weakness_attack": {
+    "front_legs": {
+      "slashing": "10",
+      "blow": "10",
+      "bullet": "10"
+    },
+    "tail": {
+      "slashing": "10",
+      "blow": "10",
+      "bullet": "10"
+    },
+    "hind_legs": {
+      "slashing": "10",
+      "blow": "10",
+      "bullet": "10"
+    },
+    "body": {
+      "slashing": "10",
+      "blow": "10",
+      "bullet": "10"
+    },
+    "head": {
+      "slashing": "10",
+      "blow": "10",
+      "bullet": "10"
+    }
+  },
+  "weakness_element": {
+    "front_legs": {
+      "fire": "10",
+      "water": "10",
+      "lightning": "10",
+      "ice": "10",
+      "dragon": "10"
+    },
+    "tail": {
+      "fire": "10",
+      "water": "10",
+      "lightning": "10",
+      "ice": "10",
+      "dragon": "10"
+    },
+    "hind_legs": {
+      "fire": "10",
+      "water": "10",
+      "lightning": "10",
+      "ice": "10",
+      "dragon": "10"
+    },
+    "body": {
+      "fire": "10",
+      "water": "10",
+      "lightning": "10",
+      "ice": "10",
+      "dragon": "10"
+    },
+    "head": {
+      "fire": "10",
+      "water": "10",
+      "lightning": "10",
+      "ice": "10",
+      "dragon": "10"
+    }
+  }
+}
