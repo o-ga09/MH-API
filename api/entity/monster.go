@@ -49,6 +49,7 @@ type Monster struct {
 }
 
 type MonsterJson struct {
+	Id               MonsterId         `json:"monster_id,omitempty"`
 	Name             MonsterName       `json:"name,omitempty"`
 	Desc             MonsterDesc       `json:"desc,omitempty"`
 	Location         MonsterLocation   `json:"location,omitempty"`
