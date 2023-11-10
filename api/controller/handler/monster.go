@@ -111,6 +111,7 @@ func (m *MonsterHandler) Create(c *gin.Context) {
 		Tail:      entity.Elements(requestBody.Weakness_element.Tail),
 	}
 	monsterJson := entity.MonsterJson{
+		Id:               entity.MonsterId{Value: requestBody.MonsterId},
 		Name:             entity.MonsterName{Value: requestBody.Name},
 		Desc:             entity.MonsterDesc{Value: requestBody.Desc},
 		Location:         entity.MonsterLocation{Value: requestBody.Location},
