@@ -14,21 +14,49 @@ resource "google_cloud_run_service" "stg-mh-api" {
     location        = local.region
     autogenerate_revision_name = true
     template {
-    spec {
-            containers {
-                image = local.container_image
-                startup_probe {
-                    initial_delay_seconds = 0
-                    timeout_seconds = 1
-                    period_seconds = 3
-                    failure_threshold = 1
-                    tcp_socket {
-                        port = 8080
-                    }
-                }
+      spec {
+        container_concurrency = 10
+        containers {
+          image = local.container_image
+          startup_probe {
+            initial_delay_seconds = 0
+            timeout_seconds = 1
+            period_seconds = 3
+            failure_threshold = 1
+            tcp_socket {
+              port = 8080
             }
-            service_account_name = local.cloud_run_invoke_service_account
+          }
+          env {
+            name  = "DATABASE_URL"
+            value_from {
+              secret_key_ref {
+                name = "DATABASE_URL"
+                key  = 1
+              }
+            }
+          }
+          env {
+            name  = "ENV"
+            value_from {
+              secret_key_ref {
+                name = "ENV"
+                key  = 1
+              }
+            }
+          }
+          ports {
+            container_port = 8080
+            name           = "http1"
+          }  
         }
+        service_account_name = local.cloud_run_invoke_service_account
+      }
+      metadata {
+        annotations = {
+          "autoscaling.knative.dev/maxScale"      = "1"
+        }
+      }
     }
     traffic {
         percent         = 100

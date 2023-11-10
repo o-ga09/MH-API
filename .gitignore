@@ -29,3 +29,4 @@ scenario/report.json
 terraform/.terraform
 terraform/.terraform.lock.hcl
 terraform/local.tf
+scenario/httptest
