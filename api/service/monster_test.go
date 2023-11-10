@@ -8,40 +8,51 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-var weakness = map[string]string{
-	"頭部": "10",
-	"前脚": "10",
-	"胴体": "10",
-	"後脚": "10",
-	"尻尾": "10",
+var weakness_a = entity.Weakness_attack{
+	FrontLegs: entity.AttackCatetgory{Slashing: "10", Blow: "10", Bullet: "10"},
+	HindLegs:  entity.AttackCatetgory{Slashing: "10", Blow: "10", Bullet: "10"},
+	Head:      entity.AttackCatetgory{Slashing: "10", Blow: "10", Bullet: "10"},
+	Body:      entity.AttackCatetgory{Slashing: "10", Blow: "10", Bullet: "10"},
+	Tail:      entity.AttackCatetgory{Slashing: "10", Blow: "10", Bullet: "10"},
+}
+
+var weakness_e = entity.Weakness_element{
+	FrontLegs: entity.Elements{Fire: "10", Water: "10", Lightning: "10", Ice: "10", Dragon: "10"},
+	HindLegs:  entity.Elements{Fire: "10", Water: "10", Lightning: "10", Ice: "10", Dragon: "10"},
+	Head:      entity.Elements{Fire: "10", Water: "10", Lightning: "10", Ice: "10", Dragon: "10"},
+	Body:      entity.Elements{Fire: "10", Water: "10", Lightning: "10", Ice: "10", Dragon: "10"},
+	Tail:      entity.Elements{Fire: "10", Water: "10", Lightning: "10", Ice: "10", Dragon: "10"},
 }
 
 var response_1 = entity.Monster{
-	Id:               entity.MonsterId{Value: 1},
+	Id:               entity.MonsterId{Value: "001"},
 	Name:             entity.MonsterName{Value: "ジンオウガ"},
 	Desc:             entity.MonsterDesc{Value: "霊峰に生息する牙竜種"},
 	Location:         entity.MonsterLocation{Value: "渓流"},
-	Specify:          entity.MonsterSpecify{Value: "牙竜種"},
-	Weakness_attack:  entity.MonsterWeakness_A{Value: weakness},
-	Weakness_element: entity.MonsterWeakness_E{Value: weakness},
+	Category:         entity.MonsterCategory{Value: "牙竜種"},
+	Title:            entity.GameTitle{Value: "モンスターハンターライズ"},
+	Weakness_attack:  entity.MonsterWeakness_A{Value: weakness_a},
+	Weakness_element: entity.MonsterWeakness_E{Value: weakness_e},
 }
 
 var response_2 = entity.Monster{
-	Id:               entity.MonsterId{Value: 1},
+	Id:               entity.MonsterId{Value: "002"},
 	Name:             entity.MonsterName{Value: "ジンオウガ"},
 	Desc:             entity.MonsterDesc{Value: "霊峰に生息する牙竜種"},
 	Location:         entity.MonsterLocation{Value: "渓流"},
-	Specify:          entity.MonsterSpecify{Value: "牙竜種"},
-	Weakness_attack:  entity.MonsterWeakness_A{Value: weakness},
-	Weakness_element: entity.MonsterWeakness_E{Value: weakness},
+	Category:         entity.MonsterCategory{Value: "牙竜種"},
+	Title:            entity.GameTitle{Value: "モンスターハンターライズ"},
+	Weakness_attack:  entity.MonsterWeakness_A{Value: weakness_a},
+	Weakness_element: entity.MonsterWeakness_E{Value: weakness_e},
 }
 var monsterJson = entity.MonsterJson{
 	Name:             entity.MonsterName{Value: "ジンオウガ"},
 	Desc:             entity.MonsterDesc{Value: "渓流に生息する牙竜種"},
 	Location:         entity.MonsterLocation{Value: "渓流"},
-	Specify:          entity.MonsterSpecify{Value: "牙竜種"},
-	Weakness_attack:  entity.MonsterWeakness_A{Value: weakness},
-	Weakness_element: entity.MonsterWeakness_E{Value: weakness},
+	Category:         entity.MonsterCategory{Value: "牙竜種"},
+	Title:            entity.GameTitle{Value: "モンスターハンターライズ"},
+	Weakness_attack:  entity.MonsterWeakness_A{Value: weakness_a},
+	Weakness_element: entity.MonsterWeakness_E{Value: weakness_e},
 }
 
 func Test_GetAll(t *testing.T) {
@@ -77,8 +88,8 @@ func Test_GetById(t *testing.T) {
 		expected interface{}
 		err      error
 	}{
-		{name: "正常系 - モンスターの詳細情報を取得可能な場合", args: entity.MonsterId{Value: 1}, expected: response_1, err: nil},
-		{name: "異常系 - モンスターの詳細情報が取得不可な場合", args: entity.MonsterId{Value: 2}, expected: entity.Monster{}, err: errors.New("NOT FOUND")},
+		{name: "正常系 - モンスターの詳細情報を取得可能な場合", args: entity.MonsterId{Value: "001"}, expected: response_1, err: nil},
+		{name: "異常系 - モンスターの詳細情報が取得不可な場合", args: entity.MonsterId{Value: "002"}, expected: entity.Monster{}, err: errors.New("NOT FOUND")},
 	}
 
 	for _, tt := range cases {
@@ -127,8 +138,8 @@ func Test_Update(t *testing.T) {
 		arg2 entity.MonsterJson
 		err  error
 	}{
-		{name: "正常系 - モンスターの詳細情報を更新成功", arg1: entity.MonsterId{Value: 1}, arg2: monsterJson, err: nil},
-		{name: "異常系 - モンスターの詳細情報を更新失敗", arg1: entity.MonsterId{Value: 2}, arg2: monsterJson, err: errors.New("FAILD TO UPDATED")},
+		{name: "正常系 - モンスターの詳細情報を更新成功", arg1: entity.MonsterId{Value: "001"}, arg2: monsterJson, err: nil},
+		{name: "異常系 - モンスターの詳細情報を更新失敗", arg1: entity.MonsterId{Value: "002"}, arg2: monsterJson, err: errors.New("FAILD TO UPDATED")},
 	}
 
 	for _, tt := range cases {
@@ -151,8 +162,8 @@ func Test_Delete(t *testing.T) {
 		arg  entity.MonsterId
 		err  error
 	}{
-		{name: "正常系 - モンスターの詳細情報を削除成功", arg: entity.MonsterId{Value: 1}, err: nil},
-		{name: "異常系 - モンスターの詳細情報を削除失敗", arg: entity.MonsterId{Value: 2}, err: errors.New("FAILD TO DELETED")},
+		{name: "正常系 - モンスターの詳細情報を削除成功", arg: entity.MonsterId{Value: "001"}, err: nil},
+		{name: "異常系 - モンスターの詳細情報を削除失敗", arg: entity.MonsterId{Value: "002"}, err: errors.New("FAILD TO DELETED")},
 	}
 
 	for _, tt := range cases {
@@ -161,7 +172,7 @@ func Test_Delete(t *testing.T) {
 			t.Parallel()
 			monsterInterface := new(MockMonsterInterface)
 			service := MonsterService{monsterInterface}
-			monsterInterface.On("Delete",tt.arg).Return(tt.err)
+			monsterInterface.On("Delete", tt.arg).Return(tt.err)
 			err := service.Delete(tt.arg)
 
 			assert.Equal(t, tt.err, err)
