@@ -2,7 +2,7 @@ package service
 
 import (
 	"mh-api/api/entity"
-	"mh-api/api/gateway/port"
+	"mh-api/api/service/port"
 )
 
 type MonsterService struct {

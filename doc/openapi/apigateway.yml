@@ -4,13 +4,13 @@ info:
   description: モンハンAPIゲートウェイ
   version: 1.0.0
 securityDefinitions:
-  sa_auth:
+  auth0_jwk:
     authorizationUrl: ""
     flow: "implicit"
     type: "oauth2"
-    # Replace YOUR-ACCOUNT-NAME with your Auth0 account name.
-    x-google-issuer: "auto-deploy@mh-api-389212.iam.gserviceaccount.com"
-    x-google-jwks_uri: "https://www.googleapis.com/robot/v1/metadata/x509/auto-deploy@mh-api-389212.iam.gserviceaccount.com"
+    x-google-issuer: "https://dev-8pmkik25y0obts0r.us.auth0.com/"
+    x-google-jwks_uri: "https://dev-8pmkik25y0obts0r.us.auth0.com/.well-known/jwks.json"
+    x-google-audiences: "https://mh-api-v2-8aznfogc.an.gateway.dev/"
 
 schemes:
   - https
@@ -23,8 +23,6 @@ paths:
     get:
       summary: ヘルスチェック
       operationId: health
-      x-google-backend:
-        address: https://mh-api-xpzdc5i4rq-an.a.run.app/v1/health
       responses:
         "200":
           description: ヘルスチェック
@@ -34,8 +32,6 @@ paths:
     get:
       description: 全てのモンスター情報を取得する
       operationId: getMonsters
-      x-google-backend:
-        address: https://mh-api-xpzdc5i4rq-an.a.run.app/v1/monsters
       responses:
         "200":
           description: モンスター情報の取得に成功
@@ -92,7 +88,7 @@ paths:
           schema:
             type: object
       security:
-        - sa_auth: []
+        - auth0_jwk: []
   /v1/monsters/{requestId}:
     get:
       summary: idのモンスター情報を取得する
@@ -119,7 +115,7 @@ paths:
       summary: モンスターの情報を更新する
       operationId: updateMonsters
       security:
-        - sa_auth: []
+        - auth0_jwk: []
       parameters:
         - name: requestId
           in: path
@@ -167,7 +163,7 @@ paths:
       summary: モンスターの情報を削除する
       operationId: deleteMonsters
       security:
-        - sa_auth: []
+        - auth0_jwk: []
       parameters:
         - name: requestId
           in: path
@@ -191,7 +187,7 @@ paths:
       summary: モンスターの情報をjsonで一括追加する
       operationId: createMonstersJson
       security:
-        - sa_auth: []
+        - auth0_jwk: []
       parameters:
         - name: requestJson
           in: body

@@ -1,51 +1,157 @@
-openapi: 3.0.3
+openapi: 3.0.0
 info:
   title: MH-API
+  description: Monster Hunter API Documentation
   version: 1.0.0
 servers:
-  - url: https://mh-api-xpzdc5i4rq-an.a.run.app
+  - url: https://mh-api-v2-8aznfogc.an.gateway.dev/
     description: PROD環境
+  - url: http://localhost:8080
+    description: ローカル環境
 paths:
   /v1/health:
     get:
       summary: ヘルスチェックエンドポイント
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               example:
-                status: OK
+                Message: OK
   /v1/monsters:
     get:
       summary: 全てのモンスター情報を取得する
       responses:
-        '200':
+        "200":
           description: モンスター情報の取得に成功
           content:
             application/json:
-                example:
-                  Monsters:
-                  - id: 1
-                    name: ジンオウガ
-                    desc: 別名雷狼竜とよばれる電気を操る牙竜種
-                    location: 渓流
-                    specify: 牙竜種
-                    weakness_attack: 頭部
-                    weakness_element: 氷
-                  - id: 2
-                    name: タマミツネ
-                    desc: 別名泡狐竜と呼ばれる泡状の液体を操る海竜種
-                    location: 渓流
-                    specify: 泡狐竜
-                    weakness_attack: 頭部
-                    weakness_element: 火
-        '404':
+              example:
+                total: 2
+                monsters:
+                  - monster_id: "1"
+                    name: "Rathalos"
+                    desc: "King of the Skies"
+                    location: "Ancient Forest"
+                    category: "Flying Wyvern"
+                    title: "King of the Skies"
+                    weakness_attack:
+                      front_legs:
+                        slashing: "10"
+                        blow: "10"
+                        bullet: "10"
+                      tail:
+                        slashing: "10"
+                        blow: "10"
+                        bullet: "10"
+                      hind_legs:
+                        slashing: "10"
+                        blow: "10"
+                        bullet: "10"
+                      body:
+                        slashing: "10"
+                        blow: "10"
+                        bullet: "10"
+                      head:
+                        slashing: "10"
+                        blow: "10"
+                        bullet: "10"
+                    weakness_element:
+                      front_legs:
+                        fire: "10"
+                        water: "10"
+                        lightning: "10"
+                        ice: "10"
+                        dragon: "10"
+                      tail:
+                        fire: "10"
+                        water: "10"
+                        lightning: "10"
+                        ice: "10"
+                        dragon: "10"
+                      hind_legs:
+                        fire: "10"
+                        water: "10"
+                        lightning: "10"
+                        ice: "10"
+                        dragon: "10"
+                      body:
+                        fire: "10"
+                        water: "10"
+                        lightning: "10"
+                        ice: "10"
+                        dragon: "10"
+                      head:
+                        fire: "10"
+                        water: "10"
+                        lightning: "10"
+                        ice: "10"
+                        dragon: "10"
+                  - monster_id: "2"
+                    name: "Diablos"
+                    desc: "Horned Wyvern"
+                    location: "Wildspire Waste"
+                    category: "Brute Wyvern"
+                    title: "Horned Tyrant"
+                    weakness_attack:
+                      front_legs:
+                        slashing: "15"
+                        blow: "12"
+                        bullet: "8"
+                      tail:
+                        slashing: "18"
+                        blow: "15"
+                        bullet: "10"
+                      hind_legs:
+                        slashing: "12"
+                        blow: "10"
+                        bullet: "8"
+                      body:
+                        slashing: "20"
+                        blow: "18"
+                        bullet: "15"
+                      head:
+                        slashing: "25"
+                        blow: "20"
+                        bullet: "18"
+                    weakness_element:
+                      front_legs:
+                        fire: "20"
+                        water: "15"
+                        lightning: "10"
+                        ice: "5"
+                        dragon: "15"
+                      tail:
+                        fire: "15"
+                        water: "10"
+                        lightning: "5"
+                        ice: "20"
+                        dragon: "18"
+                      hind_legs:
+                        fire: "10"
+                        water: "5"
+                        lightning: "20"
+                        ice: "15"
+                        dragon: "10"
+                      body:
+                        fire: "5"
+                        water: "18"
+                        lightning: "15"
+                        ice: "10"
+                        dragon: "20"
+                      head:
+                        fire: "18"
+                        water: "20"
+                        lightning: "12"
+                        ice: "15"
+                        dragon: "25"
+        "404":
           description: モンスターが見つかりません
           content:
             application/json:
-                example:
-                  message: Not Found
+              example:
+                message: Not Found
     post:
       summary: モンスターの情報を追加する
       requestBody:
@@ -53,261 +159,260 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                desc:
-                  type: string
-                location:
-                  type: string
-                specify:
-                  type: string
-                weakness_attack:
-                  type: string
-                weakness_element:
-                  type: string
-            example:
-                name: ジンオウガ
-                desc: 別名雷狼竜とよばれる電気を操る牙竜種
-                location: 渓流
-                specify: 牙竜種
-                weakness_attack: 頭部
-                weakness_element: 氷
+              $ref: "#/components/schemas/Json"
       responses:
-        '200':
+        "200":
           description: モンスターの情報の登録に成功
           content:
             application/json:
               example:
-                message: success
-
-        '403':
+                message: "success!"
+        "403":
           description: 認証失敗
           content:
             application/json:
               example:
                 message: Authentication error
 
-        '500':
+        "500":
           description: サーバエラーにより更新失敗
           content:
             application/json:
               example:
                 message: Internal Server Error
+
   /v1/monsters/{id}:
     get:
       summary: モンスター情報を取得する
       parameters:
-        - $ref: '#/components/parameters/PathId'
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
       responses:
-        '200':
-          description: モンスター情報の取得に成功
-          content:
-            application/json:
-              example:
-                name: ジンオウガ
-                desc: 別名雷狼竜とよばれる電気を操る牙竜種
-                location: 渓流
-                specify: 牙竜種
-                weakness_attack: 頭部
-                weakness_element: 氷
-        '404':
-          description: モンスターの情報が見つかりません
-          content:
-            application/json:
-              example:
-                message: Not Found
-  /v1/monsters/json:
-    post:
-      summary: jsonを使用してモンスターの情報一括追加する
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                desc:
-                  type: string
-                location:
-                  type: string
-                specify:
-                  type: string
-                weakness_attack:
-                  type: string
-                weakness_element:
-                  type: string
-            example:
-              req:
-                - name: ジンオウガ
-                  desc: 別名雷狼竜とよばれる電気を操る牙竜種
-                  location: 渓流
-                  specify: 牙竜種
-                  weakness_attack: 頭部
-                  weakness_element: 氷
-      responses:
-        '200':
+        "200":
           description: モンスターの情報の登録に成功
           content:
             application/json:
               example:
-                message: success
-        '403':
+                monster:
+                  monster_id: "1"
+                  name: "Rathalos"
+                  desc: "King of the Skies"
+                  location: "Ancient Forest"
+                  category: "Flying Wyvern"
+                  title: "King of the Skies"
+                  weakness_attack:
+                    front_legs:
+                      slashing: "10"
+                      blow: "10"
+                      bullet: "10"
+                    tail:
+                      slashing: "10"
+                      blow: "10"
+                      bullet: "10"
+                    hind_legs:
+                      slashing: "10"
+                      blow: "10"
+                      bullet: "10"
+                    body:
+                      slashing: "10"
+                      blow: "10"
+                      bullet: "10"
+                    head:
+                      slashing: "10"
+                      blow: "10"
+                      bullet: "10"
+                  weakness_element:
+                    front_legs:
+                      fire: "10"
+                      water: "10"
+                      lightning: "10"
+                      ice: "10"
+                      dragon: "10"
+                    tail:
+                      fire: "10"
+                      water: "10"
+                      lightning: "10"
+                      ice: "10"
+                      dragon: "10"
+                    hind_legs:
+                      fire: "10"
+                      water: "10"
+                      lightning: "10"
+                      ice: "10"
+                      dragon: "10"
+                    body:
+                      fire: "10"
+                      water: "10"
+                      lightning: "10"
+                      ice: "10"
+                      dragon: "10"
+                    head:
+                      fire: "10"
+                      water: "10"
+                      lightning: "10"
+                      ice: "10"
+                      dragon: "10"
+        "403":
           description: 認証失敗
           content:
             application/json:
               example:
                 message: Authentication error
-        '500':
+        "500":
           description: サーバエラーによ登録失敗
           content:
             application/json:
               example:
                 message: Internal Server Error
-  /v1/monsters/{updateid}:
-    patch:
-      summary: モンスターの情報を更新する
+    put:
+      summary: モンスターの情報の更新に成功
       parameters:
-        - $ref: '#/components/parameters/PathId'
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                desc:
-                  type: string
-                location:
-                  type: string
-                specify:
-                  type: string
-                weakness_attack:
-                  type: string
-                weakness_element:
-                  type: string
-            example:
-                name: ジンオウガ
-                desc: 別名雷狼竜とよばれる電気を操る牙竜種
-                location: 渓流
-                specify: 牙竜種
-                weakness_attack: 頭部
-                weakness_element: 氷
+              $ref: "#/components/schemas/Json"
       responses:
-        '200':
+        "200":
           description: モンスターの情報の更新に成功
           content:
             application/json:
               example:
-                message: success
-        '403':
+                message: "success!"
+        "403":
           description: 認証失敗
           content:
             application/json:
               example:
                 meesage: Authentication error
-        '500':
+        "500":
           description: サーバエラーにより更新失敗
           content:
             application/json:
               example:
                 message: Internal Server Errorr
   /v1/monsters/{deleteid}:
-    get:
+    delete:
       summary: モンスターの情報を削除する
       parameters:
-        - $ref: '#/components/parameters/PathId'
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
       responses:
-        '200':
+        "200":
           description: モンスターの情報の削除に成功
           content:
             application/json:
               example:
-                message: success
-        '403':
+                message: "success!"
+        "403":
           description: 認証失敗
           content:
             application/json:
               example:
                 message: Authentication error
-        '500':
+        "500":
           description: サーバエラーにより削除失敗
           content:
             application/json:
               example:
                 message: Internal Server Error
+
 components:
-  parameters:
-    PathId:
-      name: id
-      in: path
-      description: モンスターのID
-      required: true
-      schema:
-        type: string
-
-  requestBodies:
-    Monster:
-      content:
-        application/json:
-          schema:
-            type: object
-            required:
-              - name
-            properties:
-              name:
-                type: string
-              desc:
-                type: string
-              location:
-                type: string
-              specify:
-                type: string
-              weakness_attack:
-                type: string
-              weakness_element:
-                type: string
-
   schemas:
-    Monster:
+    Json:
       type: object
       properties:
-        id:
+        monster_id:
           type: string
+          example: "1"
         name:
           type: string
+          example: "Rathalos"
         desc:
           type: string
+          example: "King of the Skies"
         location:
           type: string
-        specify:
+          example: "Ancient Forest"
+        category:
           type: string
+          example: "Flying Wyvern"
+        title:
+          type: string
+          example: "King of the Skies"
         weakness_attack:
-          type: string
+          $ref: "#/components/schemas/Weakness_attack"
         weakness_element:
-          type: string
+          $ref: "#/components/schemas/Weakness_element"
 
-    Monsters:
-      type: array
+    Weakness_attack:
+      type: object
       properties:
-        id:
-          type: integer
-        name:
+        front_legs:
+          $ref: "#/components/schemas/AttackCatetgory"
+        tail:
+          $ref: "#/components/schemas/AttackCatetgory"
+        hind_legs:
+          $ref: "#/components/schemas/AttackCatetgory"
+        body:
+          $ref: "#/components/schemas/AttackCatetgory"
+        head:
+          $ref: "#/components/schemas/AttackCatetgory"
+
+    Weakness_element:
+      type: object
+      properties:
+        front_legs:
+          $ref: "#/components/schemas/Elements"
+        tail:
+          $ref: "#/components/schemas/Elements"
+        hind_legs:
+          $ref: "#/components/schemas/Elements"
+        body:
+          $ref: "#/components/schemas/Elements"
+        head:
+          $ref: "#/components/schemas/Elements"
+
+    AttackCatetgory:
+      type: object
+      properties:
+        slashing:
           type: string
-        desc:
+          example: "10"
+        blow:
           type: string
-        location:
+          example: "10"
+        bullet:
           type: string
-        specify:
+          example: "10"
+
+    Elements:
+      type: object
+      properties:
+        fire:
           type: string
-        weakness_attack:
+          example: "10"
+        water:
           type: string
-        weakness_element:
+          example: "10"
+        lightning:
           type: string
-    message:
-      type: string
+          example: "10"
+        ice:
+          type: string
+          example: "10"
+        dragon:
+          type: string
+          example: "10"

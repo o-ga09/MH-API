@@ -2,8 +2,10 @@ name: Deploy apigateway
 
 on:
   push:
-    branches:
-      - main
+    branches-ignore:
+      - "**"
+    tags:
+      - "v*"
     paths:
       - "doc/openapi/apigateway.yml"
 

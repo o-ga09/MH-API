@@ -2,10 +2,11 @@ name: Open API Spec
 
 on:
   push:
-    branches: ["main"]
+    branches:
+      - main
     paths:
       - ".github/workflows/spec.yml"
-      - "doc/openapi/*.yml"
+      - "doc/openapi/schema.yml"
 
 jobs:
   build:

@@ -103,5 +103,4 @@ func Strtomap(mapped map[string]string) string {
 	}
 
 	return str
-
 }

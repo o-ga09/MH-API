@@ -24,7 +24,7 @@ func New(ctx context.Context) *gorm.DB {
 	dialector := mysql.Open(cfg.Database_url)
 
 	if db, err = gorm.Open(dialector, &gorm.Config{NamingStrategy: schema.NamingStrategy{
-		SingularTable: true,
+		SingularTable: false,
 	}}); err != nil {
 		connect(dialector, 100)
 	}

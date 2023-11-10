@@ -2,6 +2,9 @@ package driver
 
 import (
 	"context"
+	"fmt"
+
+	"mh-api/api/gateway/repository"
 	"mh-api/api/middleware"
 
 	"log/slog"
@@ -9,80 +12,52 @@ import (
 	"gorm.io/gorm"
 )
 
-type MonsterDriver interface {
-	GetAll() []Monster
-	GetById(id int) Monster
-	Create(MonsterJson) error
-	Update(id int, monsterJson MonsterJson) error
-	Delete(id int) error
-}
-
 type MonsterDriverimpl struct {
 	conn *gorm.DB
 }
 
-func (d MonsterDriverimpl) GetAll() []Monster {
-	monster := []Monster{}
+func (d MonsterDriverimpl) GetAll() []repository.Monster {
+	monster := []repository.Monster{}
 	d.conn.Find(&monster)
 	return monster
 }
 
-func (d MonsterDriverimpl) GetById(id int) Monster {
-	monster := Monster{}
-	err := d.conn.First(&monster, id).Error
+func (d MonsterDriverimpl) GetById(id int) repository.Monster {
+	monster := repository.Monster{}
+	err := d.conn.Where("`monster_id` = ?", id).First(&monster).Error
 	if err != nil {
 		slog.Log(context.Background(), middleware.SeverityError, "Driver Error", "error", err)
 	}
 	return monster
 }
 
-func (d MonsterDriverimpl) Create(driverJson MonsterJson) error {
-	err := d.conn.Create(&driverJson)
+func (d MonsterDriverimpl) Create(driverJson repository.MonsterJson) error {
+	err := d.conn.Create(&driverJson).Error
 	if err != nil {
-		slog.Log(context.Background(), middleware.SeverityError, "Driver Error", "error", err.Error)
+		slog.Log(context.Background(), middleware.SeverityError, "Driver Error", "error", err)
+		return fmt.Errorf(" Record Create Error : %v", err)
 	}
-	return err.Error
+	return nil
 }
 
-func (d MonsterDriverimpl) Update(id int, driverJson MonsterJson) error {
-	err := d.conn.Model(&Monster{}).Where("id = ?", id).Updates(&driverJson)
+func (d MonsterDriverimpl) Update(id int, driverJson repository.MonsterJson) error {
+	err := d.conn.Model(&repository.Monster{}).Where("id = ?", id).Updates(&driverJson).Error
 	if err != nil {
-		slog.Log(context.Background(), middleware.SeverityError, "Driver Error", "error", err.Error)
+		slog.Log(context.Background(), middleware.SeverityError, "Driver Error", "error", err)
+		return fmt.Errorf(" Record Update Error : %v", err)
 	}
-	return err.Error
+	return nil
 }
 
 func (d MonsterDriverimpl) Delete(id int) error {
-	err := d.conn.Delete(&Monster{}, id)
+	err := d.conn.Delete(&repository.Monster{}, id).Error
 	if err != nil {
-		slog.Log(context.Background(), middleware.SeverityError, "Driver Error", "error", err.Error)
+		slog.Log(context.Background(), middleware.SeverityError, "Driver Error", "error", err)
+		return fmt.Errorf(" Record Delete Error : %v", err)
 	}
-	return err.Error
+	return nil
 }
 
-func ProvideMonsterDriver(conn *gorm.DB) MonsterDriver {
+func ProvideMonsterDriver(conn *gorm.DB) repository.MonsterDriver {
 	return &MonsterDriverimpl{conn: conn}
-}
-
-type Monster struct {
-	Id               int    `db:"id" json:"id,omitempty"`
-	Name             string `db:"name" json:"name,omitempty"`
-	Desc             string `db:"desc" json:"desc,omitempty"`
-	Location         string `db:"location" json:"location,omitempty"`
-	Specify          string `db:"specify" json:"specify,omitempty"`
-	Weakness_attack  string `db:"weakness_attack" json:"weakness___attack,omitempty"`
-	Weakness_element string `db:"weakness_element" json:"weakness___element,omitempty"`
-}
-
-type MonsterJson struct {
-	Name             string `db:"name" json:"name,omitempty"`
-	Desc             string `db:"desc" json:"desc,omitempty"`
-	Location         string `db:"location" json:"location,omitempty"`
-	Specify          string `db:"specify" json:"specify,omitempty"`
-	Weakness_attack  string `db:"weakness_attack" json:"weakness___attack,omitempty"`
-	Weakness_element string `db:"weakness_element" json:"weakness___element,omitempty"`
-}
-
-func (MonsterJson) TableName() string {
-	return "monster"
 }

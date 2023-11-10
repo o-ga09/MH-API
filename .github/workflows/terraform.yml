@@ -2,8 +2,12 @@ name: terraform
 
 on:
   push:
-    branches:
-      - main
+    branches-ignore:
+      - "**"
+    tags:
+      - "v*"
+    paths:
+      - "**.go"
   pull_request:
     paths:
       - "terraform/**"
