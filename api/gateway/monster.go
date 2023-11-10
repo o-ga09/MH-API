@@ -3,13 +3,13 @@ package gateway
 import (
 	"errors"
 	"fmt"
-	"mh-api/api/driver"
 	"mh-api/api/entity"
-	"mh-api/api/util"
+	"mh-api/api/gateway/repository"
+	"strconv"
 )
 
 type MonsterGateway struct {
-	monsterDriver driver.MonsterDriver
+	monsterDriver repository.MonsterDriver
 }
 
 func (g MonsterGateway) GetAll() (entity.Monsters, error) {
@@ -18,20 +18,34 @@ func (g MonsterGateway) GetAll() (entity.Monsters, error) {
 	var result entity.Monsters
 
 	if len(res) == 0 {
-		return entity.Monsters{}, errors.New("0件のレコードを取得しました！")
+		return entity.Monsters{}, errors.New("NOT FOUND")
 	}
 
 	for _, r := range res {
-		weakness_a := util.Mapping(r.Weakness_attack)
-		weakness_e := util.Mapping(r.Weakness_element)
+		monsterId := fmt.Sprintf("%010d", r.Id)
+		weak_a := entity.Weakness_attack{
+			FrontLegs: entity.AttackCatetgory(r.Weakness_attack.FrontLegs),
+			HindLegs:  entity.AttackCatetgory(r.Weakness_attack.HindLegs),
+			Head:      entity.AttackCatetgory(r.Weakness_attack.Head),
+			Body:      entity.AttackCatetgory(r.Weakness_attack.Body),
+			Tail:      entity.AttackCatetgory(r.Weakness_attack.Tail),
+		}
+		weak_e := entity.Weakness_element{
+			FrontLegs: entity.Elements(r.Weakness_element.FrontLegs),
+			HindLegs:  entity.Elements(r.Weakness_element.HindLegs),
+			Head:      entity.Elements(r.Weakness_element.Head),
+			Body:      entity.Elements(r.Weakness_element.Body),
+			Tail:      entity.Elements(r.Weakness_element.Tail),
+		}
 		data := entity.Monster{
-			Id:               entity.MonsterId{Value: r.Id},
+			Id:               entity.MonsterId{Value: monsterId},
 			Name:             entity.MonsterName{Value: r.Name},
 			Desc:             entity.MonsterDesc{Value: r.Desc},
 			Location:         entity.MonsterLocation{Value: r.Location},
-			Specify:          entity.MonsterSpecify{Value: r.Specify},
-			Weakness_attack:  entity.MonsterWeakness_A{Value: weakness_a},
-			Weakness_element: entity.MonsterWeakness_E{Value: weakness_e},
+			Category:         entity.MonsterCategory{Value: r.Category},
+			Title:            entity.GameTitle{Value: r.Title},
+			Weakness_attack:  entity.MonsterWeakness_A{Value: weak_a},
+			Weakness_element: entity.MonsterWeakness_E{Value: weak_e},
 		}
 		result.Values = append(result.Values, data)
 	}
@@ -40,39 +54,67 @@ func (g MonsterGateway) GetAll() (entity.Monsters, error) {
 }
 
 func (g MonsterGateway) GetById(id entity.MonsterId) (entity.Monster, error) {
-	monsterId := id.Value
-	res := g.monsterDriver.GetById(monsterId)
+	i, _ := strconv.Atoi(id.Value)
+
+	res := g.monsterDriver.GetById(i)
 	if res.Id == 0 {
-		return entity.Monster{}, fmt.Errorf("id = %d のレコードはありませんでした！", id)
+		return entity.Monster{}, fmt.Errorf("NOT FOUND : id = %s", id)
 	}
 
-	weakness_a := util.Mapping(res.Weakness_attack)
-	weakness_e := util.Mapping(res.Weakness_element)
-
+	monsterId := fmt.Sprintf("%010d", res.Id)
+	weak_a := entity.Weakness_attack{
+		FrontLegs: entity.AttackCatetgory(res.Weakness_attack.FrontLegs),
+		HindLegs:  entity.AttackCatetgory(res.Weakness_attack.HindLegs),
+		Head:      entity.AttackCatetgory(res.Weakness_attack.Head),
+		Body:      entity.AttackCatetgory(res.Weakness_attack.Body),
+		Tail:      entity.AttackCatetgory(res.Weakness_attack.Tail),
+	}
+	weak_e := entity.Weakness_element{
+		FrontLegs: entity.Elements(res.Weakness_element.FrontLegs),
+		HindLegs:  entity.Elements(res.Weakness_element.HindLegs),
+		Head:      entity.Elements(res.Weakness_element.Head),
+		Body:      entity.Elements(res.Weakness_element.Body),
+		Tail:      entity.Elements(res.Weakness_element.Tail),
+	}
 	result := entity.Monster{
-		Id:               entity.MonsterId{Value: res.Id},
+		Id:               entity.MonsterId{Value: monsterId},
 		Name:             entity.MonsterName{Value: res.Name},
 		Desc:             entity.MonsterDesc{Value: res.Desc},
 		Location:         entity.MonsterLocation{Value: res.Location},
-		Specify:          entity.MonsterSpecify{Value: res.Specify},
-		Weakness_attack:  entity.MonsterWeakness_A{Value: weakness_a},
-		Weakness_element: entity.MonsterWeakness_E{Value: weakness_e},
+		Category:         entity.MonsterCategory{Value: res.Category},
+		Title:            entity.GameTitle{Value: res.Title},
+		Weakness_attack:  entity.MonsterWeakness_A{Value: weak_a},
+		Weakness_element: entity.MonsterWeakness_E{Value: weak_e},
 	}
 
 	return result, nil
 }
 
 func (g MonsterGateway) Create(monsterJson entity.MonsterJson) error {
-	weakness_a := util.Strtomap(monsterJson.Weakness_attack.Value)
-	weakness_e := util.Strtomap(monsterJson.Weakness_element.Value)
+	weak_a := repository.Weakness_attack{
+		FrontLegs: repository.AttackCatetgory(monsterJson.Weakness_attack.Value.FrontLegs),
+		HindLegs:  repository.AttackCatetgory(monsterJson.Weakness_attack.Value.HindLegs),
+		Head:      repository.AttackCatetgory(monsterJson.Weakness_attack.Value.Head),
+		Body:      repository.AttackCatetgory(monsterJson.Weakness_attack.Value.Body),
+		Tail:      repository.AttackCatetgory(monsterJson.Weakness_attack.Value.Tail),
+	}
+	weak_e := repository.Weakness_element{
+		FrontLegs: repository.Elements(monsterJson.Weakness_element.Value.FrontLegs),
+		HindLegs:  repository.Elements(monsterJson.Weakness_element.Value.HindLegs),
+		Head:      repository.Elements(monsterJson.Weakness_element.Value.Head),
+		Body:      repository.Elements(monsterJson.Weakness_element.Value.Body),
+		Tail:      repository.Elements(monsterJson.Weakness_element.Value.Tail),
+	}
 
-	driverJson := driver.MonsterJson{
+	driverJson := repository.MonsterJson{
+		Id:               monsterJson.Id.Value,
 		Name:             monsterJson.Name.Value,
 		Desc:             monsterJson.Desc.Value,
 		Location:         monsterJson.Location.Value,
-		Specify:          monsterJson.Specify.Value,
-		Weakness_attack:  weakness_a,
-		Weakness_element: weakness_e,
+		Category:         monsterJson.Category.Value,
+		Title:            monsterJson.Title.Value,
+		Weakness_attack:  weak_a,
+		Weakness_element: weak_e,
 	}
 
 	err := g.monsterDriver.Create(driverJson)
@@ -80,17 +122,29 @@ func (g MonsterGateway) Create(monsterJson entity.MonsterJson) error {
 }
 
 func (g MonsterGateway) Update(id entity.MonsterId, monsterJson entity.MonsterJson) error {
-	monsterId := id.Value
-
-	weakness_a := util.Strtomap(monsterJson.Weakness_attack.Value)
-	weakness_e := util.Strtomap(monsterJson.Weakness_element.Value)
-	driverJson := driver.MonsterJson{
+	monsterId, _ := strconv.Atoi(id.Value)
+	weak_a := repository.Weakness_attack{
+		FrontLegs: repository.AttackCatetgory(monsterJson.Weakness_attack.Value.FrontLegs),
+		HindLegs:  repository.AttackCatetgory(monsterJson.Weakness_attack.Value.HindLegs),
+		Head:      repository.AttackCatetgory(monsterJson.Weakness_attack.Value.Head),
+		Body:      repository.AttackCatetgory(monsterJson.Weakness_attack.Value.Body),
+		Tail:      repository.AttackCatetgory(monsterJson.Weakness_attack.Value.Tail),
+	}
+	weak_e := repository.Weakness_element{
+		FrontLegs: repository.Elements(monsterJson.Weakness_element.Value.FrontLegs),
+		HindLegs:  repository.Elements(monsterJson.Weakness_element.Value.HindLegs),
+		Head:      repository.Elements(monsterJson.Weakness_element.Value.Head),
+		Body:      repository.Elements(monsterJson.Weakness_element.Value.Body),
+		Tail:      repository.Elements(monsterJson.Weakness_element.Value.Tail),
+	}
+	driverJson := repository.MonsterJson{
 		Name:             monsterJson.Name.Value,
 		Desc:             monsterJson.Desc.Value,
 		Location:         monsterJson.Location.Value,
-		Specify:          monsterJson.Specify.Value,
-		Weakness_attack:  weakness_a,
-		Weakness_element: weakness_e,
+		Category:         monsterJson.Category.Value,
+		Title:            monsterJson.Title.Value,
+		Weakness_attack:  weak_a,
+		Weakness_element: weak_e,
 	}
 
 	err := g.monsterDriver.Update(monsterId, driverJson)
@@ -98,12 +152,12 @@ func (g MonsterGateway) Update(id entity.MonsterId, monsterJson entity.MonsterJs
 }
 
 func (g MonsterGateway) Delete(id entity.MonsterId) error {
-	monsterId := id.Value
+	monsterId, _ := strconv.Atoi(id.Value)
 
 	err := g.monsterDriver.Delete(monsterId)
 	return err
 }
 
-func ProvideMonsterDriver(monsterDriver driver.MonsterDriver) MonsterGateway {
+func ProvideMonsterDriver(monsterDriver repository.MonsterDriver) MonsterGateway {
 	return MonsterGateway{monsterDriver: monsterDriver}
 }
