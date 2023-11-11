@@ -9,8 +9,8 @@ on:
       - ".github/workflows/create_record.yml"
       - "cmd/csvtojson"
 env:
-  client_id: ${{ secrets.clientid }}
-  clientsecret: ${{ secrets.clientsecrets }}
+  clientid: ${{ secrets.clientid }}
+  clientsecret: ${{ secrets.clientsecret }}
   audienceurl: ${{ secrets.audienceurl }}
   granttype: ${{ secrets.granttype }}
 
