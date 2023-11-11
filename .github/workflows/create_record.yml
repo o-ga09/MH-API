@@ -37,7 +37,7 @@ jobs:
           echo "TOKEN=$(token)" >> $GITHUB_ENV
       - name: call API
         run: |
-          curl -X POST \
+          curl -request POST \
+          --url ${{ env.audienceurl }}/v1/monsters/json \
           --header 'authorization: Bearer {{ env.TOKEN }}' \
-          --data @./data/output/data.json \
-          ${{ env.audienceurl }}/v1/monsters/json
+          --data @./data/output/data.json
