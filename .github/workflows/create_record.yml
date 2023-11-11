@@ -33,11 +33,11 @@ jobs:
           token=$(curl -X POST \
           -H "Content-type: application/json" \
           -d '{"client_id":"${{ env.clientid }}","client_secret":"${{ env.clientsecret }}","audience":"${{ env.audienceurl }}","grant_type":"${{ env.granttype }}"}'\
-          https://dev-8pmkik25y0obts0r.us.auth0.com/oauth/token | jq -r '.access_token')
+          --url https://dev-8pmkik25y0obts0r.us.auth0.com/oauth/token | jq -r '.access_token')
           echo "TOKEN=$(token)" >> $GITHUB_ENV
       - name: call API
         run: |
           curl -request POST \
           --url ${{ env.audienceurl }}/v1/monsters/json \
-          --header 'authorization: Bearer {{ env.TOKEN }}' \
+          --header 'authorization: Bearer {{ TOKEN }}' \
           --data @./data/output/data.json
