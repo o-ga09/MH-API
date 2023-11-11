@@ -38,6 +38,6 @@ jobs:
       - name: call API
         run: |
           curl --request POST \
-          --url https://mh-api-v2-8aznfogc.an.gateway.dev/v1/monsters/json \
-          --header "authorization: Bearer \'$token \' " \
+          --url ${{ secretsAUDIENCEURL }}/v1/monsters/json \
+          --header "authorization: Bearer '$TOKEN'" \
           --data @./data/output/data.json
