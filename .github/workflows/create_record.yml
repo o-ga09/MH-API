@@ -40,4 +40,4 @@ jobs:
           curl -X POST \
           -b "token={{ env.TOKEN }}" \
           --data @./data/output/data.json \
-          http://localhost:8080/v1/auth/monsters/json
+          ${{ env.audienceurl }}/monsters/json
