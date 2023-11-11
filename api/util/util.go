@@ -6,7 +6,6 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-	"strings"
 )
 
 type RequestJson struct {
@@ -82,25 +81,4 @@ func CsvToJson() {
 	if err != nil {
 		log.Fatal(err)
 	}
-}
-
-func Mapping(str string) map[string]string {
-	arr := strings.Split(str, " ")
-	result := make(map[string]string)
-	keys := [5]string{"頭部", "前脚", "胴体", "後脚", "尻尾"}
-
-	for i, value := range arr {
-		result[keys[i]] = value
-	}
-
-	return result
-}
-
-func Strtomap(mapped map[string]string) string {
-	var str string
-	for _, value := range mapped {
-		str += value + " "
-	}
-
-	return str
 }
