@@ -61,9 +61,9 @@ func (m *MonsterHandler) GetAll(c *gin.Context) {
 
 func (m *MonsterHandler) GetById(c *gin.Context) {
 	id := c.Param("id")
-	if !(regexp.MustCompile(`^[0-9]{10}$`).MatchString(id) && len(id) == 10)  {
-		c.JSON(http.StatusBadRequest,MessageResponse{Message: "Invalid request"})
-		slog.Log(c, middleware.SeverityError, "error", "error",fmt.Errorf("INVALID REQUEST : %s",id))
+	if !(regexp.MustCompile(`^[0-9]{10}$`).MatchString(id) && len(id) == 10) {
+		c.JSON(http.StatusBadRequest, MessageResponse{Message: "Invalid request"})
+		slog.Log(c, middleware.SeverityError, "error", "error", fmt.Errorf("INVALID REQUEST : %s", id))
 		return
 	}
 	monsterId := entity.MonsterId{Value: id}
@@ -142,9 +142,9 @@ func (m MonsterHandler) Update(c *gin.Context) {
 	var requestBody Json
 
 	id := c.Param("id")
-	if !(regexp.MustCompile(`^[0-9]{10}$`).MatchString(id) && len(id) == 10)  {
-		c.JSON(http.StatusBadRequest,MessageResponse{Message: "Invalid request"})
-		slog.Log(c, middleware.SeverityError, "error", "error",fmt.Errorf("INVALID REQUEST : %s",id))
+	if !(regexp.MustCompile(`^[0-9]{10}$`).MatchString(id) && len(id) == 10) {
+		c.JSON(http.StatusBadRequest, MessageResponse{Message: "Invalid request"})
+		slog.Log(c, middleware.SeverityError, "error", "error", fmt.Errorf("INVALID REQUEST : %s", id))
 		return
 	}
 	monsterId := entity.MonsterId{Value: id}
@@ -189,9 +189,9 @@ func (m MonsterHandler) Update(c *gin.Context) {
 
 func (m MonsterHandler) Delete(c *gin.Context) {
 	id := c.Param("id")
-	if !(regexp.MustCompile(`^[0-9]{10}$`).MatchString(id) && len(id) == 10)  {
-		c.JSON(http.StatusBadRequest,MessageResponse{Message: "Invalid request"})
-		slog.Log(c, middleware.SeverityError, "error", "error",fmt.Errorf("INVALID REQUEST : %s",id))
+	if !(regexp.MustCompile(`^[0-9]{10}$`).MatchString(id) && len(id) == 10) {
+		c.JSON(http.StatusBadRequest, MessageResponse{Message: "Invalid request"})
+		slog.Log(c, middleware.SeverityError, "error", "error", fmt.Errorf("INVALID REQUEST : %s", id))
 		return
 	}
 	monsterId := entity.MonsterId{Value: id}
