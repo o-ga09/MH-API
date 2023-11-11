@@ -38,6 +38,6 @@ jobs:
       - name: call API
         run: |
           curl -X POST \
-          -b "token={{ env.TOKEN }}" \
+          --header 'authorization: Bearer {{ env.TOKEN }}' \
           --data @./data/output/data.json \
-          ${{ env.audienceurl }}/monsters/json
+          ${{ env.audienceurl }}/v1/monsters/json
