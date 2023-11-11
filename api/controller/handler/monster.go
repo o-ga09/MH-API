@@ -6,6 +6,7 @@ import (
 	"mh-api/api/entity"
 	"mh-api/api/middleware"
 	"mh-api/api/service"
+	"regexp"
 
 	"net/http"
 
@@ -60,12 +61,18 @@ func (m *MonsterHandler) GetAll(c *gin.Context) {
 
 func (m *MonsterHandler) GetById(c *gin.Context) {
 	id := c.Param("id")
+	if !(regexp.MustCompile(`^[0-9]{10}$`).MatchString(id) && len(id) == 10)  {
+		c.JSON(http.StatusBadRequest,MessageResponse{Message: "Invalid request"})
+		slog.Log(c, middleware.SeverityError, "error", "error",fmt.Errorf("INVALID REQUEST : %s",id))
+		return
+	}
 	monsterId := entity.MonsterId{Value: id}
 
 	res, err := m.monsterService.GetById(monsterId)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, MessageResponse{Message: fmt.Sprintf("can not get id : %s", id)})
 		slog.Log(c, middleware.SeverityError, "error", "error", err.Error())
+		return
 	}
 	weak_a := Weakness_attack{
 		FrontLegs: AttackCatetgory(res.Weakness_attack.Value.FrontLegs),
@@ -135,6 +142,11 @@ func (m MonsterHandler) Update(c *gin.Context) {
 	var requestBody Json
 
 	id := c.Param("id")
+	if !(regexp.MustCompile(`^[0-9]{10}$`).MatchString(id) && len(id) == 10)  {
+		c.JSON(http.StatusBadRequest,MessageResponse{Message: "Invalid request"})
+		slog.Log(c, middleware.SeverityError, "error", "error",fmt.Errorf("INVALID REQUEST : %s",id))
+		return
+	}
 	monsterId := entity.MonsterId{Value: id}
 
 	if err := c.BindJSON(&requestBody); err != nil {
@@ -177,6 +189,11 @@ func (m MonsterHandler) Update(c *gin.Context) {
 
 func (m MonsterHandler) Delete(c *gin.Context) {
 	id := c.Param("id")
+	if !(regexp.MustCompile(`^[0-9]{10}$`).MatchString(id) && len(id) == 10)  {
+		c.JSON(http.StatusBadRequest,MessageResponse{Message: "Invalid request"})
+		slog.Log(c, middleware.SeverityError, "error", "error",fmt.Errorf("INVALID REQUEST : %s",id))
+		return
+	}
 	monsterId := entity.MonsterId{Value: id}
 
 	err := m.monsterService.Delete(monsterId)
@@ -212,6 +229,7 @@ func (m *MonsterHandler) CreateJson(c *gin.Context) {
 			Tail:      entity.Elements(record.Weakness_element.Tail),
 		}
 		monsterJson := entity.MonsterJson{
+			Id:               entity.MonsterId{Value: record.MonsterId},
 			Name:             entity.MonsterName{Value: record.Name},
 			Desc:             entity.MonsterDesc{Value: record.Desc},
 			Location:         entity.MonsterLocation{Value: record.Location},

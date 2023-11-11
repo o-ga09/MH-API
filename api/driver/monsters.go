@@ -35,7 +35,7 @@ func (d MonsterDriverimpl) GetById(id string) repository.Monster {
 func (d MonsterDriverimpl) Create(driverJson repository.MonsterJson) error {
 	driverJson.CreatedAt = time.Now()
 	driverJson.UpdatedAt = time.Now()
-	err := d.conn.Debug().Create(&driverJson).Error
+	err := d.conn.Create(&driverJson).Error
 	if err != nil {
 		slog.Log(context.Background(), middleware.SeverityError, "Driver Error", "error", err)
 		return fmt.Errorf(" Record Create Error : %v", err)
