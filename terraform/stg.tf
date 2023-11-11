@@ -45,19 +45,12 @@ resource "google_cloud_run_service" "stg-mh-api" {
               }
             }
           }
-          env {
-            name  = "ALLOW_URL"
-            value_from {
-              secret_key_ref {
-                  name = "ALLOW_URL"
-                  key  = 1
-              }
-            }
-          }
+
           ports {
             container_port = 8080
             name           = "http1"
           }  
+
         }
         service_account_name = local.cloud_run_invoke_service_account
       }
@@ -65,6 +58,7 @@ resource "google_cloud_run_service" "stg-mh-api" {
         annotations = {
           "autoscaling.knative.dev/maxScale"      = "1"
         }
+
       }
     }
     traffic {
