@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"gorm.io/gorm"
 )
 
 var repo_weak_a = repository.Weakness_attack{
@@ -42,7 +43,10 @@ var entity_weak_e = entity.Weakness_element{
 }
 
 var mock_response_1 = repository.Monster{
-	Id:               1,
+	Model: gorm.Model{
+		ID: 1,
+	},
+	MonsterId:        "0000000001",
 	Name:             "ジンオウガ",
 	Desc:             "霊峰に生息する牙竜種",
 	Location:         "渓流",
@@ -53,7 +57,10 @@ var mock_response_1 = repository.Monster{
 }
 
 var mock_response_2 = repository.Monster{
-	Id:               2,
+	Model: gorm.Model{
+		ID: 2,
+	},
+	MonsterId:        "0000000002",
 	Name:             "ジンオウガ",
 	Desc:             "霊峰に生息する牙竜種",
 	Location:         "渓流",
@@ -136,13 +143,13 @@ func Test_GetById(t *testing.T) {
 	cases := []struct {
 		name     string
 		arg      entity.MonsterId
-		mockarg  int
+		mockarg  string
 		mock     interface{}
 		expected interface{}
 		err      error
 	}{
-		{name: "正常系 - モンスターの詳細情報を取得可能な場合", arg: entity.MonsterId{Value: "0000000001"}, mockarg: 1, mock: mock_response_1, expected: response_1, err: nil},
-		{name: "異常系 - モンスターの詳細情報が取得不可な場合", arg: entity.MonsterId{Value: "0000000002"}, mockarg: 2, mock: repository.Monster{}, expected: entity.Monster{}, err: errors.New("NOT FOUND : id = {0000000002}")},
+		{name: "正常系 - モンスターの詳細情報を取得可能な場合", arg: entity.MonsterId{Value: "0000000001"}, mockarg: "0000000001", mock: mock_response_1, expected: response_1, err: nil},
+		{name: "異常系 - モンスターの詳細情報が取得不可な場合", arg: entity.MonsterId{Value: "0000000002"}, mockarg: "0000000002", mock: repository.Monster{}, expected: entity.Monster{}, err: errors.New("NOT FOUND : id = {0000000002}")},
 	}
 
 	for _, tt := range cases {
@@ -190,12 +197,12 @@ func Test_Update(t *testing.T) {
 		name     string
 		arg1     entity.MonsterId
 		arg2     entity.MonsterJson
-		mockarg1 int
+		mockarg1 string
 		mockarg2 interface{}
 		err      error
 	}{
-		{name: "正常系 - モンスターの詳細情報を更新成功", arg1: entity.MonsterId{Value: "0000000001"}, arg2: arg, mockarg1: 1, mockarg2: mock_arg, err: nil},
-		{name: "異常系 - モンスターの詳細情報を更新失敗", arg1: entity.MonsterId{Value: "0000000002"}, arg2: entity.MonsterJson{}, mockarg1: 2, mockarg2: repository.MonsterJson{}, err: errors.New("FAILED TO UPDATED")},
+		{name: "正常系 - モンスターの詳細情報を更新成功", arg1: entity.MonsterId{Value: "0000000001"}, arg2: arg, mockarg1: "0000000001", mockarg2: mock_arg, err: nil},
+		{name: "異常系 - モンスターの詳細情報を更新失敗", arg1: entity.MonsterId{Value: "0000000002"}, arg2: entity.MonsterJson{}, mockarg1: "0000000002", mockarg2: repository.MonsterJson{}, err: errors.New("FAILED TO UPDATED")},
 	}
 
 	for _, tt := range cases {
@@ -216,11 +223,11 @@ func Test_Delete(t *testing.T) {
 	cases := []struct {
 		name    string
 		arg     entity.MonsterId
-		mockarg int
+		mockarg string
 		err     error
 	}{
-		{name: "正常系 - モンスターの詳細情報を削除成功", arg: entity.MonsterId{Value: "0000000001"}, mockarg: 1, err: nil},
-		{name: "異常系 - モンスターの詳細情報を削除失敗", arg: entity.MonsterId{Value: "0000000002"}, mockarg: 2, err: errors.New("FAILED TO DELETED")},
+		{name: "正常系 - モンスターの詳細情報を削除成功", arg: entity.MonsterId{Value: "0000000001"}, mockarg: "0000000001", err: nil},
+		{name: "異常系 - モンスターの詳細情報を削除失敗", arg: entity.MonsterId{Value: "0000000002"}, mockarg: "0000000002", err: errors.New("FAILED TO DELETED")},
 	}
 
 	for _, tt := range cases {

@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"mh-api/api/entity"
 	"mh-api/api/gateway/repository"
-	"strconv"
 )
 
 type MonsterGateway struct {
@@ -22,7 +21,6 @@ func (g MonsterGateway) GetAll() (entity.Monsters, error) {
 	}
 
 	for _, r := range res {
-		monsterId := fmt.Sprintf("%010d", r.Id)
 		weak_a := entity.Weakness_attack{
 			FrontLegs: entity.AttackCatetgory(r.Weakness_attack.FrontLegs),
 			HindLegs:  entity.AttackCatetgory(r.Weakness_attack.HindLegs),
@@ -38,7 +36,7 @@ func (g MonsterGateway) GetAll() (entity.Monsters, error) {
 			Tail:      entity.Elements(r.Weakness_element.Tail),
 		}
 		data := entity.Monster{
-			Id:               entity.MonsterId{Value: monsterId},
+			Id:               entity.MonsterId{Value: r.MonsterId},
 			Name:             entity.MonsterName{Value: r.Name},
 			Desc:             entity.MonsterDesc{Value: r.Desc},
 			Location:         entity.MonsterLocation{Value: r.Location},
@@ -54,14 +52,11 @@ func (g MonsterGateway) GetAll() (entity.Monsters, error) {
 }
 
 func (g MonsterGateway) GetById(id entity.MonsterId) (entity.Monster, error) {
-	i, _ := strconv.Atoi(id.Value)
-
-	res := g.monsterDriver.GetById(i)
-	if res.Id == 0 {
+	res := g.monsterDriver.GetById(id.Value)
+	if res.ID == 0 {
 		return entity.Monster{}, fmt.Errorf("NOT FOUND : id = %s", id)
 	}
 
-	monsterId := fmt.Sprintf("%010d", res.Id)
 	weak_a := entity.Weakness_attack{
 		FrontLegs: entity.AttackCatetgory(res.Weakness_attack.FrontLegs),
 		HindLegs:  entity.AttackCatetgory(res.Weakness_attack.HindLegs),
@@ -77,7 +72,7 @@ func (g MonsterGateway) GetById(id entity.MonsterId) (entity.Monster, error) {
 		Tail:      entity.Elements(res.Weakness_element.Tail),
 	}
 	result := entity.Monster{
-		Id:               entity.MonsterId{Value: monsterId},
+		Id:               entity.MonsterId{Value: res.MonsterId},
 		Name:             entity.MonsterName{Value: res.Name},
 		Desc:             entity.MonsterDesc{Value: res.Desc},
 		Location:         entity.MonsterLocation{Value: res.Location},
@@ -122,7 +117,6 @@ func (g MonsterGateway) Create(monsterJson entity.MonsterJson) error {
 }
 
 func (g MonsterGateway) Update(id entity.MonsterId, monsterJson entity.MonsterJson) error {
-	monsterId, _ := strconv.Atoi(id.Value)
 	weak_a := repository.Weakness_attack{
 		FrontLegs: repository.AttackCatetgory(monsterJson.Weakness_attack.Value.FrontLegs),
 		HindLegs:  repository.AttackCatetgory(monsterJson.Weakness_attack.Value.HindLegs),
@@ -147,14 +141,12 @@ func (g MonsterGateway) Update(id entity.MonsterId, monsterJson entity.MonsterJs
 		Weakness_element: weak_e,
 	}
 
-	err := g.monsterDriver.Update(monsterId, driverJson)
+	err := g.monsterDriver.Update(id.Value, driverJson)
 	return err
 }
 
 func (g MonsterGateway) Delete(id entity.MonsterId) error {
-	monsterId, _ := strconv.Atoi(id.Value)
-
-	err := g.monsterDriver.Delete(monsterId)
+	err := g.monsterDriver.Delete(id.Value)
 	return err
 }
 

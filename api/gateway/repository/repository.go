@@ -4,19 +4,20 @@ import (
 	"database/sql/driver"
 	"encoding/json"
 	"fmt"
-	"time"
+
+	"gorm.io/gorm"
 )
 
 type MonsterDriver interface {
 	GetAll() []Monster
-	GetById(id int) Monster
+	GetById(id string) Monster
 	Create(MonsterJson) error
-	Update(id int, monsterJson MonsterJson) error
-	Delete(id int) error
+	Update(id string, monsterJson MonsterJson) error
+	Delete(id string) error
 }
 
 type Monster struct {
-	Id               int              `gorm:"column:id" json:"id,omitempty"`
+	gorm.Model
 	MonsterId        string           `gorm:"column:monster_id" json:"monster_id,omitempty"`
 	Name             string           `gorm:"column:name" json:"name,omitempty"`
 	Desc             string           `gorm:"column:desc" json:"desc,omitempty"`
@@ -25,11 +26,10 @@ type Monster struct {
 	Title            string           `gorm:"column:title" json:"title,omitempty"`
 	Weakness_attack  Weakness_attack  `gorm:"column:weakness_attack" json:"weakness_attack,omitempty"`
 	Weakness_element Weakness_element `gorm:"column:weakness_element" json:"weakness_element,omitempty"`
-	Created_at       time.Time        `gorm:"column:created_at" json:"created___at,omitempty"`
-	Updated_at       time.Time        `gorm:"column:updated_at" json:"updated___at,omitempty"`
 }
 
 type MonsterJson struct {
+	gorm.Model
 	Id               string           `gorm:"column:monster_id" json:"monster_id,omitempty"`
 	Name             string           `gorm:"column:name" json:"name,omitempty"`
 	Desc             string           `gorm:"column:desc" json:"desc,omitempty"`
@@ -109,5 +109,9 @@ func (w *Weakness_element) Scan(input interface{}) error {
 }
 
 func (MonsterJson) TableName() string {
+	return "monsters"
+}
+
+func (Monster) TableName() string {
 	return "monsters"
 }
