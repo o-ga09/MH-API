@@ -30,3 +30,4 @@ terraform/.terraform
 terraform/.terraform.lock.hcl
 terraform/local.tf
 scenario/httptest
+doc/openapi/APIGateway.md
