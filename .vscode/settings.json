@@ -1,6 +1,9 @@
 {
-    "yaml.schemas": {
-        "https://json.schemastore.org/github-workflow.json": "file:///Users/taichi/OSS/MH-API/.github/workflows/deploy.yml",
-        "https://raw.githubusercontent.com/OAI/OpenAPI-Specification/main/schemas/v3.1/schema.json": "file:///Users/taichi/OSS/MH-API/doc/openapi/apigateway.yml"
-    }
+  "yaml.schemas": {
+    "https://json.schemastore.org/github-workflow.json": [
+      "file:///Users/taichi/OSS/MH-API/.github/workflows/deploy.yml",
+      "file:///Users/taichi/OSS/MH-API/.github/workflows/create_record.yml"
+    ],
+    "https://raw.githubusercontent.com/OAI/OpenAPI-Specification/main/schemas/v3.1/schema.json": "file:///Users/taichi/OSS/MH-API/doc/openapi/apigateway.yml"
+  }
 }

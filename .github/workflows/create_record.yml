@@ -6,6 +6,11 @@ on:
       - main
     paths:
       - "data/input/data.csv"
+env:
+  client_id: ${{ secret.clientid }}
+  clientsecret: ${{ secret.clientsecret }}
+  audienceurl: ${{ secret.audienceurl }}
+  granttype: ${{ secret.granttype }}
 
 jobs:
   create-json:
@@ -23,10 +28,10 @@ jobs:
 
       - name: get authentication token
         run: |
-          toke=$(curl -X POST \
+          token=$(curl -X POST \
           -H "Content-type: application/json" \
-          -d '{"name":"${{ secrets.ADMIN }}","password":"${{ secrets.PASSOWRD }}"}' \
-          http://localhost:8080/v1/auth　| jq -r '.token')
+          -d '{"client_id":"${{ env.clientid }}","client_secret":"${{ env.clientsecret }}","audience":"${{ env.audienceurl }}","grant_type":"${{ env.granttype }}"}'\
+          https://dev-8pmkik25y0obts0r.us.auth0.com/oauth/token | jq -r '.access_token')
           echo "TOKEN=$(token)" >> $GITHUB_ENV
       - name: call API
         run: |
