@@ -39,5 +39,5 @@ jobs:
         run: |
           curl -request POST \
           --url ${{ env.audienceurl }}/v1/monsters/json \
-          --header 'authorization: Bearer ${{ env.TOKEN }}' \
+          --header 'authorization: Bearer $TOKEN' \
           --data @./data/output/data.json
