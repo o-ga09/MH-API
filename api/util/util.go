@@ -13,12 +13,55 @@ type RequestJson struct {
 }
 
 type Json struct {
-	Name             string `json:"name"`
-	Desc             string `json:"desc"`
-	Location         string `json:"location"`
-	Specify          string `json:"specify"`
-	Weakness_attack  string `json:"weakness_attack"`
-	Weakness_element string `json:"weakness_element"`
+	MonsterId        string           `json:"monster_id,omitempty"`
+	Name             string           `json:"name,omitempty"`
+	Desc             string           `json:"desc,omitempty"`
+	Location         string           `json:"location,omitempty"`
+	Category         string           `json:"category,omitempty"`
+	Title            string           `json:"title,omitempty"`
+	Weakness_attack  Weakness_attack  `json:"weakness_attack,omitempty"`
+	Weakness_element Weakness_element `json:"weakness_element,omitempty"`
+}
+
+type ResponseJson struct {
+	Id               string           `json:"monster_id,omitempty"`
+	Name             string           `json:"name,omitempty"`
+	Desc             string           `json:"desc,omitempty"`
+	Location         string           `json:"location,omitempty"`
+	Category         string           `json:"category,omitempty"`
+	Title            string           `json:"title,omitempty"`
+	Weakness_attack  Weakness_attack  `json:"weakness_attack,omitempty"`
+	Weakness_element Weakness_element `json:"weakness_element,omitempty"`
+}
+
+type Weakness_attack struct {
+	FrontLegs AttackCatetgory `json:"front_legs,omitempty"`
+	Tail      AttackCatetgory `json:"tail,omitempty"`
+	HindLegs  AttackCatetgory `json:"hind_legs,omitempty"`
+	Body      AttackCatetgory `json:"body,omitempty"`
+	Head      AttackCatetgory `json:"head,omitempty"`
+}
+
+type Weakness_element struct {
+	FrontLegs Elements `json:"front_legs,omitempty"`
+	Tail      Elements `json:"tail,omitempty"`
+	HindLegs  Elements `json:"hind_legs,omitempty"`
+	Body      Elements `json:"body,omitempty"`
+	Head      Elements `json:"head,omitempty"`
+}
+
+type AttackCatetgory struct {
+	Slashing string `json:"slashing,omitempty"`
+	Blow     string `json:"blow,omitempty"`
+	Bullet   string `json:"bullet,omitempty"`
+}
+
+type Elements struct {
+	Fire      string `json:"fire,omitempty"`
+	Water     string `json:"water,omitempty"`
+	Lightning string `json:"lightning,omitempty"`
+	Ice       string `json:"ice,omitempty"`
+	Dragon    string `json:"dragon,omitempty"`
 }
 
 func CsvToJson() {
@@ -53,12 +96,76 @@ func CsvToJson() {
 		}
 		// 各カラムのヘッダーをキーとして、値をマップに格納
 		row := Json{
-			Name:             record[0],
-			Desc:             record[1],
-			Location:         record[2],
-			Specify:          record[3],
-			Weakness_attack:  record[4],
-			Weakness_element: record[5],
+			MonsterId: record[0],
+			Name:      record[1],
+			Desc:      record[2],
+			Location:  record[3],
+			Category:  record[4],
+			Title:     record[5],
+			Weakness_attack: Weakness_attack{
+				FrontLegs: AttackCatetgory{
+					Slashing: record[6],
+					Blow:     record[7],
+					Bullet:   record[8],
+				},
+				Tail: AttackCatetgory{
+					Slashing: record[9],
+					Blow:     record[10],
+					Bullet:   record[11],
+				},
+				HindLegs: AttackCatetgory{
+					Slashing: record[12],
+					Blow:     record[13],
+					Bullet:   record[14],
+				},
+				Body: AttackCatetgory{
+					Slashing: record[15],
+					Blow:     record[16],
+					Bullet:   record[17],
+				},
+				Head: AttackCatetgory{
+					Slashing: record[18],
+					Blow:     record[19],
+					Bullet:   record[20],
+				},
+			},
+			Weakness_element: Weakness_element{
+				FrontLegs: Elements{
+					Fire:      record[21],
+					Water:     record[22],
+					Lightning: record[23],
+					Ice:       record[24],
+					Dragon:    record[25],
+				},
+				Tail: Elements{
+					Fire:      record[26],
+					Water:     record[27],
+					Lightning: record[28],
+					Ice:       record[29],
+					Dragon:    record[30],
+				},
+				HindLegs: Elements{
+					Fire:      record[31],
+					Water:     record[32],
+					Lightning: record[33],
+					Ice:       record[34],
+					Dragon:    record[35],
+				},
+				Body: Elements{
+					Fire:      record[36],
+					Water:     record[37],
+					Lightning: record[38],
+					Ice:       record[39],
+					Dragon:    record[40],
+				},
+				Head: Elements{
+					Fire:      record[41],
+					Water:     record[42],
+					Lightning: record[43],
+					Ice:       record[44],
+					Dragon:    record[45],
+				},
+			},
 		}
 		data.Req = append(data.Req, row)
 	}
