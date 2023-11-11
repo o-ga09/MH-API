@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - "data/input/data.csv"
+      - ".github/workflows/create_record.yml"
 env:
   client_id: ${{ secrets.clientid }}
   clientsecret: ${{ secrets.clientsecrets }}
