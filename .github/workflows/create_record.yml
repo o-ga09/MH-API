@@ -39,5 +39,5 @@ jobs:
         run: |
           curl --request POST \
           --url https://mh-api-v2-8aznfogc.an.gateway.dev/v1/monsters/json \
-          --header 'authorization: Bearer '$token'' \
+          --header 'authorization: Bearer \'$token\'' \
           --data @./data/output/data.json
