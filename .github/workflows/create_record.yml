@@ -32,7 +32,7 @@ jobs:
         run: |
           echo TOKEN=$(curl -X POST \
           -H "Content-type: application/json" \
-          -d '{"client_id":"${{ env.clientid }}","client_secret":"${{ env.clientsecret }}","audience":"${{ env.audienceurl }}","grant_type":"${{ env.granttype }}"}'\
+          -d '{"client_id":"${{ env.clientid }}","client_secret":"${{ env.clientsecret }}","audience":"${{ env.audienceurl }}","grant_type":"${{ env.granttype }}"}' \
           https://dev-8pmkik25y0obts0r.us.auth0.com/oauth/token | jq -r '.access_token') >> $GITHUB_ENV
 
       - name: call API
