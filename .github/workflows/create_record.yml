@@ -7,10 +7,10 @@ on:
     paths:
       - "data/input/data.csv"
 env:
-  client_id: ${{ secret.clientid }}
-  clientsecret: ${{ secret.clientsecret }}
-  audienceurl: ${{ secret.audienceurl }}
-  granttype: ${{ secret.granttype }}
+  client_id: ${{ secrets.clientid }}
+  clientsecret: ${{ secrets.clientsecrets }}
+  audienceurl: ${{ secrets.audienceurl }}
+  granttype: ${{ secrets.granttype }}
 
 jobs:
   create-json:
