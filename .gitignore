@@ -32,3 +32,4 @@ terraform/local.tf
 scenario/httptest
 doc/openapi/APIGateway.md
 makefile
+.DS_Store
