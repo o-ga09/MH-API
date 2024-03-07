@@ -17,6 +17,9 @@ type RequestInfo struct {
 func RequestLogger(l *slog.Logger) gin.HandlerFunc {
 	start := time.Now()
 	return func(c *gin.Context) {
+		slog.Log(c, SeverityInfo, "処理開始", "request Id", GetRequestID(c.Request.Context()))
+		c.Next()
+
 		r := &RequestInfo{
 			status:          c.Writer.Status(),
 			contents_length: c.Request.ContentLength,
@@ -27,7 +30,7 @@ func RequestLogger(l *slog.Logger) gin.HandlerFunc {
 			errors:          c.Errors.ByType(gin.ErrorTypePrivate).String(),
 			elapsed:         time.Since(start),
 		}
-		slog.Log(c, SeverityInfo, "Request Info", "Request", r.LogValue())
+		slog.Log(c, SeverityInfo, "処理終了", "Request", r.LogValue(), "requestId", GetRequestID(c.Request.Context()))
 	}
 }
 
