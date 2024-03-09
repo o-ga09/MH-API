@@ -20,7 +20,7 @@ func AddID() gin.HandlerFunc {
 
 func WithTimeout() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		ctx, cancel := context.WithTimeout(c.Request.Context(), 10*time.Second)
+		ctx, cancel := context.WithTimeout(c.Request.Context(), 5*time.Second)
 		defer cancel()
 		c.Request = c.Request.WithContext(ctx)
 		c.Next()

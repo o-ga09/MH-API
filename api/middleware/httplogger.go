@@ -15,8 +15,8 @@ type RequestInfo struct {
 }
 
 func RequestLogger(l *slog.Logger) gin.HandlerFunc {
-	start := time.Now()
 	return func(c *gin.Context) {
+		start := time.Now()
 		slog.Log(c, SeverityInfo, "処理開始", "request Id", GetRequestID(c.Request.Context()))
 		c.Next()
 
@@ -44,6 +44,6 @@ func (r *RequestInfo) LogValue() slog.Value {
 		slog.String("query", r.query),
 		slog.String("user_agent", r.user_agent),
 		slog.String("errors", r.errors),
-		slog.Duration("elapsed", r.elapsed),
+		slog.String("elapsed", r.elapsed.String()),
 	)
 }
