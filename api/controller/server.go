@@ -23,6 +23,14 @@ func NewServer() (*gin.Engine, error) {
 	//setting a CORS
 	cors := middleware.CORS()
 
+	// With Context
+	withCtx := middleware.WithTimeout()
+
+	// With Request Id
+	withReqId := middleware.AddID()
+
+	r.Use(withReqId)
+	r.Use(withCtx)
 	r.Use(cors)
 	r.Use(httpLogger)
 
