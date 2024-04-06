@@ -3,17 +3,15 @@ package di
 import (
 	"context"
 	"mh-api/api/controller/handler"
-	"mh-api/api/driver"
-	"mh-api/api/gateway"
-	"mh-api/api/service"
+	"mh-api/api/driver/mysql"
+	"mh-api/api/service/monsters"
 )
 
 func InitMonstersHandler() *handler.MonsterHandler {
-	db := driver.New(context.Background())
-	driver := driver.ProvideMonsterDriver(db)
-	gateway := gateway.ProvideMonsterDriver(driver)
-	service := service.ProvideMonsterDriver(gateway)
-	handler := handler.ProvideMonsterHandler(service)
+	db := mysql.New(context.Background())
+	driver := mysql.NewMonsterRepository(db)
+	service := monsters.NewMonsterService(driver)
+	handler := handler.NewMonsterHandler(*service)
 
-	return &handler
+	return handler
 }

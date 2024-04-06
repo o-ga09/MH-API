@@ -1,4 +1,4 @@
-package driver
+package mysql
 
 import (
 	"context"
@@ -24,12 +24,12 @@ func New(ctx context.Context) *gorm.DB {
 	dialector := mysql.Open(cfg.Database_url)
 
 	if db, err = gorm.Open(dialector, &gorm.Config{NamingStrategy: schema.NamingStrategy{
-		SingularTable: false,
+		SingularTable: true,
 	}}); err != nil {
 		connect(dialector, 100)
 	}
 	db.Logger = db.Logger.LogMode(logger.Silent)
-	slog.Log(context.Background(), middleware.SeverityInfo, "db connected")
+	slog.Log(ctx, middleware.SeverityInfo, "db connected")
 	return db
 }
 
