@@ -1,6 +1,6 @@
 package part
 
-import "mh-api/api/domain/monsters"
+import "mh-api/app/internal/domain/monsters"
 
 type Part struct {
 	PartId      PartId

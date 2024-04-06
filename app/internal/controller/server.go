@@ -1,10 +1,10 @@
 package controller
 
 import (
-	di "mh-api/api/DI"
-	"mh-api/api/config"
-	"mh-api/api/controller/handler"
-	"mh-api/api/middleware"
+	di "mh-api/app/internal/DI"
+	"mh-api/app/internal/config"
+	"mh-api/app/internal/controller/handler"
+	"mh-api/app/internal/middleware"
 
 	"github.com/gin-gonic/gin"
 )

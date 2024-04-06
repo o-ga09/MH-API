@@ -1,6 +1,6 @@
 package main
 
-import "mh-api/api/controller"
+import "mh-api/app/internal/controller"
 
 func main() {
 	s, err := controller.NewServer()

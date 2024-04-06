@@ -2,9 +2,9 @@ package di
 
 import (
 	"context"
-	"mh-api/api/controller/handler"
-	"mh-api/api/driver/mysql"
-	"mh-api/api/service/monsters"
+	"mh-api/app/internal/controller/handler"
+	"mh-api/app/internal/driver/mysql"
+	"mh-api/app/internal/service/monsters"
 )
 
 func InitMonstersHandler() *handler.MonsterHandler {

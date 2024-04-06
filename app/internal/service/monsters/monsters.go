@@ -2,7 +2,7 @@ package monsters
 
 import (
 	"context"
-	"mh-api/api/domain/monsters"
+	"mh-api/app/internal/domain/monsters"
 )
 
 type MonsterService struct {

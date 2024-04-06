@@ -1,8 +1,8 @@
 package weakness
 
 import (
-	"mh-api/api/domain/monsters"
-	"mh-api/api/domain/part"
+	"mh-api/app/internal/domain/monsters"
+	"mh-api/app/internal/domain/part"
 )
 
 type Weakness struct {
