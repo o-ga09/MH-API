@@ -4,7 +4,7 @@ import (
 	"context"
 	"log/slog"
 	"mh-api/app/internal/config"
-	"mh-api/app/internal/middleware"
+	"mh-api/app/internal/presenter/middleware"
 	"time"
 
 	"gorm.io/driver/mysql"

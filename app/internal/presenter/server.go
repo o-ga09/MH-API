@@ -1,10 +1,10 @@
-package controller
+package presenter
 
 import (
 	di "mh-api/app/internal/DI"
 	"mh-api/app/internal/config"
-	"mh-api/app/internal/controller/handler"
-	"mh-api/app/internal/middleware"
+	"mh-api/app/internal/controller"
+	"mh-api/app/internal/presenter/middleware"
 
 	"github.com/gin-gonic/gin"
 )
@@ -36,7 +36,7 @@ func NewServer() (*gin.Engine, error) {
 
 	v1 := r.Group("/v1")
 	{
-		systemHandler := handler.NewSystemHandler()
+		systemHandler := controller.NewSystemHandler()
 		v1.GET("/health", systemHandler.Health)
 	}
 
