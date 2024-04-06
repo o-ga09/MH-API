@@ -1,0 +1,671 @@
+basePath: /v1
+definitions:
+  item.Item:
+    properties:
+      item:
+        $ref: '#/definitions/item.ResponseJson'
+    type: object
+  item.Items:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/item.ResponseJson'
+        type: array
+      limit:
+        type: integer
+      offset:
+        type: integer
+      total:
+        type: integer
+    type: object
+  item.ItemsByMonster:
+    properties:
+      item_id:
+        type: string
+      item_name:
+        type: string
+      monsters:
+        $ref: '#/definitions/monster.Monsters'
+    type: object
+  item.MessageResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  item.ResponseJson:
+    properties:
+      item_id:
+        type: string
+      item_name:
+        type: string
+    type: object
+  monster.MessageResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  monster.Monster:
+    properties:
+      monster:
+        $ref: '#/definitions/monster.ResponseJson'
+    type: object
+  monster.Monsters:
+    properties:
+      limit:
+        type: integer
+      monsters:
+        items:
+          $ref: '#/definitions/monster.ResponseJson'
+        type: array
+      offset:
+        type: integer
+      total:
+        type: integer
+    type: object
+  monster.ResponseJson:
+    properties:
+      category:
+        type: string
+      desc:
+        type: string
+      location:
+        type: string
+      monster_id:
+        type: string
+      name:
+        type: string
+      title:
+        type: string
+      weakness_attack:
+        type: string
+      weakness_element:
+        type: string
+    type: object
+  music.BGM:
+    properties:
+      monster:
+        $ref: '#/definitions/music.ResponseJson'
+    type: object
+  music.BGMs:
+    properties:
+      bgm:
+        items:
+          $ref: '#/definitions/music.ResponseJson'
+        type: array
+      limit:
+        type: integer
+      offset:
+        type: integer
+      total:
+        type: integer
+    type: object
+  music.MessageResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  music.ResponseJson:
+    properties:
+      monster_id:
+        type: string
+      name:
+        type: string
+      url:
+        type: string
+    type: object
+  weapon.MessageResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  weapon.ResponseJson:
+    properties:
+      attack:
+        type: string
+      critical:
+        type: string
+      description:
+        type: string
+      elemant_attaxk:
+        type: string
+      image_url:
+        type: string
+      monster_id:
+        type: string
+      name:
+        type: string
+      rare:
+        type: string
+      shapness:
+        type: string
+    type: object
+  weapon.Weapon:
+    properties:
+      monster:
+        $ref: '#/definitions/weapon.ResponseJson'
+    type: object
+externalDocs:
+  description: OpenAPI
+  url: https://swagger.io/resources/open-api/
+host: https://mh-api-v2-8aznfogc.an.gateway.dev/
+info:
+  contact: {}
+  description: モンスターハンターAPI
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  title: MH-API
+  version: v0.1.0
+paths:
+  /bgms:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - in: query
+        name: limit
+        type: integer
+      - in: query
+        name: monster_id
+        type: string
+      - in: query
+        name: name
+        type: string
+      - in: query
+        name: name_kana
+        type: string
+      - in: query
+        name: offset
+        type: integer
+      - in: query
+        name: order
+        type: integer
+      - in: query
+        name: sort
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/music.BGMs'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/music.MessageResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/music.MessageResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/music.MessageResponse'
+      summary: BGM検索（複数件）
+      tags:
+      - BGM
+  /bgms/:bgmid:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - in: query
+        name: limit
+        type: integer
+      - in: query
+        name: monster_id
+        type: string
+      - in: query
+        name: name
+        type: string
+      - in: query
+        name: name_kana
+        type: string
+      - in: query
+        name: offset
+        type: integer
+      - in: query
+        name: order
+        type: integer
+      - in: query
+        name: sort
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/music.BGM'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/music.MessageResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/music.MessageResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/music.MessageResponse'
+      summary: BGM検索（1件）
+      tags:
+      - BGM
+  /bgms/ranking:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - in: query
+        name: limit
+        type: integer
+      - in: query
+        name: monster_id
+        type: string
+      - in: query
+        name: name
+        type: string
+      - in: query
+        name: name_kana
+        type: string
+      - in: query
+        name: offset
+        type: integer
+      - in: query
+        name: order
+        type: integer
+      - in: query
+        name: sort
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/music.BGM'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/music.MessageResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/music.MessageResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/music.MessageResponse'
+      summary: BGM人気投票結果検索
+      tags:
+      - BGM
+  /items:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - in: query
+        name: item_name
+        type: string
+      - in: query
+        name: item_name_kana
+        type: string
+      - in: query
+        name: limit
+        type: integer
+      - in: query
+        name: monster_id
+        type: string
+      - in: query
+        name: offset
+        type: integer
+      - in: query
+        name: order
+        type: integer
+      - in: query
+        name: sort
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/item.Items'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/item.MessageResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/item.MessageResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/item.MessageResponse'
+      summary: アイテム検索（複数件）
+      tags:
+      - Item
+  /items/:itemId:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - in: query
+        name: item_name
+        type: string
+      - in: query
+        name: item_name_kana
+        type: string
+      - in: query
+        name: limit
+        type: integer
+      - in: query
+        name: monster_id
+        type: string
+      - in: query
+        name: offset
+        type: integer
+      - in: query
+        name: order
+        type: integer
+      - in: query
+        name: sort
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/item.Item'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/item.MessageResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/item.MessageResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/item.MessageResponse'
+      summary: アイテム検索（1件）
+      tags:
+      - Item
+  /items/monsters:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - in: query
+        name: item_name
+        type: string
+      - in: query
+        name: item_name_kana
+        type: string
+      - in: query
+        name: limit
+        type: integer
+      - in: query
+        name: monster_id
+        type: string
+      - in: query
+        name: offset
+        type: integer
+      - in: query
+        name: order
+        type: integer
+      - in: query
+        name: sort
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/item.ItemsByMonster'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/item.MessageResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/item.MessageResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/item.MessageResponse'
+      summary: 指定のアイテムが取得可能なモンスターの一覧
+      tags:
+      - Item
+  /monsters:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - in: query
+        name: limit
+        type: integer
+      - in: query
+        name: monster_id
+        type: string
+      - in: query
+        name: name
+        type: string
+      - in: query
+        name: name_kana
+        type: string
+      - in: query
+        name: offset
+        type: integer
+      - in: query
+        name: order
+        type: integer
+      - in: query
+        name: sort
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/monster.Monsters'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/monster.MessageResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/monster.MessageResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/monster.MessageResponse'
+      summary: モンスター検索（複数件）
+      tags:
+      - Monster
+  /monsters/:monsterid:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: モンスターID
+        in: path
+        name: request
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/monster.Monster'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/monster.MessageResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/monster.MessageResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/monster.MessageResponse'
+      summary: モンスター検索（1件）
+      tags:
+      - Monster
+  /monsters/ranking:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - in: query
+        name: limit
+        type: integer
+      - in: query
+        name: monster_id
+        type: string
+      - in: query
+        name: name
+        type: string
+      - in: query
+        name: name_kana
+        type: string
+      - in: query
+        name: offset
+        type: integer
+      - in: query
+        name: order
+        type: integer
+      - in: query
+        name: sort
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/monster.Monsters'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/monster.MessageResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/monster.MessageResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/monster.MessageResponse'
+      summary: モンスター人気投票結果検索
+      tags:
+      - Monster
+  /weapons:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - in: query
+        name: limit
+        type: integer
+      - in: query
+        name: monster_id
+        type: string
+      - in: query
+        name: name
+        type: string
+      - in: query
+        name: name_kana
+        type: string
+      - in: query
+        name: offset
+        type: integer
+      - in: query
+        name: order
+        type: integer
+      - in: query
+        name: sort
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/weapon.Weapon'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/weapon.MessageResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/weapon.MessageResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/weapon.MessageResponse'
+      summary: 武器検索（複数件）
+      tags:
+      - Weapon
+  /weapons/:bgmid:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - in: query
+        name: limit
+        type: integer
+      - in: query
+        name: monster_id
+        type: string
+      - in: query
+        name: name
+        type: string
+      - in: query
+        name: name_kana
+        type: string
+      - in: query
+        name: offset
+        type: integer
+      - in: query
+        name: order
+        type: integer
+      - in: query
+        name: sort
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/weapon.Weapon'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/weapon.MessageResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/weapon.MessageResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/weapon.MessageResponse'
+      summary: 武器検索（1件）
+      tags:
+      - Weapon
+swagger: "2.0"

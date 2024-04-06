@@ -2,7 +2,7 @@ package di
 
 import (
 	"context"
-	"mh-api/app/internal/controller/handler"
+	handler "mh-api/app/internal/controller/monster"
 	"mh-api/app/internal/driver/mysql"
 	"mh-api/app/internal/service/monsters"
 )

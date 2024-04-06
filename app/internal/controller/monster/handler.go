@@ -1,9 +1,9 @@
-package handler
+package monster
 
 import (
 	"log/slog"
 
-	"mh-api/app/internal/middleware"
+	"mh-api/app/internal/presenter/middleware"
 	"mh-api/app/internal/service/monsters"
 
 	"net/http"
@@ -21,6 +21,18 @@ func NewMonsterHandler(s monsters.MonsterService) *MonsterHandler {
 	}
 }
 
+// GetAll godoc
+// @Summary モンスター検索（複数件）
+// @Description モンスターを検索して、条件に合致するモンスターを複数件取得する
+// @Tags モンスター検索
+// @Accept json
+// @Produce json
+// @Param request query RequestParam true  "クエリパラメータ"
+// @Success 200 {object} Monsters
+// @Failure      400  {object}  MessageResponse
+// @Failure      404  {object}  MessageResponse
+// @Failure      500  {object}  MessageResponse
+// @Router /monsters [get]
 func (m *MonsterHandler) GetAll(c *gin.Context) {
 	id, ook := c.Params.Get("id")
 	if ook {
@@ -55,6 +67,18 @@ func (m *MonsterHandler) GetAll(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
+// GetById godoc
+// @Summary モンスター検索（1件）
+// @Description モンスターを検索して、条件に合致するモンスターを1件取得する
+// @Tags モンスター検索
+// @Accept json
+// @Produce json
+// @Param request path string ture "モンスターID"
+// @Success 200 {object} Monster
+// @Failure      400  {object}  MessageResponse
+// @Failure      404  {object}  MessageResponse
+// @Failure      500  {object}  MessageResponse
+// @Router /monsters/:monsterid [get]
 func (m *MonsterHandler) GetById(c *gin.Context) {
 	id, ook := c.Params.Get("id")
 	if ook {
@@ -84,45 +108,16 @@ func (m *MonsterHandler) GetById(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
-type Monsters struct {
-	Total    int            `json:"total"`
-	Monsters []ResponseJson `json:"monsters"`
-}
-
-type Monster struct {
-	Monster ResponseJson `json:"monster"`
-}
-
-type MessageResponse struct {
-	Message string `json:"message"`
-}
-
-type MessageRequest struct {
-	Message string `json:"message"`
-}
-
-type RequestJson struct {
-	Req []Json `json:"req"`
-}
-
-type Json struct {
-	MonsterId        string `json:"monster_id,omitempty"`
-	Name             string `json:"name,omitempty"`
-	Desc             string `json:"desc,omitempty"`
-	Location         string `json:"location,omitempty"`
-	Category         string `json:"category,omitempty"`
-	Title            string `json:"title,omitempty"`
-	Weakness_attack  string `json:"weakness_attack,omitempty"`
-	Weakness_element string `json:"weakness_element,omitempty"`
-}
-
-type ResponseJson struct {
-	Id               string `json:"monster_id,omitempty"`
-	Name             string `json:"name,omitempty"`
-	Desc             string `json:"desc,omitempty"`
-	Location         string `json:"location,omitempty"`
-	Category         string `json:"category,omitempty"`
-	Title            string `json:"title,omitempty"`
-	Weakness_attack  string `json:"weakness_attack,omitempty"`
-	Weakness_element string `json:"weakness_element,omitempty"`
-}
+// GetRankingMonster godoc
+// @Summary モンスター人気投票結果検索
+// @Description 人気投票ランキングの結果を検索する
+// @Tags モンスター検索
+// @Accept json
+// @Produce json
+// @Param request query RequestParam true  "クエリパラメータ"
+// @Success 200 {object} Monsters
+// @Failure      400  {object}  MessageResponse
+// @Failure      404  {object}  MessageResponse
+// @Failure      500  {object}  MessageResponse
+// @Router /monsters/ranking [get]
+func (m *MonsterHandler) GetRankingMonster(c *gin.Context) {}
