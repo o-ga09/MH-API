@@ -161,6 +161,7 @@ paths:
     get:
       consumes:
       - application/json
+      description: モンスターのBGMを検索して、条件に合致するモンスターのBGMを複数件取得する
       parameters:
       - in: query
         name: limit
@@ -204,11 +205,12 @@ paths:
             $ref: '#/definitions/music.MessageResponse'
       summary: BGM検索（複数件）
       tags:
-      - BGM
+      - BGM検索
   /bgms/:bgmid:
     get:
       consumes:
       - application/json
+      description: モンスターのBGMを検索して、条件に合致するモンスターのBGMを1件取得する
       parameters:
       - in: query
         name: limit
@@ -252,11 +254,12 @@ paths:
             $ref: '#/definitions/music.MessageResponse'
       summary: BGM検索（1件）
       tags:
-      - BGM
+      - BGM検索
   /bgms/ranking:
     get:
       consumes:
       - application/json
+      description: 人気投票ランキングの結果を検索する
       parameters:
       - in: query
         name: limit
@@ -300,11 +303,12 @@ paths:
             $ref: '#/definitions/music.MessageResponse'
       summary: BGM人気投票結果検索
       tags:
-      - BGM
+      - BGM検索
   /items:
     get:
       consumes:
       - application/json
+      description: アイテムを検索して、条件に合致するアイテムを複数件取得する
       parameters:
       - in: query
         name: item_name
@@ -348,11 +352,12 @@ paths:
             $ref: '#/definitions/item.MessageResponse'
       summary: アイテム検索（複数件）
       tags:
-      - Item
+      - アイテム検索
   /items/:itemId:
     get:
       consumes:
       - application/json
+      description: アイテムを検索して、条件に合致するアイテムを1件取得する
       parameters:
       - in: query
         name: item_name
@@ -396,11 +401,12 @@ paths:
             $ref: '#/definitions/item.MessageResponse'
       summary: アイテム検索（1件）
       tags:
-      - Item
+      - アイテム検索
   /items/monsters:
     get:
       consumes:
       - application/json
+      description: 指定のアイテムが取得可能なモンスターの一覧
       parameters:
       - in: query
         name: item_name
@@ -442,13 +448,14 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/item.MessageResponse'
-      summary: 指定のアイテムが取得可能なモンスターの一覧
+      summary: アイテム検索（モンスター別）
       tags:
-      - Item
+      - アイテム検索
   /monsters:
     get:
       consumes:
       - application/json
+      description: モンスターを検索して、条件に合致するモンスターを複数件取得する
       parameters:
       - in: query
         name: limit
@@ -492,11 +499,12 @@ paths:
             $ref: '#/definitions/monster.MessageResponse'
       summary: モンスター検索（複数件）
       tags:
-      - Monster
+      - モンスター検索
   /monsters/:monsterid:
     get:
       consumes:
       - application/json
+      description: モンスターを検索して、条件に合致するモンスターを1件取得する
       parameters:
       - description: モンスターID
         in: path
@@ -523,11 +531,12 @@ paths:
             $ref: '#/definitions/monster.MessageResponse'
       summary: モンスター検索（1件）
       tags:
-      - Monster
+      - モンスター検索
   /monsters/ranking:
     get:
       consumes:
       - application/json
+      description: 人気投票ランキングの結果を検索する
       parameters:
       - in: query
         name: limit
@@ -571,11 +580,12 @@ paths:
             $ref: '#/definitions/monster.MessageResponse'
       summary: モンスター人気投票結果検索
       tags:
-      - Monster
+      - モンスター検索
   /weapons:
     get:
       consumes:
       - application/json
+      description: 武器を検索して、条件に合致する武器を複数件取得する
       parameters:
       - in: query
         name: limit
@@ -619,11 +629,12 @@ paths:
             $ref: '#/definitions/weapon.MessageResponse'
       summary: 武器検索（複数件）
       tags:
-      - Weapon
+      - 武器検索
   /weapons/:bgmid:
     get:
       consumes:
       - application/json
+      description: 武器を検索して、条件に合致する武器を1件取得する
       parameters:
       - in: query
         name: limit
@@ -667,5 +678,5 @@ paths:
             $ref: '#/definitions/weapon.MessageResponse'
       summary: 武器検索（1件）
       tags:
-      - Weapon
+      - 武器検索
 swagger: "2.0"

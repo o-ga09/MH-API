@@ -6,7 +6,7 @@ on:
       - main
     paths:
       - ".github/workflows/spec.yml"
-      - "doc/openapi/schema.yml"
+      - "doc/openapi/swagger.yaml"
 
 jobs:
   build:

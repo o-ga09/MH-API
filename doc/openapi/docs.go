@@ -21,6 +21,7 @@ const docTemplate = `{
     "paths": {
         "/bgms": {
             "get": {
+                "description": "モンスターのBGMを検索して、条件に合致するモンスターのBGMを複数件取得する",
                 "consumes": [
                     "application/json"
                 ],
@@ -28,7 +29,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "BGM"
+                    "BGM検索"
                 ],
                 "summary": "BGM検索（複数件）",
                 "parameters": [
@@ -98,6 +99,7 @@ const docTemplate = `{
         },
         "/bgms/:bgmid": {
             "get": {
+                "description": "モンスターのBGMを検索して、条件に合致するモンスターのBGMを1件取得する",
                 "consumes": [
                     "application/json"
                 ],
@@ -105,7 +107,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "BGM"
+                    "BGM検索"
                 ],
                 "summary": "BGM検索（1件）",
                 "parameters": [
@@ -175,6 +177,7 @@ const docTemplate = `{
         },
         "/bgms/ranking": {
             "get": {
+                "description": "人気投票ランキングの結果を検索する",
                 "consumes": [
                     "application/json"
                 ],
@@ -182,7 +185,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "BGM"
+                    "BGM検索"
                 ],
                 "summary": "BGM人気投票結果検索",
                 "parameters": [
@@ -252,6 +255,7 @@ const docTemplate = `{
         },
         "/items": {
             "get": {
+                "description": "アイテムを検索して、条件に合致するアイテムを複数件取得する",
                 "consumes": [
                     "application/json"
                 ],
@@ -259,7 +263,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Item"
+                    "アイテム検索"
                 ],
                 "summary": "アイテム検索（複数件）",
                 "parameters": [
@@ -329,6 +333,7 @@ const docTemplate = `{
         },
         "/items/:itemId": {
             "get": {
+                "description": "アイテムを検索して、条件に合致するアイテムを1件取得する",
                 "consumes": [
                     "application/json"
                 ],
@@ -336,7 +341,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Item"
+                    "アイテム検索"
                 ],
                 "summary": "アイテム検索（1件）",
                 "parameters": [
@@ -406,6 +411,7 @@ const docTemplate = `{
         },
         "/items/monsters": {
             "get": {
+                "description": "指定のアイテムが取得可能なモンスターの一覧",
                 "consumes": [
                     "application/json"
                 ],
@@ -413,9 +419,9 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Item"
+                    "アイテム検索"
                 ],
-                "summary": "指定のアイテムが取得可能なモンスターの一覧",
+                "summary": "アイテム検索（モンスター別）",
                 "parameters": [
                     {
                         "type": "string",
@@ -483,6 +489,7 @@ const docTemplate = `{
         },
         "/monsters": {
             "get": {
+                "description": "モンスターを検索して、条件に合致するモンスターを複数件取得する",
                 "consumes": [
                     "application/json"
                 ],
@@ -490,7 +497,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Monster"
+                    "モンスター検索"
                 ],
                 "summary": "モンスター検索（複数件）",
                 "parameters": [
@@ -560,6 +567,7 @@ const docTemplate = `{
         },
         "/monsters/:monsterid": {
             "get": {
+                "description": "モンスターを検索して、条件に合致するモンスターを1件取得する",
                 "consumes": [
                     "application/json"
                 ],
@@ -567,7 +575,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Monster"
+                    "モンスター検索"
                 ],
                 "summary": "モンスター検索（1件）",
                 "parameters": [
@@ -608,6 +616,7 @@ const docTemplate = `{
         },
         "/monsters/ranking": {
             "get": {
+                "description": "人気投票ランキングの結果を検索する",
                 "consumes": [
                     "application/json"
                 ],
@@ -615,7 +624,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Monster"
+                    "モンスター検索"
                 ],
                 "summary": "モンスター人気投票結果検索",
                 "parameters": [
@@ -685,6 +694,7 @@ const docTemplate = `{
         },
         "/weapons": {
             "get": {
+                "description": "武器を検索して、条件に合致する武器を複数件取得する",
                 "consumes": [
                     "application/json"
                 ],
@@ -692,7 +702,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Weapon"
+                    "武器検索"
                 ],
                 "summary": "武器検索（複数件）",
                 "parameters": [
@@ -762,6 +772,7 @@ const docTemplate = `{
         },
         "/weapons/:bgmid": {
             "get": {
+                "description": "武器を検索して、条件に合致する武器を1件取得する",
                 "consumes": [
                     "application/json"
                 ],
@@ -769,7 +780,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Weapon"
+                    "武器検索"
                 ],
                 "summary": "武器検索（1件）",
                 "parameters": [
