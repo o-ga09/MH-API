@@ -2,16 +2,15 @@ package presenter
 
 import (
 	di "mh-api/app/internal/DI"
-	"mh-api/app/internal/config"
-	"mh-api/app/internal/controller"
 	"mh-api/app/internal/presenter/middleware"
+	"mh-api/app/pkg"
 
 	"github.com/gin-gonic/gin"
 )
 
 func NewServer() (*gin.Engine, error) {
 	r := gin.New()
-	cfg, _ := config.New()
+	cfg, _ := pkg.New()
 	if cfg.Env == "PROD" {
 		gin.SetMode(gin.ReleaseMode)
 	}
@@ -36,8 +35,9 @@ func NewServer() (*gin.Engine, error) {
 
 	v1 := r.Group("/v1")
 	{
-		systemHandler := controller.NewSystemHandler()
+		systemHandler := di.InitHealthService()
 		v1.GET("/health", systemHandler.Health)
+		v1.GET("/health/db", systemHandler.DBHealth)
 	}
 
 	monsters := v1.Group("/monsters")
