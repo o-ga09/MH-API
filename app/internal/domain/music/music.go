@@ -1,6 +1,6 @@
 package music
 
-import "mh-api/api/domain/monsters"
+import "mh-api/app/internal/domain/monsters"
 
 type Music struct {
 	MusicId   MusicId

@@ -3,8 +3,8 @@ package handler
 import (
 	"log/slog"
 
-	"mh-api/api/middleware"
-	"mh-api/api/service/monsters"
+	"mh-api/app/internal/middleware"
+	"mh-api/app/internal/service/monsters"
 
 	"net/http"
 

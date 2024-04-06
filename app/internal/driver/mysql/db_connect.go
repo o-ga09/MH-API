@@ -3,8 +3,8 @@ package mysql
 import (
 	"context"
 	"log/slog"
-	"mh-api/api/config"
-	"mh-api/api/middleware"
+	"mh-api/app/internal/config"
+	"mh-api/app/internal/middleware"
 	"time"
 
 	"gorm.io/driver/mysql"

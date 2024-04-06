@@ -2,7 +2,7 @@ package mysql
 
 import (
 	"context"
-	"mh-api/api/domain/monsters"
+	"mh-api/app/internal/domain/monsters"
 
 	"gorm.io/gorm"
 )

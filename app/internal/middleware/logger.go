@@ -3,7 +3,7 @@ package middleware
 import (
 	"context"
 	"fmt"
-	"mh-api/api/config"
+	"mh-api/app/internal/config"
 	"os"
 
 	"cloud.google.com/go/logging"
