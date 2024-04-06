@@ -27,7 +27,7 @@ CREATE TABLE `item` (
   `deleted_at` datetime(3) DEFAULT NULL,
   `item_id` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `imege_url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `image_url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`,`item_id`),
   KEY `idx_item_deleted_at` (`deleted_at`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -135,3 +135,49 @@ CREATE TABLE `weapon` (
   PRIMARY KEY (`id`,`weapon_id`),
   KEY `idx_weapon_deleted_at` (`deleted_at`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+INSERT INTO monster (monster_id, name, description)
+VALUES ('MON001', 'Slime', 'A blob of goo that can be surprisingly resilient.'),
+       ('MON002', 'Goblin', 'A mischievous creature that loves to cause trouble.'),
+       ('MON003', 'Dragon', 'A powerful and majestic creature that breathes fire.');
+
+INSERT INTO item (item_id, name, image_url)
+VALUES ('ITEM001', 'Potion', 'images/potion.png'),
+       ('ITEM002', 'Sword', 'images/sword.jpg'),
+       ('ITEM003', 'Armor', 'images/armor.gif');
+
+INSERT INTO field (field_id, name, image_url)
+VALUES ('FLD001', 'Forest', 'images/forest.jpg'),
+       ('FLD002', 'Desert', 'images/desert.jpg'),
+       ('FLD003', 'Mountain', 'images/mountain.png');
+
+INSERT INTO product (product_id, name, publish_year, total_sales)
+VALUES ('PRD001', 'Potion', '2023', '1000'),
+       ('PRD002', 'Sword', '2020', '500'),
+       ('PRD003', 'Armor', '2022', '200');
+
+INSERT INTO part (part_id, monster_id, decription)
+VALUES ('PRT001', 'MON001', 'Left arm'),
+       ('PRT002', 'MON002', 'Sharp tooth'),
+       ('PRT003', 'MON003', 'Fire breath');
+
+INSERT INTO music (music_id, monster_id, name, image_url)
+VALUES ('MSC001', 'MON001', 'Slime Symphony', 'images/music-slime.jpg'),
+       ('MSC002', 'MON002', 'Goblin Groove', 'images/music-goblin.png'),
+       ('MSC003', 'MON003', 'Dragons Ballad', 'images/music-dragon.gif');
+
+INSERT INTO tribe (tribe_id, name_ja, name_en, description)
+VALUES ('TRB001', 'ゴブリン族', 'Goblin Tribe', 'いたずら好きで集団で行動する'),
+       ('TRB002', 'オーク族', 'Orc Tribe', '好戦的で力強い戦士集団'),
+       ('TRB003', 'エルフ族', 'Elf Tribe', '長寿で優れた弓術を持つ');
+
+INSERT INTO weakness (monster_id, aprt_id, fire, water, lightning, ice, dragon, slashing, blow, bullet)
+VALUES ('MON001', 'PRT001', 'low', 'medium', 'high', 'low', 'immune', 'medium', 'high', 'low'),
+       ('MON002', 'PRT002', 'medium', 'low', 'low', 'medium', 'low', 'high', 'low', 'medium'),
+       ('MON003', 'PRT003', 'high', 'low', 'medium', 'high', 'high', 'low', 'medium', 'high');
+
+INSERT INTO weapon (weapon_id, name, image_url, rarerity, attack, element_attack, shapness, critical, description)
+VALUES ('WPN001', 'Wooden Sword', 'images/weapon_wooden_sword.jpg', 'Common', 'Low', 'None', 'Normal', 'Low', 'A basic sword made of wood.'),
+       ('WPN002', 'Iron Sword', 'images/weapon_iron_sword.jpg', 'Uncommon', 'Medium', 'None', 'Normal', 'Medium', 'A sturdy sword made of iron.'),
+       ('WPN003', 'Fire Sword', 'images/weapon_fire_sword.jpg', 'Rare', 'High', 'Fire', 'Normal', 'High', 'A sword imbued with fire that burns enemies.');
