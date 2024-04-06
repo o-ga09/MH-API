@@ -3,7 +3,8 @@ package middleware
 import (
 	"context"
 	"fmt"
-	"mh-api/app/internal/config"
+	"mh-api/app/pkg"
+
 	"os"
 
 	"cloud.google.com/go/logging"
@@ -68,7 +69,7 @@ func New() *slog.Logger {
 
 		return a
 	}
-	cfg, _ := config.New()
+	cfg, _ := pkg.New()
 	projectID := cfg.ProjectID
 	h := traceHandler{slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{AddSource: true, ReplaceAttr: replacer}), projectID}
 	newh := h.WithAttr([]slog.Attr{

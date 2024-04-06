@@ -3,8 +3,8 @@ package mysql
 import (
 	"context"
 	"log/slog"
-	"mh-api/app/internal/config"
 	"mh-api/app/internal/presenter/middleware"
+	"mh-api/app/pkg"
 	"time"
 
 	"gorm.io/driver/mysql"
@@ -16,7 +16,7 @@ import (
 var db *gorm.DB
 
 func New(ctx context.Context) *gorm.DB {
-	cfg, err := config.New()
+	cfg, err := pkg.New()
 	if err != nil {
 		slog.Log(context.Background(), middleware.SeverityError, "environment variable error", "error", err)
 	}

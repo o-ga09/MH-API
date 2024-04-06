@@ -2,15 +2,15 @@ package presenter
 
 import (
 	di "mh-api/app/internal/DI"
-	"mh-api/app/internal/config"
 	"mh-api/app/internal/presenter/middleware"
+	"mh-api/app/pkg"
 
 	"github.com/gin-gonic/gin"
 )
 
 func NewServer() (*gin.Engine, error) {
 	r := gin.New()
-	cfg, _ := config.New()
+	cfg, _ := pkg.New()
 	if cfg.Env == "PROD" {
 		gin.SetMode(gin.ReleaseMode)
 	}
