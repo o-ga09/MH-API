@@ -1,26 +1,137 @@
-DROP TABLE IF EXISTS `monsters`;
+DROP TABLE IF EXISTS `field`;
+DROP TABLE IF EXISTS `item`;
+DROP TABLE IF EXISTS `monster`;
+DROP TABLE IF EXISTS `music`;
+DROP TABLE IF EXISTS `part`;
+DROP TABLE IF EXISTS `product`;
+DROP TABLE IF EXISTS `tribe`;
+DROP TABLE IF EXISTS `weakness`;
+DROP TABLE IF EXISTS `weapon`;
 
-CREATE TABLE `monsters` (
-    `id` INT(10) NOT NULL AUTO_INCREMENT,
-    `monster_id` VARCHAR(10) NOT NULL UNIQUE,
-    `name` VARCHAR(255) NOT NULL,
-    `desc` VARCHAR(255) NOT NULL,
-    `location` VARCHAR(255),
-    `category` VARCHAR(255),
-    `title` VARCHAR(255),
-    `weakness_attack` JSON,
-    `weakness_element` JSON,
-    `created_at` DATE,
-    `updated_at` DATE,
-    `deleted_at` DATE,
-    PRIMARY KEY (`id`)
-);
+CREATE TABLE `monster` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `created_at` datetime(3) DEFAULT NULL,
+  `updated_at` datetime(3) DEFAULT NULL,
+  `deleted_at` datetime(3) DEFAULT NULL,
+  `monster_id` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`,`monster_id`),
+  KEY `idx_monster_deleted_at` (`deleted_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- INSERT INTO `monster` (`name`,`desc`,`location`,`specify`,`weakness_attack`,`weakness_element`) VALUES ("ジンオウガ","霊峰/渓流に生息する電気を扱う牙竜種","霊峰","牙竜種","10 10 10 10 10","10 10 10 10 10");
--- INSERT INTO `monster` (`name`,`desc`,`location`,`specify`,`weakness_attack`,`weakness_element`) VALUES ("タマミツネ","渓流に生息する水を扱う海竜種","渓流","海竜種","10 10 10 10 10","10 10 10 10 10");
+CREATE TABLE `item` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `created_at` datetime(3) DEFAULT NULL,
+  `updated_at` datetime(3) DEFAULT NULL,
+  `deleted_at` datetime(3) DEFAULT NULL,
+  `item_id` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `imege_url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`,`item_id`),
+  KEY `idx_item_deleted_at` (`deleted_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-INSERT INTO monsters (`monster_id`, `name`, `desc`, `location`, `category`, `title`, `weakness_attack`, `weakness_element`,`created_at`,`updated_at`,`deleted_at`)
-VALUES
-    ("0000000001", 'Sample Monster 1', 'A sample monster with detailed elemental and attack weaknesses', 'Sample Location 2', 'Sample Category 2', 'Sample Title 2', '{"前脚": {"slashing": "10", "blow": "10", "bullet": "10"}, "尻尾": {"slashing": "10", "blow": "10", "bullet": "10"}, "後脚": {"slashing": "10", "blow": "10", "bullet": "10"}, "胴体": {"slashing": "10", "blow": "10", "bullet": "10"}, "頭部": {"slashing": "10", "blow": "10", "bullet": "10"}}', '{"前脚": {"fire": "10", "water": "10", "lightning": "10", "ice": "10", "dragon": "10"}, "尻尾": {"fire": "10", "water": "10", "lightning": "10", "ice": "10", "dragon": "10"}, "後脚": {"fire": "10", "water": "10", "lightning": "10", "ice": "10", "dragon": "10"}, "胴体": {"fire": "10", "water": "10", "lightning": "10", "ice": "10", "dragon": "10"}, "頭部": {"fire": "10", "water": "10", "lightning": "10", "ice": "10", "dragon": "10"}}',NOW(),NOW(),NOW()),
-    ("0000000002", 'Sample Monster 2', 'A sample monster with detailed elemental and attack weaknesses', 'Sample Location 2', 'Sample Category 2', 'Sample Title 2', '{"前脚": {"slashing": "10", "blow": "10", "bullet": "10"}, "尻尾": {"slashing": "10", "blow": "10", "bullet": "10"}, "後脚": {"slashing": "10", "blow": "10", "bullet": "10"}, "胴体": {"slashing": "10", "blow": "10", "bullet": "10"}, "頭部": {"slashing": "10", "blow": "10", "bullet": "10"}}', '{"前脚": {"fire": "10", "water": "10", "lightning": "10", "ice": "10", "dragon": "10"}, "尻尾": {"fire": "10", "water": "10", "lightning": "10", "ice": "10", "dragon": "10"}, "後脚": {"fire": "10", "water": "10", "lightning": "10", "ice": "10", "dragon": "10"}, "胴体": {"fire": "10", "water": "10", "lightning": "10", "ice": "10", "dragon": "10"}, "頭部": {"fire": "10", "water": "10", "lightning": "10", "ice": "10", "dragon": "10"}}',NOW(),NOW(),NOW()),
-    ("0000000003", 'Sample Monster 3', 'A sample monster with detailed elemental and attack weaknesses', 'Sample Location 2', 'Sample Category 2', 'Sample Title 2', '{"前脚": {"slashing": "10", "blow": "10", "bullet": "10"}, "尻尾": {"slashing": "10", "blow": "10", "bullet": "10"}, "後脚": {"slashing": "10", "blow": "10", "bullet": "10"}, "胴体": {"slashing": "10", "blow": "10", "bullet": "10"}, "頭部": {"slashing": "10", "blow": "10", "bullet": "10"}}', '{"前脚": {"fire": "10", "water": "10", "lightning": "10", "ice": "10", "dragon": "10"}, "尻尾": {"fire": "10", "water": "10", "lightning": "10", "ice": "10", "dragon": "10"}, "後脚": {"fire": "10", "water": "10", "lightning": "10", "ice": "10", "dragon": "10"}, "胴体": {"fire": "10", "water": "10", "lightning": "10", "ice": "10", "dragon": "10"}, "頭部": {"fire": "10", "water": "10", "lightning": "10", "ice": "10", "dragon": "10"}}',NOW(),NOW(),NOW());
+CREATE TABLE `field` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `created_at` datetime(3) DEFAULT NULL,
+  `updated_at` datetime(3) DEFAULT NULL,
+  `deleted_at` datetime(3) DEFAULT NULL,
+  `field_id` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `image_url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`,`field_id`),
+  KEY `idx_field_deleted_at` (`deleted_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE `product` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `created_at` datetime(3) DEFAULT NULL,
+  `updated_at` datetime(3) DEFAULT NULL,
+  `deleted_at` datetime(3) DEFAULT NULL,
+  `product_id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `publish_year` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `total_sales` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`,`product_id`),
+  KEY `idx_product_deleted_at` (`deleted_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE `part` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `created_at` datetime(3) DEFAULT NULL,
+  `updated_at` datetime(3) DEFAULT NULL,
+  `deleted_at` datetime(3) DEFAULT NULL,
+  `part_id` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `monster_id` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `decription` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`,`part_id`),
+  KEY `idx_part_deleted_at` (`deleted_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE `music` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `created_at` datetime(3) DEFAULT NULL,
+  `updated_at` datetime(3) DEFAULT NULL,
+  `deleted_at` datetime(3) DEFAULT NULL,
+  `music_id` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `monster_id` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `image_url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`,`music_id`),
+  KEY `idx_music_deleted_at` (`deleted_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE `tribe` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `created_at` datetime(3) DEFAULT NULL,
+  `updated_at` datetime(3) DEFAULT NULL,
+  `deleted_at` datetime(3) DEFAULT NULL,
+  `tribe_id` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name_ja` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name_en` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`,`tribe_id`),
+  KEY `idx_tribe_deleted_at` (`deleted_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE `weakness` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `created_at` datetime(3) DEFAULT NULL,
+  `updated_at` datetime(3) DEFAULT NULL,
+  `deleted_at` datetime(3) DEFAULT NULL,
+  `monster_id` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `aprt_id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `fire` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `water` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `lightning` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ice` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `dragon` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `slashing` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `blow` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `bullet` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `first_weak_attack` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `second_weak_attack` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `first_weak_element` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `second_weak_element` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_weakness_deleted_at` (`deleted_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE `weapon` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `created_at` datetime(3) DEFAULT NULL,
+  `updated_at` datetime(3) DEFAULT NULL,
+  `deleted_at` datetime(3) DEFAULT NULL,
+  `weapon_id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `image_url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `rarerity` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `attack` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `element_attack` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `shapness` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `critical` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`,`weapon_id`),
+  KEY `idx_weapon_deleted_at` (`deleted_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
