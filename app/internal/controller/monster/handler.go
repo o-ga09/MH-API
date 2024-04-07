@@ -10,6 +10,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"golang.org/x/net/context"
+	"gorm.io/gorm"
 )
 
 type MonsterHandler struct {
@@ -36,9 +38,9 @@ func NewMonsterHandler(s monsters.MonsterService) *MonsterHandler {
 // @Router /monsters [get]
 func (m *MonsterHandler) GetAll(c *gin.Context) {
 	var param RequestParam
-	err := c.ShouldBindJSON(&param)
+	err := c.ShouldBindQuery(&param)
 	if err != nil {
-		slog.Log(c, middleware.SeverityError, "param marshal error", err)
+		slog.Log(c, middleware.SeverityError, "param marshal error", "error message", err)
 		c.JSON(http.StatusBadRequest, MessageResponse{Message: "BAD REQUEST"})
 		return
 	}
@@ -46,7 +48,7 @@ func (m *MonsterHandler) GetAll(c *gin.Context) {
 	validate := pkg.GetValidator()
 	err = validate.Struct(&param)
 	if err != nil {
-		slog.Log(c, middleware.SeverityError, "validation error", err)
+		slog.Log(c, middleware.SeverityError, "validation error", "error message", err)
 		c.JSON(http.StatusBadRequest, MessageResponse{Message: "BAD REQUEST"})
 		return
 	}
@@ -55,8 +57,14 @@ func (m *MonsterHandler) GetAll(c *gin.Context) {
 	if ook {
 		id = ""
 	}
-	res, err := m.monsterService.FetchMonsterDetail(c.Request.Context(), id)
-	if err != nil {
+	ctx := context.WithValue(c.Request.Context(), "param", param)
+	res, err := m.monsterService.FetchMonsterDetail(ctx, id)
+
+	if err == gorm.ErrRecordNotFound {
+		slog.Log(c, middleware.SeverityError, "Record Not Found", "error message", err)
+		c.JSON(http.StatusNotFound, MessageResponse{Message: "NOT FOUND"})
+		return
+	} else if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"err": "can not get records",
 		})

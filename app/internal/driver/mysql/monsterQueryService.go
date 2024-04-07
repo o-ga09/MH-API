@@ -22,6 +22,7 @@ func NewmonsterQueryService(conn *gorm.DB) *monsterQueryService {
 func (s *monsterQueryService) FetchMonsterList(ctx context.Context, id string) ([]*monsters.FetchMonsterListDto, error) {
 	var monster []Monster
 	var monsterIds []string
+	var result *gorm.DB
 	var err error
 
 	where_clade := ""
@@ -36,8 +37,10 @@ func (s *monsterQueryService) FetchMonsterList(ctx context.Context, id string) (
 		where_clade = "monster_id IN (?)"
 	}
 
-	if param.MonsterName != "" {
-		where_clade += " and LIKE %" + param.MonsterName + "% "
+	if param.MonsterName != "" && param.MonsterIds != "" {
+		where_clade += " and name LIKE '%" + param.MonsterName + "%' "
+	} else {
+		where_clade += " name LIKE '%" + param.MonsterName + "%' "
 	}
 
 	if param.Sort == "1" {
@@ -46,13 +49,18 @@ func (s *monsterQueryService) FetchMonsterList(ctx context.Context, id string) (
 		sort = "monster_id DESC"
 	}
 
-	if where_clade != "" {
-		err = db.Model(&monster).Preload("Weakness").Preload("Field").Preload("Tribe").Preload("Product").Where(where_clade, monsterIds).Find(&monster).Limit(limit).Offset(offset).Order(sort).Error
+	if where_clade != "" && param.MonsterIds != "" {
+		result = db.Debug().Model(&monster).Preload("Weakness").Preload("Field").Preload("Tribe").Preload("Product").Where(where_clade, monsterIds).Limit(limit).Offset(offset).Order(sort).Find(&monster)
+	} else if where_clade != "" {
+		result = db.Debug().Model(&monster).Preload("Weakness").Preload("Field").Preload("Tribe").Preload("Product").Where(where_clade).Limit(limit).Offset(offset).Order(sort).Find(&monster)
 	} else {
-		err = db.Model(&monster).Preload("Weakness").Preload("Field").Preload("Tribe").Preload("Product").Find(&monster).Limit(limit).Offset(offset).Order(sort).Error
+		result = db.Debug().Model(&monster).Preload("Weakness").Preload("Field").Preload("Tribe").Preload("Product").Limit(limit).Offset(offset).Order(sort).Find(&monster)
 	}
-	if err != nil {
+
+	if result.Error != nil {
 		return nil, err
+	} else if result.RowsAffected == 0 {
+		return nil, gorm.ErrRecordNotFound
 	}
 
 	res := []*monsters.FetchMonsterListDto{}
