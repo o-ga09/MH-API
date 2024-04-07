@@ -64,7 +64,6 @@ func (s *monsterQueryService) FetchMonsterList(ctx context.Context, id string) (
 	}
 	res := []*monsters.FetchMonsterListDto{}
 	for _, m := range monster {
-
 		var l []string
 		var t []string
 		var weak_attack []monsters.Weakness_attack
