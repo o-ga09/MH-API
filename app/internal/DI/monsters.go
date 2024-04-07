@@ -9,8 +9,9 @@ import (
 
 func InitMonstersHandler() *handler.MonsterHandler {
 	db := mysql.New(context.Background())
-	driver := mysql.NewMonsterRepository(db)
-	service := monsters.NewMonsterService(driver)
+	repo := mysql.NewMonsterRepository(db)
+	qs := mysql.NewmonsterQueryService(db)
+	service := monsters.NewMonsterService(repo, qs)
 	handler := handler.NewMonsterHandler(*service)
 
 	return handler

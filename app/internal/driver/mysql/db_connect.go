@@ -28,6 +28,7 @@ func New(ctx context.Context) *gorm.DB {
 	}}); err != nil {
 		connect(dialector, 100)
 	}
+
 	db.Logger = db.Logger.LogMode(logger.Silent)
 	slog.Log(ctx, middleware.SeverityInfo, "db connected")
 	return db

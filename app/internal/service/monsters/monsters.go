@@ -7,11 +7,13 @@ import (
 
 type MonsterService struct {
 	repo monsters.Repository
+	qs   MonsterQueryService
 }
 
-func NewMonsterService(repo monsters.Repository) *MonsterService {
+func NewMonsterService(repo monsters.Repository, qs MonsterQueryService) *MonsterService {
 	return &MonsterService{
 		repo: repo,
+		qs:   qs,
 	}
 }
 
@@ -28,6 +30,15 @@ func (s *MonsterService) GetMonster(ctx context.Context, id string) ([]*MonsterD
 			Description: r.GetDesc(),
 			Name:        r.GetName(),
 		})
+	}
+
+	return res, nil
+}
+
+func (s *MonsterService) FetchMonsterDetail(ctx context.Context, id string) ([]*FetchMonsterListDto, error) {
+	res, err := s.qs.FetchMonsterList(ctx, id)
+	if err != nil {
+		return nil, err
 	}
 
 	return res, nil

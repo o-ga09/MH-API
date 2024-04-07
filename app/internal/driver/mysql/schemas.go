@@ -4,16 +4,21 @@ import "gorm.io/gorm"
 
 type Monster struct {
 	gorm.Model
-	MonsterId   string `gorm:"column:monster_id;primaryKey;type:varchar(10);not null"`
-	Name        string `gorm:"column:name;type:varchar(255)"`
-	Description string `gorm:"column:description;type:varchar(255)"`
+	MonsterId   string      `gorm:"column:monster_id;primaryKey;type:varchar(10);not null;index"`
+	Name        string      `gorm:"column:name;type:varchar(255)"`
+	Description string      `gorm:"column:description;type:varchar(255)"`
+	Weakness    []*Weakness `gorm:"foreignKey:monster_id;references:monster_id"`
+	Tribe       *Tribe      `gorm:"foreignKey:monster_id;references:monster_id"`
+	Product     []*Product  `gorm:"foreignKey:monster_id;references:monster_id"`
+	Field       []*Field    `gorm:"foreignKey:monster_id;references:monster_id"`
 }
 
 type Field struct {
 	gorm.Model
-	FieldId  string `gorm:"column:field_id;primaryKey;type:varchar(10);not null"`
-	Name     string `gorm:"column:name;type:varchar(255);not null"`
-	ImageUrl string `gorm:"column:image_url;type:varchar(255)"`
+	FieldId   string `gorm:"column:field_id;primaryKey;type:varchar(10);not null"`
+	MonsterId string `gorm:"column:monster_id;type:varchar(10);not null"`
+	Name      string `gorm:"column:name;type:varchar(255);not null"`
+	ImageUrl  string `gorm:"column:image_url;type:varchar(255)"`
 }
 
 type Item struct {
@@ -41,6 +46,7 @@ type Part struct {
 type Product struct {
 	gorm.Model
 	ProductId   string `gorm:"column:product_id;primaryKey;type:varchar(255);not null"`
+	MonsterId   string `gorm:"column:monster_id;type:varchar(10);not null"`
 	Name        string `gorm:"column:name;type:varchar(255);not null"`
 	PublishYear string `gorm:"column:publish_year;type:varchar(20)"`
 	TotalSales  string `gorm:"column:total_sales;type:varchar(255)"`
@@ -49,6 +55,7 @@ type Product struct {
 type Tribe struct {
 	gorm.Model
 	TribeId     string `gorm:"column:tribe_id;primaryKey;type:varchar(10);not null"`
+	MonsterId   string `gorm:"column:monster_id;type:varchar(10);not null"`
 	Name_ja     string `gorm:"column:name_ja;type:varchar(255);not null"`
 	Name_en     string `gorm:"column:name_en;type:varchar(255);not null"`
 	Description string `gorm:"column:description;type:varchar(255)"`

@@ -20,11 +20,9 @@ type Json struct {
 }
 
 type RequestParam struct {
-	MonsterIds      string `json:"monster_id"`
-	MonsterName     string `json:"name"`
-	MonsterNameKana string `json:"name_kana"`
-	Limit           int
-	Offset          int
-	Sort            string
-	Order           int
+	MonsterIds  string `form:"MonsterIds" json:"MonsterIds,omitempty"`
+	MonsterName string `form:"MonsterName" json:"MonsterName,omitempty"`
+	Limit       int    `form:"limit" json:"limit,omitempty"`
+	Offset      int    `form:"offset" json:"offset,omitempty"`
+	Sort        string `form:"sort" json:"sort,omitempty"`
 }
