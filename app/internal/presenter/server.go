@@ -45,6 +45,7 @@ func NewServer() (*gin.Engine, error) {
 	{
 		monsters.GET("", monsterHandler.GetAll)
 		monsters.GET("/:id", monsterHandler.GetById)
+		monsters.GET("/ranking", monsterHandler.GetRankingMonster)
 	}
 
 	return r, nil

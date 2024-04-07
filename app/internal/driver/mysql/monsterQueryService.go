@@ -118,13 +118,13 @@ func (s *monsterQueryService) FetchMonsterRanking(ctx context.Context) ([]*monst
 	var monster []Monster
 	var monsterIds []string
 	var result *gorm.DB
-	var p param.RequestParam
+	var p param.RequestRankingParam
 	var err error
 
 	where_clade := ""
 	sort := ""
 
-	p = ctx.Value("param").(param.RequestParam)
+	p = ctx.Value("param").(param.RequestRankingParam)
 
 	limit := p.Limit
 	offset := p.Offset
@@ -134,10 +134,36 @@ func (s *monsterQueryService) FetchMonsterRanking(ctx context.Context) ([]*monst
 		where_clade = "monster_id IN (?)"
 	}
 
-	if p.MonsterName != "" && p.MonsterIds != "" {
-		where_clade += " and name LIKE '%" + p.MonsterName + "%' "
-	} else if p.MonsterName != "" {
-		where_clade += " name LIKE '%" + p.MonsterName + "%' "
+	if p.MonsterName != "" {
+		if where_clade != "" {
+			where_clade += " and name LIKE '%" + p.MonsterName + "%' "
+		} else {
+			where_clade += " name LIKE '%" + p.MonsterName + "%' "
+		}
+	}
+
+	if p.LocationName != "" {
+		if where_clade != "" {
+			where_clade += " and name LIKE '%" + p.LocationName + "%' "
+		} else {
+			where_clade += " name LIKE '%" + p.LocationName + "%' "
+		}
+	}
+
+	if p.TribeName != "" {
+		if where_clade != "" {
+			where_clade += " and name LIKE '%" + p.TribeName + "%' "
+		} else {
+			where_clade += " name LIKE '%" + p.LocationName + "%' "
+		}
+	}
+
+	if p.Title != "" {
+		if where_clade != "" {
+			where_clade += " and name LIKE '%" + p.Title + "%' "
+		} else {
+			where_clade += " name LIKE '%" + p.LocationName + "%' "
+		}
 	}
 
 	if p.Sort == "1" {
@@ -147,11 +173,11 @@ func (s *monsterQueryService) FetchMonsterRanking(ctx context.Context) ([]*monst
 	}
 
 	if where_clade != "" && p.MonsterIds != "" {
-		result = db.Model(&monster).Preload("Field").Preload("Tribe").Preload("Product").Where(where_clade, monsterIds).Limit(limit).Offset(offset).Order(sort).Find(&monster)
+		result = db.Model(&monster).Preload("Field").Preload("Tribe").Preload("Product").Preload("Ranking").Where(where_clade, monsterIds).Limit(limit).Offset(offset).Order(sort).Find(&monster)
 	} else if where_clade != "" {
-		result = db.Model(&monster).Preload("Field").Preload("Tribe").Preload("Product").Where(where_clade).Limit(limit).Offset(offset).Order(sort).Find(&monster)
+		result = db.Model(&monster).Preload("Field").Preload("Tribe").Preload("Product").Preload("Ranking").Where(where_clade).Limit(limit).Offset(offset).Order(sort).Find(&monster)
 	} else {
-		result = db.Model(&monster).Preload("Field").Preload("Tribe").Preload("Product").Limit(limit).Offset(offset).Order(sort).Find(&monster)
+		result = db.Model(&monster).Preload("Field").Preload("Tribe").Preload("Product").Preload("Ranking").Limit(limit).Offset(offset).Order(sort).Find(&monster)
 	}
 
 	if result.Error != nil {
