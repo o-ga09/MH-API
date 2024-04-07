@@ -38,7 +38,7 @@ func (m *MonsterHandler) GetAll(c *gin.Context) {
 	if ook {
 		id = ""
 	}
-	res, err := m.monsterService.GetMonster(c.Request.Context(), id)
+	res, err := m.monsterService.FetchMonsterDetail(c.Request.Context(), id)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"err": "can not get records",
@@ -49,15 +49,38 @@ func (m *MonsterHandler) GetAll(c *gin.Context) {
 
 	monsters := []ResponseJson{}
 	for _, r := range res {
+		var wa []Weakness_attack
+		var we []Weakness_element
+		for _, w := range r.Weakness_attack {
+			wa = append(wa, Weakness_attack{
+				Slashing: w.Slashing,
+				Blow:     w.Blow,
+				Bullet:   w.Bullet,
+			})
+		}
+
+		for _, w := range r.Weakness_element {
+			we = append(we, Weakness_element{
+				Fire:    w.Fire,
+				Water:   w.Water,
+				Thunder: w.Thunder,
+				Ice:     w.Ice,
+				Dragon:  w.Dragon,
+			})
+		}
 		monsters = append(monsters, ResponseJson{
-			Id:               r.ID,
-			Name:             r.Name,
-			Desc:             r.Description,
-			Location:         "dummy location",
-			Category:         "dummy category",
-			Title:            "dummy title",
-			Weakness_attack:  "dummy weakness attack",
-			Weakness_element: "dummy weakness element",
+			Id:                 r.Id,
+			Name:               r.Name,
+			Desc:               r.Description,
+			Location:           Location{Name: r.Location},
+			Category:           r.Category,
+			Title:              Title{Name: r.Title},
+			FirstWeak_Attack:   r.FirstWeak_Attack,
+			FirstWeak_Element:  r.FirstWeak_Element,
+			SecondWeak_Attack:  r.SecondWeak_Attack,
+			SecondWeak_Element: r.SecondWeak_Element,
+			Weakness_attack:    wa,
+			Weakness_element:   we,
 		})
 	}
 	response := Monsters{
@@ -98,11 +121,11 @@ func (m *MonsterHandler) GetById(c *gin.Context) {
 			Id:               res[0].ID,
 			Name:             res[0].Name,
 			Desc:             res[0].Description,
-			Location:         "dummy location",
+			Location:         Location{},
 			Category:         "dummy category",
-			Title:            "dummy title",
-			Weakness_attack:  "dummy weakness attack",
-			Weakness_element: "dummy weakness element",
+			Title:            Title{},
+			Weakness_attack:  []Weakness_attack{},
+			Weakness_element: []Weakness_element{},
 		},
 	}
 	c.JSON(http.StatusOK, response)
