@@ -62,7 +62,6 @@ func (s *monsterQueryService) FetchMonsterList(ctx context.Context, id string) (
 	} else if result.RowsAffected == 0 {
 		return nil, gorm.ErrRecordNotFound
 	}
-
 	res := []*monsters.FetchMonsterListDto{}
 	for _, m := range monster {
 
@@ -105,7 +104,6 @@ func (s *monsterQueryService) FetchMonsterList(ctx context.Context, id string) (
 			Weakness_attack:  weak_attack,
 			Weakness_element: weak_element,
 		}
-
 		res = append(res, &r)
 	}
 	return res, err
