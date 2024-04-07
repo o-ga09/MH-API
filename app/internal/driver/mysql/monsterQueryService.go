@@ -2,7 +2,9 @@ package mysql
 
 import (
 	"context"
+	param "mh-api/app/internal/controller/monster"
 	"mh-api/app/internal/service/monsters"
+	"strings"
 
 	"gorm.io/gorm"
 )
@@ -19,7 +21,36 @@ func NewmonsterQueryService(conn *gorm.DB) *monsterQueryService {
 
 func (s *monsterQueryService) FetchMonsterList(ctx context.Context, id string) ([]*monsters.FetchMonsterListDto, error) {
 	var monster []Monster
-	err := db.Model(&monster).Preload("Weakness").Preload("Field").Preload("Tribe").Preload("Product").Find(&monster).Error
+	var monsterIds []string
+	var err error
+
+	where_clade := ""
+	sort := ""
+	param := ctx.Value("param").(param.RequestParam)
+
+	limit := param.Limit
+	offset := param.Offset
+
+	if param.MonsterIds != "" {
+		monsterIds = strings.Split(param.MonsterIds, ",")
+		where_clade = "monster_id IN (?)"
+	}
+
+	if param.MonsterName != "" {
+		where_clade += " and LIKE %" + param.MonsterName + "% "
+	}
+
+	if param.Sort == "1" {
+		sort = "monster_id ASC"
+	} else {
+		sort = "monster_id DESC"
+	}
+
+	if where_clade != "" {
+		err = db.Model(&monster).Preload("Weakness").Preload("Field").Preload("Tribe").Preload("Product").Where(where_clade, monsterIds).Find(&monster).Limit(limit).Offset(offset).Order(sort).Error
+	} else {
+		err = db.Model(&monster).Preload("Weakness").Preload("Field").Preload("Tribe").Preload("Product").Find(&monster).Limit(limit).Offset(offset).Order(sort).Error
+	}
 	if err != nil {
 		return nil, err
 	}

@@ -5,6 +5,7 @@ import (
 
 	"mh-api/app/internal/presenter/middleware"
 	"mh-api/app/internal/service/monsters"
+	"mh-api/app/pkg"
 
 	"net/http"
 
@@ -34,6 +35,22 @@ func NewMonsterHandler(s monsters.MonsterService) *MonsterHandler {
 // @Failure      500  {object}  MessageResponse
 // @Router /monsters [get]
 func (m *MonsterHandler) GetAll(c *gin.Context) {
+	var param RequestParam
+	err := c.ShouldBindJSON(&param)
+	if err != nil {
+		slog.Log(c, middleware.SeverityError, "param marshal error", err)
+		c.JSON(http.StatusBadRequest, MessageResponse{Message: "BAD REQUEST"})
+		return
+	}
+
+	validate := pkg.GetValidator()
+	err = validate.Struct(&param)
+	if err != nil {
+		slog.Log(c, middleware.SeverityError, "validation error", err)
+		c.JSON(http.StatusBadRequest, MessageResponse{Message: "BAD REQUEST"})
+		return
+	}
+
 	id, ook := c.Params.Get("id")
 	if ook {
 		id = ""
