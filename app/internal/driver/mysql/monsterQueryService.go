@@ -23,38 +23,44 @@ func (s *monsterQueryService) FetchMonsterList(ctx context.Context, id string) (
 	var monster []Monster
 	var monsterIds []string
 	var result *gorm.DB
+	var p param.RequestParam
 	var err error
 
 	where_clade := ""
 	sort := ""
-	param := ctx.Value("param").(param.RequestParam)
 
-	limit := param.Limit
-	offset := param.Offset
+	if id == "" {
+		p = ctx.Value("param").(param.RequestParam)
+	}
 
-	if param.MonsterIds != "" {
-		monsterIds = strings.Split(param.MonsterIds, ",")
+	limit := p.Limit
+	offset := p.Offset
+
+	if p.MonsterIds != "" {
+		monsterIds = strings.Split(p.MonsterIds, ",")
 		where_clade = "monster_id IN (?)"
 	}
 
-	if param.MonsterName != "" && param.MonsterIds != "" {
-		where_clade += " and name LIKE '%" + param.MonsterName + "%' "
-	} else {
-		where_clade += " name LIKE '%" + param.MonsterName + "%' "
+	if p.MonsterName != "" && p.MonsterIds != "" {
+		where_clade += " and name LIKE '%" + p.MonsterName + "%' "
+	} else if p.MonsterName != "" {
+		where_clade += " name LIKE '%" + p.MonsterName + "%' "
 	}
 
-	if param.Sort == "1" {
+	if p.Sort == "1" {
 		sort = "monster_id ASC"
 	} else {
 		sort = "monster_id DESC"
 	}
 
-	if where_clade != "" && param.MonsterIds != "" {
-		result = db.Debug().Model(&monster).Preload("Weakness").Preload("Field").Preload("Tribe").Preload("Product").Where(where_clade, monsterIds).Limit(limit).Offset(offset).Order(sort).Find(&monster)
+	if id != "" {
+		result = db.Model(&monster).Preload("Weakness").Preload("Field").Preload("Tribe").Preload("Product").Where("monster_id = ? ", id).Find(&monster)
+	} else if where_clade != "" && p.MonsterIds != "" {
+		result = db.Model(&monster).Preload("Weakness").Preload("Field").Preload("Tribe").Preload("Product").Where(where_clade, monsterIds).Limit(limit).Offset(offset).Order(sort).Find(&monster)
 	} else if where_clade != "" {
-		result = db.Debug().Model(&monster).Preload("Weakness").Preload("Field").Preload("Tribe").Preload("Product").Where(where_clade).Limit(limit).Offset(offset).Order(sort).Find(&monster)
+		result = db.Model(&monster).Preload("Weakness").Preload("Field").Preload("Tribe").Preload("Product").Where(where_clade).Limit(limit).Offset(offset).Order(sort).Find(&monster)
 	} else {
-		result = db.Debug().Model(&monster).Preload("Weakness").Preload("Field").Preload("Tribe").Preload("Product").Limit(limit).Offset(offset).Order(sort).Find(&monster)
+		result = db.Model(&monster).Preload("Weakness").Preload("Field").Preload("Tribe").Preload("Product").Limit(limit).Offset(offset).Order(sort).Find(&monster)
 	}
 
 	if result.Error != nil {
