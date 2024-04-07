@@ -3,8 +3,8 @@ package monsters
 import "context"
 
 type MonsterQueryService interface {
-	FetchMonsterList(ctx context.Context, id string) ([]*FetchMonsterListDto, error)
-	FetchMonsterRank(ctx context.Context) ([]*FetchMonsterRankingDto, error)
+	FetchList(ctx context.Context, id string) ([]*FetchMonsterListDto, error)
+	FetchRank(ctx context.Context) ([]*FetchMonsterRankingDto, error)
 }
 
 type FetchMonsterListDto struct {

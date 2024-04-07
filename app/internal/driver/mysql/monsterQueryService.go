@@ -19,7 +19,7 @@ func NewmonsterQueryService(conn *gorm.DB) *monsterQueryService {
 	}
 }
 
-func (s *monsterQueryService) FetchMonsterList(ctx context.Context, id string) ([]*monsters.FetchMonsterListDto, error) {
+func (s *monsterQueryService) FetchList(ctx context.Context, id string) ([]*monsters.FetchMonsterListDto, error) {
 	var monster []Monster
 	var monsterIds []string
 	var result *gorm.DB
@@ -114,7 +114,7 @@ func (s *monsterQueryService) FetchMonsterList(ctx context.Context, id string) (
 	return res, err
 }
 
-func (s *monsterQueryService) FetchMonsterRank(ctx context.Context) ([]*monsters.FetchMonsterRankingDto, error) {
+func (s *monsterQueryService) FetchRank(ctx context.Context) ([]*monsters.FetchMonsterRankingDto, error) {
 	var monster []Monster
 	var monsterIds []string
 	var result *gorm.DB
