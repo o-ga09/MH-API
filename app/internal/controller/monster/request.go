@@ -26,3 +26,14 @@ type RequestParam struct {
 	Offset      int    `form:"offset" json:"offset,omitempty"`
 	Sort        string `form:"sort" json:"sort,omitempty"`
 }
+
+type RequestRankingParam struct {
+	MonsterIds   string `form:"MonsterIds" json:"MonsterIds,omitempty"`
+	MonsterName  string `form:"MonsterName" json:"MonsterName,omitempty"`
+	LocationName string `json:"location_name,omitempty"`
+	TribeName    string `json:"tribe_name,omitempty"`
+	Title        string `json:"title,omitempty"`
+	Limit        int    `form:"limit" json:"limit,omitempty"`
+	Offset       int    `form:"offset" json:"offset,omitempty"`
+	Sort         string `form:"sort" json:"sort,omitempty"`
+}

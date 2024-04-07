@@ -11,6 +11,10 @@ type Monster struct {
 	Monster ResponseJson `json:"monster"`
 }
 
+type MonsterRanking struct {
+	Ranking []ResponseRankingJson `json:"ranking,omitempty"`
+}
+
 type MessageResponse struct {
 	Message string `json:"message"`
 }
@@ -28,6 +32,16 @@ type ResponseJson struct {
 	SecondWeak_Element string             `json:"second_weak_element,omitempty"`
 	Weakness_attack    []Weakness_attack  `json:"weakness_attack,omitempty"`
 	Weakness_element   []Weakness_element `json:"weakness_element,omitempty"`
+}
+
+type ResponseRankingJson struct {
+	Id       string    `json:"monster_id,omitempty"`
+	Name     string    `json:"name,omitempty"`
+	Desc     string    `json:"desc,omitempty"`
+	Location Location  `json:"location,omitempty"`
+	Category string    `json:"category,omitempty"`
+	Title    Title     `json:"title,omitempty"`
+	Ranking  []Ranking `json:"ranking,omitempty"`
 }
 
 type Location struct {
@@ -50,4 +64,9 @@ type Weakness_element struct {
 	Water   string `json:"water,omitempty"`
 	Thunder string `json:"thunder,omitempty"`
 	Dragon  string `json:"dragon,omitempty"`
+}
+
+type Ranking struct {
+	Ranking  string `json:"ranking,omitempty"`
+	VoteYear string `json:"vote_year,omitempty"`
 }

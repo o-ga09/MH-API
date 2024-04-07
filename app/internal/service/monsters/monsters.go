@@ -43,3 +43,12 @@ func (s *MonsterService) FetchMonsterDetail(ctx context.Context, id string) ([]*
 
 	return res, nil
 }
+
+func (s *MonsterService) FetchMonsterRanking(ctx context.Context) ([]*FetchMonsterRankingDto, error) {
+	res, err := s.qs.FetchMonsterRanking(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return res, nil
+}
