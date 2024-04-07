@@ -114,7 +114,7 @@ func (s *monsterQueryService) FetchMonsterList(ctx context.Context, id string) (
 	return res, err
 }
 
-func (s *monsterQueryService) FetchMonsterRanking(ctx context.Context) ([]*monsters.FetchMonsterRankingDto, error) {
+func (s *monsterQueryService) FetchMonsterRank(ctx context.Context) ([]*monsters.FetchMonsterRankingDto, error) {
 	var monster []Monster
 	var monsterIds []string
 	var result *gorm.DB

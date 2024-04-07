@@ -4,7 +4,7 @@ import "context"
 
 type MonsterQueryService interface {
 	FetchMonsterList(ctx context.Context, id string) ([]*FetchMonsterListDto, error)
-	FetchMonsterRanking(ctx context.Context) ([]*FetchMonsterRankingDto, error)
+	FetchMonsterRank(ctx context.Context) ([]*FetchMonsterRankingDto, error)
 }
 
 type FetchMonsterListDto struct {
