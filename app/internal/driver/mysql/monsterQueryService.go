@@ -134,36 +134,28 @@ func (s *monsterQueryService) FetchRank(ctx context.Context) ([]*monsters.FetchM
 		where_clade = "monster_id IN (?)"
 	}
 
-	if p.MonsterName != "" {
-		if where_clade != "" {
-			where_clade += " and name LIKE '%" + p.MonsterName + "%' "
-		} else {
-			where_clade += " name LIKE '%" + p.MonsterName + "%' "
-		}
+	if p.MonsterName != "" && where_clade != "" {
+		where_clade += " and name LIKE '%" + p.MonsterName + "%' "
+	} else {
+		where_clade += " name LIKE '%" + p.MonsterName + "%' "
 	}
 
-	if p.LocationName != "" {
-		if where_clade != "" {
-			where_clade += " and name LIKE '%" + p.LocationName + "%' "
-		} else {
-			where_clade += " name LIKE '%" + p.LocationName + "%' "
-		}
+	if p.LocationName != "" && where_clade != "" {
+		where_clade += " and name LIKE '%" + p.LocationName + "%' "
+	} else {
+		where_clade += " name LIKE '%" + p.LocationName + "%' "
 	}
 
-	if p.TribeName != "" {
-		if where_clade != "" {
-			where_clade += " and name LIKE '%" + p.TribeName + "%' "
-		} else {
-			where_clade += " name LIKE '%" + p.LocationName + "%' "
-		}
+	if p.TribeName != "" && where_clade != "" {
+		where_clade += " and name LIKE '%" + p.TribeName + "%' "
+	} else {
+		where_clade += " name LIKE '%" + p.LocationName + "%' "
 	}
 
-	if p.Title != "" {
-		if where_clade != "" {
-			where_clade += " and name LIKE '%" + p.Title + "%' "
-		} else {
-			where_clade += " name LIKE '%" + p.LocationName + "%' "
-		}
+	if p.Title != "" && where_clade != "" {
+		where_clade += " and name LIKE '%" + p.Title + "%' "
+	} else {
+		where_clade += " name LIKE '%" + p.LocationName + "%' "
 	}
 
 	if p.Sort == "1" {
