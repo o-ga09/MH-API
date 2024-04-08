@@ -19,7 +19,7 @@ func NewmonsterQueryService(conn *gorm.DB) *monsterQueryService {
 	}
 }
 
-func (s *monsterQueryService) FetchMonsterList(ctx context.Context, id string) ([]*monsters.FetchMonsterListDto, error) {
+func (s *monsterQueryService) FetchList(ctx context.Context, id string) ([]*monsters.FetchMonsterListDto, error) {
 	var monster []Monster
 	var monsterIds []string
 	var result *gorm.DB
@@ -108,6 +108,103 @@ func (s *monsterQueryService) FetchMonsterList(ctx context.Context, id string) (
 			Title:            t,
 			Weakness_attack:  weak_attack,
 			Weakness_element: weak_element,
+		}
+		res = append(res, &r)
+	}
+	return res, err
+}
+
+func (s *monsterQueryService) FetchRank(ctx context.Context) ([]*monsters.FetchMonsterRankingDto, error) {
+	var monster []Monster
+	var monsterIds []string
+	var result *gorm.DB
+	var p param.RequestRankingParam
+	var err error
+
+	where_clade := ""
+	sort := ""
+
+	p = ctx.Value("param").(param.RequestRankingParam)
+
+	limit := p.Limit
+	offset := p.Offset
+
+	if p.MonsterIds != "" {
+		monsterIds = strings.Split(p.MonsterIds, ",")
+		where_clade = "monster_id IN (?)"
+	}
+
+	if p.MonsterName != "" && where_clade != "" {
+		where_clade += " and name LIKE '%" + p.MonsterName + "%' "
+	} else {
+		where_clade += " name LIKE '%" + p.MonsterName + "%' "
+	}
+
+	if p.LocationName != "" && where_clade != "" {
+		where_clade += " and name LIKE '%" + p.LocationName + "%' "
+	} else {
+		where_clade += " name LIKE '%" + p.LocationName + "%' "
+	}
+
+	if p.TribeName != "" && where_clade != "" {
+		where_clade += " and name LIKE '%" + p.TribeName + "%' "
+	} else {
+		where_clade += " name LIKE '%" + p.LocationName + "%' "
+	}
+
+	if p.Title != "" && where_clade != "" {
+		where_clade += " and name LIKE '%" + p.Title + "%' "
+	} else {
+		where_clade += " name LIKE '%" + p.LocationName + "%' "
+	}
+
+	if p.Sort == "1" {
+		sort = "monster_id ASC"
+	} else {
+		sort = "monster_id DESC"
+	}
+
+	if where_clade != "" && p.MonsterIds != "" {
+		result = db.Model(&monster).Preload("Field").Preload("Tribe").Preload("Product").Preload("Ranking").Where(where_clade, monsterIds).Limit(limit).Offset(offset).Order(sort).Find(&monster)
+	} else if where_clade != "" {
+		result = db.Model(&monster).Preload("Field").Preload("Tribe").Preload("Product").Preload("Ranking").Where(where_clade).Limit(limit).Offset(offset).Order(sort).Find(&monster)
+	} else {
+		result = db.Model(&monster).Preload("Field").Preload("Tribe").Preload("Product").Preload("Ranking").Limit(limit).Offset(offset).Order(sort).Find(&monster)
+	}
+
+	if result.Error != nil {
+		return nil, err
+	} else if result.RowsAffected == 0 {
+		return nil, gorm.ErrRecordNotFound
+	}
+	res := []*monsters.FetchMonsterRankingDto{}
+	for _, m := range monster {
+		var l []string
+		var t []string
+		var rank []monsters.Ranking
+
+		for _, f := range m.Field {
+			l = append(l, f.Name)
+		}
+		for _, p := range m.Product {
+			t = append(t, p.Name)
+		}
+
+		for _, r := range m.Ranking {
+			rank = append(rank, monsters.Ranking{
+				Ranking:  r.Ranking,
+				VoteYear: r.VoteYear,
+			})
+		}
+
+		r := monsters.FetchMonsterRankingDto{
+			Id:          m.MonsterId,
+			Name:        m.Name,
+			Description: m.Description,
+			Location:    l,
+			Category:    m.Tribe.Name_ja,
+			Title:       t,
+			Ranking:     rank,
 		}
 		res = append(res, &r)
 	}

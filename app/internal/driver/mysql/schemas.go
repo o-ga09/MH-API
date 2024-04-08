@@ -11,6 +11,7 @@ type Monster struct {
 	Tribe       *Tribe      `gorm:"foreignKey:monster_id;references:monster_id"`
 	Product     []*Product  `gorm:"foreignKey:monster_id;references:monster_id"`
 	Field       []*Field    `gorm:"foreignKey:monster_id;references:monster_id"`
+	Ranking     []*Ranking  `gorm:"foreignKey:monster_id;references:monster_id"`
 }
 
 type Field struct {
@@ -90,4 +91,11 @@ type Weapon struct {
 	Shapness      string `gorm:"column:shapness;type:varchar(255)"`
 	Critical      string `gorm:"column:critical;type:varchar(255)"`
 	Description   string `gorm:"column:description;type:varchar(255)"`
+}
+
+type Ranking struct {
+	gorm.Model
+	MonsterId string `gorm:"column:monster_id;type:varchar(10); not null"`
+	Ranking   string `gorm:"column:ranking;type:varchar(10)"`
+	VoteYear  string `gorm:"column:vote_year;type:varchar(20)"`
 }

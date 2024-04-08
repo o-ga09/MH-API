@@ -147,6 +147,20 @@ CREATE TABLE `weapon` (
   KEY `idx_weapon_deleted_at` (`deleted_at`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+CREATE TABLE `ranking` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `created_at` datetime(3) DEFAULT NULL,
+  `updated_at` datetime(3) DEFAULT NULL,
+  `deleted_at` datetime(3) DEFAULT NULL,
+  `monster_id` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ranking` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `vote_year` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_monster_deleted_at` (`deleted_at`),
+  KEY `idx_monster_monster_id` (`monster_id`),
+  CONSTRAINT `fk_monster_ranking` FOREIGN KEY (`monster_id`) REFERENCES `monster` (`monster_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 
 INSERT INTO monster (monster_id, name, description)
 VALUES ('MON001', 'Slime', 'A blob of goo that can be surprisingly resilient.'),
@@ -200,3 +214,8 @@ INSERT INTO weapon (weapon_id, name, image_url, rarerity, attack, element_attack
 VALUES ('WPN001', 'Wooden Sword', 'images/weapon_wooden_sword.jpg', 'Common', 'Low', 'None', 'Normal', 'Low', 'A basic sword made of wood.'),
        ('WPN002', 'Iron Sword', 'images/weapon_iron_sword.jpg', 'Uncommon', 'Medium', 'None', 'Normal', 'Medium', 'A sturdy sword made of iron.'),
        ('WPN003', 'Fire Sword', 'images/weapon_fire_sword.jpg', 'Rare', 'High', 'Fire', 'Normal', 'High', 'A sword imbued with fire that burns enemies.');
+
+INSERT INTO ranking (monster_id, ranking, vote_year)
+VALUES ('MON001', '1', '2024/03/12'),
+       ('MON002', '2', '2024/03/12'),
+       ('MON003', '3', '2024/03/12');
