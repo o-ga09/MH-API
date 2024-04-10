@@ -9,6 +9,7 @@ services:
       MYSQL_USER: mh-api
       MYSQL_PASSWORD: P@ssw0rd
       MYSQL_DATABASE: mh-api
+      MYSQL_ROOT_PASSWORD: pass
       MYSQL_TCP_PORT: 3306
       LANG: C.UTF-8
     command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci

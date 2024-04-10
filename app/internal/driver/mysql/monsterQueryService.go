@@ -100,14 +100,18 @@ func (s *monsterQueryService) FetchList(ctx context.Context, id string) ([]*mons
 		}
 
 		r := monsters.FetchMonsterListDto{
-			Id:               m.MonsterId,
-			Name:             m.Name,
-			Description:      m.Description,
-			Location:         l,
-			Category:         m.Tribe.Name_ja,
-			Title:            t,
-			Weakness_attack:  weak_attack,
-			Weakness_element: weak_element,
+			Id:                 m.MonsterId,
+			Name:               m.Name,
+			Description:        m.Description,
+			Location:           l,
+			Category:           m.Tribe.Name_ja,
+			Title:              t,
+			FirstWeak_Attack:   m.Weakness[0].FirstWeakAttack,
+			SecondWeak_Attack:  m.Weakness[0].SecondWeakAttack,
+			FirstWeak_Element:  m.Weakness[0].FirstWeakElement,
+			SecondWeak_Element: m.Weakness[0].SecondWeakElement,
+			Weakness_attack:    weak_attack,
+			Weakness_element:   weak_element,
 		}
 		res = append(res, &r)
 	}
@@ -136,32 +140,32 @@ func (s *monsterQueryService) FetchRank(ctx context.Context) ([]*monsters.FetchM
 
 	if p.MonsterName != "" && where_clade != "" {
 		where_clade += " and name LIKE '%" + p.MonsterName + "%' "
-	} else {
+	} else if p.MonsterName != "" {
 		where_clade += " name LIKE '%" + p.MonsterName + "%' "
 	}
 
 	if p.LocationName != "" && where_clade != "" {
 		where_clade += " and name LIKE '%" + p.LocationName + "%' "
-	} else {
+	} else if p.LocationName != "" {
 		where_clade += " name LIKE '%" + p.LocationName + "%' "
 	}
 
 	if p.TribeName != "" && where_clade != "" {
 		where_clade += " and name LIKE '%" + p.TribeName + "%' "
-	} else {
+	} else if p.TribeName != "" {
 		where_clade += " name LIKE '%" + p.LocationName + "%' "
 	}
 
 	if p.Title != "" && where_clade != "" {
 		where_clade += " and name LIKE '%" + p.Title + "%' "
-	} else {
+	} else if p.Title != "" {
 		where_clade += " name LIKE '%" + p.LocationName + "%' "
 	}
 
-	if p.Sort == "1" {
-		sort = "monster_id ASC"
-	} else {
+	if p.Sort == "2" {
 		sort = "monster_id DESC"
+	} else {
+		sort = "monster_id ASC"
 	}
 
 	if where_clade != "" && p.MonsterIds != "" {
@@ -169,7 +173,7 @@ func (s *monsterQueryService) FetchRank(ctx context.Context) ([]*monsters.FetchM
 	} else if where_clade != "" {
 		result = db.Model(&monster).Preload("Field").Preload("Tribe").Preload("Product").Preload("Ranking").Where(where_clade).Limit(limit).Offset(offset).Order(sort).Find(&monster)
 	} else {
-		result = db.Model(&monster).Preload("Field").Preload("Tribe").Preload("Product").Preload("Ranking").Limit(limit).Offset(offset).Order(sort).Find(&monster)
+		result = db.Model(&monster).Preload("Ranking").Preload("Field").Preload("Tribe").Preload("Product").Limit(limit).Offset(offset).Order(sort).Find(&monster)
 	}
 
 	if result.Error != nil {

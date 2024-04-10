@@ -22,9 +22,13 @@ jobs:
         uses: actions/setup-go@v2
         with:
           go-version: 1.22
+      
+      - name: run Docker
+        run: |
+          docker compose up -d
 
       - name: testing
-        run: go test ./... -coverprofile=coverage.out
+        run: docker compose exec mh-api-srv go test ./... -coverprofile=coverage.out
 
       - name: create report
         uses: k1LoW/octocov-action@v0
