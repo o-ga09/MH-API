@@ -2,6 +2,7 @@ package mysql
 
 import (
 	"context"
+	"fmt"
 	param "mh-api/app/internal/controller/monster"
 	"mh-api/app/internal/service/monsters"
 	"strings"
@@ -54,13 +55,13 @@ func (s *monsterQueryService) FetchList(ctx context.Context, id string) ([]*mons
 	}
 
 	if id != "" {
-		result = db.Model(&monster).Preload("Weakness").Preload("Field").Preload("Tribe").Preload("Product").Where("monster_id = ? ", id).Find(&monster)
+		result = db.Model(&monster).Preload("Weakness").Preload("Field").Preload("Tribe").Preload("Product").Preload("Ranking").Where("monster_id = ? ", id).Find(&monster)
 	} else if where_clade != "" && p.MonsterIds != "" {
-		result = db.Model(&monster).Preload("Weakness").Preload("Field").Preload("Tribe").Preload("Product").Where(where_clade, monsterIds).Limit(limit).Offset(offset).Order(sort).Find(&monster)
+		result = db.Model(&monster).Preload("Weakness").Preload("Field").Preload("Tribe").Preload("Product").Preload("Ranking").Where(where_clade, monsterIds).Limit(limit).Offset(offset).Order(sort).Find(&monster)
 	} else if where_clade != "" {
-		result = db.Model(&monster).Preload("Weakness").Preload("Field").Preload("Tribe").Preload("Product").Where(where_clade).Limit(limit).Offset(offset).Order(sort).Find(&monster)
+		result = db.Model(&monster).Preload("Weakness").Preload("Field").Preload("Tribe").Preload("Product").Preload("Ranking").Where(where_clade).Limit(limit).Offset(offset).Order(sort).Find(&monster)
 	} else {
-		result = db.Model(&monster).Preload("Weakness").Preload("Field").Preload("Tribe").Preload("Product").Limit(limit).Offset(offset).Order(sort).Find(&monster)
+		result = db.Model(&monster).Preload("Weakness").Preload("Field").Preload("Tribe").Preload("Product").Preload("Ranking").Limit(limit).Offset(offset).Order(sort).Find(&monster)
 	}
 
 	if result.Error != nil {
@@ -126,6 +127,11 @@ func (s *monsterQueryService) FetchRank(ctx context.Context) ([]*monsters.FetchM
 	var err error
 
 	where_clade := ""
+
+	where_clade_field := ""
+	where_clade_tribe := ""
+	where_clade_title := ""
+
 	sort := ""
 
 	p = ctx.Value("param").(param.RequestRankingParam)
@@ -144,22 +150,16 @@ func (s *monsterQueryService) FetchRank(ctx context.Context) ([]*monsters.FetchM
 		where_clade += " name LIKE '%" + p.MonsterName + "%' "
 	}
 
-	if p.LocationName != "" && where_clade != "" {
-		where_clade += " and name LIKE '%" + p.LocationName + "%' "
-	} else if p.LocationName != "" {
-		where_clade += " name LIKE '%" + p.LocationName + "%' "
+	if p.LocationName != "" {
+		where_clade_field += " name LIKE '%" + p.LocationName + "%' "
 	}
 
-	if p.TribeName != "" && where_clade != "" {
-		where_clade += " and name LIKE '%" + p.TribeName + "%' "
-	} else if p.TribeName != "" {
-		where_clade += " name LIKE '%" + p.LocationName + "%' "
+	if p.TribeName != "" {
+		where_clade_tribe += " name_ja LIKE '%" + p.TribeName + "%' "
 	}
 
-	if p.Title != "" && where_clade != "" {
-		where_clade += " and name LIKE '%" + p.Title + "%' "
-	} else if p.Title != "" {
-		where_clade += " name LIKE '%" + p.LocationName + "%' "
+	if p.Title != "" {
+		where_clade_title += " name LIKE '%" + p.Title + "%' "
 	}
 
 	if p.Sort == "2" {
@@ -169,20 +169,24 @@ func (s *monsterQueryService) FetchRank(ctx context.Context) ([]*monsters.FetchM
 	}
 
 	if where_clade != "" && p.MonsterIds != "" {
-		result = db.Model(&monster).Preload("Field").Preload("Tribe").Preload("Product").Preload("Ranking").Where(where_clade, monsterIds).Limit(limit).Offset(offset).Order(sort).Find(&monster)
+		result = db.Model(&monster).Preload("Field", where_clade_field).Preload("Tribe", where_clade_tribe).Preload("Product", where_clade_title).Preload("Ranking").Preload("Weakness").Where(where_clade, monsterIds).Limit(limit).Offset(offset).Order(sort).Find(&monster)
 	} else if where_clade != "" {
-		result = db.Model(&monster).Preload("Field").Preload("Tribe").Preload("Product").Preload("Ranking").Where(where_clade).Limit(limit).Offset(offset).Order(sort).Find(&monster)
+		result = db.Model(&monster).Preload("Field", where_clade_field).Preload("Tribe", where_clade_tribe).Preload("Product", where_clade_title).Preload("Ranking").Preload("Weakness").Where(where_clade).Limit(limit).Offset(offset).Order(sort).Find(&monster)
 	} else {
-		result = db.Model(&monster).Preload("Ranking").Preload("Field").Preload("Tribe").Preload("Product").Limit(limit).Offset(offset).Order(sort).Find(&monster)
+		result = db.Model(&monster).Preload("Ranking").Preload("Field", where_clade_field).Preload("Tribe", where_clade_tribe).Preload("Product", where_clade_title).Preload("Weakness").Limit(limit).Offset(offset).Order(sort).Find(&monster)
 	}
 
 	if result.Error != nil {
-		return nil, err
+		return nil, fmt.Errorf("error: %s", result.Statement.Error)
 	} else if result.RowsAffected == 0 {
 		return nil, gorm.ErrRecordNotFound
 	}
 	res := []*monsters.FetchMonsterRankingDto{}
 	for _, m := range monster {
+
+		if IsPreloadNotFound(&m) {
+			continue
+		}
 		var l []string
 		var t []string
 		var rank []monsters.Ranking
@@ -212,5 +216,18 @@ func (s *monsterQueryService) FetchRank(ctx context.Context) ([]*monsters.FetchM
 		}
 		res = append(res, &r)
 	}
+
+	if len(res) == 0 || res == nil {
+		return nil, gorm.ErrRecordNotFound
+	}
 	return res, err
+}
+
+func IsPreloadNotFound(monsters *Monster) bool {
+	fmt.Println(monsters.Tribe)
+	if len(monsters.Weakness) == 0 || monsters.Tribe == nil || len(monsters.Field) == 0 || len(monsters.Product) == 0 {
+		return true
+	}
+
+	return false
 }
