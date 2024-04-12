@@ -52,3 +52,22 @@ func (s *MonsterService) FetchMonsterRanking(ctx context.Context) ([]*FetchMonst
 
 	return res, nil
 }
+
+func (s *MonsterService) SaveMonsters(ctx context.Context, param MonsterDto) error {
+	saveData := monsters.NewMonster(param.ID, param.Name, param.Description)
+	err := s.repo.Save(ctx, saveData)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (s *MonsterService) RemoveMonsters(ctx context.Context, id string) error {
+	err := s.repo.Remove(ctx, id)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

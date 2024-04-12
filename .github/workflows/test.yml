@@ -26,12 +26,11 @@ jobs:
       - name: run Docker
         run: |
           cd environment
-          docker compose up -d
+          docker compose up -d mh-api-dbsrv01
 
       - name: testing
         run: |
-          cd environment
-          docker compose exec mh-api-srv go test ./... -coverprofile=coverage.out
+          go test ./... -coverprofile=coverage.out
 
       - name: create report
         uses: k1LoW/octocov-action@v0

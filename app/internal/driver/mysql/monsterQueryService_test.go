@@ -3,7 +3,6 @@ package mysql
 import (
 	param "mh-api/app/internal/controller/monster"
 	"mh-api/app/internal/service/monsters"
-	"os"
 	"reflect"
 	"testing"
 
@@ -14,7 +13,8 @@ import (
 )
 
 func TestNewmonsterQueryService(t *testing.T) {
-	os.Setenv("DATABASE_URL", "mh-api:P@ssw0rd@tcp(127.0.0.1:3306)/mh-api?charset=utf8&parseTime=True&loc=Local")
+	BeforeTest()
+	t.Cleanup(AfetrTest())
 	conn := New(context.Background())
 	type args struct {
 		conn *gorm.DB
