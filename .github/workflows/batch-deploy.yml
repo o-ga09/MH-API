@@ -30,7 +30,6 @@ jobs:
 
       - name: Build a docker image
         run: |
-          cd environment
           docker build --platform linux/amd64 -t ${{ env.IMAGE }} -f environment/go/Dockerfile --target deploy-batch .
 
       - name: Push the docker image
