@@ -40,7 +40,7 @@ RUN yum -y update
 
 EXPOSE "8080"
 
-COPY --from=deploy-builder /app/app .
+COPY --from=deploy-batch-builder /app/app .
 
 CMD ["./app"]
 
