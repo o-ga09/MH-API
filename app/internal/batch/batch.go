@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log/slog"
 	di "mh-api/app/internal/DI"
+
 	"mh-api/app/internal/service/monsters"
 )
 
@@ -20,13 +21,12 @@ func Exec(ctx context.Context, batchName string) error {
 	service := di.BatchDI()
 	batchService := NewBatchService(*service)
 
-	var saveData monsters.MonsterDto
 	var id string
 
 	switch batchName {
 	case "createMonster":
 		slog.InfoContext(ctx, fmt.Sprintf("[Batch Name]: %s", batchName))
-		err := batchService.Service.SaveMonsters(ctx, saveData)
+		err := Create(ctx, batchService)
 		if err != nil {
 			return err
 		}

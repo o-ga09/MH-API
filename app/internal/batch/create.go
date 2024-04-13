@@ -1,16 +1,16 @@
-package monster
+package batch
 
 import (
 	"context"
 	"log/slog"
-	"mh-api/app/internal/batch"
+
 	"mh-api/app/internal/service/monsters"
 
 	"mh-api/app/pkg"
 )
 
-func Create(ctx context.Context, batchService *batch.BatchService) error {
-	data, err := pkg.GetCSV(ctx, "monster/monsters.csv")
+func Create(ctx context.Context, batchService *BatchService) error {
+	data, err := pkg.GetCSV(ctx, "monster/monster.csv")
 	if err != nil {
 		slog.InfoContext(ctx, "[Batch Error Occurred]: csv from GCS", "error message", err)
 		return err
