@@ -46,6 +46,7 @@ jobs:
           gcloud auth configure-docker asia-northeast1-docker.pkg.dev
 
       - name: Build a docker image
+        working-directory: ./
         run: docker build --platform linux/amd64 -t ${{ env.IMAGE }} -f environment/go/Dockerfile --target deploy-api .
 
       - name: Push the docker image
