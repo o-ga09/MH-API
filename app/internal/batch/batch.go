@@ -32,7 +32,10 @@ func Exec(ctx context.Context, batchName string) error {
 		}
 	case "removeMonster":
 		slog.InfoContext(ctx, fmt.Sprintf("[Batch Name]: %s", batchName))
-		batchService.Service.RemoveMonsters(ctx, id)
+		err := batchService.Service.RemoveMonsters(ctx, id)
+		if err != nil {
+			return err
+		}
 	case "createItem":
 		slog.InfoContext(ctx, fmt.Sprintf("[Batch Name]: %s", batchName))
 	case "removeItem":

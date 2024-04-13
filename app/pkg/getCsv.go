@@ -24,7 +24,6 @@ func GetCSV(ctx context.Context, fileName string) (*[][]string, error) {
 	}
 
 	reader := csv.NewReader(rc)
-	reader.Read()
 
 	var data [][]string
 	for {
