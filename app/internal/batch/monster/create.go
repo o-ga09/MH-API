@@ -12,7 +12,7 @@ import (
 func Create(ctx context.Context, batchService *batch.BatchService) error {
 	data, err := pkg.GetCSV(ctx, "monster/monsters.csv")
 	if err != nil {
-		slog.InfoContext(ctx, "[Batch Error Occured]: csv from GCS", "error message", err)
+		slog.InfoContext(ctx, "[Batch Error Occurred]: csv from GCS", "error message", err)
 		return err
 	}
 
@@ -24,7 +24,7 @@ func Create(ctx context.Context, batchService *batch.BatchService) error {
 		}
 		err := batchService.Service.SaveMonsters(ctx, m)
 		if err != nil {
-			slog.InfoContext(ctx, "[Batch Error Occured]: data Insert to DB", "error message", err)
+			slog.InfoContext(ctx, "[Batch Error Occurred]: data Insert to DB", "error message", err)
 			return err
 		}
 		slog.InfoContext(ctx, "[Batch]: Insert to DB", "data", m)

@@ -20,7 +20,7 @@ func main() {
 	batchName := os.Args[1]
 	err := batch.Exec(ctx, batchName)
 	if err != nil {
-		panic(err)
+		slog.InfoContext(ctx, "[Batch Accident]")
 	}
 	slog.InfoContext(ctx, "[Batch Ended]")
 }
