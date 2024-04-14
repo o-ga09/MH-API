@@ -39,7 +39,9 @@ func (r *monsterRepository) Save(ctx context.Context, m monsters.Monster) error 
 		Name:        m.GetName(),
 		Description: m.GetDesc(),
 	}
+	r.conn.Exec("SET foreign_key_checks = 0")
 	err := r.conn.Save(&monster).Error
+	r.conn.Exec("SET foreign_key_checks = 1")
 	if err != nil {
 		return err
 	}

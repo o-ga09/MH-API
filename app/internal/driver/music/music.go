@@ -40,7 +40,9 @@ func (r *musicRepository) Save(ctx context.Context, m music.Music) error {
 		Name:      m.GetName(),
 		ImageUrl:  m.GetURL(),
 	}
+	r.conn.Exec("SET foreign_key_checks = 0")
 	err := r.conn.Save(&data).Error
+	r.conn.Exec("SET foreign_key_checks = 1")
 	if err != nil {
 		return err
 	}

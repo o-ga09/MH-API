@@ -19,31 +19,6 @@ func NewweaponRepository(conn *gorm.DB) *weaponRepository {
 	}
 }
 
-func (r *weaponRepository) Get(ctx context.Context, monsterId string) (weapons.Weapons, error) {
-	weapon := []mysql.Weapon{}
-	err := r.conn.Find(&weapon).Error
-	if err != nil {
-		return nil, err
-	}
-
-	res := weapons.Weapons{}
-	for _, w := range weapon {
-		res = append(res, *weapons.NewWeapon(
-			w.WeaponId,
-			w.Name,
-			w.ImageUrl,
-			w.Rare,
-			w.Attack,
-			w.ElemantAttaxk,
-			w.Shapness,
-			w.Critical,
-			w.Description,
-		))
-	}
-
-	return res, nil
-}
-
 func (r *weaponRepository) Save(ctx context.Context, w weapons.Weapon) error {
 	weapon := mysql.Weapon{
 		WeaponId:      w.GetID(),
@@ -56,7 +31,9 @@ func (r *weaponRepository) Save(ctx context.Context, w weapons.Weapon) error {
 		Shapness:      w.GetShapness(),
 		Description:   w.GetDescription(),
 	}
+	r.conn.Exec("SET foreign_key_checks = 0")
 	err := r.conn.Save(&weapon).Error
+	r.conn.Exec("SET foreign_key_checks = 1")
 	if err != nil {
 		return fmt.Errorf(err.Error())
 	}

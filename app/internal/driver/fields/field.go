@@ -26,7 +26,9 @@ func (r *fieldRepository) Save(ctx context.Context, f fields.Field) error {
 		Name:      f.GetName(),
 		ImageUrl:  f.GetURL(),
 	}
+	r.conn.Exec("SET foreign_key_checks = 0")
 	err := r.conn.Save(&field).Error
+	r.conn.Exec("SET foreign_key_checks = 1")
 	if err != nil {
 		return fmt.Errorf(err.Error())
 	}

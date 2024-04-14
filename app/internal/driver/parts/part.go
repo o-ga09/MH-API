@@ -18,21 +18,6 @@ func NewMonsterRepository(conn *gorm.DB) *partRepository {
 	}
 }
 
-func (r *partRepository) Get(ctx context.Context, monsterId string) (part.Parts, error) {
-	p := []mysql.Part{}
-	err := r.conn.Find(&p).Error
-	if err != nil {
-		return nil, err
-	}
-
-	res := part.Parts{}
-	for _, r := range p {
-		res = append(res, *part.NewPart(r.PartId, r.MonsterId, r.Name, r.Description))
-	}
-
-	return res, nil
-}
-
 func (r *partRepository) Save(ctx context.Context, p part.Part) error {
 	data := mysql.Part{
 		PartId:      p.GetID(),
@@ -40,7 +25,9 @@ func (r *partRepository) Save(ctx context.Context, p part.Part) error {
 		Name:        p.GetName(),
 		Description: p.GetDescription(),
 	}
+	r.conn.Exec("SET foreign_key_checks = 0")
 	err := r.conn.Save(&data).Error
+	r.conn.Exec("SET foreign_key_checks = 1")
 	if err != nil {
 		return err
 	}

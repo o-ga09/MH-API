@@ -18,21 +18,6 @@ func NewMonsterRepository(conn *gorm.DB) *productRepository {
 	}
 }
 
-func (r *productRepository) Get(ctx context.Context, monsterId string) (*Products.Products, error) {
-	monster := []mysql.Product{}
-	err := r.conn.Find(&monster).Error
-	if err != nil {
-		return nil, err
-	}
-
-	res := Products.Products{}
-	for _, r := range monster {
-		res = append(res, *Products.NewProduct(r.ProductId, r.Name, r.PublishYear, r.TotalSales))
-	}
-
-	return &res, nil
-}
-
 func (r *productRepository) Save(ctx context.Context, p Products.Product) error {
 	product := mysql.Product{
 		MonsterId:   p.GetID(),
@@ -40,7 +25,9 @@ func (r *productRepository) Save(ctx context.Context, p Products.Product) error 
 		PublishYear: p.GetYear(),
 		TotalSales:  p.GetSales(),
 	}
+	r.conn.Exec("SET foreign_key_checks = 0")
 	err := r.conn.Save(&product).Error
+	r.conn.Exec("SET foreign_key_checks = 1")
 	if err != nil {
 		return err
 	}

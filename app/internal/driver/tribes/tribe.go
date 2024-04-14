@@ -19,21 +19,6 @@ func NewtribeRepository(conn *gorm.DB) *tribeRepository {
 	}
 }
 
-func (r *tribeRepository) Get(ctx context.Context, monsterId string) (Tribes.Tribes, error) {
-	tribe := []mysql.Tribe{}
-	err := r.conn.Find(&tribe).Error
-	if err != nil {
-		return nil, err
-	}
-
-	res := Tribes.Tribes{}
-	for _, r := range tribe {
-		res = append(res, *Tribes.NewTribe(r.TribeId, r.MonsterId, r.Name_ja, r.Name_en, r.Description))
-	}
-
-	return res, nil
-}
-
 func (r *tribeRepository) Save(ctx context.Context, t Tribes.Tribe) error {
 	tribe := mysql.Tribe{
 		TribeId:     t.GetID(),

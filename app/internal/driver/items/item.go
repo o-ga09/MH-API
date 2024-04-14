@@ -19,23 +19,17 @@ func NewMonsterRepository(conn *gorm.DB) *itemRepository {
 	}
 }
 
-func (r *itemRepository) Get(ctx context.Context, itemId string) (items.Items, error) {
-	var items items.Items
-	if err := r.conn.Find(&items).Error; err != nil {
-		return nil, fmt.Errorf(err.Error())
-	}
-	return items, nil
-}
-
 func (r *itemRepository) Save(ctx context.Context, m items.Item) error {
 	i := mysql.Item{
 		ItemId:   m.GetID(),
 		Name:     m.GetName(),
 		ImageUrl: m.GetURL(),
 	}
+	r.conn.Exec("SET foreign_key_checks = 0")
 	if err := r.conn.Save(&i).Error; err != nil {
 		return fmt.Errorf(err.Error())
 	}
+	r.conn.Exec("SET foreign_key_checks = 1")
 	return nil
 }
 
