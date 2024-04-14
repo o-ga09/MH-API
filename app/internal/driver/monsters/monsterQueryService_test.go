@@ -1,7 +1,8 @@
-package mysql
+package monsters
 
 import (
 	param "mh-api/app/internal/controller/monster"
+	"mh-api/app/internal/driver/mysql"
 	"mh-api/app/internal/service/monsters"
 	"reflect"
 	"testing"
@@ -13,9 +14,9 @@ import (
 )
 
 func TestNewmonsterQueryService(t *testing.T) {
-	BeforeTest()
-	t.Cleanup(AfetrTest())
-	conn := New(context.Background())
+	mysql.BeforeTest()
+	t.Cleanup(mysql.AfetrTest())
+	conn := mysql.New(context.Background())
 	type args struct {
 		conn *gorm.DB
 	}
@@ -37,11 +38,12 @@ func TestNewmonsterQueryService(t *testing.T) {
 }
 
 func Test_monsterQueryService_FetchList(t *testing.T) {
+
 	t.Helper()
-	BeforeTest()
-	t.Cleanup(AfetrTest())
+	mysql.BeforeTest()
+	t.Cleanup(mysql.AfetrTest())
 	ctx := context.Background()
-	conn := New(ctx)
+	conn := mysql.New(ctx)
 	weak_A := []monsters.Weakness_attack{
 		{PartId: "0001", Slashing: "45", Blow: "45", Bullet: "45"},
 	}
@@ -126,10 +128,10 @@ func Test_monsterQueryService_FetchList(t *testing.T) {
 
 func Test_monsterQueryService_FetchRank(t *testing.T) {
 	t.Helper()
-	BeforeTest()
-	t.Cleanup(AfetrTest())
+	mysql.BeforeTest()
+	t.Cleanup(mysql.AfetrTest())
 	ctx := context.Background()
-	conn := New(ctx)
+	conn := mysql.New(ctx)
 	wantMonsters1 := []*monsters.FetchMonsterRankingDto{
 		{Id: "0000000001", Name: "リオレウス", Description: "空の王者。", Location: []string{"古代樹の森"}, Category: "飛竜種", Title: []string{"MH"}, Ranking: []monsters.Ranking{{Ranking: "1", VoteYear: "2024/3/12"}}},
 		{Id: "0000000002", Name: "リオレイア", Description: "陸の女王", Location: []string{"古代樹の森"}, Category: "飛竜種", Title: []string{"MH"}, Ranking: []monsters.Ranking{{Ranking: "2", VoteYear: "2024/3/12"}}},

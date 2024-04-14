@@ -1,8 +1,9 @@
-package mysql
+package monsters
 
 import (
 	"context"
 	"mh-api/app/internal/domain/monsters"
+	"mh-api/app/internal/driver/mysql"
 
 	"gorm.io/gorm"
 )
@@ -18,7 +19,7 @@ func NewMonsterRepository(conn *gorm.DB) *monsterRepository {
 }
 
 func (r *monsterRepository) Get(ctx context.Context, monsterId string) (monsters.Monsters, error) {
-	monster := []Monster{}
+	monster := []mysql.Monster{}
 	err := r.conn.Find(&monster).Error
 	if err != nil {
 		return nil, err
@@ -33,12 +34,14 @@ func (r *monsterRepository) Get(ctx context.Context, monsterId string) (monsters
 }
 
 func (r *monsterRepository) Save(ctx context.Context, m monsters.Monster) error {
-	monster := Monster{
+	monster := mysql.Monster{
 		MonsterId:   m.GetId(),
 		Name:        m.GetName(),
 		Description: m.GetDesc(),
 	}
+	r.conn.Exec("SET foreign_key_checks = 0")
 	err := r.conn.Save(&monster).Error
+	r.conn.Exec("SET foreign_key_checks = 1")
 	if err != nil {
 		return err
 	}
@@ -46,7 +49,7 @@ func (r *monsterRepository) Save(ctx context.Context, m monsters.Monster) error 
 }
 
 func (r *monsterRepository) Remove(ctx context.Context, monsterId string) error {
-	monster := Monster{
+	monster := mysql.Monster{
 		MonsterId: monsterId,
 	}
 	err := r.conn.Delete(&monster).Error

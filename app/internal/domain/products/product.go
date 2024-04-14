@@ -1,22 +1,22 @@
 package Products
 
 type Product struct {
-	ProductId   ProductId
+	productId   ProductId
 	name        ProductName
 	publishYear ProductPublishYear
-	TotalSales  ProductTotalSales
+	totalSales  ProductTotalSales
 }
 
 func newProduct(productId ProductId, name ProductName, publishYear ProductPublishYear, ProductTotalSales ProductTotalSales) *Product {
 	return &Product{
-		ProductId:   productId,
+		productId:   productId,
 		name:        name,
 		publishYear: publishYear,
-		TotalSales:  ProductTotalSales,
+		totalSales:  ProductTotalSales,
 	}
 }
 
-func NewFiled(productId string, name string, publishYear string, productTotalSales string) *Product {
+func NewProduct(productId string, name string, publishYear string, productTotalSales string) *Product {
 	return newProduct(
 		ProductId{value: productId},
 		ProductName{value: name},

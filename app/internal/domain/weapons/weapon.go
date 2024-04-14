@@ -1,7 +1,7 @@
 package weapons
 
 type Weapon struct {
-	WeaponId      WeaponId
+	weaponId      WeaponId
 	name          WeaponName
 	imageUrl      WeaponImageUrl
 	rare          WeaponRarity
@@ -13,7 +13,7 @@ type Weapon struct {
 }
 
 func newWeapon(
-	WeaponId WeaponId,
+	weaponId WeaponId,
 	name WeaponName,
 	imageUrl WeaponImageUrl,
 	rerarity WeaponRarity,
@@ -23,10 +23,10 @@ func newWeapon(
 	critical WeaponCritical,
 	description WeaponDescription,
 ) *Weapon {
-	return &Weapon{WeaponId, name, imageUrl, rerarity, attack, elementattack, shapness, critical, description}
+	return &Weapon{weaponId, name, imageUrl, rerarity, attack, elementattack, shapness, critical, description}
 }
 
-func NewFiled(weaponId string, name string, imageUrl string, rerarity string, attack string, elementAttac string, shapness string, critical string, description string) *Weapon {
+func NewWeapon(weaponId string, name string, imageUrl string, rerarity string, attack string, elementAttac string, shapness string, critical string, description string) *Weapon {
 	return newWeapon(
 		WeaponId{value: weaponId},
 		WeaponName{value: name},

@@ -1,6 +1,8 @@
 name: golang-ci
 on:
   push:
+    branches:
+      - "main"
     paths:
       - "**.go"
       - .github/workflows/ci.yml

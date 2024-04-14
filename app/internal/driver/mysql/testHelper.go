@@ -2,7 +2,6 @@ package mysql
 
 import (
 	"context"
-	"fmt"
 	"log/slog"
 	"mh-api/app/internal/presenter/middleware"
 	"mh-api/app/pkg"
@@ -73,7 +72,7 @@ func AfetrTest() func() {
 		}}); err != nil {
 			connect(dialector, 100)
 		}
-		var count int64
+
 		db.Exec("SET foreign_key_checks = 0")
 		db.Exec("TRUNCATE TABLE monster")
 		db.Exec("TRUNCATE TABLE field")
@@ -81,8 +80,6 @@ func AfetrTest() func() {
 		db.Exec("TRUNCATE TABLE tribe")
 		db.Exec("TRUNCATE TABLE weakness")
 		db.Exec("TRUNCATE TABLE ranking")
-		db.Table("monster").Count(&count)
-		fmt.Println("truncated ! ", count)
 		db.Exec("SET foreign_key_checks = 1")
 	}
 }

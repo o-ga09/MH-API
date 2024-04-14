@@ -1,24 +1,29 @@
 package Tribes
 
+import "mh-api/app/internal/domain/monsters"
+
 type Tribe struct {
-	TribeId     TribeId
+	tribeId     TribeId
+	monsterId   monsters.MonsterId
 	name_ja     TribeNameJA
 	name_en     TribeNameEN
 	description TribeDescription
 }
 
-func newTribe(TribeId TribeId, name_ja TribeNameJA, name_en TribeNameEN, description TribeDescription) *Tribe {
+func newTribe(TribeId TribeId, monsterId monsters.MonsterId, name_ja TribeNameJA, name_en TribeNameEN, description TribeDescription) *Tribe {
 	return &Tribe{
-		TribeId:     TribeId,
+		tribeId:     TribeId,
+		monsterId:   monsterId,
 		name_ja:     name_ja,
 		name_en:     name_en,
 		description: description,
 	}
 }
 
-func NewFiled(tribeId string, name_ja string, name_en string, description string) *Tribe {
+func NewTribe(tribeId string, monsterId string, name_ja string, name_en string, description string) *Tribe {
 	return newTribe(
 		TribeId{value: tribeId},
+		monsters.MonsterId{Value: monsterId},
 		TribeNameJA{value: name_ja},
 		TribeNameEN{value: name_en},
 		TribeDescription{value: description},

@@ -34,3 +34,4 @@ doc/openapi/APIGateway.md
 makefile
 .DS_Store
 .env
+*.csv
