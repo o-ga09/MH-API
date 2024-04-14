@@ -66,7 +66,9 @@ func (r *weakRepository) Save(ctx context.Context, w weakness.Weakness) error {
 		FirstWeakElement:  w.GetFirstWeakElement(),
 		SecondWeakElement: w.GetSecondWeakElement(),
 	}
+	r.conn.Exec("SET foreign_key_checks = 0")
 	err := r.conn.Save(&weak).Error
+	r.conn.Exec("SET foreign_key_checks = 1")
 	if err != nil {
 		return err
 	}

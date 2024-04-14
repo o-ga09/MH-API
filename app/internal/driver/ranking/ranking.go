@@ -19,28 +19,15 @@ func NewMonsterRepository(conn *gorm.DB) *rankingRepository {
 	}
 }
 
-func (r *rankingRepository) Get(ctx context.Context, monsterId string) (ranking.Rankings, error) {
-	rank := []mysql.Ranking{}
-	err := r.conn.Find(&rank).Error
-	if err != nil {
-		return nil, err
-	}
-
-	res := ranking.Rankings{}
-	for _, r := range rank {
-		res = append(res, *ranking.NewRanking(r.MonsterId, r.Ranking, r.VoteYear))
-	}
-
-	return res, nil
-}
-
 func (r *rankingRepository) Save(ctx context.Context, rank ranking.Ranking) error {
 	data := mysql.Ranking{
 		MonsterId: rank.GetID(),
 		Ranking:   rank.GetRank(),
 		VoteYear:  rank.GetVoteYear(),
 	}
+	r.conn.Exec("SET foreign_key_checks = 0")
 	err := r.conn.Save(&data).Error
+	r.conn.Exec("SET foreign_key_checks = 1")
 	if err != nil {
 		return err
 	}
