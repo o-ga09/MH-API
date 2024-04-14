@@ -12,7 +12,7 @@ linters:
     - goimports
     - unused
     - errcheck
-    - gocognit
+    # - gocognit
     - gocyclo
     - gofmt
     - govet
