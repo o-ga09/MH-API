@@ -28,6 +28,15 @@ paths:
           description: ヘルスチェック
           schema:
             type: string
+  /v1/health/db:
+    get:
+      summary: DBヘルスチェック
+      operationId: dbhealth
+      responses:
+        "200":
+          description: ヘルスチェック
+          schema:
+            type: string
   /v1/monsters:
     get:
       description: 全てのモンスター情報を取得する
