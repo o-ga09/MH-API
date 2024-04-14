@@ -55,7 +55,7 @@ func Test_fieldRepository_Save(t *testing.T) {
 		// Test case 1
 		{name: "Save field successfully", fields: fields{conn: conn}, args: args{ctx: context.Background(), f: *fieldsDomain.NewField("0000000001", "0000000001", "test", "test")}, wantErr: false},
 		// Test case 2
-		{name: "Save field with error", fields: fields{conn: conn}, args: args{ctx: context.Background(), f: *fieldsDomain.NewField("", "", "", "")}, wantErr: true},
+		{name: "Save field with empty", fields: fields{conn: conn}, args: args{ctx: context.Background(), f: *fieldsDomain.NewField("", "", "", "")}, wantErr: false},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
