@@ -1,18 +1,24 @@
 package item
 
 import (
-	"mh-api/app/internal/service/monsters"
+	"context"
+	"log/slog"
+	"mh-api/app/internal/presenter/middleware"
+	"mh-api/app/internal/service/items"
+	"mh-api/app/pkg"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
 type ItemHandler struct {
-	monsterService monsters.MonsterService
+	itemService items.ItemQueryService
 }
 
-func NewItemHandler(s monsters.MonsterService) *ItemHandler {
+func NewItemHandler(s items.ItemService) *ItemHandler {
 	return &ItemHandler{
-		monsterService: s,
+		itemService: &s,
 	}
 }
 
@@ -28,7 +34,54 @@ func NewItemHandler(s monsters.MonsterService) *ItemHandler {
 // @Failure      404  {object}  MessageResponse
 // @Failure      500  {object}  MessageResponse
 // @Router /items [get]
-func (h *ItemHandler) GetItems(c *gin.Context) {}
+func (h *ItemHandler) GetItems(c *gin.Context) {
+	var param RequestParam
+	err := c.ShouldBindQuery(&param)
+	if err != nil {
+		slog.Log(c, middleware.SeverityError, "param marshal error", "error message", err)
+		c.JSON(http.StatusBadRequest, MessageResponse{Message: "BAD REQUEST"})
+		return
+	}
+
+	if param.Limit == 0 {
+		param.Limit = 100
+	}
+	validate := pkg.GetValidator()
+	err = validate.Struct(&param)
+	if err != nil {
+		slog.Log(c, middleware.SeverityError, "validation error", "error message", err)
+		c.JSON(http.StatusBadRequest, MessageResponse{Message: "BAD REQUEST"})
+		return
+	}
+
+	ctx := context.WithValue(c.Request.Context(), "param", param)
+	res, err := h.itemService.GetItems(ctx)
+
+	if err == gorm.ErrRecordNotFound {
+		slog.Log(c, middleware.SeverityError, "Record Not Found", "error message", err)
+		c.JSON(http.StatusNotFound, MessageResponse{Message: "NOT FOUND"})
+		return
+	} else if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"err": "can not get records",
+		})
+		slog.Log(c, middleware.SeverityError, "err", err)
+		return
+	}
+
+	items := []ResponseJson{}
+	for _, r := range res {
+		items = append(items, ResponseJson{
+			Id:       r.ID,
+			ItemName: r.Name,
+		})
+	}
+	response := Items{
+		Total: len(res),
+		Item:  items,
+	}
+	c.JSON(http.StatusOK, response)
+}
 
 // GetItems godoc
 // @Summary アイテム検索（1件）
@@ -42,7 +95,38 @@ func (h *ItemHandler) GetItems(c *gin.Context) {}
 // @Failure      404  {object}  MessageResponse
 // @Failure      500  {object}  MessageResponse
 // @Router /items/:itemId [get]
-func (h *ItemHandler) GetItem(c *gin.Context) {}
+func (h *ItemHandler) GetItem(c *gin.Context) {
+	id, ook := c.Params.Get("id")
+	if !ook {
+		slog.Log(c, middleware.SeverityError, "path parameter required")
+		c.JSON(http.StatusBadRequest, MessageResponse{Message: "BAD REQUEST"})
+		return
+	}
+
+	res, err := h.itemService.GetItem(c.Request.Context(), id)
+
+	if err == gorm.ErrRecordNotFound {
+		slog.Log(c, middleware.SeverityError, "Record Not Found", "error message", err)
+		c.JSON(http.StatusNotFound, MessageResponse{Message: "NOT FOUND"})
+		return
+	} else if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"err": "can not get records",
+		})
+		slog.Log(c, middleware.SeverityError, "err", err)
+		return
+	}
+
+	item := ResponseJson{
+		Id:       res.ID,
+		ItemName: res.Name,
+	}
+
+	response := Item{
+		Item: item,
+	}
+	c.JSON(http.StatusOK, response)
+}
 
 // GetItems godoc
 // @Summary アイテム検索（モンスター別）
@@ -56,4 +140,53 @@ func (h *ItemHandler) GetItem(c *gin.Context) {}
 // @Failure      404  {object}  MessageResponse
 // @Failure      500  {object}  MessageResponse
 // @Router /items/monsters [get]
-func (h *ItemHandler) GetItemByMonster(c *gin.Context) {}
+func (h *ItemHandler) GetItemByMonster(c *gin.Context) {
+	var param RequestParam
+	err := c.ShouldBindQuery(&param)
+	if err != nil {
+		slog.Log(c, middleware.SeverityError, "param marshal error", "error message", err)
+		c.JSON(http.StatusBadRequest, MessageResponse{Message: "BAD REQUEST"})
+		return
+	}
+
+	if param.Limit == 0 {
+		param.Limit = 100
+	}
+	validate := pkg.GetValidator()
+	err = validate.Struct(&param)
+	if err != nil {
+		slog.Log(c, middleware.SeverityError, "validation error", "error message", err)
+		c.JSON(http.StatusBadRequest, MessageResponse{Message: "BAD REQUEST"})
+		return
+	}
+
+	ctx := context.WithValue(c.Request.Context(), "param", param)
+	res, err := h.itemService.GetItemsByMonster(ctx)
+
+	if err == gorm.ErrRecordNotFound {
+		slog.Log(c, middleware.SeverityError, "Record Not Found", "error message", err)
+		c.JSON(http.StatusNotFound, MessageResponse{Message: "NOT FOUND"})
+		return
+	} else if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"err": "can not get records",
+		})
+		slog.Log(c, middleware.SeverityError, "err", err)
+		return
+	}
+
+	monster := []Monster{}
+	for _, r := range res.Monster {
+		monster = append(monster, Monster{
+			MonsterId:   r.ID,
+			MonsterName: r.Name,
+		})
+	}
+
+	response := ItemsByMonster{
+		ItemId:   res.ItemId,
+		ItemName: res.ItemName,
+		Monsters: monster,
+	}
+	c.JSON(http.StatusOK, response)
+}
