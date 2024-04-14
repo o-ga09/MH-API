@@ -15,6 +15,7 @@ import (
 	tribeDomain "mh-api/app/internal/domain/tribes"
 	weaknessDomain "mh-api/app/internal/domain/weakness"
 	weaponDomain "mh-api/app/internal/domain/weapons"
+	"mh-api/app/internal/presenter/middleware"
 
 	fieldDriver "mh-api/app/internal/driver/fields"
 	itemDriver "mh-api/app/internal/driver/items"
@@ -74,21 +75,21 @@ func Exec(ctx context.Context, batchName string) error {
 
 	switch batchName {
 	case "createMonster":
-		slog.InfoContext(ctx, fmt.Sprintf("[Batch Name]: %s", batchName))
+		slog.Log(ctx, middleware.SeverityInfo, fmt.Sprintf("[Batch Name]: %s", batchName))
 		err := Create(ctx, batchService)
 		if err != nil {
 			return err
 		}
 	case "removeMonster":
-		slog.InfoContext(ctx, fmt.Sprintf("[Batch Name]: %s", batchName))
+		slog.Log(ctx, middleware.SeverityInfo, fmt.Sprintf("[Batch Name]: %s", batchName))
 	case "createItem":
-		slog.InfoContext(ctx, fmt.Sprintf("[Batch Name]: %s", batchName))
+		slog.Log(ctx, middleware.SeverityInfo, fmt.Sprintf("[Batch Name]: %s", batchName))
 	case "removeItem":
-		slog.InfoContext(ctx, fmt.Sprintf("[Batch Name]: %s", batchName))
+		slog.Log(ctx, middleware.SeverityInfo, fmt.Sprintf("[Batch Name]: %s", batchName))
 	case "createWeapon":
-		slog.InfoContext(ctx, fmt.Sprintf("[Batch Name]: %s", batchName))
+		slog.Log(ctx, middleware.SeverityInfo, fmt.Sprintf("[Batch Name]: %s", batchName))
 	case "removeWeapon":
-		slog.InfoContext(ctx, fmt.Sprintf("[Batch Name]: %s", batchName))
+		slog.Log(ctx, middleware.SeverityInfo, fmt.Sprintf("[Batch Name]: %s", batchName))
 	}
 
 	return nil

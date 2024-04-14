@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log/slog"
 	"mh-api/app/internal/batch"
 	"mh-api/app/internal/presenter/middleware"
@@ -14,13 +13,13 @@ func main() {
 	ctx := context.Background()
 	slog.InfoContext(ctx, "[Batch Started]")
 	if len(os.Args) < 2 {
-		fmt.Printf("number of batch argument more 2")
+		slog.Log(ctx, middleware.SeverityInfo, "[Batch]: number of batch argument more 2")
 		os.Exit(0)
 	}
 	batchName := os.Args[1]
 	err := batch.Exec(ctx, batchName)
 	if err != nil {
-		slog.InfoContext(ctx, "[Batch Accident]")
+		slog.Log(ctx, middleware.SeverityInfo, "[Batch Accident]")
 	}
-	slog.InfoContext(ctx, "[Batch Ended]")
+	slog.Log(ctx, middleware.SeverityInfo, "[Batch Ended]")
 }
