@@ -26,7 +26,7 @@ type Item struct {
 	gorm.Model
 	ItemId   string `gorm:"column:item_id;primaryKey;type:varchar(10);not null"`
 	Name     string `gorm:"column:name;type:varchar(255);not null"`
-	ImageUrl string `gorm:"column:imege_url;type:varchar(255)"`
+	ImageUrl string `gorm:"column:image_url;type:varchar(255)"`
 }
 
 type Music struct {
@@ -40,6 +40,7 @@ type Music struct {
 type Part struct {
 	gorm.Model
 	PartId      string `gorm:"column:part_id;primaryKey;type:varchar(10);not null"`
+	Name        string `gorm:"column:name;type:varchar(10);not null"`
 	MonsterId   string `gorm:"column:monster_id;type:varchar(10);not null"`
 	Description string `gorm:"column:decription;type:varchar(255)"`
 }

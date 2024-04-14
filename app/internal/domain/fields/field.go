@@ -1,18 +1,22 @@
 package fields
 
+import "mh-api/app/internal/domain/monsters"
+
 type Field struct {
-	fieldId  FieldId
-	name     FieldName
-	imageUrl FieldImageUrl
+	fieldId   FieldId
+	monsterId monsters.MonsterId
+	name      FieldName
+	imageUrl  FieldImageUrl
 }
 
-func newField(fieldId FieldId, name FieldName, imageUrl FieldImageUrl) *Field {
-	return &Field{fieldId, name, imageUrl}
+func newField(fieldId FieldId, monsterId monsters.MonsterId, name FieldName, imageUrl FieldImageUrl) *Field {
+	return &Field{fieldId, monsterId, name, imageUrl}
 }
 
-func NewFiled(fieldId string, name string, imageUrl string) *Field {
+func NewField(fieldId string, monsterId string, name string, imageUrl string) *Field {
 	return newField(
 		FieldId{value: fieldId},
+		monsters.MonsterId{Value: monsterId},
 		FieldName{value: name},
 		FieldImageUrl{value: imageUrl},
 	)

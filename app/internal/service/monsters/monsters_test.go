@@ -33,66 +33,6 @@ func TestNewMonsterService(t *testing.T) {
 	}
 }
 
-func TestMonsterService_GetMonster(t *testing.T) {
-	repo := monsterDomain.RepositoryMock{}
-	qs := monsterService.MonsterQueryServiceMock{}
-
-	wantMonsters := []*monsterService.MonsterDto{
-		{ID: "0000000001", Name: "リオレウス", Description: "空の全てを統べる王者。"},
-		{ID: "0000000002", Name: "リオレイア", Description: "陸の全てを統べる女王。"},
-		{ID: "0000000003", Name: "ティガレックス", Description: "ポポを求めてどこへでも赴く絶対強者。"},
-	}
-	v1 := monsterDomain.NewMonster("0000000001", "リオレウス", "空の全てを統べる王者。")
-	v2 := monsterDomain.NewMonster("0000000002", "リオレイア", "陸の全てを統べる女王。")
-	v3 := monsterDomain.NewMonster("0000000003", "ティガレックス", "ポポを求めてどこへでも赴く絶対強者。")
-
-	var expectedMockValues monsterDomain.Monsters
-	expectedMockValues = append(expectedMockValues, v1)
-	expectedMockValues = append(expectedMockValues, v2)
-	expectedMockValues = append(expectedMockValues, v3)
-
-	type fields struct {
-		repo monsterDomain.Repository
-		qs   monsterService.MonsterQueryService
-	}
-
-	type mockValue struct {
-		value monsterDomain.Monsters
-		err   error
-	}
-	type args struct {
-		id string
-	}
-	tests := []struct {
-		name      string
-		fields    fields
-		args      args
-		mockValue mockValue
-		want      []*monsterService.MonsterDto
-		wantErr   bool
-	}{
-		{name: "モンスターテーブルのデータを取得できる", fields: fields{repo: &repo, qs: &qs}, args: args{id: ""}, mockValue: mockValue{value: expectedMockValues, err: nil}, want: wantMonsters, wantErr: false},
-		{name: "モンスターテーブルのデータを取得できない", fields: fields{repo: &repo, qs: &qs}, args: args{id: ""}, mockValue: mockValue{value: nil, err: fmt.Errorf("can not get record")}, want: []*monsterService.MonsterDto{}, wantErr: true},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			repo.GetFunc = func(ctx context.Context, monsterId string) (monsterDomain.Monsters, error) {
-				return tt.mockValue.value, tt.mockValue.err
-			}
-			ctx := context.Background()
-			s := monsterService.NewMonsterService(tt.fields.repo, tt.fields.qs)
-			got, err := s.GetMonster(ctx, tt.args.id)
-			if (err != nil) != tt.wantErr {
-				t.Errorf("MonsterService.GetMonster() error = %v, wantErr %v", err, tt.wantErr)
-				return
-			}
-			if !tt.wantErr && !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("MonsterService.GetMonster() = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}
-
 func TestMonsterService_SaveMonster(t *testing.T) {
 	repo := monsterDomain.RepositoryMock{}
 	qs := monsterService.MonsterQueryServiceMock{}

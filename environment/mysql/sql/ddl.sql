@@ -63,6 +63,7 @@ CREATE TABLE `part` (
   `updated_at` datetime(3) DEFAULT NULL,
   `deleted_at` datetime(3) DEFAULT NULL,
   `part_id` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `monster_id` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `decription` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`,`part_id`),
