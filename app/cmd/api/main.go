@@ -1,6 +1,9 @@
 package main
 
-import "mh-api/app/internal/presenter"
+import (
+	"context"
+	"mh-api/app/internal/presenter"
+)
 
 //		@title			MH-API
 //		@version		v0.1.0
@@ -12,7 +15,8 @@ import "mh-api/app/internal/presenter"
 //	 @externalDocs.description  OpenAPI
 //	 @externalDocs.url          https://swagger.io/resources/open-api/
 func main() {
-	s, err := presenter.NewServer()
+	ctx := context.Background()
+	s, err := presenter.NewServer(ctx)
 	if err != nil {
 		panic(err)
 	}

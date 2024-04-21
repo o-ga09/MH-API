@@ -33,7 +33,7 @@ COPY --from=deploy-builder /app/main .
 CMD ["./main"]
 
 #-----------------------------------------------
-#バッチ デプロイ用コンアテナ
+#バッチ デプロイ用コンテナ
 FROM centos:centos7 as deploy-batch
 
 RUN yum -y update

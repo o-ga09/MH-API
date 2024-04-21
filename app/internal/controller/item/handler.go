@@ -13,12 +13,20 @@ import (
 )
 
 type ItemHandler struct {
-	itemService items.ItemQueryService
+	fetchItemService          *items.FetchItemList
+	fetchItemByMonsterService *items.FetchItemByMonster
+	fetchItemByIdService      *items.FetchItemById
+	saveItemService           *items.SaveItem
+	removeItemService         *items.RemoveItem
 }
 
-func NewItemHandler(s items.ItemService) *ItemHandler {
+func NewItemHandler(f items.FetchItemList, m items.FetchItemByMonster, b items.FetchItemById, s items.SaveItem, r items.RemoveItem) *ItemHandler {
 	return &ItemHandler{
-		itemService: &s,
+		fetchItemService:          &f,
+		fetchItemByMonsterService: &m,
+		fetchItemByIdService:      &b,
+		saveItemService:           &s,
+		removeItemService:         &r,
 	}
 }
 
@@ -55,7 +63,7 @@ func (h *ItemHandler) GetItems(c *gin.Context) {
 	}
 
 	ctx := context.WithValue(c.Request.Context(), "param", param)
-	res, err := h.itemService.GetItems(ctx)
+	res, err := h.fetchItemService.Run(ctx)
 
 	if err == gorm.ErrRecordNotFound {
 		slog.Log(c, middleware.SeverityError, "Record Not Found", "error message", err)
@@ -96,6 +104,7 @@ func (h *ItemHandler) GetItems(c *gin.Context) {
 // @Failure      500  {object}  MessageResponse
 // @Router /items/:itemId [get]
 func (h *ItemHandler) GetItem(c *gin.Context) {
+	var param RequestParam
 	id, ook := c.Params.Get("id")
 	if !ook {
 		slog.Log(c, middleware.SeverityError, "path parameter required")
@@ -103,7 +112,10 @@ func (h *ItemHandler) GetItem(c *gin.Context) {
 		return
 	}
 
-	res, err := h.itemService.GetItem(c.Request.Context(), id)
+	param.MonsterIds = id
+	param.Limit = 1
+	ctx := context.WithValue(c.Request.Context(), "param", param)
+	res, err := h.fetchItemByIdService.Run(ctx, id)
 
 	if err == gorm.ErrRecordNotFound {
 		slog.Log(c, middleware.SeverityError, "Record Not Found", "error message", err)
@@ -139,9 +151,17 @@ func (h *ItemHandler) GetItem(c *gin.Context) {
 // @Failure      400  {object}  MessageResponse
 // @Failure      404  {object}  MessageResponse
 // @Failure      500  {object}  MessageResponse
-// @Router /items/monsters [get]
+// @Router /items/:itemId/monsters [get]
 func (h *ItemHandler) GetItemByMonster(c *gin.Context) {
 	var param RequestParam
+
+	id, ook := c.Params.Get("id")
+	if !ook {
+		slog.Log(c, middleware.SeverityError, "path parameter required")
+		c.JSON(http.StatusBadRequest, MessageResponse{Message: "BAD REQUEST"})
+		return
+	}
+
 	err := c.ShouldBindQuery(&param)
 	if err != nil {
 		slog.Log(c, middleware.SeverityError, "param marshal error", "error message", err)
@@ -161,7 +181,7 @@ func (h *ItemHandler) GetItemByMonster(c *gin.Context) {
 	}
 
 	ctx := context.WithValue(c.Request.Context(), "param", param)
-	res, err := h.itemService.GetItemsByMonster(ctx)
+	res, err := h.fetchItemByMonsterService.Run(ctx, id)
 
 	if err == gorm.ErrRecordNotFound {
 		slog.Log(c, middleware.SeverityError, "Record Not Found", "error message", err)

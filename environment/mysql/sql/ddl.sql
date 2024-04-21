@@ -21,9 +21,13 @@ CREATE TABLE `item` (
   `deleted_at` datetime(3) DEFAULT NULL,
   `item_id` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description`  varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `image_url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `monster_id` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`,`item_id`),
-  KEY `idx_item_deleted_at` (`deleted_at`)
+  KEY `idx_item_deleted_at` (`deleted_at`),
+  KEY `fk_monster_item` (`monster_id`),
+  CONSTRAINT `fk_monster_item` FOREIGN KEY (`monster_id`) REFERENCES `monster` (`monster_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `field` (

@@ -1,6 +1,7 @@
 package presenter
 
 import (
+	"context"
 	di "mh-api/app/internal/DI"
 	"mh-api/app/internal/presenter/middleware"
 	"mh-api/app/pkg"
@@ -8,7 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func NewServer() (*gin.Engine, error) {
+func NewServer(ctx context.Context) (*gin.Engine, error) {
 	r := gin.New()
 	cfg, _ := pkg.New()
 	if cfg.Env == "PROD" {
@@ -46,6 +47,14 @@ func NewServer() (*gin.Engine, error) {
 		monsters.GET("", monsterHandler.GetAll)
 		monsters.GET("/:id", monsterHandler.GetById)
 		monsters.GET("/ranking", monsterHandler.GetRankingMonster)
+	}
+
+	items := v1.Group("/items")
+	itemsHandler := di.ProvideItemHandler(ctx)
+	{
+		items.GET("", itemsHandler.GetItems)
+		items.GET("/:id", itemsHandler.GetItem)
+		items.GET("/:id/monsters", itemsHandler.GetItemByMonster)
 	}
 
 	return r, nil

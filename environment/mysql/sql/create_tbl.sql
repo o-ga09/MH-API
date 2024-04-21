@@ -28,9 +28,13 @@ CREATE TABLE `item` (
   `deleted_at` datetime(3) DEFAULT NULL,
   `item_id` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description`  varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `image_url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `monster_id` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`,`item_id`),
-  KEY `idx_item_deleted_at` (`deleted_at`)
+  KEY `idx_item_deleted_at` (`deleted_at`),
+  KEY `fk_monster_item` (`monster_id`),
+  CONSTRAINT `fk_monster_item` FOREIGN KEY (`monster_id`) REFERENCES `monster` (`monster_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `field` (
@@ -167,10 +171,12 @@ VALUES ('MON001', 'Slime', 'A blob of goo that can be surprisingly resilient.'),
        ('MON002', 'Goblin', 'A mischievous creature that loves to cause trouble.'),
        ('MON003', 'Dragon', 'A powerful and majestic creature that breathes fire.');
 
-INSERT INTO item (item_id, name, image_url)
-VALUES ('ITEM001', 'Potion', 'images/potion.png'),
-       ('ITEM002', 'Sword', 'images/sword.jpg'),
-       ('ITEM003', 'Armor', 'images/armor.gif');
+INSERT INTO item (item_id,monster_id, name, image_url)
+VALUES ('ITM001','MON001', 'Slime Jelly', 'images/slime_jelly.jpg'),
+       ('ITM002','MON001', 'Slime Core', 'images/slime_core.jpg'),
+       ('ITM003','MON002', 'Goblin Ear', 'images/goblin_ear.jpg'),
+       ('ITM004','MON002', 'Goblin Tooth', 'images/goblin_tooth.jpg'),
+       ('ITM005','MON003', 'Dragon Scale', 'images/dragon_scale.jpg');
 
 INSERT INTO field (field_id,monster_id, name, image_url)
 VALUES ('FLD001','MON001', '森丘', 'images/forest.jpg'),

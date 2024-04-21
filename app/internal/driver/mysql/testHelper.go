@@ -44,6 +44,11 @@ func BeforeTest() {
 		{MonsterId: "0000000003", Name: "ティガレックス", Description: "絶対強者", Field: []*Field{{FieldId: "0001", MonsterId: "0000000003", Name: "古代樹の森", ImageUrl: "images/kodaizyu.png"}}, Tribe: &Tribe{TribeId: "0001", MonsterId: "0000000003", Name_ja: "飛竜種", Name_en: "wibarn", Description: "飛竜種"}, Product: []*Product{{ProductId: "0001", MonsterId: "0000000003", Name: "MH", PublishYear: "2004", TotalSales: "200万本"}}, Weakness: weak3, Ranking: []*Ranking{{MonsterId: "0000000003", Ranking: "3", VoteYear: "2024/3/12"}}},
 	}
 
+	item := []Item{
+		{ItemId: "0000000001", MonsterId: "0000000001", Name: "リオレウスの鱗", Description: "リオレウスの鱗。", ImageUrl: "images/rioreusuno.png"},
+		{ItemId: "0000000002", MonsterId: "0000000002", Name: "リオレイアの鱗", Description: "リオレイアの鱗。", ImageUrl: "images/rioreianosu.png"},
+	}
+
 	db.Exec("SET foreign_key_checks = 0")
 	db.Exec("TRUNCATE TABLE monster")
 	db.Exec("TRUNCATE TABLE field")
@@ -51,8 +56,10 @@ func BeforeTest() {
 	db.Exec("TRUNCATE TABLE tribe")
 	db.Exec("TRUNCATE TABLE weakness")
 	db.Exec("TRUNCATE TABLE ranking")
+	db.Exec("TRUNCATE TABLE item")
 	db.Exec("SET foreign_key_checks = 1")
 	db.Create(monsters)
+	db.Create(item)
 }
 
 func AfetrTest() func() {
