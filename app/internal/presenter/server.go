@@ -42,7 +42,7 @@ func NewServer(ctx context.Context) (*gin.Engine, error) {
 	}
 
 	monsters := v1.Group("/monsters")
-	monsterHandler := di.InitMonstersHandler()
+	monsterHandler := di.ProvideMonsterHandler(ctx)
 	{
 		monsters.GET("", monsterHandler.GetAll)
 		monsters.GET("/:id", monsterHandler.GetById)

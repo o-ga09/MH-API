@@ -10,7 +10,6 @@ require (
 	github.com/gin-gonic/gin v1.9.0
 	github.com/go-playground/validator/v10 v10.11.2
 	github.com/google/uuid v1.3.0
-	github.com/google/wire v0.6.0
 	github.com/swaggo/swag v1.16.3
 	go.opentelemetry.io/otel/trace v1.19.0
 	golang.org/x/net v0.20.0
@@ -25,7 +24,7 @@ require (
 	cloud.google.com/go/longrunning v0.5.0 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
-	github.com/google/go-cmp v0.5.9
+	github.com/google/go-cmp v0.5.9 // indirect
 	github.com/google/s2a-go v0.1.4 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.2.4 // indirect
 	github.com/googleapis/gax-go/v2 v2.12.0 // indirect

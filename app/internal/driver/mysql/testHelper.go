@@ -49,6 +49,14 @@ func BeforeTest() {
 		{ItemId: "0000000002", MonsterId: "0000000002", Name: "リオレイアの鱗", Description: "リオレイアの鱗。", ImageUrl: "images/rioreianosu.png"},
 	}
 
+	part := []Part{
+		{PartId: "0001", Name: "頭部", MonsterId: "0000000001"},
+		{PartId: "0002", Name: "翼", MonsterId: "0000000001"},
+		{PartId: "0003", Name: "尻尾", MonsterId: "0000000001"},
+		{PartId: "0004", Name: "胴体", MonsterId: "0000000001"},
+		{PartId: "0005", Name: "脚", MonsterId: "0000000001"},
+	}
+
 	db.Exec("SET foreign_key_checks = 0")
 	db.Exec("TRUNCATE TABLE monster")
 	db.Exec("TRUNCATE TABLE field")
@@ -60,6 +68,7 @@ func BeforeTest() {
 	db.Exec("SET foreign_key_checks = 1")
 	db.Create(monsters)
 	db.Create(item)
+	db.Create(part)
 }
 
 func AfetrTest() func() {

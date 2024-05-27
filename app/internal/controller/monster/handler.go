@@ -15,12 +15,20 @@ import (
 )
 
 type MonsterHandler struct {
-	monsterService monsters.MonsterService
+	fetchMonsterListService    *monsters.FetchMonsterListService
+	fetchMonsterById           *monsters.FetchMonsterByIDService
+	fetchMonsterRankingService *monsters.FetchMonsterRankingService
+	saveMonster                *monsters.SaveMonsterService
+	removeMonster              *monsters.RemoveMonsterService
 }
 
-func NewMonsterHandler(s monsters.MonsterService) *MonsterHandler {
+func NewMonsterHandler(f monsters.FetchMonsterListService, b monsters.FetchMonsterByIDService, r monsters.FetchMonsterRankingService, s monsters.SaveMonsterService, d monsters.RemoveMonsterService) *MonsterHandler {
 	return &MonsterHandler{
-		monsterService: s,
+		fetchMonsterListService:    &f,
+		fetchMonsterById:           &b,
+		fetchMonsterRankingService: &r,
+		saveMonster:                &s,
+		removeMonster:              &d,
 	}
 }
 
@@ -41,7 +49,7 @@ func (m *MonsterHandler) GetAll(c *gin.Context) {
 	err := c.ShouldBindQuery(&param)
 	if err != nil {
 		slog.Log(c, middleware.SeverityError, "param marshal error", "error message", err)
-		c.JSON(http.StatusBadRequest, MessageResponse{Message: "BAD REQUEST"})
+		c.JSON(http.StatusBadRequest, MessageResponse{Code: http.StatusBadRequest, Message: "BAD REQUEST"})
 		return
 	}
 
@@ -52,7 +60,7 @@ func (m *MonsterHandler) GetAll(c *gin.Context) {
 	err = validate.Struct(&param)
 	if err != nil {
 		slog.Log(c, middleware.SeverityError, "validation error", "error message", err)
-		c.JSON(http.StatusBadRequest, MessageResponse{Message: "BAD REQUEST"})
+		c.JSON(http.StatusBadRequest, MessageResponse{Code: http.StatusBadRequest, Message: "BAD REQUEST"})
 		return
 	}
 
@@ -61,11 +69,11 @@ func (m *MonsterHandler) GetAll(c *gin.Context) {
 		id = ""
 	}
 	ctx := context.WithValue(c.Request.Context(), "param", param)
-	res, err := m.monsterService.FetchMonsterDetail(ctx, id)
+	res, err := m.fetchMonsterListService.Run(ctx, id)
 
 	if err == gorm.ErrRecordNotFound {
 		slog.Log(c, middleware.SeverityError, "Record Not Found", "error message", err)
-		c.JSON(http.StatusNotFound, MessageResponse{Message: "NOT FOUND"})
+		c.JSON(http.StatusNotFound, MessageResponse{Code: http.StatusNotFound, Message: "NOT FOUND"})
 		return
 	} else if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -81,6 +89,7 @@ func (m *MonsterHandler) GetAll(c *gin.Context) {
 		var we []Weakness_element
 		for _, w := range r.Weakness_attack {
 			wa = append(wa, Weakness_attack{
+				Part:     w.PartName,
 				Slashing: w.Slashing,
 				Blow:     w.Blow,
 				Bullet:   w.Bullet,
@@ -89,6 +98,7 @@ func (m *MonsterHandler) GetAll(c *gin.Context) {
 
 		for _, w := range r.Weakness_element {
 			we = append(we, Weakness_element{
+				Part:    w.PartName,
 				Fire:    w.Fire,
 				Water:   w.Water,
 				Thunder: w.Thunder,
@@ -100,9 +110,9 @@ func (m *MonsterHandler) GetAll(c *gin.Context) {
 			Id:                 r.Id,
 			Name:               r.Name,
 			Desc:               r.Description,
-			Location:           Location{Name: r.Location},
-			Category:           r.Category,
-			Title:              Title{Name: r.Title},
+			Location:           r.Location,
+			Tribe:              r.Category,
+			Title:              r.Title,
 			FirstWeak_Attack:   r.FirstWeak_Attack,
 			FirstWeak_Element:  r.FirstWeak_Element,
 			SecondWeak_Attack:  r.SecondWeak_Attack,
@@ -134,15 +144,15 @@ func (m *MonsterHandler) GetById(c *gin.Context) {
 	id, ook := c.Params.Get("id")
 	if !ook {
 		slog.Log(c, middleware.SeverityError, "path parameter required")
-		c.JSON(http.StatusBadRequest, MessageResponse{Message: "BAD REQUEST"})
+		c.JSON(http.StatusBadRequest, MessageResponse{Code: http.StatusBadRequest, Message: "BAD REQUEST"})
 		return
 	}
 
-	res, err := m.monsterService.FetchMonsterDetail(c.Request.Context(), id)
+	res, err := m.fetchMonsterById.Run(c.Request.Context(), id)
 
 	if err == gorm.ErrRecordNotFound {
 		slog.Log(c, middleware.SeverityError, "Record Not Found", "error message", err)
-		c.JSON(http.StatusNotFound, MessageResponse{Message: "NOT FOUND"})
+		c.JSON(http.StatusNotFound, MessageResponse{Code: http.StatusNotFound, Message: "NOT FOUND"})
 		return
 	} else if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -153,41 +163,43 @@ func (m *MonsterHandler) GetById(c *gin.Context) {
 	}
 
 	monster := ResponseJson{}
-	for _, r := range res {
-		var wa []Weakness_attack
-		var we []Weakness_element
-		for _, w := range r.Weakness_attack {
-			wa = append(wa, Weakness_attack{
-				Slashing: w.Slashing,
-				Blow:     w.Blow,
-				Bullet:   w.Bullet,
-			})
-		}
 
-		for _, w := range r.Weakness_element {
-			we = append(we, Weakness_element{
-				Fire:    w.Fire,
-				Water:   w.Water,
-				Thunder: w.Thunder,
-				Ice:     w.Ice,
-				Dragon:  w.Dragon,
-			})
-		}
-		monster = ResponseJson{
-			Id:                 r.Id,
-			Name:               r.Name,
-			Desc:               r.Description,
-			Location:           Location{Name: r.Location},
-			Category:           r.Category,
-			Title:              Title{Name: r.Title},
-			FirstWeak_Attack:   r.FirstWeak_Attack,
-			FirstWeak_Element:  r.FirstWeak_Element,
-			SecondWeak_Attack:  r.SecondWeak_Attack,
-			SecondWeak_Element: r.SecondWeak_Element,
-			Weakness_attack:    wa,
-			Weakness_element:   we,
-		}
+	var wa []Weakness_attack
+	var we []Weakness_element
+	for _, w := range res.Weakness_attack {
+		wa = append(wa, Weakness_attack{
+			Part:     w.PartName,
+			Slashing: w.Slashing,
+			Blow:     w.Blow,
+			Bullet:   w.Bullet,
+		})
 	}
+
+	for _, w := range res.Weakness_element {
+		we = append(we, Weakness_element{
+			Part:    w.PartName,
+			Fire:    w.Fire,
+			Water:   w.Water,
+			Thunder: w.Thunder,
+			Ice:     w.Ice,
+			Dragon:  w.Dragon,
+		})
+	}
+	monster = ResponseJson{
+		Id:                 res.Id,
+		Name:               res.Name,
+		Desc:               res.Description,
+		Location:           res.Location,
+		Tribe:              res.Category,
+		Title:              res.Title,
+		FirstWeak_Attack:   res.FirstWeak_Attack,
+		FirstWeak_Element:  res.FirstWeak_Element,
+		SecondWeak_Attack:  res.SecondWeak_Attack,
+		SecondWeak_Element: res.SecondWeak_Element,
+		Weakness_attack:    wa,
+		Weakness_element:   we,
+	}
+
 	response := Monster{
 		Monster: monster,
 	}
@@ -211,7 +223,7 @@ func (m *MonsterHandler) GetRankingMonster(c *gin.Context) {
 	err := c.ShouldBindQuery(&param)
 	if err != nil {
 		slog.Log(c, middleware.SeverityError, "param marshal error", "error message", err)
-		c.JSON(http.StatusBadRequest, MessageResponse{Message: "BAD REQUEST"})
+		c.JSON(http.StatusBadRequest, MessageResponse{Code: http.StatusBadRequest, Message: "BAD REQUEST"})
 		return
 	}
 
@@ -222,16 +234,16 @@ func (m *MonsterHandler) GetRankingMonster(c *gin.Context) {
 	err = validate.Struct(&param)
 	if err != nil {
 		slog.Log(c, middleware.SeverityError, "validation error", "error message", err)
-		c.JSON(http.StatusBadRequest, MessageResponse{Message: "BAD REQUEST"})
+		c.JSON(http.StatusBadRequest, MessageResponse{Code: http.StatusBadRequest, Message: "BAD REQUEST"})
 		return
 	}
 
 	ctx := context.WithValue(c.Request.Context(), "param", param)
-	res, err := m.monsterService.FetchMonsterRanking(ctx)
+	res, err := m.fetchMonsterRankingService.Run(ctx)
 
 	if err == gorm.ErrRecordNotFound {
 		slog.Log(c, middleware.SeverityError, "Record Not Found", "error message", err)
-		c.JSON(http.StatusNotFound, MessageResponse{Message: "NOT FOUND"})
+		c.JSON(http.StatusNotFound, MessageResponse{Code: http.StatusNotFound, Message: "NOT FOUND"})
 		return
 	} else if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -255,9 +267,9 @@ func (m *MonsterHandler) GetRankingMonster(c *gin.Context) {
 			Id:       r.Id,
 			Name:     r.Name,
 			Desc:     r.Description,
-			Location: Location{Name: r.Location},
-			Category: r.Category,
-			Title:    Title{Name: r.Title},
+			Location: r.Location,
+			Tribe:    r.Category,
+			Title:    r.Title,
 			Ranking:  rankings,
 		})
 	}

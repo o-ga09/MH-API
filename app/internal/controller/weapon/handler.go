@@ -1,19 +1,13 @@
 package weapon
 
 import (
-	"mh-api/app/internal/service/monsters"
-
 	"github.com/gin-gonic/gin"
 )
 
-type WeaponHandler struct {
-	monsterService monsters.MonsterService
-}
+type WeaponHandler struct{}
 
-func NewWeaponHandler(s monsters.MonsterService) *WeaponHandler {
-	return &WeaponHandler{
-		monsterService: s,
-	}
+func NewWeaponHandler() *WeaponHandler {
+	return &WeaponHandler{}
 }
 
 // GetWeapon godoc

@@ -16,6 +16,7 @@ type MonsterRanking struct {
 }
 
 type MessageResponse struct {
+	Code    int    `json:"code"`
 	Message string `json:"message"`
 }
 
@@ -23,9 +24,9 @@ type ResponseJson struct {
 	Id                 string             `json:"monster_id,omitempty"`
 	Name               string             `json:"name,omitempty"`
 	Desc               string             `json:"desc,omitempty"`
-	Location           Location           `json:"location,omitempty"`
-	Category           string             `json:"category,omitempty"`
-	Title              Title              `json:"title,omitempty"`
+	Location           []string           `json:"location,omitempty"`
+	Tribe              string             `json:"tribe,omitempty"`
+	Title              []string           `json:"title,omitempty"`
 	FirstWeak_Attack   string             `json:"first_weak_attack,omitempty"`
 	SecondWeak_Attack  string             `json:"second_weak_attack,omitempty"`
 	FirstWeak_Element  string             `json:"first_weak_element,omitempty"`
@@ -38,27 +39,21 @@ type ResponseRankingJson struct {
 	Id       string    `json:"monster_id,omitempty"`
 	Name     string    `json:"name,omitempty"`
 	Desc     string    `json:"desc,omitempty"`
-	Location Location  `json:"location,omitempty"`
-	Category string    `json:"category,omitempty"`
-	Title    Title     `json:"title,omitempty"`
+	Location []string  `json:"location,omitempty"`
+	Tribe    string    `json:"tribe,omitempty"`
+	Title    []string  `json:"title,omitempty"`
 	Ranking  []Ranking `json:"ranking,omitempty"`
 }
 
-type Location struct {
-	Name []string
-}
-
-type Title struct {
-	Name []string
-}
-
 type Weakness_attack struct {
+	Part     string `json:"part,omitempty"`
 	Slashing string `json:"slashing,omitempty"`
 	Blow     string `json:"blow,omitempty"`
 	Bullet   string `json:"bullet,omitempty"`
 }
 
 type Weakness_element struct {
+	Part    string `json:"part,omitempty"`
 	Fire    string `json:"fire,omitempty"`
 	Ice     string `json:"ice,omitempty"`
 	Water   string `json:"water,omitempty"`

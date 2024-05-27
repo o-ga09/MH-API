@@ -68,7 +68,7 @@ type Tribe struct {
 type Weakness struct {
 	gorm.Model
 	MonsterId         string `gorm:"column:monster_id;type:varchar(10);not null"`
-	PartId            string `gorm:"column:aprt_id;type:varchar(255);not null"`
+	PartId            string `gorm:"column:part_id;type:varchar(255);not null"`
 	Fire              string `gorm:"column:fire;type:varchar(255)"`
 	Water             string `gorm:"column:water;type:varchar(255)"`
 	Lightning         string `gorm:"column:lightning;type:varchar(255)"`

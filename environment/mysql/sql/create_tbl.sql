@@ -74,6 +74,7 @@ CREATE TABLE `part` (
   `updated_at` datetime(3) DEFAULT NULL,
   `deleted_at` datetime(3) DEFAULT NULL,
   `part_id` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `monster_id` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `decription` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`,`part_id`),
@@ -114,7 +115,7 @@ CREATE TABLE `weakness` (
   `updated_at` datetime(3) DEFAULT NULL,
   `deleted_at` datetime(3) DEFAULT NULL,
   `monster_id` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `aprt_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `part_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `fire` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `water` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `lightning` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -167,54 +168,74 @@ CREATE TABLE `ranking` (
 
 
 INSERT INTO monster (monster_id, name, description)
-VALUES ('MON001', 'Slime', 'A blob of goo that can be surprisingly resilient.'),
-       ('MON002', 'Goblin', 'A mischievous creature that loves to cause trouble.'),
-       ('MON003', 'Dragon', 'A powerful and majestic creature that breathes fire.');
+VALUES ('0000000001', 'リオレウス', '空の王者'),
+       ('0000000002', 'リオレイア', '陸の女王'),
+       ('0000000003', 'ティガレックス', '絶対強者');
 
 INSERT INTO item (item_id,monster_id, name, image_url)
-VALUES ('ITM001','MON001', 'Slime Jelly', 'images/slime_jelly.jpg'),
-       ('ITM002','MON001', 'Slime Core', 'images/slime_core.jpg'),
-       ('ITM003','MON002', 'Goblin Ear', 'images/goblin_ear.jpg'),
-       ('ITM004','MON002', 'Goblin Tooth', 'images/goblin_tooth.jpg'),
-       ('ITM005','MON003', 'Dragon Scale', 'images/dragon_scale.jpg');
+VALUES ('ITM001','0000000001', '火竜の翼爪', 'images/image1.jpg'),
+       ('ITM002','0000000001', '火竜の鱗', 'images/image2.jpg'),
+       ('ITM003','0000000002', '雌火竜の紅玉', 'images/image3.jpg'),
+       ('ITM004','0000000002', '雌火竜の甲殻', 'images/image4.jpg'),
+       ('ITM005','0000000003', '轟竜の甲殻', 'images/image5.jpg');
 
 INSERT INTO field (field_id,monster_id, name, image_url)
-VALUES ('FLD001','MON001', '森丘', 'images/forest.jpg'),
-       ('FLD002','MON001', '渓流', 'images/desert.jpg'),
-       ('FLD002','MON001', '大社跡', 'images/desert.jpg'),
-       ('FLD002','MON002', '溶岩洞', 'images/desert.jpg'),
-       ('FLD003','MON003', '砂原', 'images/mountain.png');
+VALUES ('FLD001','0000000001', '森丘', 'images/forest.jpg'),
+       ('FLD002','0000000001', '渓流', 'images/desert.jpg'),
+       ('FLD002','0000000001', '大社跡', 'images/desert.jpg'),
+       ('FLD002','0000000002', '溶岩洞', 'images/desert.jpg'),
+       ('FLD003','0000000003', '砂原', 'images/mountain.png');
 
 INSERT INTO product (product_id,monster_id, name, publish_year, total_sales)
-VALUES ('PRD001', 'MON001','MH', '2004', '1000'),
-       ('PRD002', 'MON001','MH2', '2001', '500'),
-       ('PRD003', 'MON001','MH3', '2009', '500'),
-       ('PRD004', 'MON002','MHR', '2021', '500'),
-       ('PRD005', 'MON003','MHW', '2018', '200');
+VALUES ('PRD001', '0000000001','MH', '2004', '1000'),
+       ('PRD002', '0000000001','MH2', '2001', '500'),
+       ('PRD003', '0000000001','MH3', '2009', '500'),
+       ('PRD004', '0000000002','MHR', '2021', '500'),
+       ('PRD005', '0000000003','MHW', '2018', '200');
 
-INSERT INTO part (part_id, monster_id, decription)
-VALUES ('PRT001', 'MON001', 'Left arm'),
-       ('PRT002', 'MON002', 'Sharp tooth'),
-       ('PRT003', 'MON003', 'Fire breath');
+INSERT INTO part (part_id, name, monster_id, decription)
+VALUES ('PRT001','頭部', '0000000001', 'Left arm'),
+       ('PRT002','腹部', '0000000001', 'Left arm'),
+       ('PRT003','前脚', '0000000001', 'Left arm'),
+       ('PRT004','後脚', '0000000001', 'Left arm'),
+       ('PRT005','尻尾', '0000000001', 'Left arm'),
+       ('PRT001','頭部', '0000000002', 'Sharp tooth'),
+       ('PRT002','腹部', '0000000002', 'Sharp tooth'),
+       ('PRT003','前脚', '0000000002', 'Sharp tooth'),
+       ('PRT004','後脚', '0000000002', 'Sharp tooth'),
+       ('PRT005','尻尾', '0000000002', 'Sharp tooth'),
+       ('PRT001','頭部', '0000000003', 'Fire breath'),
+       ('PRT002','腹部', '0000000003', 'Fire breath'),
+       ('PRT003','前脚', '0000000003', 'Fire breath'),
+       ('PRT004','後脚', '0000000003', 'Fire breath'),
+       ('PRT005','尻尾', '0000000003', 'Fire breath');
 
 INSERT INTO music (music_id, monster_id, name, image_url)
-VALUES ('MSC001', 'MON001', 'Slime Symphony', 'images/music-slime.jpg'),
-       ('MSC002', 'MON002', 'Goblin Groove', 'images/music-goblin.png'),
-       ('MSC003', 'MON003', 'Dragons Ballad', 'images/music-dragon.gif');
+VALUES ('MSC001', '0000000001', 'Slime Symphony', 'images/music-slime.jpg'),
+       ('MSC002', '0000000002', 'Goblin Groove', 'images/music-goblin.png'),
+       ('MSC003', '0000000003', 'Dragons Ballad', 'images/music-dragon.gif');
 
 INSERT INTO tribe (tribe_id,monster_id, name_ja, name_en, description)
-VALUES ('TRB001','MON001', 'ゴブリン族', 'Goblin Tribe', 'いたずら好きで集団で行動する'),
-       ('TRB002','MON002', 'オーク族', 'Orc Tribe', '好戦的で力強い戦士集団'),
-       ('TRB003','MON003', 'エルフ族', 'Elf Tribe', '長寿で優れた弓術を持つ');
+VALUES ('TRB001','0000000001', '飛竜種', 'Wybarn', '空を飛ぶ竜種'),
+       ('TRB002','0000000002', '飛竜種', 'Wybarn', '空を飛ぶ竜種'),
+       ('TRB003','0000000003', '飛竜種', 'Wybarn', '空を飛ぶ竜種');
 
-INSERT INTO weakness (monster_id, aprt_id, fire, water, lightning, ice, dragon, slashing, blow, bullet)
-VALUES ('MON001', 'PRT001', 'low', 'medium', 'high', 'low', 'immune', 'medium', 'high', 'low'),
-       ('MON001', 'PRT002', 'medium', 'low', 'low', 'medium', 'low', 'high', 'low', 'medium'),
-       ('MON001', 'PRT003', 'medium', 'low', 'low', 'medium', 'low', 'high', 'low', 'medium'),
-       ('MON001', 'PRT004', 'medium', 'low', 'low', 'medium', 'low', 'high', 'low', 'medium'),
-       ('MON001', 'PRT005', 'medium', 'low', 'low', 'medium', 'low', 'high', 'low', 'medium'),
-       ('MON002', 'PRT006', 'medium', 'low', 'low', 'medium', 'low', 'high', 'low', 'medium'),
-       ('MON003', 'PRT003', 'high', 'low', 'medium', 'high', 'high', 'low', 'medium', 'high');
+INSERT INTO weakness (monster_id, part_id, fire, water, lightning, ice, dragon, slashing, blow, bullet,first_weak_attack, second_weak_attack, first_weak_element, second_weak_element)
+VALUES ('0000000001', 'PRT001', '45', '45', '45', '45', '45', '45', '45', '45','斬','弾','火','水'),
+       ('0000000001', 'PRT002', '45', '45', '45', '45', '45', '45', '45', '45','斬','弾','火','水'),
+       ('0000000001', 'PRT003', '45', '45', '45', '45', '45', '45', '45', '45','斬','弾','火','水'),
+       ('0000000001', 'PRT004', '45', '45', '45', '45', '45', '45', '45', '45','斬','弾','火','水'),
+       ('0000000001', 'PRT005', '45', '45', '45', '45', '45', '45', '45', '45','斬','弾','火','水'),
+       ('0000000002', 'PRT001', '45', '45', '45', '45', '45', '45', '45', '45','斬','弾','火','水'),
+       ('0000000002', 'PRT002', '45', '45', '45', '45', '45', '45', '45', '45','斬','弾','火','水'),
+       ('0000000002', 'PRT003', '45', '45', '45', '45', '45', '45', '45', '45','斬','弾','火','水'),
+       ('0000000002', 'PRT004', '45', '45', '45', '45', '45', '45', '45', '45','斬','弾','火','水'),
+       ('0000000002', 'PRT005', '45', '45', '45', '45', '45', '45', '45', '45','斬','弾','火','水'),
+       ('0000000003', 'PRT001', '45', '45', '45', '45', '45', '45', '45', '45','斬','弾','火','水'),
+       ('0000000003', 'PRT002', '45', '45', '45', '45', '45', '45', '45', '45','斬','弾','火','水'),
+       ('0000000003', 'PRT003', '45', '45', '45', '45', '45', '45', '45', '45','斬','弾','火','水'),
+       ('0000000003', 'PRT004', '45', '45', '45', '45', '45', '45', '45', '45','斬','弾','火','水'),
+       ('0000000003', 'PRT005', '45', '45', '45', '45', '45', '45', '45', '45','斬','弾','火','水');
 
 INSERT INTO weapon (weapon_id, name, image_url, rarerity, attack, element_attack, shapness, critical, description)
 VALUES ('WPN001', 'Wooden Sword', 'images/weapon_wooden_sword.jpg', 'Common', 'Low', 'None', 'Normal', 'Low', 'A basic sword made of wood.'),
@@ -222,6 +243,6 @@ VALUES ('WPN001', 'Wooden Sword', 'images/weapon_wooden_sword.jpg', 'Common', 'L
        ('WPN003', 'Fire Sword', 'images/weapon_fire_sword.jpg', 'Rare', 'High', 'Fire', 'Normal', 'High', 'A sword imbued with fire that burns enemies.');
 
 INSERT INTO ranking (monster_id, ranking, vote_year)
-VALUES ('MON001', '1', '2024/03/12'),
-       ('MON002', '2', '2024/03/12'),
-       ('MON003', '3', '2024/03/12');
+VALUES ('0000000001', '1', '2024/03/12'),
+       ('0000000002', '2', '2024/03/12'),
+       ('0000000003', '3', '2024/03/12');

@@ -1,19 +1,13 @@
 package music
 
 import (
-	"mh-api/app/internal/service/monsters"
-
 	"github.com/gin-gonic/gin"
 )
 
-type BGMHandler struct {
-	monsterService monsters.MonsterService
-}
+type BGMHandler struct{}
 
-func NewBGMHandler(s monsters.MonsterService) *BGMHandler {
-	return &BGMHandler{
-		monsterService: s,
-	}
+func NewBGMHandler() *BGMHandler {
+	return &BGMHandler{}
 }
 
 // GetBGM godoc
