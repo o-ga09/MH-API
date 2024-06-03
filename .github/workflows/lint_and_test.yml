@@ -1,4 +1,4 @@
-name: golang-ci
+name: lint and test
 on:
   pull_request:
     branches:
