@@ -56,8 +56,8 @@ func (m *MonsterHandler) GetAll(c *gin.Context) {
 		return
 	}
 
-	id, ook := c.Params.Get("id")
-	if ook {
+	id, ok := c.Params.Get("id")
+	if ok {
 		id = ""
 	}
 	ctx := context.WithValue(c.Request.Context(), "param", param)

@@ -26,6 +26,7 @@ services:
       context: ../
       dockerfile: environment/go/Dockerfile
       target: dev
+    container_name: mh-api-srv
     environment:
       ENV: DEV
       PORT: 8080

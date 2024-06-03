@@ -31,10 +31,11 @@ type Item struct {
 
 type Music struct {
 	gorm.Model
-	MusicId   string `gorm:"column:music_id;primaryKey;type:varchar(10);not null"`
-	MonsterId string `gorm:"column:monster_id;type:varchar(10);not null"`
-	Name      string `gorm:"column:name;type:varchar(255);not null"`
-	ImageUrl  string `gorm:"column:image_url;type:varchar(255)"`
+	MusicId    string        `gorm:"column:music_id;primaryKey;type:varchar(10);not null;index"`
+	MonsterId  string        `gorm:"column:monster_id;type:varchar(10);not null"`
+	Name       string        `gorm:"column:name;type:varchar(255);not null"`
+	Url        string        `gorm:"column:url;type:varchar(255)"`
+	BgmRanking []*BgmRanking `gorm:"foreignKey:music_id;references:music_id"`
 }
 
 type Part struct {
@@ -99,4 +100,11 @@ type Ranking struct {
 	MonsterId string `gorm:"column:monster_id;type:varchar(10); not null"`
 	Ranking   string `gorm:"column:ranking;type:varchar(10)"`
 	VoteYear  string `gorm:"column:vote_year;type:varchar(20)"`
+}
+
+type BgmRanking struct {
+	gorm.Model
+	MusicId  string `gorm:"column:music_id;type:varchar(10); not null"`
+	Ranking  string `gorm:"column:ranking;type:varchar(10)"`
+	VoteYear string `gorm:"column:vote_year;type:varchar(20)"`
 }
