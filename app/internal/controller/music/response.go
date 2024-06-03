@@ -8,7 +8,7 @@ type BGMs struct {
 }
 
 type BGM struct {
-	BGM ResponseJson `json:"monster"`
+	BGM ResponseJson `json:"bgm"`
 }
 
 type BGMRankings struct {
@@ -23,13 +23,13 @@ type MessageResponse struct {
 }
 
 type ResponseJson struct {
-	Id   string `json:"monster_id,omitempty"`
+	Id   string `json:"music_id,omitempty"`
 	Name string `json:"name,omitempty"`
 	Url  string `json:"url,omitempty"`
 }
 
 type ResponseRankingJson struct {
-	BgmId   string    `json:"monster_id,omitempty"`
+	BgmId   string    `json:"music_id,omitempty"`
 	Name    string    `json:"name,omitempty"`
 	Url     string    `json:"url,omitempty"`
 	Ranking []Ranking `json:"ranking,omitempty"`

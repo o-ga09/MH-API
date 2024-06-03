@@ -2,6 +2,7 @@ package music
 
 import (
 	"context"
+	"fmt"
 	param "mh-api/app/internal/controller/music"
 	"mh-api/app/internal/driver/mysql"
 	"mh-api/app/internal/service/music"
@@ -54,8 +55,9 @@ func (q *musicQueryService) FetchList(ctx context.Context, id string) ([]*music.
 		sort = "music_id DESC"
 	}
 
+	fmt.Println("id: ", id)
 	if id != "" {
-		result = q.conn.Model(&bgm).Preload("BgmRanking").Where("music_id = ? ", id).Find(&bgm)
+		result = q.conn.Debug().Model(&bgm).Preload("BgmRanking").Where("music_id = ? ", id).Find(&bgm)
 	} else if where_clade != "" && p.BgmIds != "" {
 		result = q.conn.Model(&bgm).Preload("BgmRanking").Where(where_clade, bgmIds).Limit(limit).Offset(offset).Order(sort).Find(&bgm)
 	} else if where_clade != "" {
@@ -72,7 +74,7 @@ func (q *musicQueryService) FetchList(ctx context.Context, id string) ([]*music.
 	res := []*music.FetchMusicListDto{}
 	for _, m := range bgm {
 		r := music.FetchMusicListDto{
-			Id:   m.MonsterId,
+			Id:   m.MusicId,
 			Name: m.Name,
 			Url:  m.Url,
 		}

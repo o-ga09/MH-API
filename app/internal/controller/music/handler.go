@@ -124,7 +124,7 @@ func (h *BGMHandler) GetBGMById(c *gin.Context) {
 	}
 
 	id, ok := c.Params.Get("id")
-	if ok {
+	if !ok {
 		id = ""
 	}
 
