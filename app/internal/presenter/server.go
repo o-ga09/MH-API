@@ -60,5 +60,15 @@ func NewServer() (*gin.Engine, error) {
 		bgm.GET("/ranking", bgmHandler.GetRankingBGM)
 	}
 
+	// アイテム検索
+	item := v1.Group("/items")
+	itemHandler := di.InitItemHaandler()
+	{
+		item.GET("", itemHandler.GetItem)
+		item.GET("/:id", itemHandler.GetItem)
+		item.GET("/monsters", itemHandler.GetItemByMonster)
+		item.GET("/monsters/:id", itemHandler.GetItemByMonsterId)
+	}
+
 	return r, nil
 }

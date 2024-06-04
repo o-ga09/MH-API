@@ -45,7 +45,7 @@ func (h *ItemHandler) GetItems(c *gin.Context) {}
 func (h *ItemHandler) GetItem(c *gin.Context) {}
 
 // GetItems godoc
-// @Summary アイテム検索（モンスター別）
+// @Summary 取得可能なアイテムの一覧(アイテム別)
 // @Description 指定のアイテムが取得可能なモンスターの一覧
 // @Tags アイテム検索
 // @Accept json
@@ -57,3 +57,17 @@ func (h *ItemHandler) GetItem(c *gin.Context) {}
 // @Failure      500  {object}  MessageResponse
 // @Router /items/monsters [get]
 func (h *ItemHandler) GetItemByMonster(c *gin.Context) {}
+
+// GetItems godoc
+// @Summary 取得可能なアイテムの一覧(モンスター別)
+// @Description 指定のモンスターから取得可能なアイテムの一覧
+// @Tags アイテム検索
+// @Accept json
+// @Produce json
+// @Param request query RequestParam true  "クエリパラメータ"
+// @Success 200 {object} ItemsByMonster
+// @Failure      400  {object}  MessageResponse
+// @Failure      404  {object}  MessageResponse
+// @Failure      500  {object}  MessageResponse
+// @Router /items/monsters/:id [get]
+func (h *ItemHandler) GetItemByMonsterId(c *gin.Context) {}
