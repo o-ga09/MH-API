@@ -55,7 +55,7 @@ jobs:
       - name: run Docker
         run: |
           cd environment
-          docker compose up
+          docker compose up -d
 
       - name: Install scenarigo
         run: go install github.com/zoncoen/scenarigo/cmd/scenarigo@v0.16.1
