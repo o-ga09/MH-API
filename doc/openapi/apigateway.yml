@@ -236,3 +236,54 @@ paths:
           description: サーバエラーにより更新失敗
           schema:
             type: object
+  /v1/bgms:
+    get:
+      description: BGM検索結果(複数件)を取得する
+      operationId: getBgm
+      responses:
+        "200":
+          description: BGMの取得(複数件)に成功
+          schema:
+            type: object
+        "404":
+          description: BGM検索結果が見つかりません
+          schema:
+            type: object
+        "500":
+          description: BGMの取得に失敗
+          schema:
+            type: object
+  /v1/bgms/:id:
+    get:
+      description: BGM検索結果(1件)を取得する
+      operationId: getBgm
+      responses:
+        "200":
+          description: BGMの取得(1件)に成功
+          schema:
+            type: object
+        "404":
+          description: BGM検索結果が見つかりません
+          schema:
+            type: object
+        "500":
+          description: BGMの取得に失敗
+          schema:
+            type: object
+  /v1/bgms/ranking:
+    get:
+      description: BGM総選挙結果を取得する
+      operationId: getBgm
+      responses:
+        "200":
+          description: BGM総選挙結果の取得に成功
+          schema:
+            type: object
+        "404":
+          description: BGM総選挙結果が見つかりません
+          schema:
+            type: object
+        "500":
+          description: BGM総選挙結果の取得に失敗
+          schema:
+            type: object
