@@ -29,7 +29,10 @@ func BeforeTest() {
 	}}); err != nil {
 		connect(dialector, 100)
 	}
-	db.AutoMigrate(&Monster{}, &Field{}, &Product{}, &Tribe{}, &Weakness{}, &Ranking{}, &Music{}, &BgmRanking{})
+	err = db.AutoMigrate(&Monster{}, &Field{}, &Product{}, &Tribe{}, &Weakness{}, &Ranking{}, &Music{}, &BgmRanking{})
+	if err != nil {
+		panic(err)
+	}
 	weak1 := []*Weakness{
 		{MonsterId: "0000000001", PartId: "0001", Fire: "45", Water: "45", Lightning: "45", Ice: "45", Dragon: "45", Slashing: "45", Blow: "45", Bullet: "45", FirstWeakAttack: "頭部", SecondWeakAttack: "翼", FirstWeakElement: "龍", SecondWeakElement: "雷"},
 	}

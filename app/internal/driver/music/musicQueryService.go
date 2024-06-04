@@ -145,7 +145,6 @@ func (q *musicQueryService) FetchRank(ctx context.Context) ([]*music.FetchMusicR
 			VoteYear: m.VoteYear,
 		})
 	}
-
 	for _, m := range r {
 
 		r := music.FetchMusicRankingDto{
