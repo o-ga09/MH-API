@@ -17,14 +17,11 @@ jobs:
           node-version: "18"
 
       - name: Check out
-        uses: actions/checkout@v3
-
-      - name: Install swaggo
-        run: |
-          go install github.com/swaggo/swag/cmd/swag@latest
+        uses: actions/checkout@v3          
       
       - name:  Generate OpenAPI Spec
         run: |
+          go install github.com/swaggo/swag/cmd/swag@latest
           swag init -g app/cmd/api/main.go --output doc/openapi/
 
       - name: Build ReDoc HTML
