@@ -1,18 +1,18 @@
 package item
 
 import (
-	"mh-api/app/internal/service/monsters"
+	"mh-api/app/internal/service/item"
 
 	"github.com/gin-gonic/gin"
 )
 
 type ItemHandler struct {
-	monsterService monsters.MonsterService
+	itemService item.ItemService
 }
 
-func NewItemHandler(s monsters.MonsterService) *ItemHandler {
+func NewItemHandler(s item.ItemService) *ItemHandler {
 	return &ItemHandler{
-		monsterService: s,
+		itemService: s,
 	}
 }
 
