@@ -2,7 +2,6 @@ package music
 
 import (
 	"context"
-	"fmt"
 	param "mh-api/app/internal/controller/music"
 	"mh-api/app/internal/driver/mysql"
 	"mh-api/app/internal/service/music"
@@ -32,7 +31,7 @@ func (q *musicQueryService) FetchList(ctx context.Context, id string) ([]*music.
 	sort := ""
 
 	if id == "" {
-		p = ctx.Value("param").(param.RequestParam)
+		p = ctx.Value(param.ParamKey).(param.RequestParam)
 	}
 
 	limit := p.Limit
@@ -55,9 +54,8 @@ func (q *musicQueryService) FetchList(ctx context.Context, id string) ([]*music.
 		sort = "music_id DESC"
 	}
 
-	fmt.Println("id: ", id)
 	if id != "" {
-		result = q.conn.Debug().Model(&bgm).Preload("BgmRanking").Where("music_id = ? ", id).Find(&bgm)
+		result = q.conn.Model(&bgm).Preload("BgmRanking").Where("music_id = ? ", id).Find(&bgm)
 	} else if where_clade != "" && p.BgmIds != "" {
 		result = q.conn.Model(&bgm).Preload("BgmRanking").Where(where_clade, bgmIds).Limit(limit).Offset(offset).Order(sort).Find(&bgm)
 	} else if where_clade != "" {
@@ -100,7 +98,7 @@ func (q *musicQueryService) FetchRank(ctx context.Context) ([]*music.FetchMusicR
 	where_clade := ""
 	sort := ""
 
-	p = ctx.Value("param").(param.RequestParam)
+	p = ctx.Value(param.ParamKey).(param.RequestParam)
 
 	limit := p.Limit
 	offset := p.Offset

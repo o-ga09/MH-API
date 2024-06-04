@@ -14,7 +14,7 @@ import (
 
 type contextKey string
 
-const paramKey contextKey = "param"
+const ParamKey contextKey = "param"
 
 type BGMHandler struct {
 	musicService music.MusicService
@@ -63,7 +63,7 @@ func (h *BGMHandler) GetBGM(c *gin.Context) {
 	if ok {
 		id = ""
 	}
-	ctx := context.WithValue(c.Request.Context(), paramKey, param)
+	ctx := context.WithValue(c.Request.Context(), ParamKey, param)
 	res, err := h.musicService.FetchList(ctx, id)
 
 	if err == gorm.ErrRecordNotFound {
@@ -132,7 +132,7 @@ func (h *BGMHandler) GetBGMById(c *gin.Context) {
 		id = ""
 	}
 
-	ctx := context.WithValue(c.Request.Context(), paramKey, param)
+	ctx := context.WithValue(c.Request.Context(), ParamKey, param)
 	res, err := h.musicService.FetchList(ctx, id)
 
 	if err == gorm.ErrRecordNotFound {
@@ -193,7 +193,7 @@ func (h *BGMHandler) GetRankingBGM(c *gin.Context) {
 		return
 	}
 
-	ctx := context.WithValue(c.Request.Context(), paramKey, param)
+	ctx := context.WithValue(c.Request.Context(), ParamKey, param)
 	res, err := h.musicService.FetchRank(ctx)
 
 	if err == gorm.ErrRecordNotFound {
