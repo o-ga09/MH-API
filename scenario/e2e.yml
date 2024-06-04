@@ -72,6 +72,10 @@ steps:
           name: ジンオウガ
           specify: 牙竜種
           weakness___attack:
+
+
+
+          
             前脚: "10"
             尻尾: "10"
             後脚: "10"
