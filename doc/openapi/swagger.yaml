@@ -1,5 +1,12 @@
 basePath: /v1
 definitions:
+  app_internal_controller_music.Ranking:
+    properties:
+      ranking:
+        type: string
+      vote_year:
+        type: string
+    type: object
   item.Item:
     properties:
       item:
@@ -39,6 +46,13 @@ definitions:
       item_name:
         type: string
     type: object
+  monster.Location:
+    properties:
+      name:
+        items:
+          type: string
+        type: array
+    type: object
   monster.MessageResponse:
     properties:
       message:
@@ -68,23 +82,77 @@ definitions:
         type: string
       desc:
         type: string
-      location:
+      first_weak_attack:
         type: string
+      first_weak_element:
+        type: string
+      location:
+        $ref: '#/definitions/monster.Location'
       monster_id:
         type: string
       name:
         type: string
+      second_weak_attack:
+        type: string
+      second_weak_element:
+        type: string
       title:
-        type: string
+        $ref: '#/definitions/monster.Title'
       weakness_attack:
-        type: string
+        items:
+          $ref: '#/definitions/monster.Weakness_attack'
+        type: array
       weakness_element:
+        items:
+          $ref: '#/definitions/monster.Weakness_element'
+        type: array
+    type: object
+  monster.Title:
+    properties:
+      name:
+        items:
+          type: string
+        type: array
+    type: object
+  monster.Weakness_attack:
+    properties:
+      blow:
+        type: string
+      bullet:
+        type: string
+      slashing:
+        type: string
+    type: object
+  monster.Weakness_element:
+    properties:
+      dragon:
+        type: string
+      fire:
+        type: string
+      ice:
+        type: string
+      thunder:
+        type: string
+      water:
         type: string
     type: object
   music.BGM:
     properties:
-      monster:
+      bgm:
         $ref: '#/definitions/music.ResponseJson'
+    type: object
+  music.BGMRankings:
+    properties:
+      limit:
+        type: integer
+      offset:
+        type: integer
+      ranking:
+        items:
+          $ref: '#/definitions/music.ResponseRankingJson'
+        type: array
+      total:
+        type: integer
     type: object
   music.BGMs:
     properties:
@@ -106,10 +174,23 @@ definitions:
     type: object
   music.ResponseJson:
     properties:
-      monster_id:
+      music_id:
         type: string
       name:
         type: string
+      url:
+        type: string
+    type: object
+  music.ResponseRankingJson:
+    properties:
+      music_id:
+        type: string
+      name:
+        type: string
+      ranking:
+        items:
+          $ref: '#/definitions/app_internal_controller_music.Ranking'
+        type: array
       url:
         type: string
     type: object
@@ -288,7 +369,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/music.BGM'
+            $ref: '#/definitions/music.BGMRankings'
         "400":
           description: Bad Request
           schema:
@@ -458,22 +539,16 @@ paths:
       description: モンスターを検索して、条件に合致するモンスターを複数件取得する
       parameters:
       - in: query
+        name: MonsterIds
+        type: string
+      - in: query
+        name: MonsterName
+        type: string
+      - in: query
         name: limit
         type: integer
       - in: query
-        name: monster_id
-        type: string
-      - in: query
-        name: name
-        type: string
-      - in: query
-        name: name_kana
-        type: string
-      - in: query
         name: offset
-        type: integer
-      - in: query
-        name: order
         type: integer
       - in: query
         name: sort
@@ -539,22 +614,16 @@ paths:
       description: 人気投票ランキングの結果を検索する
       parameters:
       - in: query
+        name: MonsterIds
+        type: string
+      - in: query
+        name: MonsterName
+        type: string
+      - in: query
         name: limit
         type: integer
       - in: query
-        name: monster_id
-        type: string
-      - in: query
-        name: name
-        type: string
-      - in: query
-        name: name_kana
-        type: string
-      - in: query
         name: offset
-        type: integer
-      - in: query
-        name: order
         type: integer
       - in: query
         name: sort
