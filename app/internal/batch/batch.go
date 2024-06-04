@@ -99,7 +99,7 @@ func BatchDI() *BatchService {
 	db := mysql.New(context.Background())
 	Monsterrepo := monsterDriver.NewMonsterRepository(db)
 	Fieldrepo := fieldDriver.NewfieldRepository(db)
-	Musicrepo := musicDriver.NewmusicRepository(db)
+	Musicrepo := musicDriver.NewMusicRepository(db)
 	Itemrepo := itemDriver.NewMonsterRepository(db)
 	Partrepo := partDriver.NewMonsterRepository(db)
 	Productrepo := productDriver.NewMonsterRepository(db)

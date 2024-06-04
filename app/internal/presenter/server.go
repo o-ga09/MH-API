@@ -15,24 +15,26 @@ func NewServer() (*gin.Engine, error) {
 		gin.SetMode(gin.ReleaseMode)
 	}
 
-	// setting logger
+	// ロガー設定
 	logger := middleware.New()
 	httpLogger := middleware.RequestLogger(logger)
 
-	//setting a CORS
+	// CORS設定
 	cors := middleware.CORS()
 
-	// With Context
+	// リクエストタイムアウト設定
 	withCtx := middleware.WithTimeout()
 
-	// With Request Id
+	// リクエストID付与
 	withReqId := middleware.AddID()
 
+	// ミドルウェア設定
 	r.Use(withReqId)
 	r.Use(withCtx)
 	r.Use(cors)
 	r.Use(httpLogger)
 
+	// ヘルスチェック
 	v1 := r.Group("/v1")
 	{
 		systemHandler := di.InitHealthService()
@@ -40,12 +42,22 @@ func NewServer() (*gin.Engine, error) {
 		v1.GET("/health/db", systemHandler.DBHealth)
 	}
 
+	// モンスター検索
 	monsters := v1.Group("/monsters")
 	monsterHandler := di.InitMonstersHandler()
 	{
 		monsters.GET("", monsterHandler.GetAll)
 		monsters.GET("/:id", monsterHandler.GetById)
 		monsters.GET("/ranking", monsterHandler.GetRankingMonster)
+	}
+
+	// BGM検索
+	bgm := v1.Group("/bgms")
+	bgmHandler := di.InitBGMHandler()
+	{
+		bgm.GET("", bgmHandler.GetBGM)
+		bgm.GET("/:id", bgmHandler.GetBGMById)
+		bgm.GET("/ranking", bgmHandler.GetRankingBGM)
 	}
 
 	return r, nil

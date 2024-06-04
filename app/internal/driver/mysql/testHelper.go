@@ -29,6 +29,10 @@ func BeforeTest() {
 	}}); err != nil {
 		connect(dialector, 100)
 	}
+	err = db.AutoMigrate(&Monster{}, &Field{}, &Product{}, &Tribe{}, &Weakness{}, &Ranking{}, &Music{}, &BgmRanking{})
+	if err != nil {
+		panic(err)
+	}
 	weak1 := []*Weakness{
 		{MonsterId: "0000000001", PartId: "0001", Fire: "45", Water: "45", Lightning: "45", Ice: "45", Dragon: "45", Slashing: "45", Blow: "45", Bullet: "45", FirstWeakAttack: "頭部", SecondWeakAttack: "翼", FirstWeakElement: "龍", SecondWeakElement: "雷"},
 	}
@@ -43,6 +47,23 @@ func BeforeTest() {
 		{MonsterId: "0000000002", Name: "リオレイア", Description: "陸の女王", Field: []*Field{{FieldId: "0001", MonsterId: "0000000002", Name: "古代樹の森", ImageUrl: "images/kodaizyu.png"}}, Tribe: &Tribe{TribeId: "0001", MonsterId: "0000000002", Name_ja: "飛竜種", Name_en: "wibarn", Description: "飛竜種"}, Product: []*Product{{ProductId: "0001", MonsterId: "0000000002", Name: "MH", PublishYear: "2004", TotalSales: "200万本"}}, Weakness: weak2, Ranking: []*Ranking{{MonsterId: "0000000002", Ranking: "2", VoteYear: "2024/3/12"}}},
 		{MonsterId: "0000000003", Name: "ティガレックス", Description: "絶対強者", Field: []*Field{{FieldId: "0001", MonsterId: "0000000003", Name: "古代樹の森", ImageUrl: "images/kodaizyu.png"}}, Tribe: &Tribe{TribeId: "0001", MonsterId: "0000000003", Name_ja: "飛竜種", Name_en: "wibarn", Description: "飛竜種"}, Product: []*Product{{ProductId: "0001", MonsterId: "0000000003", Name: "MH", PublishYear: "2004", TotalSales: "200万本"}}, Weakness: weak3, Ranking: []*Ranking{{MonsterId: "0000000003", Ranking: "3", VoteYear: "2024/3/12"}}},
 	}
+	bgmRanks1 := []*BgmRanking{
+		{MusicId: "0000000001", Ranking: "1", VoteYear: "2024/3/12"},
+	}
+
+	bgmRanks2 := []*BgmRanking{
+		{MusicId: "0000000002", Ranking: "2", VoteYear: "2024/3/12"},
+	}
+
+	bgmRanks3 := []*BgmRanking{
+		{MusicId: "0000000003", Ranking: "3", VoteYear: "2024/3/12"},
+	}
+
+	bgms := []Music{
+		{MusicId: "0000000001", MonsterId: "0000000001", Name: "リオレウスのテーマ", Url: "https://www.youtube.com/watch?v=1", BgmRanking: bgmRanks1},
+		{MusicId: "0000000002", MonsterId: "0000000002", Name: "リオレイアのテーマ", Url: "https://www.youtube.com/watch?v=2", BgmRanking: bgmRanks2},
+		{MusicId: "0000000003", MonsterId: "0000000003", Name: "ティガレックスのテーマ", Url: "https://www.youtube.com/watch?v=3", BgmRanking: bgmRanks3},
+	}
 
 	db.Exec("SET foreign_key_checks = 0")
 	db.Exec("TRUNCATE TABLE monster")
@@ -51,8 +72,11 @@ func BeforeTest() {
 	db.Exec("TRUNCATE TABLE tribe")
 	db.Exec("TRUNCATE TABLE weakness")
 	db.Exec("TRUNCATE TABLE ranking")
+	db.Exec("TRUNCATE TABLE music")
+	db.Exec("TRUNCATE TABLE bgm_ranking")
 	db.Exec("SET foreign_key_checks = 1")
 	db.Create(monsters)
+	db.Create(bgms)
 }
 
 func AfetrTest() func() {
@@ -80,6 +104,8 @@ func AfetrTest() func() {
 		db.Exec("TRUNCATE TABLE tribe")
 		db.Exec("TRUNCATE TABLE weakness")
 		db.Exec("TRUNCATE TABLE ranking")
+		db.Exec("TRUNCATE TABLE music")
+		db.Exec("TRUNCATE TABLE bgm_ranking")
 		db.Exec("SET foreign_key_checks = 1")
 	}
 }

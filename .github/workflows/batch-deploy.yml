@@ -2,6 +2,8 @@ name: Batch Deploy
 
 on:
   push:
+    branches:
+      - main
 
 env:
   JOB_NAME: mh-api-batch

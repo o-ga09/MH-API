@@ -229,7 +229,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/music.BGM"
+                            "$ref": "#/definitions/music.BGMRankings"
                         }
                     },
                     "400": {
@@ -502,33 +502,23 @@ const docTemplate = `{
                 "summary": "モンスター検索（複数件）",
                 "parameters": [
                     {
+                        "type": "string",
+                        "name": "MonsterIds",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "MonsterName",
+                        "in": "query"
+                    },
+                    {
                         "type": "integer",
                         "name": "limit",
                         "in": "query"
                     },
                     {
-                        "type": "string",
-                        "name": "monster_id",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "name": "name",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "name": "name_kana",
-                        "in": "query"
-                    },
-                    {
                         "type": "integer",
                         "name": "offset",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "name": "order",
                         "in": "query"
                     },
                     {
@@ -629,33 +619,23 @@ const docTemplate = `{
                 "summary": "モンスター人気投票結果検索",
                 "parameters": [
                     {
+                        "type": "string",
+                        "name": "MonsterIds",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "MonsterName",
+                        "in": "query"
+                    },
+                    {
                         "type": "integer",
                         "name": "limit",
                         "in": "query"
                     },
                     {
-                        "type": "string",
-                        "name": "monster_id",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "name": "name",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "name": "name_kana",
-                        "in": "query"
-                    },
-                    {
                         "type": "integer",
                         "name": "offset",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "name": "order",
                         "in": "query"
                     },
                     {
@@ -850,6 +830,17 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "app_internal_controller_music.Ranking": {
+            "type": "object",
+            "properties": {
+                "ranking": {
+                    "type": "string"
+                },
+                "vote_year": {
+                    "type": "string"
+                }
+            }
+        },
         "item.Item": {
             "type": "object",
             "properties": {
@@ -911,6 +902,17 @@ const docTemplate = `{
                 }
             }
         },
+        "monster.Location": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
         "monster.MessageResponse": {
             "type": "object",
             "properties": {
@@ -956,8 +958,14 @@ const docTemplate = `{
                 "desc": {
                     "type": "string"
                 },
-                "location": {
+                "first_weak_attack": {
                     "type": "string"
+                },
+                "first_weak_element": {
+                    "type": "string"
+                },
+                "location": {
+                    "$ref": "#/definitions/monster.Location"
                 },
                 "monster_id": {
                     "type": "string"
@@ -965,13 +973,70 @@ const docTemplate = `{
                 "name": {
                     "type": "string"
                 },
-                "title": {
+                "second_weak_attack": {
                     "type": "string"
+                },
+                "second_weak_element": {
+                    "type": "string"
+                },
+                "title": {
+                    "$ref": "#/definitions/monster.Title"
                 },
                 "weakness_attack": {
-                    "type": "string"
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/monster.Weakness_attack"
+                    }
                 },
                 "weakness_element": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/monster.Weakness_element"
+                    }
+                }
+            }
+        },
+        "monster.Title": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "monster.Weakness_attack": {
+            "type": "object",
+            "properties": {
+                "blow": {
+                    "type": "string"
+                },
+                "bullet": {
+                    "type": "string"
+                },
+                "slashing": {
+                    "type": "string"
+                }
+            }
+        },
+        "monster.Weakness_element": {
+            "type": "object",
+            "properties": {
+                "dragon": {
+                    "type": "string"
+                },
+                "fire": {
+                    "type": "string"
+                },
+                "ice": {
+                    "type": "string"
+                },
+                "thunder": {
+                    "type": "string"
+                },
+                "water": {
                     "type": "string"
                 }
             }
@@ -979,8 +1044,28 @@ const docTemplate = `{
         "music.BGM": {
             "type": "object",
             "properties": {
-                "monster": {
+                "bgm": {
                     "$ref": "#/definitions/music.ResponseJson"
+                }
+            }
+        },
+        "music.BGMRankings": {
+            "type": "object",
+            "properties": {
+                "limit": {
+                    "type": "integer"
+                },
+                "offset": {
+                    "type": "integer"
+                },
+                "ranking": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/music.ResponseRankingJson"
+                    }
+                },
+                "total": {
+                    "type": "integer"
                 }
             }
         },
@@ -1015,11 +1100,31 @@ const docTemplate = `{
         "music.ResponseJson": {
             "type": "object",
             "properties": {
-                "monster_id": {
+                "music_id": {
                     "type": "string"
                 },
                 "name": {
                     "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                }
+            }
+        },
+        "music.ResponseRankingJson": {
+            "type": "object",
+            "properties": {
+                "music_id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "ranking": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/app_internal_controller_music.Ranking"
+                    }
                 },
                 "url": {
                     "type": "string"

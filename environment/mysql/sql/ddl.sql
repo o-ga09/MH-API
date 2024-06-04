@@ -78,9 +78,10 @@ CREATE TABLE `music` (
   `music_id` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `monster_id` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `image_url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`,`music_id`),
-  KEY `idx_music_deleted_at` (`deleted_at`)
+  KEY `idx_music_deleted_at` (`deleted_at`),
+  KEY `idx_music_id` (`music_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `tribe` (
@@ -153,4 +154,18 @@ CREATE TABLE `ranking` (
   KEY `idx_monster_deleted_at` (`deleted_at`),
   KEY `idx_monster_monster_id` (`monster_id`),
   CONSTRAINT `fk_monster_ranking` FOREIGN KEY (`monster_id`) REFERENCES `monster` (`monster_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE `bgm_ranking` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `created_at` datetime(3) DEFAULT NULL,
+  `updated_at` datetime(3) DEFAULT NULL,
+  `deleted_at` datetime(3) DEFAULT NULL,
+  `music_id` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ranking` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `vote_year` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_music_deleted_at` (`deleted_at`),
+  KEY `idx_music_id` (`music_id`),
+  CONSTRAINT `fk_bgm_ranking` FOREIGN KEY (`music_id`) REFERENCES `music` (`music_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

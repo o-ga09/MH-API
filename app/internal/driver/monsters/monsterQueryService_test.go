@@ -38,7 +38,6 @@ func TestNewmonsterQueryService(t *testing.T) {
 }
 
 func Test_monsterQueryService_FetchList(t *testing.T) {
-
 	t.Helper()
 	mysql.BeforeTest()
 	t.Cleanup(mysql.AfetrTest())

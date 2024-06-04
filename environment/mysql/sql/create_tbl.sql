@@ -84,9 +84,10 @@ CREATE TABLE `music` (
   `music_id` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `monster_id` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `image_url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`,`music_id`),
-  KEY `idx_music_deleted_at` (`deleted_at`)
+  KEY `idx_music_deleted_at` (`deleted_at`),
+  KEY `idx_music_id` (`music_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `tribe` (
@@ -161,6 +162,19 @@ CREATE TABLE `ranking` (
   CONSTRAINT `fk_monster_ranking` FOREIGN KEY (`monster_id`) REFERENCES `monster` (`monster_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+CREATE TABLE `bgm_ranking` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `created_at` datetime(3) DEFAULT NULL,
+  `updated_at` datetime(3) DEFAULT NULL,
+  `deleted_at` datetime(3) DEFAULT NULL,
+  `music_id` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ranking` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `vote_year` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_music_deleted_at` (`deleted_at`),
+  KEY `idx_music_id` (`music_id`),
+  CONSTRAINT `fk_bgm_ranking` FOREIGN KEY (`music_id`) REFERENCES `music` (`music_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 INSERT INTO monster (monster_id, name, description)
 VALUES ('MON001', 'Slime', 'A blob of goo that can be surprisingly resilient.'),
@@ -191,10 +205,10 @@ VALUES ('PRT001', 'MON001', 'Left arm'),
        ('PRT002', 'MON002', 'Sharp tooth'),
        ('PRT003', 'MON003', 'Fire breath');
 
-INSERT INTO music (music_id, monster_id, name, image_url)
-VALUES ('MSC001', 'MON001', 'Slime Symphony', 'images/music-slime.jpg'),
-       ('MSC002', 'MON002', 'Goblin Groove', 'images/music-goblin.png'),
-       ('MSC003', 'MON003', 'Dragons Ballad', 'images/music-dragon.gif');
+INSERT INTO music (music_id, monster_id, name, url)
+VALUES ('BGM001', 'MON001', 'Slime Symphony', 'https://www.youtube.com/watch?v=1'),
+       ('BGM002', 'MON002', 'Goblin Groove', 'https://www.youtube.com/watch?v=2'),
+       ('BGM003', 'MON003', 'Dragons Ballad', 'https://www.youtube.com/watch?v=3');
 
 INSERT INTO tribe (tribe_id,monster_id, name_ja, name_en, description)
 VALUES ('TRB001','MON001', 'ゴブリン族', 'Goblin Tribe', 'いたずら好きで集団で行動する'),
@@ -219,3 +233,8 @@ INSERT INTO ranking (monster_id, ranking, vote_year)
 VALUES ('MON001', '1', '2024/03/12'),
        ('MON002', '2', '2024/03/12'),
        ('MON003', '3', '2024/03/12');
+
+INSERT INTO bgm_ranking (music_id, ranking, vote_year)
+VALUES ('BGM001', '1', '2024/03/12'),
+       ('BGM002', '2', '2024/03/12'),
+       ('BGM003', '3', '2024/03/12');

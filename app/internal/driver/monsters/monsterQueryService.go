@@ -184,7 +184,6 @@ func (s *monsterQueryService) FetchRank(ctx context.Context) ([]*monsters.FetchM
 	}
 	res := []*monsters.FetchMonsterRankingDto{}
 	for _, m := range monster {
-
 		if IsPreloadNotFound(&m) {
 			continue
 		}
