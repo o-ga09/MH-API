@@ -13,6 +13,10 @@ import (
 	"gorm.io/gorm"
 )
 
+type contextKey string
+
+const paramKey contextKey = "param"
+
 func TestNewmusicRepository(t *testing.T) {
 	mysql.BeforeTest()
 	t.Cleanup(mysql.AfetrTest())
@@ -172,7 +176,7 @@ func TestFetchList(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			ctx = context.WithValue(context.Background(), "param", tt.args.param)
+			ctx = context.WithValue(context.Background(), paramKey, tt.args.param)
 			s := &musicQueryService{
 				conn: tt.fields.conn,
 			}
@@ -251,7 +255,7 @@ func TestFetchRank(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			ctx = context.WithValue(context.Background(), "param", tt.args.param)
+			ctx = context.WithValue(context.Background(), paramKey, tt.args.param)
 			s := &musicQueryService{
 				conn: tt.fields.conn,
 			}
