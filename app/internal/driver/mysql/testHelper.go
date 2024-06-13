@@ -66,17 +66,17 @@ func BeforeTest() {
 	}
 
 	items := []Item{
-		{ItemId: "0000000001", Name: "回復薬", ImageUrl: "images/rioreusu.png"},
-		{ItemId: "0000000002", Name: "回復薬グレート", ImageUrl: "images/rioreia.png"},
-		{ItemId: "0000000003", Name: "秘薬", ImageUrl: "images/tigarekkusu.png"},
-		{ItemId: "0000000004", Name: "砥石", ImageUrl: "images/tigarekkusu.png"},
-		{ItemId: "0000000005", Name: "おとし穴", ImageUrl: "images/tigarekkusu.png"},
-		{ItemId: "0000000006", Name: "毒ビン", ImageUrl: "images/tigarekkusu.png"},
-		{ItemId: "0000000007", Name: "麻痺ビン", ImageUrl: "images/tigarekkusu.png"},
-		{ItemId: "0000000008", Name: "眠りビン", ImageUrl: "images/tigarekkusu.png"},
-		{ItemId: "0000000009", Name: "爆弾", ImageUrl: "images/tigarekkusu.png"},
-		{ItemId: "0000000010", Name: "大タル爆弾", ImageUrl: "images/tigarekkusu.png"},
-		{ItemId: "0000000011", Name: "閃光玉", ImageUrl: "images/tigarekkusu.png"},
+		{ItemId: "0000000001", Name: "回復薬", NameKana: "カイフクヤク", ImageUrl: "images/rioreusu.png"},
+		{ItemId: "0000000002", Name: "回復薬グレート", NameKana: "カイフクヤクグレート", ImageUrl: "images/rioreia.png"},
+		{ItemId: "0000000003", Name: "秘薬", NameKana: "ヒヤク", ImageUrl: "images/tigarekkusu.png"},
+		{ItemId: "0000000004", Name: "砥石", NameKana: "トイシ", ImageUrl: "images/tigarekkusu.png"},
+		{ItemId: "0000000005", Name: "おとし穴", NameKana: "オトシアナ", ImageUrl: "images/tigarekkusu.png"},
+		{ItemId: "0000000006", Name: "毒ビン", NameKana: "ドクビン", ImageUrl: "images/tigarekkusu.png"},
+		{ItemId: "0000000007", Name: "麻痺ビン", NameKana: "マヒビン", ImageUrl: "images/tigarekkusu.png"},
+		{ItemId: "0000000008", Name: "眠りビン", NameKana: "ネムリビン", ImageUrl: "images/tigarekkusu.png"},
+		{ItemId: "0000000009", Name: "爆弾", NameKana: "バクダン", ImageUrl: "images/tigarekkusu.png"},
+		{ItemId: "0000000010", Name: "大タル爆弾", NameKana: "オオタルバクダン", ImageUrl: "images/tigarekkusu.png"},
+		{ItemId: "0000000011", Name: "閃光玉", NameKana: "センコウダマ", ImageUrl: "images/tigarekkusu.png"},
 	}
 
 	db.Exec("SET foreign_key_checks = 0")

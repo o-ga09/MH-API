@@ -2,7 +2,6 @@ package item
 
 import (
 	"context"
-	"fmt"
 	"log/slog"
 	"mh-api/app/internal/presenter/middleware"
 	"mh-api/app/internal/service/item"
@@ -47,8 +46,6 @@ func (h *ItemHandler) GetItems(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, MessageResponse{Message: "BAD REQUEST"})
 		return
 	}
-
-	fmt.Println(param.Offset)
 
 	if param.Limit == 0 {
 		param.Limit = 100
