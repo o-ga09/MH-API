@@ -1,24 +1,24 @@
 package item
 
 type MessageRequest struct {
-	Message string `json:"message"`
+	Message string `form:"message"`
 }
 
-type RequestJson struct {
-	Req []Json `json:"req"`
+type Requestform struct {
+	Req []Json `form:"req"`
 }
 
 type Json struct {
-	ItemId string `json:"item_id,omitempty"`
-	Name   string `json:"item_name,omitempty"`
+	ItemId string `form:"item_id,omitempty"`
+	Name   string `form:"item_name,omitempty"`
 }
 
 type RequestParam struct {
-	MonsterIds   string `json:"monster_id"`
-	ItemName     string `json:"item_name"`
-	ItemNameKana string `json:"item_name_kana"`
-	Limit        int
-	Offset       int
-	Sort         string
-	Order        int
+	ItemIds      string `form:"itemIds,omitempty"`
+	ItemName     string `form:"itemName,omitempty"`
+	ItemNameKana string `form:"itemNameKana,omitempty"`
+	Limit        int    `form:"limit,omitempty"`
+	Offset       int    `form:"offset,omitempty"`
+	Sort         int    `form:"sort,omitempty"`
+	Order        int    `form:"order,omitempty"`
 }

@@ -65,6 +65,20 @@ func BeforeTest() {
 		{MusicId: "0000000003", MonsterId: "0000000003", Name: "ティガレックスのテーマ", Url: "https://www.youtube.com/watch?v=3", BgmRanking: bgmRanks3},
 	}
 
+	items := []Item{
+		{ItemId: "0000000001", Name: "回復薬", ImageUrl: "images/rioreusu.png"},
+		{ItemId: "0000000002", Name: "回復薬グレート", ImageUrl: "images/rioreia.png"},
+		{ItemId: "0000000003", Name: "秘薬", ImageUrl: "images/tigarekkusu.png"},
+		{ItemId: "0000000004", Name: "砥石", ImageUrl: "images/tigarekkusu.png"},
+		{ItemId: "0000000005", Name: "おとし穴", ImageUrl: "images/tigarekkusu.png"},
+		{ItemId: "0000000006", Name: "毒ビン", ImageUrl: "images/tigarekkusu.png"},
+		{ItemId: "0000000007", Name: "麻痺ビン", ImageUrl: "images/tigarekkusu.png"},
+		{ItemId: "0000000008", Name: "眠りビン", ImageUrl: "images/tigarekkusu.png"},
+		{ItemId: "0000000009", Name: "爆弾", ImageUrl: "images/tigarekkusu.png"},
+		{ItemId: "0000000010", Name: "大タル爆弾", ImageUrl: "images/tigarekkusu.png"},
+		{ItemId: "0000000011", Name: "閃光玉", ImageUrl: "images/tigarekkusu.png"},
+	}
+
 	db.Exec("SET foreign_key_checks = 0")
 	db.Exec("TRUNCATE TABLE monster")
 	db.Exec("TRUNCATE TABLE field")
@@ -74,9 +88,11 @@ func BeforeTest() {
 	db.Exec("TRUNCATE TABLE ranking")
 	db.Exec("TRUNCATE TABLE music")
 	db.Exec("TRUNCATE TABLE bgm_ranking")
+	db.Exec("TRUNCATE TABLE item")
 	db.Exec("SET foreign_key_checks = 1")
 	db.Create(monsters)
 	db.Create(bgms)
+	db.Create(items)
 }
 
 func AfetrTest() func() {
@@ -106,6 +122,7 @@ func AfetrTest() func() {
 		db.Exec("TRUNCATE TABLE ranking")
 		db.Exec("TRUNCATE TABLE music")
 		db.Exec("TRUNCATE TABLE bgm_ranking")
+		db.Exec("TRUNCATE TABLE item")
 		db.Exec("SET foreign_key_checks = 1")
 	}
 }

@@ -64,7 +64,7 @@ func NewServer() (*gin.Engine, error) {
 	item := v1.Group("/items")
 	itemHandler := di.InitItemHaandler()
 	{
-		item.GET("", itemHandler.GetItem)
+		item.GET("", itemHandler.GetItems)
 		item.GET("/:id", itemHandler.GetItem)
 		item.GET("/monsters", itemHandler.GetItemByMonster)
 		item.GET("/monsters/:id", itemHandler.GetItemByMonsterId)

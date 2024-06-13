@@ -1,7 +1,5 @@
 package item
 
-import "mh-api/app/internal/controller/monster"
-
 type Items struct {
 	Total  int            `json:"total,omitempty"`
 	Limit  int            `json:"limit,omitempty"`
@@ -13,10 +11,21 @@ type Item struct {
 	Item ResponseJson `json:"item"`
 }
 
+type ItemsByMonsterList struct {
+	ItemId   string    `json:"item_id,omitempty"`
+	ItemName string    `json:"item_name,omitempty"`
+	Monsters []Monster `json:"monsters,omitempty"`
+}
+
 type ItemsByMonster struct {
-	ItemId   string           `json:"item_id,omitempty"`
-	ItemName string           `json:"item_name,omitempty"`
-	Monsters monster.Monsters `json:"monsters,omitempty"`
+	MonsterId   string         `json:"monster_id,omitempty"`
+	MonsterName string         `json:"monster_name,omitempty"`
+	Items       []ResponseJson `json:"items,omitempty"`
+}
+
+type Monster struct {
+	MonsterId   string `json:"monster_id,omitempty"`
+	MonsterName string `json:"monster_name,omitempty"`
 }
 
 type MessageResponse struct {
