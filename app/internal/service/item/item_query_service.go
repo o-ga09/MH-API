@@ -19,14 +19,18 @@ type FetchItemListWithMonsterDto struct {
 	Id      string     `json:"id,omitempty"`
 	Name    string     `json:"name,omitempty"`
 	Url     string     `json:"url,omitempty"`
-	Ranking []*Ranking `json:"ranking,omitempty"`
+	Monster []*Monster `json:"ranking,omitempty"`
 }
 
 type FetchItemListByMonsterDto struct {
-	Id      string     `json:"id,omitempty"`
-	Name    string     `json:"name,omitempty"`
-	Url     string     `json:"url,omitempty"`
-	Ranking []*Ranking `json:"ranking,omitempty"`
+	MonsterId   string              `json:"id,omitempty"`
+	MonsterName string              `json:"name,omitempty"`
+	Item        []*FetchItemListDto `json:"item,omitempty"`
+}
+
+type Monster struct {
+	MonsterId   string `json:"monster_id,omitempty"`
+	MonsterName string `json:"monster_name,omitempty"`
 }
 
 type Ranking struct {

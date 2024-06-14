@@ -138,13 +138,11 @@ func (h *ItemHandler) GetItem(c *gin.Context) {
 		return
 	}
 
-	response := []ResponseJson{}
-	for _, r := range res {
-		response = append(response, ResponseJson{
-			Id:       r.Id,
-			ItemName: r.Name,
-		})
+	response := ResponseJson{
+		Id:       res[0].Id,
+		ItemName: res[0].Name,
 	}
+
 	c.JSON(http.StatusOK, response)
 }
 
@@ -262,15 +260,15 @@ func (h *ItemHandler) GetItemByMonsterId(c *gin.Context) {
 	}
 
 	items := []ResponseJson{}
-	for _, r := range res {
+	for _, r := range res[0].Item {
 		items = append(items, ResponseJson{
 			Id:       r.Id,
 			ItemName: r.Name,
 		})
 	}
 	response := ItemsByMonster{
-		MonsterId:   id,
-		MonsterName: "monster_name",
+		MonsterId:   res[0].MonsterId,
+		MonsterName: res[0].MonsterName,
 		Items:       items,
 	}
 	c.JSON(http.StatusOK, response)
