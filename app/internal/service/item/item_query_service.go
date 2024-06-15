@@ -6,7 +6,7 @@ import "context"
 type ItemQueryService interface {
 	FetchList(ctx context.Context, id string) ([]*FetchItemListDto, error)
 	FetchListWithMonster(ctx context.Context) ([]*FetchItemListWithMonsterDto, error)
-	FetchListByMonster(ctx context.Context) ([]*FetchItemListByMonsterDto, error)
+	FetchListByMonster(ctx context.Context, id string) ([]*FetchItemListByMonsterDto, error)
 }
 
 type FetchItemListDto struct {

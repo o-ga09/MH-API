@@ -2,6 +2,7 @@ package items
 
 import (
 	"context"
+	"fmt"
 	param "mh-api/app/internal/controller/item"
 	"mh-api/app/internal/driver/mysql"
 	itemService "mh-api/app/internal/service/item"
@@ -117,7 +118,7 @@ func (qs *itemQueryService) FetchListWithMonster(ctx context.Context) ([]*itemSe
 	where_clade := ""
 	sort := ""
 
-	limit := 100
+	limit := p.Limit
 	offset := p.Offset
 
 	if p.ItemIds != "" {
@@ -184,7 +185,7 @@ func (qs *itemQueryService) FetchListWithMonster(ctx context.Context) ([]*itemSe
 /*
 	  取得するSQL
 	  SELECT i.monster_id, monster_info.name,
-	  	( SELECT JSON_ARRAYAGG(m.item_id)
+	  	( SELECT GROUP_CONCAT(m.item_id)
 		    FROM item_with_monster AS m
 			WHERE m.monster_id = i.monster_id
 		) AS monsters
@@ -192,8 +193,7 @@ func (qs *itemQueryService) FetchListWithMonster(ctx context.Context) ([]*itemSe
 	  JOIN monster AS monster_info ON monster_info.monster_id = i.monster_id
 	  GROUP BY i.monster_id, monster_info.name;
 */
-func (qs *itemQueryService) FetchListByMonster(ctx context.Context) ([]*itemService.FetchItemListByMonsterDto, error) {
-	var item []mysql.ItemWithMonster
+func (qs *itemQueryService) FetchListByMonster(ctx context.Context, monsterid string) ([]*itemService.FetchItemListByMonsterDto, error) {
 	var itemIds []string
 	var result *gorm.DB
 	var p param.RequestParam
@@ -204,10 +204,10 @@ func (qs *itemQueryService) FetchListByMonster(ctx context.Context) ([]*itemServ
 	r := []struct {
 		MonsterId   string
 		MonsterName string
-		Items       []string
+		Items       string
 	}{}
 
-	where_clade := ""
+	where_clade := "i.monster_id = ?"
 	sort := ""
 
 	limit := p.Limit
@@ -215,13 +215,7 @@ func (qs *itemQueryService) FetchListByMonster(ctx context.Context) ([]*itemServ
 
 	if p.ItemIds != "" {
 		itemIds = strings.Split(p.ItemIds, ",")
-		where_clade = "i.item_id IN (?)"
-	}
-
-	if p.ItemName != "" && p.ItemIds != "" {
-		where_clade += " and monster_info.name LIKE '%" + p.ItemName + "%' "
-	} else if p.ItemName != "" {
-		where_clade += " monster_info.name LIKE '%" + p.ItemName + "%' "
+		where_clade = " AND i.item_id IN (?)"
 	}
 
 	if p.Sort == 1 {
@@ -231,16 +225,12 @@ func (qs *itemQueryService) FetchListByMonster(ctx context.Context) ([]*itemServ
 	}
 
 	// サブクエリ
-	subQuery := qs.conn.ToSQL(func(tx *gorm.DB) *gorm.DB {
-		return tx.Select("JSON_ARRAYAGG(m.item_id)").Where("m.monster_id = i.monster_id").Table("item_with_monster AS m")
-	})
+	subQuery := qs.conn.Select("GROUP_CONCAT(m.item_id)").Where("m.monster_id = i.monster_id").Table("item_with_monster AS m")
 
-	if where_clade != "" && p.ItemIds != "" {
-		result = qs.conn.Table("i", &item).Select("i.monster_id, monster_info.name", subQuery).Joins("JOIN monster AS monster_info ON monster_info.monster_id = i.monster_id").Where(where_clade, itemIds).Group(" i.monster_id, monster_info.name").Limit(limit).Offset(offset).Order(sort).Find(&r)
-	} else if where_clade != "" {
-		result = qs.conn.Table("i", &item).Select("i.monster_id, monster_info.name", subQuery).Joins("JOIN monster AS monster_info ON monster_info.monster_id = i.monster_id").Where(where_clade).Group(" i.monster_id, monster_info.name").Limit(limit).Offset(offset).Order(sort).Find(&r)
+	if p.ItemIds != "" {
+		result = qs.conn.Table("item_with_monster AS i").Select("i.monster_id, monster_info.name AS monster_name, (?) AS items", subQuery).Joins("JOIN monster AS monster_info ON monster_info.monster_id = i.monster_id").Where(where_clade, monsterid, itemIds).Group(" i.monster_id, monster_info.name").Limit(limit).Offset(offset).Order(sort).Find(&r)
 	} else {
-		result = qs.conn.Table("i", &item).Select("i.monster_id, monster_info.name", subQuery).Joins("JOIN monster AS monster_info ON monster_info.monster_id = i.monster_id").Limit(limit).Group(" i.monster_id, monster_info.name").Offset(offset).Order(sort).Find(&r)
+		result = qs.conn.Debug().Table("item_with_monster AS i").Select("i.monster_id, monster_info.name AS monster_name, (?) AS items", subQuery).Joins("JOIN monster AS monster_info ON monster_info.monster_id = i.monster_id").Where(where_clade, monsterid).Group(" i.monster_id, monster_info.name").Limit(limit).Offset(offset).Order(sort).Find(&r)
 	}
 
 	if result.Error != nil {
@@ -252,7 +242,9 @@ func (qs *itemQueryService) FetchListByMonster(ctx context.Context) ([]*itemServ
 	resItem := []*itemService.FetchItemListDto{}
 
 	for _, m := range r {
-		for _, item := range m.Items {
+		fmt.Println(m.Items)
+		itemIds := strings.Split(m.Items, ",")
+		for _, item := range itemIds {
 			resItem = append(resItem, &itemService.FetchItemListDto{
 				Id: item,
 			})
@@ -263,6 +255,7 @@ func (qs *itemQueryService) FetchListByMonster(ctx context.Context) ([]*itemServ
 			Item:        resItem,
 		}
 		res = append(res, &r)
+		resItem = nil
 	}
 	return res, err
 }

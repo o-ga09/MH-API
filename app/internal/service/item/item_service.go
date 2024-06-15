@@ -42,7 +42,7 @@ func (s *ItemService) GetItemsByMonsterList(ctx context.Context, id string) ([]*
 }
 
 func (s *ItemService) GetItemByMonsterId(ctx context.Context, id string) ([]*FetchItemListByMonsterDto, error) {
-	res, err := s.qs.FetchListByMonster(ctx)
+	res, err := s.qs.FetchListByMonster(ctx, id)
 	if err != nil {
 		return nil, err
 	}

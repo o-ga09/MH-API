@@ -234,7 +234,7 @@ func TestGetItemByMonster(t *testing.T) {
 		expected_status int
 		expected_body   interface{}
 	}{
-		{name: "指定したモンスターから取得できるアイテム一覧を取得できる", path: "/v1/items/monsters", expected_status: 200, expected_body: expectedItem1},
+		{name: "アイテムと取得可能なモンスターの一覧を取得できる", path: "/v1/items/monsters", expected_status: 200, expected_body: expectedItem1},
 		{name: "取得結果が0件の場合、404になる", path: "/v1/items/monsters?itemIds=1111111111", expected_status: 404, expected_body: expectedItem2},
 		// 500のケースは保留
 		// {name: "どこかでエラーの場合、500になる", path: "/v1/items/monsters/2222222222", expected_status: 500, expected_body: expectedItem3},
@@ -257,6 +257,74 @@ func TestGetItemByMonster(t *testing.T) {
 			if tt.expected_status == 200 {
 				jsonBytes := rr.Body.Bytes()
 				data := new(item.ItemsByMonsterList)
+
+				if err := json.Unmarshal(jsonBytes, data); err != nil {
+					t.Fatal(err)
+				}
+				assert.Equal(t, tt.expected_body, *data)
+			} else {
+				jsonBytes := rr.Body.Bytes()
+				data := new(item.MessageResponse)
+
+				if err := json.Unmarshal(jsonBytes, data); err != nil {
+					t.Fatal(err)
+				}
+				assert.Equal(t, tt.expected_body, *data)
+			}
+		})
+	}
+}
+
+func TestGetItemByMonsterId(t *testing.T) {
+	mysql.BeforeTest()
+	r, err := presenter.NewServer()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	expectedItem1 := item.ItemsByMonster{
+		MonsterId:   "0000000001",
+		MonsterName: "リオレウス",
+		Items: []item.ResponseJson{
+			{Id: "0000000001"},
+			{Id: "0000000002"},
+			{Id: "0000000003"},
+		},
+	}
+
+	expectedItem2 := item.MessageResponse{
+		Message: "NOT FOUND",
+	}
+
+	cases := []struct {
+		name            string
+		path            string
+		expected_status int
+		expected_body   interface{}
+	}{
+		{name: "指定したモンスターから取得できるアイテム一覧を取得できる", path: "/v1/items/monsters/0000000001", expected_status: 200, expected_body: expectedItem1},
+		{name: "取得結果が0件の場合、404になる", path: "/v1/items/monsters/1111111111", expected_status: 404, expected_body: expectedItem2},
+		// 500のケースは保留
+		// {name: "どこかでエラーの場合、500になる", path: "/v1/items/monsters/2222222222", expected_status: 500, expected_body: expectedItem3},
+	}
+
+	for _, tt := range cases {
+		t.Run(tt.name, func(t *testing.T) {
+			req, err := http.NewRequest("GET", tt.path, nil)
+			if err != nil {
+				t.Fatal(err)
+			}
+			// テスト用のレスポンスライターを作成します
+			rr := httptest.NewRecorder()
+			// リクエストを実行します
+			r.ServeHTTP(rr, req)
+			// レスポンスステータスが期待通りであることを確認します
+			// レスポンスボディが期待通りであることを確認します
+			// ここでは、期待するレスポンスボディを`expected`に設定します
+			assert.Equal(t, tt.expected_status, rr.Code)
+			if tt.expected_status == 200 {
+				jsonBytes := rr.Body.Bytes()
+				data := new(item.ItemsByMonster)
 
 				if err := json.Unmarshal(jsonBytes, data); err != nil {
 					t.Fatal(err)
