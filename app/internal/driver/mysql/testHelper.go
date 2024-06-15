@@ -29,7 +29,7 @@ func BeforeTest() {
 	}}); err != nil {
 		connect(dialector, 100)
 	}
-	err = db.AutoMigrate(&Monster{}, &Field{}, &Product{}, &Tribe{}, &Weakness{}, &Ranking{}, &Music{}, &BgmRanking{}, &Item{})
+	err = db.AutoMigrate(&Monster{}, &Field{}, &Product{}, &Tribe{}, &Weakness{}, &Ranking{}, &Music{}, &BgmRanking{}, &Item{}, &ItemWithMonster{})
 	if err != nil {
 		panic(err)
 	}
@@ -79,6 +79,18 @@ func BeforeTest() {
 		{ItemId: "0000000011", Name: "閃光玉", NameKana: "センコウダマ", ImageUrl: "images/tigarekkusu.png"},
 	}
 
+	itemsWithMonster := []ItemWithMonster{
+		{ItemId: "0000000001", MonsterId: "0000000001"},
+		{ItemId: "0000000001", MonsterId: "0000000002"},
+		{ItemId: "0000000001", MonsterId: "0000000003"},
+		{ItemId: "0000000002", MonsterId: "0000000001"},
+		{ItemId: "0000000002", MonsterId: "0000000002"},
+		{ItemId: "0000000002", MonsterId: "0000000003"},
+		{ItemId: "0000000003", MonsterId: "0000000001"},
+		{ItemId: "0000000003", MonsterId: "0000000002"},
+		{ItemId: "0000000003", MonsterId: "0000000003"},
+	}
+
 	db.Exec("SET foreign_key_checks = 0")
 	db.Exec("TRUNCATE TABLE monster")
 	db.Exec("TRUNCATE TABLE field")
@@ -89,10 +101,12 @@ func BeforeTest() {
 	db.Exec("TRUNCATE TABLE music")
 	db.Exec("TRUNCATE TABLE bgm_ranking")
 	db.Exec("TRUNCATE TABLE item")
+	db.Exec("TRUNCATE TABLE item_with_monster")
 	db.Exec("SET foreign_key_checks = 1")
 	db.Create(monsters)
 	db.Create(bgms)
 	db.Create(items)
+	db.Create(itemsWithMonster)
 }
 
 func AfetrTest() func() {
@@ -123,6 +137,7 @@ func AfetrTest() func() {
 		db.Exec("TRUNCATE TABLE music")
 		db.Exec("TRUNCATE TABLE bgm_ranking")
 		db.Exec("TRUNCATE TABLE item")
+		db.Exec("TRUNCATE TABLE item_with_monster")
 		db.Exec("SET foreign_key_checks = 1")
 	}
 }

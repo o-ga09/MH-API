@@ -12,15 +12,22 @@ type Item struct {
 }
 
 type ItemsByMonsterList struct {
-	ItemId   string    `json:"item_id,omitempty"`
-	ItemName string    `json:"item_name,omitempty"`
-	Monsters []Monster `json:"monsters,omitempty"`
+	Total       int           `json:"total,omitempty"`
+	Limit       int           `json:"limit,omitempty"`
+	Offset      int           `json:"offset,omitempty"`
+	MonsterList []MonsterList `json:"monster_list,omitempty"`
 }
 
 type ItemsByMonster struct {
 	MonsterId   string         `json:"monster_id,omitempty"`
 	MonsterName string         `json:"monster_name,omitempty"`
 	Items       []ResponseJson `json:"items,omitempty"`
+}
+
+type MonsterList struct {
+	ItemId   string    `json:"item_id,omitempty"`
+	ItemName string    `json:"item_name,omitempty"`
+	Monsters []Monster `json:"monsters,omitempty"`
 }
 
 type Monster struct {

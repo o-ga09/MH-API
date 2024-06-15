@@ -90,17 +90,16 @@ func (qs *itemQueryService) FetchList(ctx context.Context, id string) ([]*itemSe
 /*
   取得するSQL
   SELECT i.item_id, item.name, item.image_url,
-  	( SELECT JSON_ARRAYAGG(m.monster_id)
+  	( SELECT GROUP_CONCAT(m.monster_id)
 	   	FROM item_with_monster AS m
 	     WHERE m.item_id = i.item_id
   	) AS monsters
 　FROM item_with_monster AS i
   JOIN item AS item ON item.item_id = i.item_id
-　GROUP BY i.item_id,image_url,item.name;
+　GROUP BY i.item_id,item.image_url,item.name;
 */
 
 func (qs *itemQueryService) FetchListWithMonster(ctx context.Context) ([]*itemService.FetchItemListWithMonsterDto, error) {
-	var item []mysql.ItemWithMonster
 	var itemIds []string
 	var result *gorm.DB
 	var p param.RequestParam
@@ -110,13 +109,15 @@ func (qs *itemQueryService) FetchListWithMonster(ctx context.Context) ([]*itemSe
 		ItemId   string
 		ItemName string
 		ImageUrl string
-		Monsters []string
+		Monsters string
 	}{}
+
+	p = ctx.Value(param.ParamKey).(param.RequestParam)
 
 	where_clade := ""
 	sort := ""
 
-	limit := p.Limit
+	limit := 100
 	offset := p.Offset
 
 	if p.ItemIds != "" {
@@ -143,14 +144,14 @@ func (qs *itemQueryService) FetchListWithMonster(ctx context.Context) ([]*itemSe
 	}
 
 	// サブクエリ
-	subQuery := qs.conn.Table("m", &item).Select("JSON_ARRAYAGG(m.monster_id)").Where("m.item_id = i.item_id")
+	subQuery := qs.conn.Select("GROUP_CONCAT(m.monster_id)").Where("m.item_id = i.item_id").Table("item_with_monster AS m")
 
 	if where_clade != "" && p.ItemIds != "" {
-		result = qs.conn.Table("i", &item).Select("i.item_id, item.name, item.image_url", subQuery).Joins("JOIN item AS item ON item.item_id = i.item_id").Where(where_clade, itemIds).Limit(limit).Offset(offset).Order(sort).Find(&r)
+		result = qs.conn.Table("item_with_monster AS i").Select("i.item_id, item.name AS item_name, item.image_url, (?) AS monsters", subQuery).Joins("JOIN item AS item ON item.item_id = i.item_id").Where(where_clade, itemIds).Group(" i.item_id,image_url,item.name").Limit(limit).Offset(offset).Order(sort).Find(&r)
 	} else if where_clade != "" {
-		result = qs.conn.Table("i", &item).Select("i.item_id, item.name, item.image_url", subQuery).Joins("JOIN item AS item ON item.item_id = i.item_id").Where(where_clade).Limit(limit).Offset(offset).Order(sort).Find(&r)
+		result = qs.conn.Table("item_with_monster AS i").Select("i.item_id, item.name AS item_name, item.image_url, (?) AS monsters", subQuery).Joins("JOIN item AS item ON item.item_id = i.item_id").Where(where_clade).Group(" i.item_id,image_url,item.name").Limit(limit).Offset(offset).Order(sort).Find(&r)
 	} else {
-		result = qs.conn.Table("i", &item).Select("i.item_id, item.name, item.image_url", subQuery).Joins("JOIN item AS item ON item.item_id = i.item_id").Limit(limit).Offset(offset).Order(sort).Find(&r)
+		result = qs.conn.Table("item_with_monster AS i").Select("i.item_id, item.name AS item_name, item.image_url, (?) AS monsters", subQuery).Joins("JOIN item AS item ON item.item_id = i.item_id").Group(" i.item_id,image_url,item.name").Limit(limit).Offset(offset).Order(sort).Find(&r)
 	}
 
 	if result.Error != nil {
@@ -162,7 +163,8 @@ func (qs *itemQueryService) FetchListWithMonster(ctx context.Context) ([]*itemSe
 	resMonster := []*itemService.Monster{}
 
 	for _, m := range r {
-		for _, monster := range m.Monsters {
+		monsterIds := strings.Split(m.Monsters, ",")
+		for _, monster := range monsterIds {
 			resMonster = append(resMonster, &itemService.Monster{
 				MonsterId: monster,
 			})
@@ -174,6 +176,7 @@ func (qs *itemQueryService) FetchListWithMonster(ctx context.Context) ([]*itemSe
 			Monster: resMonster,
 		}
 		res = append(res, &r)
+		resMonster = nil
 	}
 	return res, err
 }
@@ -196,6 +199,8 @@ func (qs *itemQueryService) FetchListByMonster(ctx context.Context) ([]*itemServ
 	var p param.RequestParam
 	var err error
 
+	p = ctx.Value(param.ParamKey).(param.RequestParam)
+
 	r := []struct {
 		MonsterId   string
 		MonsterName string
@@ -210,7 +215,7 @@ func (qs *itemQueryService) FetchListByMonster(ctx context.Context) ([]*itemServ
 
 	if p.ItemIds != "" {
 		itemIds = strings.Split(p.ItemIds, ",")
-		where_clade = "i.monster_id IN (?)"
+		where_clade = "i.item_id IN (?)"
 	}
 
 	if p.ItemName != "" && p.ItemIds != "" {
@@ -226,14 +231,16 @@ func (qs *itemQueryService) FetchListByMonster(ctx context.Context) ([]*itemServ
 	}
 
 	// サブクエリ
-	subQuery := qs.conn.Table("m", &item).Select("JSON_ARRAYAGG(m.item_id)").Where("m.monster_id = i.monster_id")
+	subQuery := qs.conn.ToSQL(func(tx *gorm.DB) *gorm.DB {
+		return tx.Select("JSON_ARRAYAGG(m.item_id)").Where("m.monster_id = i.monster_id").Table("item_with_monster AS m")
+	})
 
 	if where_clade != "" && p.ItemIds != "" {
-		result = qs.conn.Table("i", &item).Select("i.monster_id, monster_info.name", subQuery).Joins("JOIN monster AS monster_info ON monster_info.monster_id = i.monster_id").Where(where_clade, itemIds).Limit(limit).Offset(offset).Order(sort).Find(&r)
+		result = qs.conn.Table("i", &item).Select("i.monster_id, monster_info.name", subQuery).Joins("JOIN monster AS monster_info ON monster_info.monster_id = i.monster_id").Where(where_clade, itemIds).Group(" i.monster_id, monster_info.name").Limit(limit).Offset(offset).Order(sort).Find(&r)
 	} else if where_clade != "" {
-		result = qs.conn.Table("i", &item).Select("i.monster_id, monster_info.name", subQuery).Joins("JOIN monster AS monster_info ON monster_info.monster_id = i.monster_id").Where(where_clade).Limit(limit).Offset(offset).Order(sort).Find(&r)
+		result = qs.conn.Table("i", &item).Select("i.monster_id, monster_info.name", subQuery).Joins("JOIN monster AS monster_info ON monster_info.monster_id = i.monster_id").Where(where_clade).Group(" i.monster_id, monster_info.name").Limit(limit).Offset(offset).Order(sort).Find(&r)
 	} else {
-		result = qs.conn.Table("i", &item).Select("i.monster_id, monster_info.name", subQuery).Joins("JOIN monster AS monster_info ON monster_info.monster_id = i.monster_id").Limit(limit).Offset(offset).Order(sort).Find(&r)
+		result = qs.conn.Table("i", &item).Select("i.monster_id, monster_info.name", subQuery).Joins("JOIN monster AS monster_info ON monster_info.monster_id = i.monster_id").Limit(limit).Group(" i.monster_id, monster_info.name").Offset(offset).Order(sort).Find(&r)
 	}
 
 	if result.Error != nil {

@@ -144,9 +144,7 @@ func TestGetItem(t *testing.T) {
 }
 
 func TestGetItemById(t *testing.T) {
-	t.Setenv("PORT", "8080")
-	t.Setenv("ENV", "dev")
-	t.Setenv("DATABASE_URL", "root:pass@tcp(127.0.0.1:3306)/ci?charset=utf8&parseTime=True&loc=Local")
+	mysql.BeforeTest()
 	r, err := presenter.NewServer()
 	if err != nil {
 		t.Fatal(err)
@@ -209,22 +207,25 @@ func TestGetItemById(t *testing.T) {
 }
 
 func TestGetItemByMonster(t *testing.T) {
-	t.Setenv("PORT", "8080")
-	t.Setenv("ENV", "dev")
-	t.Setenv("DATABASE_URL", "root:pass@tcp(127.0.0.1:3306)/ci?charset=utf8&parseTime=True&loc=Local")
+	mysql.BeforeTest()
 	r, err := presenter.NewServer()
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	expectedItem1 := item.ItemsByMonsterList{
-		ItemId:   "0000000001",
-		ItemName: "回復薬",
-		Monsters: []item.Monster{
-			{MonsterId: "0000000001", MonsterName: "リオレウス"},
-			{MonsterId: "0000000002", MonsterName: "リオレイア"},
-			{MonsterId: "0000000003", MonsterName: "ティガレックス"},
+		Total:  3,
+		Limit:  100,
+		Offset: 0,
+		MonsterList: []item.MonsterList{
+			{ItemId: "0000000001", ItemName: "回復薬", Monsters: []item.Monster{{MonsterId: "0000000001"}, {MonsterId: "0000000002"}, {MonsterId: "0000000003"}}},
+			{ItemId: "0000000002", ItemName: "回復薬グレート", Monsters: []item.Monster{{MonsterId: "0000000001"}, {MonsterId: "0000000002"}, {MonsterId: "0000000003"}}},
+			{ItemId: "0000000003", ItemName: "秘薬", Monsters: []item.Monster{{MonsterId: "0000000001"}, {MonsterId: "0000000002"}, {MonsterId: "0000000003"}}},
 		},
+	}
+
+	expectedItem2 := item.MessageResponse{
+		Message: "NOT FOUND",
 	}
 
 	cases := []struct {
@@ -234,7 +235,7 @@ func TestGetItemByMonster(t *testing.T) {
 		expected_body   interface{}
 	}{
 		{name: "指定したモンスターから取得できるアイテム一覧を取得できる", path: "/v1/items/monsters", expected_status: 200, expected_body: expectedItem1},
-		// {name: "取得結果が0件の場合、404になる", path: "/v1/items/monsters/1111111111", expected_status: 404, expected_body: expectedItem2},
+		{name: "取得結果が0件の場合、404になる", path: "/v1/items/monsters?itemIds=1111111111", expected_status: 404, expected_body: expectedItem2},
 		// 500のケースは保留
 		// {name: "どこかでエラーの場合、500になる", path: "/v1/items/monsters/2222222222", expected_status: 500, expected_body: expectedItem3},
 	}

@@ -196,16 +196,25 @@ func (h *ItemHandler) GetItemByMonster(c *gin.Context) {
 	}
 
 	monster := []Monster{}
+	itemsWithMonster := []MonsterList{}
 	for _, r := range res {
-		monster = append(monster, Monster{
-			MonsterId:   r.Id,
-			MonsterName: r.Name,
+		for _, m := range r.Monster {
+			monster = append(monster, Monster{
+				MonsterId: m.MonsterId,
+			})
+		}
+		itemsWithMonster = append(itemsWithMonster, MonsterList{
+			ItemId:   r.Id,
+			ItemName: r.Name,
+			Monsters: monster,
 		})
+		monster = nil
 	}
 	response := ItemsByMonsterList{
-		ItemId:   "item_id",
-		ItemName: "item_name",
-		Monsters: monster,
+		Total:       len(itemsWithMonster),
+		Limit:       param.Limit,
+		Offset:      param.Offset,
+		MonsterList: itemsWithMonster,
 	}
 	c.JSON(http.StatusOK, response)
 }
