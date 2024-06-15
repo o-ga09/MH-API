@@ -23,6 +23,7 @@ CREATE TABLE `item` (
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `image_url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`,`item_id`),
+  KEY `idx_item_id` (`item_id`),
   KEY `idx_item_deleted_at` (`deleted_at`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -169,3 +170,17 @@ CREATE TABLE `bgm_ranking` (
   KEY `idx_music_id` (`music_id`),
   CONSTRAINT `fk_bgm_ranking` FOREIGN KEY (`music_id`) REFERENCES `music` (`music_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+Create table item_with_monster (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `created_at` datetime(3) DEFAULT NULL,
+  `updated_at` datetime(3) DEFAULT NULL,
+  `deleted_at` datetime(3) DEFAULT NULL,
+  `item_id` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `monster_id` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY fk_item_with_monster_item (item_id),
+  KEY fk_item_with_monster_monster (monster_id),
+  CONSTRAINT fk_item_with_monster_item FOREIGN KEY (item_id) REFERENCES item (item_id),
+  CONSTRAINT fk_item_with_monster_monster FOREIGN KEY (monster_id) REFERENCES monster (monster_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
