@@ -139,7 +139,6 @@ func TestGetItem(t *testing.T) {
 				}
 				assert.Equal(t, tt.expected_body, *data)
 			}
-
 		})
 	}
 }

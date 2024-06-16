@@ -10,10 +10,6 @@ import (
 	"gorm.io/gorm"
 )
 
-type contextKey string
-
-const paramKey contextKey = "param"
-
 func TestNewmusicRepository(t *testing.T) {
 	mysql.BeforeTest()
 	t.Cleanup(mysql.AfetrTest())

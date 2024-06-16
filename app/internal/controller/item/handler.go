@@ -69,7 +69,7 @@ func (h *ItemHandler) GetItems(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"err": "can not get records",
 		})
-		slog.Log(c, middleware.SeverityError, "err", err)
+		slog.Log(c, middleware.SeverityError, "internal server error", "error message", err)
 		return
 	}
 
@@ -134,7 +134,7 @@ func (h *ItemHandler) GetItem(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"err": "can not get records",
 		})
-		slog.Log(c, middleware.SeverityError, "err", err)
+		slog.Log(c, middleware.SeverityInfo, "record not found", "error message", err)
 		return
 	}
 
@@ -191,7 +191,7 @@ func (h *ItemHandler) GetItemByMonster(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"err": "can not get records",
 		})
-		slog.Log(c, middleware.SeverityError, "err", err)
+		slog.Log(c, middleware.SeverityError, "internal server error", "error message", err)
 		return
 	}
 
@@ -264,7 +264,7 @@ func (h *ItemHandler) GetItemByMonsterId(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"err": "can not get records",
 		})
-		slog.Log(c, middleware.SeverityError, "err", err)
+		slog.Log(c, middleware.SeverityError, "internal server error", "error message", err)
 		return
 	}
 
