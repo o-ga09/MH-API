@@ -29,6 +29,20 @@ func BeforeTest() {
 	}}); err != nil {
 		connect(dialector, 100)
 	}
+
+	db.Exec("SET foreign_key_checks = 0")
+	db.Exec("DROP TABLE monster")
+	db.Exec("DROP TABLE field")
+	db.Exec("DROP TABLE product")
+	db.Exec("DROP TABLE tribe")
+	db.Exec("DROP TABLE weakness")
+	db.Exec("DROP TABLE ranking")
+	db.Exec("DROP TABLE music")
+	db.Exec("DROP TABLE bgm_ranking")
+	db.Exec("DROP TABLE item")
+	db.Exec("DROP TABLE item_with_monster")
+	db.Exec("SET foreign_key_checks = 1")
+
 	err = db.AutoMigrate(&Monster{}, &Field{}, &Product{}, &Tribe{}, &Weakness{}, &Ranking{}, &Music{}, &BgmRanking{}, &Item{}, &ItemWithMonster{})
 	if err != nil {
 		panic(err)
