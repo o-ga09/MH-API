@@ -17,6 +17,7 @@ import (
 
 func TestGetItem(t *testing.T) {
 	mysql.BeforeTest()
+	t.Cleanup(mysql.AfetrTest())
 	r, err := presenter.NewServer()
 	if err != nil {
 		t.Fatal(err)
@@ -145,6 +146,7 @@ func TestGetItem(t *testing.T) {
 
 func TestGetItemById(t *testing.T) {
 	mysql.BeforeTest()
+	t.Cleanup(mysql.AfetrTest())
 	r, err := presenter.NewServer()
 	if err != nil {
 		t.Fatal(err)
@@ -208,6 +210,7 @@ func TestGetItemById(t *testing.T) {
 
 func TestGetItemByMonster(t *testing.T) {
 	mysql.BeforeTest()
+	t.Cleanup(mysql.AfetrTest())
 	r, err := presenter.NewServer()
 	if err != nil {
 		t.Fatal(err)
@@ -277,6 +280,7 @@ func TestGetItemByMonster(t *testing.T) {
 
 func TestGetItemByMonsterId(t *testing.T) {
 	mysql.BeforeTest()
+	t.Cleanup(mysql.AfetrTest())
 	r, err := presenter.NewServer()
 	if err != nil {
 		t.Fatal(err)
