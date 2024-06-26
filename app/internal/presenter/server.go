@@ -4,8 +4,11 @@ import (
 	di "mh-api/app/internal/DI"
 	"mh-api/app/internal/presenter/middleware"
 	"mh-api/app/pkg"
+	"strings"
 
 	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/binding"
+	"github.com/go-playground/validator/v10"
 )
 
 func NewServer() (*gin.Engine, error) {
@@ -13,6 +16,31 @@ func NewServer() (*gin.Engine, error) {
 	cfg, _ := pkg.New()
 	if cfg.Env == "PROD" {
 		gin.SetMode(gin.ReleaseMode)
+	}
+
+	// バリデーション
+	var validId validator.Func = func(fieldLevel validator.FieldLevel) bool {
+		Id, ok := fieldLevel.Field().Interface().(string)
+		if !ok {
+			return false
+		}
+
+		if Id == "" {
+			// itemIdsは、requieredではないので、空文字で良い
+			return true
+		}
+
+		Ids := strings.Split(Id, ",")
+		for _, id := range Ids {
+			if len(id) != 10 {
+				return false
+			}
+		}
+		return true
+	}
+
+	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
+		v.RegisterValidation("validateId", validId)
 	}
 
 	// ロガー設定

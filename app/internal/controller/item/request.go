@@ -14,11 +14,11 @@ type Json struct {
 }
 
 type RequestParam struct {
-	ItemIds      string `form:"itemIds,omitempty"`
-	ItemName     string `form:"itemName,omitempty"`
-	ItemNameKana string `form:"itemNameKana,omitempty"`
-	Limit        int    `form:"limit,omitempty"`
-	Offset       int    `form:"offset,omitempty"`
-	Sort         int    `form:"sort,omitempty"`
-	Order        int    `form:"order,omitempty"`
+	ItemIds      string `form:"itemIds" binding:"validateId,max=9999"`
+	ItemName     string `form:"itemName" binding:"max=9999"`
+	ItemNameKana string `form:"itemNameKana" binding:"max=9999"`
+	Limit        int    `form:"limit" binding:"min=0,max=1000"`
+	Offset       int    `form:"offset" binding:"min=0,max=1000"`
+	Sort         int    `form:"sort" binding:"min=0,max=1"`
+	Order        int    `form:"order" binding:"min=0,max=1"`
 }
