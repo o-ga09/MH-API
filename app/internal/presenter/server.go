@@ -40,7 +40,10 @@ func NewServer() (*gin.Engine, error) {
 	}
 
 	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
-		v.RegisterValidation("validateId", validId)
+		err := v.RegisterValidation("validateId", validId)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	// ロガー設定
