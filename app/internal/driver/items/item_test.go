@@ -51,9 +51,9 @@ func Test_itemRepository_Save(t *testing.T) {
 		wantErr bool
 	}{
 		// test 1
-		{name: "Save item successfully", fields: fields{conn: conn}, args: args{ctx: context.Background(), m: *items.NewItem("0000000001", "test", "test")}, wantErr: false},
+		{name: "Save item successfully", fields: fields{conn: conn}, args: args{ctx: context.Background(), m: *items.NewItem("0000000001", "test", "test", "test")}, wantErr: false},
 		// test 2
-		{name: "Save item with error", fields: fields{conn: conn}, args: args{ctx: context.Background(), m: *items.NewItem("@$%&^#%$&&*%*&)(*)()", "", "")}, wantErr: true},
+		{name: "Save item with error", fields: fields{conn: conn}, args: args{ctx: context.Background(), m: *items.NewItem("@$%&^#%$&&*%*&)(*)()", "", "test", "")}, wantErr: true},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

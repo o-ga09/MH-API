@@ -29,7 +29,8 @@ func BeforeTest() {
 	}}); err != nil {
 		connect(dialector, 100)
 	}
-	err = db.AutoMigrate(&Monster{}, &Field{}, &Product{}, &Tribe{}, &Weakness{}, &Ranking{}, &Music{}, &BgmRanking{})
+
+	err = db.AutoMigrate(&Monster{}, &Field{}, &Product{}, &Tribe{}, &Weakness{}, &Ranking{}, &Music{}, &BgmRanking{}, &Item{}, &ItemWithMonster{})
 	if err != nil {
 		panic(err)
 	}
@@ -65,18 +66,35 @@ func BeforeTest() {
 		{MusicId: "0000000003", MonsterId: "0000000003", Name: "ティガレックスのテーマ", Url: "https://www.youtube.com/watch?v=3", BgmRanking: bgmRanks3},
 	}
 
-	db.Exec("SET foreign_key_checks = 0")
-	db.Exec("TRUNCATE TABLE monster")
-	db.Exec("TRUNCATE TABLE field")
-	db.Exec("TRUNCATE TABLE product")
-	db.Exec("TRUNCATE TABLE tribe")
-	db.Exec("TRUNCATE TABLE weakness")
-	db.Exec("TRUNCATE TABLE ranking")
-	db.Exec("TRUNCATE TABLE music")
-	db.Exec("TRUNCATE TABLE bgm_ranking")
-	db.Exec("SET foreign_key_checks = 1")
+	items := []Item{
+		{ItemId: "0000000001", Name: "回復薬", NameKana: "カイフクヤク", ImageUrl: "images/rioreusu.png"},
+		{ItemId: "0000000002", Name: "回復薬グレート", NameKana: "カイフクヤクグレート", ImageUrl: "images/rioreia.png"},
+		{ItemId: "0000000003", Name: "秘薬", NameKana: "ヒヤク", ImageUrl: "images/tigarekkusu.png"},
+		{ItemId: "0000000004", Name: "砥石", NameKana: "トイシ", ImageUrl: "images/tigarekkusu.png"},
+		{ItemId: "0000000005", Name: "おとし穴", NameKana: "オトシアナ", ImageUrl: "images/tigarekkusu.png"},
+		{ItemId: "0000000006", Name: "毒ビン", NameKana: "ドクビン", ImageUrl: "images/tigarekkusu.png"},
+		{ItemId: "0000000007", Name: "麻痺ビン", NameKana: "マヒビン", ImageUrl: "images/tigarekkusu.png"},
+		{ItemId: "0000000008", Name: "眠りビン", NameKana: "ネムリビン", ImageUrl: "images/tigarekkusu.png"},
+		{ItemId: "0000000009", Name: "爆弾", NameKana: "バクダン", ImageUrl: "images/tigarekkusu.png"},
+		{ItemId: "0000000010", Name: "大タル爆弾", NameKana: "オオタルバクダン", ImageUrl: "images/tigarekkusu.png"},
+		{ItemId: "0000000011", Name: "閃光玉", NameKana: "センコウダマ", ImageUrl: "images/tigarekkusu.png"},
+	}
+
+	itemsWithMonster := []ItemWithMonster{
+		{ItemId: "0000000001", MonsterId: "0000000001"},
+		{ItemId: "0000000001", MonsterId: "0000000002"},
+		{ItemId: "0000000001", MonsterId: "0000000003"},
+		{ItemId: "0000000002", MonsterId: "0000000001"},
+		{ItemId: "0000000002", MonsterId: "0000000002"},
+		{ItemId: "0000000002", MonsterId: "0000000003"},
+		{ItemId: "0000000003", MonsterId: "0000000001"},
+		{ItemId: "0000000003", MonsterId: "0000000002"},
+		{ItemId: "0000000003", MonsterId: "0000000003"},
+	}
 	db.Create(monsters)
 	db.Create(bgms)
+	db.Create(items)
+	db.Create(itemsWithMonster)
 }
 
 func AfetrTest() func() {
@@ -98,14 +116,16 @@ func AfetrTest() func() {
 		}
 
 		db.Exec("SET foreign_key_checks = 0")
-		db.Exec("TRUNCATE TABLE monster")
-		db.Exec("TRUNCATE TABLE field")
-		db.Exec("TRUNCATE TABLE product")
-		db.Exec("TRUNCATE TABLE tribe")
-		db.Exec("TRUNCATE TABLE weakness")
-		db.Exec("TRUNCATE TABLE ranking")
-		db.Exec("TRUNCATE TABLE music")
-		db.Exec("TRUNCATE TABLE bgm_ranking")
+		db.Exec("DELETE FROM monster")
+		db.Exec("DELETE FROM field")
+		db.Exec("DELETE FROM product")
+		db.Exec("DELETE FROM tribe")
+		db.Exec("DELETE FROM weakness")
+		db.Exec("DELETE FROM ranking")
+		db.Exec("DELETE FROM music")
+		db.Exec("DELETE FROM bgm_ranking")
+		db.Exec("DELETE FROM item")
+		db.Exec("DELETE FROM item_with_monster")
 		db.Exec("SET foreign_key_checks = 1")
 	}
 }

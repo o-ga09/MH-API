@@ -26,6 +26,7 @@ type Item struct {
 	gorm.Model
 	ItemId   string `gorm:"column:item_id;primaryKey;type:varchar(10);not null"`
 	Name     string `gorm:"column:name;type:varchar(255);not null"`
+	NameKana string `gorm:"column:name_kana;type:varchar(255);not null"`
 	ImageUrl string `gorm:"column:image_url;type:varchar(255)"`
 }
 
@@ -107,4 +108,11 @@ type BgmRanking struct {
 	MusicId  string `gorm:"column:music_id;type:varchar(10); not null"`
 	Ranking  string `gorm:"column:ranking;type:varchar(10)"`
 	VoteYear string `gorm:"column:vote_year;type:varchar(20)"`
+}
+
+// 中間テーブル
+type ItemWithMonster struct {
+	gorm.Model
+	ItemId    string `gorm:"column:item_id;type:varchar(10);not null"`
+	MonsterId string `gorm:"column:monster_id;type:varchar(10);not null"`
 }
