@@ -1,6 +1,6 @@
 # MH-API (モンスターハンター API)
 
-[![Run Tests](https://github.com/o-ga09/MH-API/actions/workflows/test.yml/badge.svg)](https://github.com/o-ga09/MH-API/actions/workflows/test.yml)
+[![lint and test](https://github.com/o-ga09/MH-API/actions/workflows/lint_and_test.yml/badge.svg)](https://github.com/o-ga09/MH-API/actions/workflows/lint_and_test.yml)
 
 English version is [here](./README_EN.md)
 
