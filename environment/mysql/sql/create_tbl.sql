@@ -1,3 +1,4 @@
+-- master table drop
 DROP TABLE IF EXISTS `field`;
 DROP TABLE IF EXISTS `item`;
 DROP TABLE IF EXISTS `monster`;
@@ -8,6 +9,10 @@ DROP TABLE IF EXISTS `tribe`;
 DROP TABLE IF EXISTS `weakness`;
 DROP TABLE IF EXISTS `weapon`;
 
+-- Intermediate tables drop
+DROP TABLE IF EXISTS `item_with_monster`;
+
+-- master table cerate
 CREATE TABLE `monster` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` datetime(3) DEFAULT NULL,
@@ -30,6 +35,7 @@ CREATE TABLE `item` (
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `image_url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`,`item_id`),
+  KEY `idx_item_id` (`item_id`),
   KEY `idx_item_deleted_at` (`deleted_at`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -176,6 +182,22 @@ CREATE TABLE `bgm_ranking` (
   CONSTRAINT `fk_bgm_ranking` FOREIGN KEY (`music_id`) REFERENCES `music` (`music_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- Intermediate table create
+Create table item_with_monster (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `created_at` datetime(3) DEFAULT NULL,
+  `updated_at` datetime(3) DEFAULT NULL,
+  `deleted_at` datetime(3) DEFAULT NULL,
+  `item_id` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `monster_id` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY fk_item_with_monster_item (item_id),
+  KEY fk_item_with_monster_monster (monster_id),
+  CONSTRAINT fk_item_with_monster_item FOREIGN KEY (item_id) REFERENCES item (item_id),
+  CONSTRAINT fk_item_with_monster_monster FOREIGN KEY (monster_id) REFERENCES monster (monster_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- data insert
 INSERT INTO monster (monster_id, name, description)
 VALUES ('MON001', 'Slime', 'A blob of goo that can be surprisingly resilient.'),
        ('MON002', 'Goblin', 'A mischievous creature that loves to cause trouble.'),
@@ -238,3 +260,14 @@ INSERT INTO bgm_ranking (music_id, ranking, vote_year)
 VALUES ('BGM001', '1', '2024/03/12'),
        ('BGM002', '2', '2024/03/12'),
        ('BGM003', '3', '2024/03/12');
+
+INSERT INTO item_with_monster (item_id, monster_id)
+VALUES ('ITEM001', 'MON001'),
+       ('ITEM001', 'MON002'),
+       ('ITEM001', 'MON003'),
+       ('ITEM002', 'MON001'),
+       ('ITEM002', 'MON002'),
+       ('ITEM002', 'MON003'),
+       ('ITEM003', 'MON001'),
+       ('ITEM003', 'MON002'),
+       ('ITEM003', 'MON003');
