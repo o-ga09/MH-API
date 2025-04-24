@@ -121,7 +121,7 @@ func (q *musicQueryService) FetchRank(ctx context.Context) ([]*music.FetchMusicR
 	}
 
 	if where_clade != "" && p.BgmIds != "" {
-		result = q.conn.Debug().Model(&bgm).Select("music.music_id as music_id", "music.name as name", "music.url as url", "bgm_ranking.ranking as ranking", "bgm_ranking.vote_year as vote_year").Joins("JOIN bgm_ranking ON bgm_ranking.music_id = music.music_id").Where(where_clade, musicIds).Limit(limit).Offset(offset).Order(sort).Find(&r)
+		result = q.conn.Model(&bgm).Select("music.music_id as music_id", "music.name as name", "music.url as url", "bgm_ranking.ranking as ranking", "bgm_ranking.vote_year as vote_year").Joins("JOIN bgm_ranking ON bgm_ranking.music_id = music.music_id").Where(where_clade, musicIds).Limit(limit).Offset(offset).Order(sort).Find(&r)
 	} else if where_clade != "" {
 		result = q.conn.Model(&bgm).Select("music.music_id as music_id", "music.name as name", "music.url as url", "bgm_ranking.ranking as ranking", "bgm_ranking.vote_year as vote_year").Joins("JOIN bgm_ranking ON bgm_ranking.music_id = music.music_id").Where(where_clade).Limit(limit).Offset(offset).Order(sort).Find(&r)
 	} else {

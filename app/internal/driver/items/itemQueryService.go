@@ -230,7 +230,7 @@ func (qs *itemQueryService) FetchListByMonster(ctx context.Context, monsterid st
 	if p.ItemIds != "" {
 		result = qs.conn.Table("item_with_monster AS i").Select("i.monster_id, monster_info.name AS monster_name, (?) AS items", subQuery).Joins("JOIN monster AS monster_info ON monster_info.monster_id = i.monster_id").Where(where_clade, monsterid, itemIds).Group(" i.monster_id, monster_info.name").Limit(limit).Offset(offset).Order(sort).Find(&r)
 	} else {
-		result = qs.conn.Debug().Table("item_with_monster AS i").Select("i.monster_id, monster_info.name AS monster_name, (?) AS items", subQuery).Joins("JOIN monster AS monster_info ON monster_info.monster_id = i.monster_id").Where(where_clade, monsterid).Group(" i.monster_id, monster_info.name").Limit(limit).Offset(offset).Order(sort).Find(&r)
+		result = qs.conn.Table("item_with_monster AS i").Select("i.monster_id, monster_info.name AS monster_name, (?) AS items", subQuery).Joins("JOIN monster AS monster_info ON monster_info.monster_id = i.monster_id").Where(where_clade, monsterid).Group(" i.monster_id, monster_info.name").Limit(limit).Offset(offset).Order(sort).Find(&r)
 	}
 
 	if result.Error != nil {

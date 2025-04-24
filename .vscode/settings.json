@@ -6,5 +6,6 @@
     ],
     "https://raw.githubusercontent.com/OAI/OpenAPI-Specification/main/schemas/v3.1/schema.json": "file:///Users/taichi/OSS/MH-API/doc/openapi/apigateway.yml",
     "swaggerviewer:swagger": "file:///Users/taichi/OSS/MH-API/docs/swagger.yaml"
-  }
+  },
+  "editor.maxTokenizationLineLength": 200000000
 }

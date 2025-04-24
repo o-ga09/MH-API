@@ -49,6 +49,11 @@ func (h *ItemHandler) GetItems(c *gin.Context) {
 		return
 	}
 
+	// パラメータの初期値を設定
+	if param.Limit == 0 {
+		param.Limit = 100
+	}
+
 	ctx := context.WithValue(c.Request.Context(), ParamKey, param)
 	res, err := h.itemService.GetItems(ctx)
 
@@ -100,8 +105,13 @@ func (h *ItemHandler) GetItem(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, MessageResponse{Message: "BAD REQUEST"})
 		return
 	}
-
+	// パスパラメータからIDを取得
 	id := c.Param("id")
+
+	// パラメータの初期値を設定
+	if param.Limit == 0 {
+		param.Limit = 100
+	}
 
 	ctx := context.WithValue(c.Request.Context(), ParamKey, param)
 	res, err := h.itemService.GetItemById(ctx, id)
@@ -147,7 +157,13 @@ func (h *ItemHandler) GetItemByMonster(c *gin.Context) {
 		return
 	}
 
+	// パスパラメータからIDを取得
 	id := c.Param("id")
+
+	// パラメータの初期値を設定
+	if param.Limit == 0 {
+		param.Limit = 100
+	}
 
 	ctx := context.WithValue(c.Request.Context(), ParamKey, param)
 	res, err := h.itemService.GetItemsByMonsterList(ctx, id)
@@ -209,7 +225,13 @@ func (h *ItemHandler) GetItemByMonsterId(c *gin.Context) {
 		return
 	}
 
+	// パスパラメータからIDを取得
 	id := c.Param("id")
+
+	// パラメータの初期値を設定
+	if param.Limit == 0 {
+		param.Limit = 100
+	}
 
 	ctx := context.WithValue(c.Request.Context(), ParamKey, param)
 	res, err := h.itemService.GetItemByMonsterId(ctx, id)

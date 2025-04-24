@@ -39,7 +39,7 @@ func (r *rankingRepository) Remove(ctx context.Context, Id string) error {
 	data := mysql.Ranking{
 		Model: gorm.Model{ID: uint(i)},
 	}
-	err := r.conn.Debug().Delete(&data).Error
+	err := r.conn.Delete(&data).Error
 	if err != nil {
 		return err
 	}

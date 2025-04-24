@@ -1,0 +1,6414 @@
+[
+    {
+        "index": 1,
+        "name": {
+            "ja": "リオレイア",
+            "en": "Rathian"
+        },
+        "tribe": {
+            "ja": "飛竜種",
+            "en": "Flying Wyvern"
+        },
+        "MH": 2,
+        "MHG": 1,
+        "MHP": 1,
+        "MH2": 1,
+        "P2nd": 1,
+        "P2G": 1,
+        "MH3": 1,
+        "P3rd": 1,
+        "MH3G": 1,
+        "MH4": 1,
+        "MH4G": 1,
+        "MHX": 1,
+        "MHXX": 1,
+        "MHW": 1,
+        "MHWI": 1,
+        "MHR": 1,
+        "MHRS": 1
+    },
+    {
+        "index": 2,
+        "name": {
+            "ja": "リオレイア亜種",
+            "en": "Pink Rathian"
+        },
+        "tribe": {
+            "ja": "飛竜種",
+            "en": "Flying Wyvern"
+        },
+        "MH": 0,
+        "MHG": 2,
+        "MHP": 1,
+        "MH2": 1,
+        "P2nd": 1,
+        "P2G": 1,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 1,
+        "MH4": 1,
+        "MH4G": 1,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 1,
+        "MHWI": 1,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 3,
+        "name": {
+            "ja": "リオレイア希少種",
+            "en": "Gold Rathian"
+        },
+        "tribe": {
+            "ja": "飛竜種",
+            "en": "Flying Wyvern"
+        },
+        "MH": 0,
+        "MHG": 2,
+        "MHP": 1,
+        "MH2": 1,
+        "P2nd": 1,
+        "P2G": 1,
+        "MH3": 0,
+        "P3rd": 1,
+        "MH3G": 1,
+        "MH4": 1,
+        "MH4G": 1,
+        "MHX": 1,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 1,
+        "MHR": 0,
+        "MHRS": 1
+    },
+    {
+        "index": 4,
+        "name": {
+            "ja": "紫毒姫リオレイア",
+            "en": "Dreadqueen Rathian"
+        },
+        "tribe": {
+            "ja": "飛竜種",
+            "en": "Flying Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 2,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 5,
+        "name": {
+            "ja": "ヌシ・リオレイア",
+            "en": "Apex Rathian"
+        },
+        "tribe": {
+            "ja": "飛竜種",
+            "en": "Flying Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 2,
+        "MHRS": 1
+    },
+    {
+        "index": 6,
+        "name": {
+            "ja": "リオレウス",
+            "en": "Rathalos"
+        },
+        "tribe": {
+            "ja": "飛竜種",
+            "en": "Flying Wyvern"
+        },
+        "MH": 2,
+        "MHG": 1,
+        "MHP": 1,
+        "MH2": 1,
+        "P2nd": 1,
+        "P2G": 1,
+        "MH3": 1,
+        "P3rd": 1,
+        "MH3G": 1,
+        "MH4": 1,
+        "MH4G": 1,
+        "MHX": 1,
+        "MHXX": 1,
+        "MHW": 1,
+        "MHWI": 1,
+        "MHR": 1,
+        "MHRS": 1
+    },
+    {
+        "index": 7,
+        "name": {
+            "ja": "リオレウス亜種",
+            "en": "Azure Rathalos"
+        },
+        "tribe": {
+            "ja": "飛竜種",
+            "en": "Flying Wyvern"
+        },
+        "MH": 0,
+        "MHG": 2,
+        "MHP": 1,
+        "MH2": 1,
+        "P2nd": 1,
+        "P2G": 1,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 1,
+        "MH4": 1,
+        "MH4G": 1,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 1,
+        "MHWI": 1,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 8,
+        "name": {
+            "ja": "リオレウス希少種",
+            "en": "Silver Rathalos"
+        },
+        "tribe": {
+            "ja": "飛竜種",
+            "en": "Flying Wyvern"
+        },
+        "MH": 0,
+        "MHG": 2,
+        "MHP": 1,
+        "MH2": 1,
+        "P2nd": 1,
+        "P2G": 1,
+        "MH3": 0,
+        "P3rd": 1,
+        "MH3G": 1,
+        "MH4": 1,
+        "MH4G": 1,
+        "MHX": 1,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 1,
+        "MHR": 0,
+        "MHRS": 1
+    },
+    {
+        "index": 9,
+        "name": {
+            "ja": "黒炎王リオレウス",
+            "en": "Dreadking Rathalos"
+        },
+        "tribe": {
+            "ja": "飛竜種",
+            "en": "Flying Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 2,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 10,
+        "name": {
+            "ja": "ヌシ・リオレウス",
+            "en": "Apex Rathalos"
+        },
+        "tribe": {
+            "ja": "飛竜種",
+            "en": "Flying Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 2,
+        "MHRS": 1
+    },
+    {
+        "index": 11,
+        "name": {
+            "ja": "フルフル",
+            "en": "Khezu"
+        },
+        "tribe": {
+            "ja": "飛竜種",
+            "en": "Flying Wyvern"
+        },
+        "MH": 2,
+        "MHG": 1,
+        "MHP": 1,
+        "MH2": 1,
+        "P2nd": 1,
+        "P2G": 1,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 1,
+        "MH4G": 1,
+        "MHX": 1,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 1,
+        "MHRS": 1
+    },
+    {
+        "index": 12,
+        "name": {
+            "ja": "フルフル亜種",
+            "en": "Red Khezu"
+        },
+        "tribe": {
+            "ja": "飛竜種",
+            "en": "Flying Wyvern"
+        },
+        "MH": 0,
+        "MHG": 2,
+        "MHP": 1,
+        "MH2": 1,
+        "P2nd": 1,
+        "P2G": 1,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 1,
+        "MH4G": 1,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 13,
+        "name": {
+            "ja": "バサルモス",
+            "en": "Basarios"
+        },
+        "tribe": {
+            "ja": "飛竜種",
+            "en": "Flying Wyvern"
+        },
+        "MH": 2,
+        "MHG": 1,
+        "MHP": 1,
+        "MH2": 1,
+        "P2nd": 1,
+        "P2G": 1,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 1,
+        "MH4G": 1,
+        "MHX": 0,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 1,
+        "MHRS": 1
+    },
+    {
+        "index": 14,
+        "name": {
+            "ja": "バサルモス亜種",
+            "en": "Ruby Basarios"
+        },
+        "tribe": {
+            "ja": "飛竜種",
+            "en": "Flying Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 2,
+        "MH4G": 1,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 15,
+        "name": {
+            "ja": "グラビモス",
+            "en": "Gravios"
+        },
+        "tribe": {
+            "ja": "飛竜種",
+            "en": "Flying Wyvern"
+        },
+        "MH": 2,
+        "MHG": 1,
+        "MHP": 1,
+        "MH2": 1,
+        "P2nd": 1,
+        "P2G": 1,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 1,
+        "MH4G": 1,
+        "MHX": 0,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 16,
+        "name": {
+            "ja": "グラビモス亜種",
+            "en": "Black Gravios"
+        },
+        "tribe": {
+            "ja": "飛竜種",
+            "en": "Flying Wyvern"
+        },
+        "MH": 0,
+        "MHG": 2,
+        "MHP": 1,
+        "MH2": 1,
+        "P2nd": 1,
+        "P2G": 1,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 1,
+        "MH4G": 1,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 17,
+        "name": {
+            "ja": "モノブロス",
+            "en": "Monoblos"
+        },
+        "tribe": {
+            "ja": "飛竜種",
+            "en": "Flying Wyvern"
+        },
+        "MH": 2,
+        "MHG": 1,
+        "MHP": 1,
+        "MH2": 1,
+        "P2nd": 1,
+        "P2G": 1,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 1,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 18,
+        "name": {
+            "ja": "モノブロス亜種",
+            "en": "White Monoblos"
+        },
+        "tribe": {
+            "ja": "飛竜種",
+            "en": "Flying Wyvern"
+        },
+        "MH": 0,
+        "MHG": 2,
+        "MHP": 1,
+        "MH2": 1,
+        "P2nd": 1,
+        "P2G": 1,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 1,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 19,
+        "name": {
+            "ja": "ディアブロス",
+            "en": "Diablos"
+        },
+        "tribe": {
+            "ja": "飛竜種",
+            "en": "Flying Wyvern"
+        },
+        "MH": 2,
+        "MHG": 1,
+        "MHP": 1,
+        "MH2": 1,
+        "P2nd": 1,
+        "P2G": 1,
+        "MH3": 1,
+        "P3rd": 1,
+        "MH3G": 1,
+        "MH4": 0,
+        "MH4G": 1,
+        "MHX": 0,
+        "MHXX": 1,
+        "MHW": 1,
+        "MHWI": 1,
+        "MHR": 1,
+        "MHRS": 1
+    },
+    {
+        "index": 20,
+        "name": {
+            "ja": "ディアブロス亜種",
+            "en": "Black Diablos"
+        },
+        "tribe": {
+            "ja": "飛竜種",
+            "en": "Flying Wyvern"
+        },
+        "MH": 0,
+        "MHG": 2,
+        "MHP": 1,
+        "MH2": 1,
+        "P2nd": 1,
+        "P2G": 1,
+        "MH3": 0,
+        "P3rd": 1,
+        "MH3G": 1,
+        "MH4": 0,
+        "MH4G": 1,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 1,
+        "MHWI": 1,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 21,
+        "name": {
+            "ja": "鏖魔ディアブロス",
+            "en": "Bloodbath Diablos"
+        },
+        "tribe": {
+            "ja": "飛竜種",
+            "en": "Flying Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 2,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 22,
+        "name": {
+            "ja": "ヌシ・ディアブロス",
+            "en": "Apex Diablos"
+        },
+        "tribe": {
+            "ja": "飛竜種",
+            "en": "Flying Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 2,
+        "MHRS": 1
+    },
+    {
+        "index": 23,
+        "name": {
+            "ja": "イャンクック",
+            "en": "Yian Kut-Ku"
+        },
+        "tribe": {
+            "ja": "鳥竜種",
+            "en": "Bird Wyvern"
+        },
+        "MH": 2,
+        "MHG": 1,
+        "MHP": 1,
+        "MH2": 1,
+        "P2nd": 1,
+        "P2G": 1,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 1,
+        "MH4G": 1,
+        "MHX": 1,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 24,
+        "name": {
+            "ja": "イャンクック亜種",
+            "en": "Blue Yian Kut-Ku"
+        },
+        "tribe": {
+            "ja": "鳥竜種",
+            "en": "Bird Wyvern"
+        },
+        "MH": 0,
+        "MHG": 2,
+        "MHP": 1,
+        "MH2": 1,
+        "P2nd": 1,
+        "P2G": 1,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 1,
+        "MH4G": 1,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 25,
+        "name": {
+            "ja": "ゲリョス",
+            "en": "Gypceros"
+        },
+        "tribe": {
+            "ja": "鳥竜種",
+            "en": "Bird Wyvern"
+        },
+        "MH": 2,
+        "MHG": 1,
+        "MHP": 1,
+        "MH2": 1,
+        "P2nd": 1,
+        "P2G": 1,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 1,
+        "MH4G": 1,
+        "MHX": 1,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 26,
+        "name": {
+            "ja": "ゲリョス亜種",
+            "en": "Purple Gypceros"
+        },
+        "tribe": {
+            "ja": "鳥竜種",
+            "en": "Bird Wyvern"
+        },
+        "MH": 0,
+        "MHG": 2,
+        "MHP": 1,
+        "MH2": 1,
+        "P2nd": 1,
+        "P2G": 1,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 1,
+        "MH4G": 1,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 27,
+        "name": {
+            "ja": "ガノトトス",
+            "en": "Plesioth"
+        },
+        "tribe": {
+            "ja": "魚竜種",
+            "en": "Piscine Wyvern"
+        },
+        "MH": 2,
+        "MHG": 1,
+        "MHP": 1,
+        "MH2": 1,
+        "P2nd": 1,
+        "P2G": 1,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 1,
+        "MH4": 1,
+        "MH4G": 1,
+        "MHX": 1,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 28,
+        "name": {
+            "ja": "ガノトトス亜種",
+            "en": "Green Plesioth"
+        },
+        "tribe": {
+            "ja": "魚竜種",
+            "en": "Piscine Wyvern"
+        },
+        "MH": 0,
+        "MHG": 2,
+        "MHP": 1,
+        "MH2": 1,
+        "P2nd": 1,
+        "P2G": 1,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 1,
+        "MH4": 0,
+        "MH4G": 1,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 29,
+        "name": {
+            "ja": "キリン",
+            "en": "Kirin"
+        },
+        "tribe": {
+            "ja": "古龍種",
+            "en": "Elder Dragon"
+        },
+        "MH": 2,
+        "MHG": 1,
+        "MHP": 1,
+        "MH2": 1,
+        "P2nd": 1,
+        "P2G": 1,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 1,
+        "MH4G": 1,
+        "MHX": 1,
+        "MHXX": 1,
+        "MHW": 1,
+        "MHWI": 1,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 30,
+        "name": {
+            "ja": "キリン亜種",
+            "en": "Oroshi Kirin"
+        },
+        "tribe": {
+            "ja": "古龍種",
+            "en": "Elder Dragon"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 2,
+        "MH4G": 1,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 31,
+        "name": {
+            "ja": "ラオシャンロン",
+            "en": "Lao-Shan Lung"
+        },
+        "tribe": {
+            "ja": "古龍種",
+            "en": "Elder Dragon"
+        },
+        "MH": 2,
+        "MHG": 1,
+        "MHP": 1,
+        "MH2": 1,
+        "P2nd": 1,
+        "P2G": 1,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 32,
+        "name": {
+            "ja": "ラオシャンロン亜種",
+            "en": "Ashen Lao-Shan Lung"
+        },
+        "tribe": {
+            "ja": "古龍種",
+            "en": "Elder Dragon"
+        },
+        "MH": 0,
+        "MHG": 2,
+        "MHP": 1,
+        "MH2": 1,
+        "P2nd": 1,
+        "P2G": 1,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 33,
+        "name": {
+            "ja": "黒龍 ミラボレアス",
+            "en": "Fatalis"
+        },
+        "tribe": {
+            "ja": "古龍種",
+            "en": "Elder Dragon"
+        },
+        "MH": 2,
+        "MHG": 1,
+        "MHP": 1,
+        "MH2": 1,
+        "P2nd": 1,
+        "P2G": 1,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 1,
+        "MH4G": 1,
+        "MHX": 0,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 1,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 34,
+        "name": {
+            "ja": "紅龍 ミラボレアス",
+            "en": "Crimson Fatalis"
+        },
+        "tribe": {
+            "ja": "古龍種",
+            "en": "Elder Dragon"
+        },
+        "MH": 0,
+        "MHG": 2,
+        "MHP": 1,
+        "MH2": 1,
+        "P2nd": 1,
+        "P2G": 1,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 1,
+        "MH4G": 1,
+        "MHX": 0,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 35,
+        "name": {
+            "ja": "祖龍 ミラボレアス",
+            "en": "Old Fatalis"
+        },
+        "tribe": {
+            "ja": "古龍種",
+            "en": "Elder Dragon"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 2,
+        "P2nd": 1,
+        "P2G": 1,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 1,
+        "MHX": 0,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 36,
+        "name": {
+            "ja": "ドスランポス",
+            "en": "Velocidrome"
+        },
+        "tribe": {
+            "ja": "鳥竜種",
+            "en": "Bird Wyvern"
+        },
+        "MH": 2,
+        "MHG": 1,
+        "MHP": 1,
+        "MH2": 1,
+        "P2nd": 1,
+        "P2G": 1,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 1,
+        "MH4G": 1,
+        "MHX": 1,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 37,
+        "name": {
+            "ja": "ドスゲネポス",
+            "en": "Gendrome"
+        },
+        "tribe": {
+            "ja": "鳥竜種",
+            "en": "Bird Wyvern"
+        },
+        "MH": 2,
+        "MHG": 1,
+        "MHP": 1,
+        "MH2": 1,
+        "P2nd": 1,
+        "P2G": 1,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 1,
+        "MH4G": 1,
+        "MHX": 1,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 38,
+        "name": {
+            "ja": "ドスイーオス",
+            "en": "Iodrome"
+        },
+        "tribe": {
+            "ja": "鳥竜種",
+            "en": "Bird Wyvern"
+        },
+        "MH": 2,
+        "MHG": 1,
+        "MHP": 1,
+        "MH2": 1,
+        "P2nd": 1,
+        "P2G": 1,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 1,
+        "MH4G": 1,
+        "MHX": 1,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 39,
+        "name": {
+            "ja": "ドスガレオス",
+            "en": "Cephadrome"
+        },
+        "tribe": {
+            "ja": "魚竜種",
+            "en": "Piscine Wyvern"
+        },
+        "MH": 2,
+        "MHG": 1,
+        "MHP": 1,
+        "MH2": 1,
+        "P2nd": 1,
+        "P2G": 1,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 1,
+        "MHX": 1,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 40,
+        "name": {
+            "ja": "イャンガルルガ",
+            "en": "Yian Garuga"
+        },
+        "tribe": {
+            "ja": "鳥竜種",
+            "en": "Bird Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 2,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 1,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 1,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 41,
+        "name": {
+            "ja": "隻眼イャンガルルガ",
+            "en": "Deadeye Yian Garuga"
+        },
+        "tribe": {
+            "ja": "鳥竜種",
+            "en": "Bird Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 2,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 42,
+        "name": {
+            "ja": "傷ついた\\nイャンガルルガ",
+            "en": "Scarred Yian Garuga"
+        },
+        "tribe": {
+            "ja": "鳥竜種",
+            "en": "Bird Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 2,
+        "MH2": 1,
+        "P2nd": 1,
+        "P2G": 1,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 1,
+        "MH4G": 1,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 1,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 43,
+        "name": {
+            "ja": "ダイミョウザザミ",
+            "en": "Daimyo Hermitaur"
+        },
+        "tribe": {
+            "ja": "甲殻種",
+            "en": "Carapaceon"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 2,
+        "P2nd": 1,
+        "P2G": 1,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 1,
+        "MHX": 1,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 1
+    },
+    {
+        "index": 44,
+        "name": {
+            "ja": "ダイミョウザザミ\\n亜種",
+            "en": "Plum Daimyo Hermitaur"
+        },
+        "tribe": {
+            "ja": "甲殻種",
+            "en": "Carapaceon"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 2,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 1,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 45,
+        "name": {
+            "ja": "矛砕\\nダイミョウザザミ",
+            "en": "Stonefist Hermitaur"
+        },
+        "tribe": {
+            "ja": "甲殻種",
+            "en": "Carapaceon"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 2,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 46,
+        "name": {
+            "ja": "ショウグンギザミ",
+            "en": "Shogun Ceanataur"
+        },
+        "tribe": {
+            "ja": "甲殻種",
+            "en": "Carapaceon"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 2,
+        "P2nd": 1,
+        "P2G": 1,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 1,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 1
+    },
+    {
+        "index": 47,
+        "name": {
+            "ja": "ショウグンギザミ\\n亜種",
+            "en": "Terra Shogun Ceanataur"
+        },
+        "tribe": {
+            "ja": "甲殻種",
+            "en": "Carapaceon"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 2,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 48,
+        "name": {
+            "ja": "鎧裂\\nショウグンギザミ",
+            "en": "Rustrazor Ceanataur"
+        },
+        "tribe": {
+            "ja": "甲殻種",
+            "en": "Carapaceon"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 2,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 49,
+        "name": {
+            "ja": "ババコンガ",
+            "en": "Congalala"
+        },
+        "tribe": {
+            "ja": "牙獣種",
+            "en": "Fanged Beast"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 2,
+        "P2nd": 1,
+        "P2G": 1,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 1,
+        "MH4G": 1,
+        "MHX": 0,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 50,
+        "name": {
+            "ja": "ババコンガ亜種",
+            "en": "Emerald Congalala"
+        },
+        "tribe": {
+            "ja": "牙獣種",
+            "en": "Fanged Beast"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 2,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 1,
+        "MH4G": 1,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 51,
+        "name": {
+            "ja": "ドドブランゴ",
+            "en": "Blangonga"
+        },
+        "tribe": {
+            "ja": "牙獣種",
+            "en": "Fanged Beast"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 2,
+        "P2nd": 1,
+        "P2G": 1,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 1,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 52,
+        "name": {
+            "ja": "ドドブランゴ亜種",
+            "en": "Copper Blangonga"
+        },
+        "tribe": {
+            "ja": "牙獣種",
+            "en": "Fanged Beast"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 2,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 53,
+        "name": {
+            "ja": "ラージャン",
+            "en": "Rajang"
+        },
+        "tribe": {
+            "ja": "牙獣種",
+            "en": "Fanged Beast"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 2,
+        "P2nd": 1,
+        "P2G": 1,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 1,
+        "MH4G": 1,
+        "MHX": 1,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 1,
+        "MHR": 1,
+        "MHRS": 1
+    },
+    {
+        "index": 54,
+        "name": {
+            "ja": "激昂したラージャン",
+            "en": "Furious Rajang"
+        },
+        "tribe": {
+            "ja": "牙獣種",
+            "en": "Fanged Beast"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 2,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 1,
+        "MH4G": 1,
+        "MHX": 1,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 1,
+        "MHR": 0,
+        "MHRS": 1
+    },
+    {
+        "index": 55,
+        "name": {
+            "ja": "クシャルダオラ",
+            "en": "Kushala Daora"
+        },
+        "tribe": {
+            "ja": "古龍種",
+            "en": "Elder Dragon"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 2,
+        "P2nd": 1,
+        "P2G": 1,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 1,
+        "MH4G": 1,
+        "MHX": 1,
+        "MHXX": 1,
+        "MHW": 1,
+        "MHWI": 1,
+        "MHR": 1,
+        "MHRS": 1
+    },
+    {
+        "index": 56,
+        "name": {
+            "ja": "錆びた\\nクシャルダオラ",
+            "en": "Rusted Kushala Daora"
+        },
+        "tribe": {
+            "ja": "古龍種",
+            "en": "Elder Dragon"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 2,
+        "P2nd": 1,
+        "P2G": 1,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 1,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 57,
+        "name": {
+            "ja": "傀異克服\\nクシャルダオラ",
+            "en": "Risen Kushala Daora"
+        },
+        "tribe": {
+            "ja": "古龍種",
+            "en": "Elder Dragon"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 2
+    },
+    {
+        "index": 58,
+        "name": {
+            "ja": "オオナズチ",
+            "en": "Chameleos"
+        },
+        "tribe": {
+            "ja": "古龍種",
+            "en": "Elder Dragon"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 2,
+        "P2nd": 1,
+        "P2G": 1,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 1,
+        "MHX": 1,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 1,
+        "MHRS": 1
+    },
+    {
+        "index": 59,
+        "name": {
+            "ja": "傀異克服オオナズチ",
+            "en": "Risen Chameleos"
+        },
+        "tribe": {
+            "ja": "古龍種",
+            "en": "Elder Dragon"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 2
+    },
+    {
+        "index": 60,
+        "name": {
+            "ja": "ナナ・テスカトリ",
+            "en": "Lunastra"
+        },
+        "tribe": {
+            "ja": "古龍種",
+            "en": "Elder Dragon"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 2,
+        "P2nd": 1,
+        "P2G": 1,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 1,
+        "MHWI": 1,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 61,
+        "name": {
+            "ja": "テオ・テスカトル",
+            "en": "Teostra"
+        },
+        "tribe": {
+            "ja": "古龍種",
+            "en": "Elder Dragon"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 2,
+        "P2nd": 1,
+        "P2G": 1,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 1,
+        "MH4G": 1,
+        "MHX": 1,
+        "MHXX": 1,
+        "MHW": 1,
+        "MHWI": 1,
+        "MHR": 1,
+        "MHRS": 1
+    },
+    {
+        "index": 62,
+        "name": {
+            "ja": "傀異克服\\nテオ・テスカトル",
+            "en": "Risen Teostra"
+        },
+        "tribe": {
+            "ja": "古龍種",
+            "en": "Elder Dragon"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 2
+    },
+    {
+        "index": 63,
+        "name": {
+            "ja": "シェンガオレン",
+            "en": "Shen Gaoren"
+        },
+        "tribe": {
+            "ja": "甲殻種",
+            "en": "Carapaceon"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 2,
+        "P2nd": 1,
+        "P2G": 1,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 64,
+        "name": {
+            "ja": "ヤマツカミ",
+            "en": "Yama Tsukami"
+        },
+        "tribe": {
+            "ja": "古龍種",
+            "en": "Elder Dragon"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 2,
+        "P2nd": 0,
+        "P2G": 1,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 65,
+        "name": {
+            "ja": "ドスファンゴ",
+            "en": "Bulldrome"
+        },
+        "tribe": {
+            "ja": "牙獣種",
+            "en": "Fanged Beast"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 2,
+        "P2nd": 1,
+        "P2G": 1,
+        "MH3": 0,
+        "P3rd": 1,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 1,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 66,
+        "name": {
+            "ja": "キングチャチャブー",
+            "en": "King Shakalaka"
+        },
+        "tribe": {
+            "ja": "獣人種",
+            "en": "Lynian"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 2,
+        "P2nd": 1,
+        "P2G": 1,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 67,
+        "name": {
+            "ja": "ティガレックス",
+            "en": "Tigrex"
+        },
+        "tribe": {
+            "ja": "飛竜種",
+            "en": "Flying Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 2,
+        "P2G": 1,
+        "MH3": 0,
+        "P3rd": 1,
+        "MH3G": 0,
+        "MH4": 1,
+        "MH4G": 1,
+        "MHX": 1,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 1,
+        "MHR": 1,
+        "MHRS": 1
+    },
+    {
+        "index": 68,
+        "name": {
+            "ja": "ティガレックス亜種",
+            "en": "Brute Tigrex"
+        },
+        "tribe": {
+            "ja": "飛竜種",
+            "en": "Flying Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 2,
+        "MH3G": 0,
+        "MH4": 1,
+        "MH4G": 1,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 1,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 69,
+        "name": {
+            "ja": "ティガレックス\\n希少種",
+            "en": "Molten Tigrex"
+        },
+        "tribe": {
+            "ja": "飛竜種",
+            "en": "Flying Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 2,
+        "MH4G": 1,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 70,
+        "name": {
+            "ja": "荒鉤爪\\nティガレックス",
+            "en": "Grimclaw Tigrex"
+        },
+        "tribe": {
+            "ja": "飛竜種",
+            "en": "Flying Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 2,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 71,
+        "name": {
+            "ja": "アカムトルム",
+            "en": "Akantor"
+        },
+        "tribe": {
+            "ja": "飛竜種",
+            "en": "Flying Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 2,
+        "P2G": 1,
+        "MH3": 0,
+        "P3rd": 1,
+        "MH3G": 0,
+        "MH4": 1,
+        "MH4G": 1,
+        "MHX": 1,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 72,
+        "name": {
+            "ja": "ドスギアノス",
+            "en": "Giadrome"
+        },
+        "tribe": {
+            "ja": "鳥竜種",
+            "en": "Bird Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 2,
+        "P2G": 1,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 73,
+        "name": {
+            "ja": "ヒプノック",
+            "en": "Hypnocatrice"
+        },
+        "tribe": {
+            "ja": "鳥竜種",
+            "en": "Bird Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 2,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 74,
+        "name": {
+            "ja": "ヴォルガノス",
+            "en": "Lavasioth"
+        },
+        "tribe": {
+            "ja": "魚竜種",
+            "en": "Piscine Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 2,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 1,
+        "MHXX": 1,
+        "MHW": 1,
+        "MHWI": 1,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 75,
+        "name": {
+            "ja": "ナルガクルガ",
+            "en": "Nargacuga"
+        },
+        "tribe": {
+            "ja": "飛竜種",
+            "en": "Flying Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 2,
+        "MH3": 0,
+        "P3rd": 1,
+        "MH3G": 1,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 1,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 1,
+        "MHR": 1,
+        "MHRS": 1
+    },
+    {
+        "index": 76,
+        "name": {
+            "ja": "ナルガクルガ亜種",
+            "en": "Green Nargacuga"
+        },
+        "tribe": {
+            "ja": "飛竜種",
+            "en": "Flying Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 2,
+        "MH3G": 1,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 77,
+        "name": {
+            "ja": "ナルガクルガ希少種",
+            "en": "Lucent Nargacuga"
+        },
+        "tribe": {
+            "ja": "飛竜種",
+            "en": "Flying Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 2,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 1
+    },
+    {
+        "index": 78,
+        "name": {
+            "ja": "白疾風ナルガクルガ",
+            "en": "Silverwind Nargacuga"
+        },
+        "tribe": {
+            "ja": "飛竜種",
+            "en": "Flying Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 2,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 79,
+        "name": {
+            "ja": "ウカムルバス",
+            "en": "Ukanlos"
+        },
+        "tribe": {
+            "ja": "飛竜種",
+            "en": "Flying Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 2,
+        "MH3": 0,
+        "P3rd": 1,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 1,
+        "MHX": 1,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 80,
+        "name": {
+            "ja": "クイーンランゴスタ",
+            "en": "Vespoid Queen"
+        },
+        "tribe": {
+            "ja": "甲虫種",
+            "en": "Neopteron"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 2,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 81,
+        "name": {
+            "ja": "クルペッコ",
+            "en": "Qurupeco"
+        },
+        "tribe": {
+            "ja": "鳥竜種",
+            "en": "Bird Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 2,
+        "P3rd": 1,
+        "MH3G": 1,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 82,
+        "name": {
+            "ja": "クルペッコ亜種",
+            "en": "Crimson Qurupeco"
+        },
+        "tribe": {
+            "ja": "鳥竜種",
+            "en": "Bird Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 2,
+        "MH3G": 1,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 83,
+        "name": {
+            "ja": "ギギネブラ",
+            "en": "Gigginox"
+        },
+        "tribe": {
+            "ja": "飛竜種",
+            "en": "Flying Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 2,
+        "P3rd": 1,
+        "MH3G": 1,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 84,
+        "name": {
+            "ja": "ギギネブラ亜種",
+            "en": "Baleful Gigginox"
+        },
+        "tribe": {
+            "ja": "飛竜種",
+            "en": "Flying Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 2,
+        "MH3G": 1,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 85,
+        "name": {
+            "ja": "ベリオロス",
+            "en": "Barioth"
+        },
+        "tribe": {
+            "ja": "飛竜種",
+            "en": "Flying Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 2,
+        "P3rd": 1,
+        "MH3G": 1,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 1,
+        "MHR": 1,
+        "MHRS": 1
+    },
+    {
+        "index": 86,
+        "name": {
+            "ja": "ベリオロス亜種",
+            "en": "Sand Barioth"
+        },
+        "tribe": {
+            "ja": "飛竜種",
+            "en": "Flying Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 2,
+        "MH3G": 1,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 87,
+        "name": {
+            "ja": "氷刃佩くベリオロス",
+            "en": "Frostfang Barioth"
+        },
+        "tribe": {
+            "ja": "飛竜種",
+            "en": "Flying Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 2,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 88,
+        "name": {
+            "ja": "イビルジョー",
+            "en": "Deviljho"
+        },
+        "tribe": {
+            "ja": "獣竜種",
+            "en": "Brute Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 2,
+        "P3rd": 1,
+        "MH3G": 1,
+        "MH4": 1,
+        "MH4G": 1,
+        "MHX": 1,
+        "MHXX": 1,
+        "MHW": 1,
+        "MHWI": 1,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 89,
+        "name": {
+            "ja": "怒り喰らう\\nイビルジョー",
+            "en": "Savage Deviljho"
+        },
+        "tribe": {
+            "ja": "獣竜種",
+            "en": "Brute Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 2,
+        "MH4": 1,
+        "MH4G": 1,
+        "MHX": 1,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 1,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 90,
+        "name": {
+            "ja": "ボルボロス",
+            "en": "Barroth"
+        },
+        "tribe": {
+            "ja": "獣竜種",
+            "en": "Brute Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 2,
+        "P3rd": 1,
+        "MH3G": 1,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 1,
+        "MHW": 1,
+        "MHWI": 1,
+        "MHR": 1,
+        "MHRS": 1
+    },
+    {
+        "index": 91,
+        "name": {
+            "ja": "ボルボロス亜種",
+            "en": "Jade Barroth"
+        },
+        "tribe": {
+            "ja": "獣竜種",
+            "en": "Brute Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 2,
+        "MH3G": 1,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 92,
+        "name": {
+            "ja": "ウラガンキン",
+            "en": "Uragaan"
+        },
+        "tribe": {
+            "ja": "獣竜種",
+            "en": "Brute Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 2,
+        "P3rd": 1,
+        "MH3G": 1,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 1,
+        "MHXX": 1,
+        "MHW": 1,
+        "MHWI": 1,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 93,
+        "name": {
+            "ja": "ウラガンキン亜種",
+            "en": "Steel Uragaan"
+        },
+        "tribe": {
+            "ja": "獣竜種",
+            "en": "Brute Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 2,
+        "MH3G": 1,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 94,
+        "name": {
+            "ja": "宝纏ウラガンキン",
+            "en": "Crystalbeard Uragaan"
+        },
+        "tribe": {
+            "ja": "獣竜種",
+            "en": "Brute Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 2,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 95,
+        "name": {
+            "ja": "ラギアクルス",
+            "en": "Lagiacrus"
+        },
+        "tribe": {
+            "ja": "海竜種",
+            "en": "Leviathan"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 2,
+        "P3rd": 0,
+        "MH3G": 1,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 1,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 96,
+        "name": {
+            "ja": "ラギアクルス亜種",
+            "en": "Ivory Lagiacrus"
+        },
+        "tribe": {
+            "ja": "海竜種",
+            "en": "Leviathan"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 2,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 97,
+        "name": {
+            "ja": "ラギアクルス希少種",
+            "en": "Abyssal Lagiacrus"
+        },
+        "tribe": {
+            "ja": "海竜種",
+            "en": "Leviathan"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 2,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 98,
+        "name": {
+            "ja": "ロアルドロス",
+            "en": "Royal Ludroth"
+        },
+        "tribe": {
+            "ja": "海竜種",
+            "en": "Leviathan"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 2,
+        "P3rd": 1,
+        "MH3G": 1,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 1,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 1,
+        "MHRS": 1
+    },
+    {
+        "index": 99,
+        "name": {
+            "ja": "ロアルドロス亜種",
+            "en": "Purple Ludroth"
+        },
+        "tribe": {
+            "ja": "海竜種",
+            "en": "Leviathan"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 2,
+        "MH3G": 1,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 100,
+        "name": {
+            "ja": "チャナガブル",
+            "en": "Gobul"
+        },
+        "tribe": {
+            "ja": "海竜種",
+            "en": "Leviathan"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 2,
+        "P3rd": 1,
+        "MH3G": 1,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 101,
+        "name": {
+            "ja": "アグナコトル",
+            "en": "Agnaktor"
+        },
+        "tribe": {
+            "ja": "海竜種",
+            "en": "Leviathan"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 2,
+        "P3rd": 1,
+        "MH3G": 1,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 1,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 102,
+        "name": {
+            "ja": "アグナコトル亜種",
+            "en": "Glacial Agnaktor"
+        },
+        "tribe": {
+            "ja": "海竜種",
+            "en": "Leviathan"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 2,
+        "MH3G": 1,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 103,
+        "name": {
+            "ja": "アルバトリオン",
+            "en": "Alatreon"
+        },
+        "tribe": {
+            "ja": "古龍種",
+            "en": "Elder Dragon"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 2,
+        "P3rd": 1,
+        "MH3G": 1,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 1,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 1,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 104,
+        "name": {
+            "ja": "ジエン・モーラン",
+            "en": "Jhen Mohran"
+        },
+        "tribe": {
+            "ja": "古龍種",
+            "en": "Elder Dragon"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 2,
+        "P3rd": 1,
+        "MH3G": 1,
+        "MH4": 1,
+        "MH4G": 1,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 105,
+        "name": {
+            "ja": "ジエン・モーラン\\n亜種",
+            "en": "Hallowed Jhen Mohran"
+        },
+        "tribe": {
+            "ja": "古龍種",
+            "en": "Elder Dragon"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 2,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 106,
+        "name": {
+            "ja": "ナバルデウス",
+            "en": "Ceadeus"
+        },
+        "tribe": {
+            "ja": "古龍種",
+            "en": "Elder Dragon"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 2,
+        "P3rd": 0,
+        "MH3G": 1,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 107,
+        "name": {
+            "ja": "ナバルデウス亜種",
+            "en": "Goldbeard Ceadeus"
+        },
+        "tribe": {
+            "ja": "古龍種",
+            "en": "Elder Dragon"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 2,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 108,
+        "name": {
+            "ja": "ドスジャギィ",
+            "en": "Great Jaggi"
+        },
+        "tribe": {
+            "ja": "鳥竜種",
+            "en": "Bird Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 2,
+        "P3rd": 1,
+        "MH3G": 1,
+        "MH4": 1,
+        "MH4G": 1,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 109,
+        "name": {
+            "ja": "ドスバギィ",
+            "en": "Great Baggi"
+        },
+        "tribe": {
+            "ja": "鳥竜種",
+            "en": "Bird Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 2,
+        "P3rd": 1,
+        "MH3G": 1,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 1,
+        "MHRS": 1
+    },
+    {
+        "index": 110,
+        "name": {
+            "ja": "ドボルベルク",
+            "en": "Duramboros"
+        },
+        "tribe": {
+            "ja": "獣竜種",
+            "en": "Brute Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 2,
+        "MH3G": 1,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 1,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 111,
+        "name": {
+            "ja": "ドボルベルク亜種",
+            "en": "Rust Duramboros"
+        },
+        "tribe": {
+            "ja": "獣竜種",
+            "en": "Brute Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 2,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 112,
+        "name": {
+            "ja": "ハプルボッカ",
+            "en": "Nibelsnarf"
+        },
+        "tribe": {
+            "ja": "海竜種",
+            "en": "Leviathan"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 2,
+        "MH3G": 1,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 1,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 113,
+        "name": {
+            "ja": "ジンオウガ",
+            "en": "Zinogre"
+        },
+        "tribe": {
+            "ja": "牙竜種",
+            "en": "Fanged Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 2,
+        "MH3G": 1,
+        "MH4": 1,
+        "MH4G": 1,
+        "MHX": 1,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 1,
+        "MHR": 1,
+        "MHRS": 1
+    },
+    {
+        "index": 114,
+        "name": {
+            "ja": "ジンオウガ亜種",
+            "en": "Stygian Zinogre"
+        },
+        "tribe": {
+            "ja": "牙竜種",
+            "en": "Fanged Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 2,
+        "MH4": 1,
+        "MH4G": 1,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 1,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 115,
+        "name": {
+            "ja": "金雷公ジンオウガ",
+            "en": "Thunderlord Zinogre"
+        },
+        "tribe": {
+            "ja": "牙竜種",
+            "en": "Fanged Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 2,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 116,
+        "name": {
+            "ja": "ヌシ・ジンオウガ",
+            "en": "Apex Zinogre"
+        },
+        "tribe": {
+            "ja": "牙竜種",
+            "en": "Fanged Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 2,
+        "MHRS": 1
+    },
+    {
+        "index": 117,
+        "name": {
+            "ja": "アマツマガツチ",
+            "en": "Amatsu"
+        },
+        "tribe": {
+            "ja": "古龍種",
+            "en": "Elder Dragon"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 2,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 1,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 1
+    },
+    {
+        "index": 118,
+        "name": {
+            "ja": "ドスフロギィ",
+            "en": "Great Wroggi"
+        },
+        "tribe": {
+            "ja": "鳥竜種",
+            "en": "Bird Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 2,
+        "MH3G": 1,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 1,
+        "MHRS": 1
+    },
+    {
+        "index": 119,
+        "name": {
+            "ja": "アオアシラ",
+            "en": "Arzuros"
+        },
+        "tribe": {
+            "ja": "牙獣種",
+            "en": "Fanged Beast"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 2,
+        "MH3G": 1,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 1,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 1,
+        "MHRS": 1
+    },
+    {
+        "index": 120,
+        "name": {
+            "ja": "紅兜アオアシラ",
+            "en": "Redhelm Arzuros"
+        },
+        "tribe": {
+            "ja": "牙獣種",
+            "en": "Fanged Beast"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 2,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 121,
+        "name": {
+            "ja": "ヌシ・アオアシラ",
+            "en": "Apex Arzuros"
+        },
+        "tribe": {
+            "ja": "牙獣種",
+            "en": "Fanged Beast"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 2,
+        "MHRS": 1
+    },
+    {
+        "index": 122,
+        "name": {
+            "ja": "ウルクスス",
+            "en": "Lagombi"
+        },
+        "tribe": {
+            "ja": "牙獣種",
+            "en": "Fanged Beast"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 2,
+        "MH3G": 1,
+        "MH4": 1,
+        "MH4G": 1,
+        "MHX": 1,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 1,
+        "MHRS": 1
+    },
+    {
+        "index": 123,
+        "name": {
+            "ja": "大雪主ウルクスス",
+            "en": "Snowbaron Lagombi"
+        },
+        "tribe": {
+            "ja": "牙獣種",
+            "en": "Fanged Beast"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 2,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 124,
+        "name": {
+            "ja": "ラングロトラ",
+            "en": "Volvidon"
+        },
+        "tribe": {
+            "ja": "牙獣種",
+            "en": "Fanged Beast"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 2,
+        "MH3G": 1,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 1,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 1,
+        "MHRS": 1
+    },
+    {
+        "index": 125,
+        "name": {
+            "ja": "ブラキディオス",
+            "en": "Brachydios"
+        },
+        "tribe": {
+            "ja": "獣竜種",
+            "en": "Brute Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 2,
+        "MH4": 1,
+        "MH4G": 1,
+        "MHX": 1,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 1,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 126,
+        "name": {
+            "ja": "猛り爆ぜる\\nブラキディオス",
+            "en": "Raging Brachydios"
+        },
+        "tribe": {
+            "ja": "獣竜種",
+            "en": "Brute Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 2,
+        "MHX": 0,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 1,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 127,
+        "name": {
+            "ja": "グラン・ミラオス",
+            "en": "Dire Miralis"
+        },
+        "tribe": {
+            "ja": "古龍種",
+            "en": "Elder Dragon"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 2,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 128,
+        "name": {
+            "ja": "ケチャワチャ",
+            "en": "Kecha Wacha"
+        },
+        "tribe": {
+            "ja": "牙獣種",
+            "en": "Fanged Beast"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 2,
+        "MH4G": 1,
+        "MHX": 1,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 129,
+        "name": {
+            "ja": "ケチャワチャ亜種",
+            "en": "Ash Kecha Wacha"
+        },
+        "tribe": {
+            "ja": "牙獣種",
+            "en": "Fanged Beast"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 2,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 130,
+        "name": {
+            "ja": "テツカブラ",
+            "en": "Tetsucabra"
+        },
+        "tribe": {
+            "ja": "両生種",
+            "en": "Amphibian"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 2,
+        "MH4G": 1,
+        "MHX": 1,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 131,
+        "name": {
+            "ja": "テツカブラ亜種",
+            "en": "Berserk Tetsucabra"
+        },
+        "tribe": {
+            "ja": "両生種",
+            "en": "Amphibian"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 2,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 132,
+        "name": {
+            "ja": "岩穿テツカブラ",
+            "en": "Drilltusk Tetsucabra"
+        },
+        "tribe": {
+            "ja": "両生種",
+            "en": "Amphibian"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 2,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 133,
+        "name": {
+            "ja": "ザボアザギル",
+            "en": "Zamtrios"
+        },
+        "tribe": {
+            "ja": "両生種",
+            "en": "Amphibian"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 2,
+        "MH4G": 1,
+        "MHX": 1,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 134,
+        "name": {
+            "ja": "ザボアザギル亜種",
+            "en": "Tigerstripe Zamtrios"
+        },
+        "tribe": {
+            "ja": "両生種",
+            "en": "Amphibian"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 2,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 135,
+        "name": {
+            "ja": "ガララアジャラ",
+            "en": "Najarala"
+        },
+        "tribe": {
+            "ja": "蛇竜種",
+            "en": "Snake Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 2,
+        "MH4G": 1,
+        "MHX": 1,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 136,
+        "name": {
+            "ja": "ガララアジャラ亜種",
+            "en": "Tidal Najarala"
+        },
+        "tribe": {
+            "ja": "蛇竜種",
+            "en": "Snake Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 2,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 137,
+        "name": {
+            "ja": "ゲネル・セルタス",
+            "en": "Seltas Queen"
+        },
+        "tribe": {
+            "ja": "甲虫種",
+            "en": "Neopteron"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 2,
+        "MH4G": 1,
+        "MHX": 1,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 138,
+        "name": {
+            "ja": "ゲネル・セルタス\\n亜種",
+            "en": "Desert Seltas Queen"
+        },
+        "tribe": {
+            "ja": "甲虫種",
+            "en": "Neopteron"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 2,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 139,
+        "name": {
+            "ja": "ネルスキュラ",
+            "en": "Nerscylla"
+        },
+        "tribe": {
+            "ja": "鋏角種",
+            "en": "Temnoceran"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 2,
+        "MH4G": 1,
+        "MHX": 0,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 140,
+        "name": {
+            "ja": "ネルスキュラ亜種",
+            "en": "Shrouded Nerscylla"
+        },
+        "tribe": {
+            "ja": "鋏角種",
+            "en": "Temnoceran"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 2,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 141,
+        "name": {
+            "ja": "ゴア・マガラ",
+            "en": "Gore Magala"
+        },
+        "tribe": {
+            "ja": "???",
+            "en": "???"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 2,
+        "MH4G": 1,
+        "MHX": 1,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 1
+    },
+    {
+        "index": 142,
+        "name": {
+            "ja": "渾沌に呻く\\nゴア・マガラ",
+            "en": "Chaotic Gore Magala"
+        },
+        "tribe": {
+            "ja": "???",
+            "en": "???"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 2,
+        "MHX": 0,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 1
+    },
+    {
+        "index": 143,
+        "name": {
+            "ja": "シャガルマガラ",
+            "en": "Shagaru Magala"
+        },
+        "tribe": {
+            "ja": "古龍種",
+            "en": "Elder Dragon"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 2,
+        "MH4G": 1,
+        "MHX": 1,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 1
+    },
+    {
+        "index": 144,
+        "name": {
+            "ja": "傀異克服\\nシャガルマガラ",
+            "en": "Risen Shagaru Magala"
+        },
+        "tribe": {
+            "ja": "古龍種",
+            "en": "Elder Dragon"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 2
+    },
+    {
+        "index": 145,
+        "name": {
+            "ja": "ダレン・モーラン",
+            "en":"Dah\'ren Mohran"
+        },
+        "tribe": {
+            "ja": "古龍種",
+            "en": "Elder Dragon"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 2,
+        "MH4G": 1,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 146,
+        "name": {
+            "ja": "ダラ・アマデュラ",
+            "en": "Dalamadur"
+        },
+        "tribe": {
+            "ja": "古龍種",
+            "en": "Elder Dragon"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 2,
+        "MH4G": 1,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 147,
+        "name": {
+            "ja": "ダラ・アマデュラ\\n亜種",
+            "en": "Shah Dalamadur"
+        },
+        "tribe": {
+            "ja": "古龍種",
+            "en": "Elder Dragon"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 2,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 148,
+        "name": {
+            "ja": "アルセルタス",
+            "en": "Seltas"
+        },
+        "tribe": {
+            "ja": "甲虫種",
+            "en": "Neopteron"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 2,
+        "MH4G": 1,
+        "MHX": 1,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 149,
+        "name": {
+            "ja": "アルセルタス亜種",
+            "en": "Desert Seltas"
+        },
+        "tribe": {
+            "ja": "甲虫種",
+            "en": "Neopteron"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 2,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 150,
+        "name": {
+            "ja": "セルレギオス",
+            "en": "Seregios"
+        },
+        "tribe": {
+            "ja": "飛竜種",
+            "en": "Flying Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 2,
+        "MHX": 1,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 1
+    },
+    {
+        "index": 151,
+        "name": {
+            "ja": "ゴグマジオス",
+            "en": "Gogmazios"
+        },
+        "tribe": {
+            "ja": "古龍種",
+            "en": "Elder Dragon"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 2,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 152,
+        "name": {
+            "ja": "ホロロホルル",
+            "en": "Malfestio"
+        },
+        "tribe": {
+            "ja": "鳥竜種",
+            "en": "Bird Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 2,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 153,
+        "name": {
+            "ja": "朧隠ホロロホルル",
+            "en": "Nightcloak Malfestio"
+        },
+        "tribe": {
+            "ja": "鳥竜種",
+            "en": "Bird Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 2,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 154,
+        "name": {
+            "ja": "ディノバルド",
+            "en": "Glavenus"
+        },
+        "tribe": {
+            "ja": "獣竜種",
+            "en": "Brute Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 2,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 1,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 155,
+        "name": {
+            "ja": "ディノバルド亜種",
+            "en": "Acidic Glavenus"
+        },
+        "tribe": {
+            "ja": "獣竜種",
+            "en": "Brute Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 2,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 156,
+        "name": {
+            "ja": "燼滅刃ディノバルド",
+            "en": "Hellblade Glavenus"
+        },
+        "tribe": {
+            "ja": "獣竜種",
+            "en": "Brute Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 2,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 157,
+        "name": {
+            "ja": "ライゼクス",
+            "en": "Astalos"
+        },
+        "tribe": {
+            "ja": "飛竜種",
+            "en": "Flying Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 2,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 1
+    },
+    {
+        "index": 158,
+        "name": {
+            "ja": "青電主ライゼクス",
+            "en": "Boltreaver Astalos"
+        },
+        "tribe": {
+            "ja": "飛竜種",
+            "en": "Flying Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 2,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 159,
+        "name": {
+            "ja": "タマミツネ",
+            "en": "Mizutsune"
+        },
+        "tribe": {
+            "ja": "海竜種",
+            "en": "Leviathan"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 2,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 1,
+        "MHRS": 1
+    },
+    {
+        "index": 160,
+        "name": {
+            "ja": "タマミツネ希少種",
+            "en": "Violet Mizutsune"
+        },
+        "tribe": {
+            "ja": "海竜種",
+            "en": "Leviathan"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 2
+    },
+    {
+        "index": 161,
+        "name": {
+            "ja": "天眼タマミツネ",
+            "en": "Soulseer Mizutsune"
+        },
+        "tribe": {
+            "ja": "海竜種",
+            "en": "Leviathan"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 2,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 162,
+        "name": {
+            "ja": "ヌシ・タマミツネ",
+            "en": "Apex Mizutsune"
+        },
+        "tribe": {
+            "ja": "海竜種",
+            "en": "Leviathan"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 2,
+        "MHRS": 1
+    },
+    {
+        "index": 163,
+        "name": {
+            "ja": "ガムート",
+            "en": "Gammoth"
+        },
+        "tribe": {
+            "ja": "牙獣種",
+            "en": "Fanged Beast"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 2,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 164,
+        "name": {
+            "ja": "銀嶺ガムート",
+            "en": "Elderfrost Gammoth"
+        },
+        "tribe": {
+            "ja": "牙獣種",
+            "en": "Fanged Beast"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 2,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 165,
+        "name": {
+            "ja": "オストガロア",
+            "en": "Nakarkos"
+        },
+        "tribe": {
+            "ja": "古龍種",
+            "en": "Elder Dragon"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 2,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 166,
+        "name": {
+            "ja": "ドスマッカォ",
+            "en": "Great Maccao"
+        },
+        "tribe": {
+            "ja": "鳥竜種",
+            "en": "Bird Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 2,
+        "MHXX": 1,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 167,
+        "name": {
+            "ja": "バルファルク",
+            "en": "Valstrax"
+        },
+        "tribe": {
+            "ja": "古龍種",
+            "en": "Elder Dragon"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 2,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 168,
+        "name": {
+            "ja": "奇しき赫耀の\\nバルファルク",
+            "en": "Crimson Glow Valstrax"
+        },
+        "tribe": {
+            "ja": "古龍種",
+            "en": "Elder Dragon"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 2,
+        "MHRS": 1
+    },
+    {
+        "index": 169,
+        "name": {
+            "ja": "傀異克服\\nバルファルク",
+            "en": "Risen Crimson Glow Valstrax"
+        },
+        "tribe": {
+            "ja": "古龍種",
+            "en": "Elder Dragon"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 2
+    },
+    {
+        "index": 170,
+        "name": {
+            "ja": "アトラル・ネセト",
+            "en": "Ahtal-Neset"
+        },
+        "tribe": {
+            "ja": "甲虫種",
+            "en": "Neopteron"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 2,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 171,
+        "name": {
+            "ja": "アトラル・カ",
+            "en": "Ahtal-Ka"
+        },
+        "tribe": {
+            "ja": "甲虫種",
+            "en": "Neopteron"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 2,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 172,
+        "name": {
+            "ja": "マガイマガド",
+            "en": "Magnamalo"
+        },
+        "tribe": {
+            "ja": "牙竜種",
+            "en": "Fanged Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 2,
+        "MHRS": 1
+    },
+    {
+        "index": 173,
+        "name": {
+            "ja": "怨嗟響めく\\nマガイマガド",
+            "en": "Scorned Magnamalo"
+        },
+        "tribe": {
+            "ja": "牙竜種",
+            "en": "Fanged Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 2
+    },
+    {
+        "index": 174,
+        "name": {
+            "ja": "ビシュテンゴ",
+            "en": "Bishaten"
+        },
+        "tribe": {
+            "ja": "牙獣種",
+            "en": "Fanged Beast"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 2,
+        "MHRS": 1
+    },
+    {
+        "index": 175,
+        "name": {
+            "ja": "ビシュテンゴ亜種",
+            "en": "Blood Orange Bishaten"
+        },
+        "tribe": {
+            "ja": "牙獣種",
+            "en": "Fanged Beast"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 2
+    },
+    {
+        "index": 176,
+        "name": {
+            "ja": "アケノシルム",
+            "en": "Aknosom"
+        },
+        "tribe": {
+            "ja": "鳥竜種",
+            "en": "Bird Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 2,
+        "MHRS": 1
+    },
+    {
+        "index": 177,
+        "name": {
+            "ja": "ヨツミワドウ",
+            "en": "Tetranadon"
+        },
+        "tribe": {
+            "ja": "両生種",
+            "en": "Amphibian"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 2,
+        "MHRS": 1
+    },
+    {
+        "index": 178,
+        "name": {
+            "ja": "イソネミクニ",
+            "en": "Somnacanth"
+        },
+        "tribe": {
+            "ja": "海竜種",
+            "en": "Leviathan"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 2,
+        "MHRS": 1
+    },
+    {
+        "index": 179,
+        "name": {
+            "ja": "イソネミクニ亜種",
+            "en": "Aurora Somnacanth"
+        },
+        "tribe": {
+            "ja": "海竜種",
+            "en": "Leviathan"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 2
+    },
+    {
+        "index": 180,
+        "name": {
+            "ja": "ヤツカダキ",
+            "en": "Rakna-Kadaki"
+        },
+        "tribe": {
+            "ja": "鋏角種",
+            "en": "Temnoceran"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 2,
+        "MHRS": 1
+    },
+    {
+        "index": 181,
+        "name": {
+            "ja": "ヤツカダキ亜種",
+            "en": "Pyre Rakna-Kadaki"
+        },
+        "tribe": {
+            "ja": "鋏角種",
+            "en": "Temnoceran"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 2
+    },
+    {
+        "index": 182,
+        "name": {
+            "ja": "オロミドロ",
+            "en": "Almudron"
+        },
+        "tribe": {
+            "ja": "海竜種",
+            "en": "Leviathan"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 2,
+        "MHRS": 1
+    },
+    {
+        "index": 183,
+        "name": {
+            "ja": "オロミドロ亜種",
+            "en": "Magma Almudron"
+        },
+        "tribe": {
+            "ja": "海竜種",
+            "en": "Leviathan"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 2
+    },
+    {
+        "index": 184,
+        "name": {
+            "ja": "イブシマキヒコ",
+            "en": "Wind Serpent Ibushi"
+        },
+        "tribe": {
+            "ja": "古龍種",
+            "en": "Elder Dragon"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 2,
+        "MHRS": 1
+    },
+    {
+        "index": 185,
+        "name": {
+            "ja": "ゴシャハギ",
+            "en": "Goss Harag"
+        },
+        "tribe": {
+            "ja": "牙獣種",
+            "en": "Fanged Beast"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 2,
+        "MHRS": 1
+    },
+    {
+        "index": 186,
+        "name": {
+            "ja": "オサイズチ",
+            "en": "Great Izuchi"
+        },
+        "tribe": {
+            "ja": "鳥竜種",
+            "en": "Bird Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 2,
+        "MHRS": 1
+    },
+    {
+        "index": 187,
+        "name": {
+            "ja": "ナルハタタヒメ",
+            "en": "Thunder Serpent Narwa"
+        },
+        "tribe": {
+            "ja": "古龍種",
+            "en": "Elder Dragon"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 2,
+        "MHRS": 1
+    },
+    {
+        "index": 188,
+        "name": {
+            "ja": "百竜ノ淵源\\nナルハタタヒメ",
+            "en": "Narwa the Allmother"
+        },
+        "tribe": {
+            "ja": "古龍種",
+            "en": "Elder Dragon"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 2,
+        "MHRS": 1
+    },
+    {
+        "index": 189,
+        "name": {
+            "ja": "アンジャナフ",
+            "en": "Anjanath"
+        },
+        "tribe": {
+            "ja": "獣竜種",
+            "en": "Brute Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 2,
+        "MHWI": 1,
+        "MHR": 1,
+        "MHRS": 1
+    },
+    {
+        "index": 190,
+        "name": {
+            "ja": "アンジャナフ亜種",
+            "en": "Fulgur Anjanath"
+        },
+        "tribe": {
+            "ja": "獣竜種",
+            "en": "Brute Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 2,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 191,
+        "name": {
+            "ja": "ドスジャグラス",
+            "en": "Great Jagras"
+        },
+        "tribe": {
+            "ja": "牙竜種",
+            "en": "Fanged Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 2,
+        "MHWI": 1,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 192,
+        "name": {
+            "ja": "プケプケ",
+            "en": "Pukei-Pukei"
+        },
+        "tribe": {
+            "ja": "鳥竜種",
+            "en": "Bird Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 2,
+        "MHWI": 1,
+        "MHR": 1,
+        "MHRS": 1
+    },
+    {
+        "index": 193,
+        "name": {
+            "ja": "プケプケ亜種",
+            "en": "Coral Pukei-Pukei"
+        },
+        "tribe": {
+            "ja": "鳥竜種",
+            "en": "Bird Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 2,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 194,
+        "name": {
+            "ja": "ネルギガンテ",
+            "en": "Nergigante"
+        },
+        "tribe": {
+            "ja": "古龍種",
+            "en": "Elder Dragon"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 2,
+        "MHWI": 1,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 195,
+        "name": {
+            "ja": "悉くを殲ぼす\\nネルギガンテ",
+            "en": "Ruiner Nergigante"
+        },
+        "tribe": {
+            "ja": "古龍種",
+            "en": "Elder Dragon"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 2,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 196,
+        "name": {
+            "ja": "ムフェト・ジーヴァ",
+            "en":"Safi\'jiiva"
+        },
+        "tribe": {
+            "ja": "古龍種",
+            "en": "Elder Dragon"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 2,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 197,
+        "name": {
+            "ja": "ゼノ・ジーヴァ",
+            "en":"Xeno\'jiiva"
+        },
+        "tribe": {
+            "ja": "古龍種",
+            "en": "Elder Dragon"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 2,
+        "MHWI": 1,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 198,
+        "name": {
+            "ja": "ゾラ・マグダラオス",
+            "en": "Zorah Magdaros"
+        },
+        "tribe": {
+            "ja": "古龍種",
+            "en": "Elder Dragon"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 2,
+        "MHWI": 1,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 199,
+        "name": {
+            "ja": "クルルヤック",
+            "en": "Kulu-Ya-Ku"
+        },
+        "tribe": {
+            "ja": "鳥竜種",
+            "en": "Bird Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 2,
+        "MHWI": 1,
+        "MHR": 1,
+        "MHRS": 1
+    },
+    {
+        "index": 200,
+        "name": {
+            "ja": "ジュラトドス",
+            "en": "Jyuratodus"
+        },
+        "tribe": {
+            "ja": "魚竜種",
+            "en": "Piscine Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 2,
+        "MHWI": 1,
+        "MHR": 1,
+        "MHRS": 1
+    },
+    {
+        "index": 201,
+        "name": {
+            "ja": "トビカガチ",
+            "en": "Tobi-Kadachi"
+        },
+        "tribe": {
+            "ja": "牙竜種",
+            "en": "Fanged Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 2,
+        "MHWI": 1,
+        "MHR": 1,
+        "MHRS": 1
+    },
+    {
+        "index": 202,
+        "name": {
+            "ja": "トビカガチ亜種",
+            "en": "Viper Tobi-Kadachi"
+        },
+        "tribe": {
+            "ja": "牙竜種",
+            "en": "Fanged Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 2,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 203,
+        "name": {
+            "ja": "パオウルムー",
+            "en": "Paolumu"
+        },
+        "tribe": {
+            "ja": "飛竜種",
+            "en": "Flying Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 2,
+        "MHWI": 1,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 204,
+        "name": {
+            "ja": "パオウルムー亜種",
+            "en": "Nightshade Paolumu"
+        },
+        "tribe": {
+            "ja": "飛竜種",
+            "en": "Flying Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 2,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 205,
+        "name": {
+            "ja": "レイギエナ",
+            "en": "Legiana"
+        },
+        "tribe": {
+            "ja": "飛竜種",
+            "en": "Flying Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 2,
+        "MHWI": 1,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 206,
+        "name": {
+            "ja": "凍て刺すレイギエナ",
+            "en": "Shrieking Legiana"
+        },
+        "tribe": {
+            "ja": "飛竜種",
+            "en": "Flying Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 2,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 207,
+        "name": {
+            "ja": "ドスギルオス",
+            "en": "Great Girros"
+        },
+        "tribe": {
+            "ja": "牙竜種",
+            "en": "Fanged Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 2,
+        "MHWI": 1,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 208,
+        "name": {
+            "ja": "オドガロン",
+            "en": "Odogaron"
+        },
+        "tribe": {
+            "ja": "牙竜種",
+            "en": "Fanged Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 2,
+        "MHWI": 1,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 209,
+        "name": {
+            "ja": "オドガロン亜種",
+            "en": "Ebony Odogaron"
+        },
+        "tribe": {
+            "ja": "牙竜種",
+            "en": "Fanged Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 2,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 210,
+        "name": {
+            "ja": "ラドバルキン",
+            "en": "Radobaan"
+        },
+        "tribe": {
+            "ja": "獣竜種",
+            "en": "Brute Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 2,
+        "MHWI": 1,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 211,
+        "name": {
+            "ja": "ヴァルハザク",
+            "en": "Vaal Hazak"
+        },
+        "tribe": {
+            "ja": "古龍種",
+            "en": "Elder Dragon"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 2,
+        "MHWI": 1,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 212,
+        "name": {
+            "ja": "死を纏う\\nヴァルハザク",
+            "en": "Blackveil Vaal Hazak"
+        },
+        "tribe": {
+            "ja": "古龍種",
+            "en": "Elder Dragon"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 2,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 213,
+        "name": {
+            "ja": "ドドガマル",
+            "en": "Dodogama"
+        },
+        "tribe": {
+            "ja": "牙竜種",
+            "en": "Fanged Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 2,
+        "MHWI": 1,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 214,
+        "name": {
+            "ja": "マム・タロト",
+            "en": "Kulve Taroth"
+        },
+        "tribe": {
+            "ja": "古龍種",
+            "en": "Elder Dragon"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 2,
+        "MHWI": 1,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 215,
+        "name": {
+            "ja": "バゼルギウス",
+            "en": "Bazelgeuse"
+        },
+        "tribe": {
+            "ja": "飛竜種",
+            "en": "Flying Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 2,
+        "MHWI": 1,
+        "MHR": 1,
+        "MHRS": 1
+    },
+    {
+        "index": 216,
+        "name": {
+            "ja": "紅蓮滾る\\nバゼルギウス",
+            "en": "Seething Bazelgeuse"
+        },
+        "tribe": {
+            "ja": "飛竜種",
+            "en": "Flying Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 2,
+        "MHR": 0,
+        "MHRS": 1
+    },
+    {
+        "index": 217,
+        "name": {
+            "ja": "ツィツィヤック",
+            "en": "Tzitzi-Ya-Ku"
+        },
+        "tribe": {
+            "ja": "鳥竜種",
+            "en": "Bird Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 2,
+        "MHWI": 1,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 218,
+        "name": {
+            "ja": "ブラントドス",
+            "en": "Beotodus"
+        },
+        "tribe": {
+            "ja": "魚竜種",
+            "en": "Piscine Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 2,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 219,
+        "name": {
+            "ja": "バフバロ",
+            "en": "Banbaro"
+        },
+        "tribe": {
+            "ja": "獣竜種",
+            "en": "Brute Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 2,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 220,
+        "name": {
+            "ja": "イヴェルカーナ",
+            "en": "Velkhana"
+        },
+        "tribe": {
+            "ja": "古龍種",
+            "en": "Elder Dragon"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 2,
+        "MHR": 0,
+        "MHRS": 1
+    },
+    {
+        "index": 221,
+        "name": {
+            "ja": "ネロミェール",
+            "en": "Namielle"
+        },
+        "tribe": {
+            "ja": "古龍種",
+            "en": "Elder Dragon"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 2,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 222,
+        "name": {
+            "ja": "アン・イシュワルダ",
+            "en": "Shara Ishvalda"
+        },
+        "tribe": {
+            "ja": "古龍種",
+            "en": "Elder Dragon"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 2,
+        "MHR": 0,
+        "MHRS": 0
+    },
+    {
+        "index": 223,
+        "name": {
+            "ja": "メル・ゼナ",
+            "en": "Malzeno"
+        },
+        "tribe": {
+            "ja": "古龍種",
+            "en": "Elder Dragon"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 2
+    },
+    {
+        "index": 224,
+        "name": {
+            "ja": "原初を刻む\\nメル・ゼナ",
+            "en": "Primordial Malzeno"
+        },
+        "tribe": {
+            "ja": "古龍種",
+            "en": "Elder Dragon"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 2
+    },
+    {
+        "index": 225,
+        "name": {
+            "ja": "ルナガロン",
+            "en": "Lunagaron"
+        },
+        "tribe": {
+            "ja": "牙竜種",
+            "en": "Fanged Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 2
+    },
+    {
+        "index": 226,
+        "name": {
+            "ja": "ガランゴルム",
+            "en": "Garangolm"
+        },
+        "tribe": {
+            "ja": "牙獣種",
+            "en": "Fanged Beast"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 2
+    },
+    {
+        "index": 227,
+        "name": {
+            "ja": "ガイアデルム",
+            "en": "Gaismagorm"
+        },
+        "tribe": {
+            "ja": "古龍種",
+            "en": "Elder Dragon"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 2
+    },
+    {
+        "index": 228,
+        "name": {
+            "ja": "エスピナス",
+            "en": "Espinas"
+        },
+        "tribe": {
+            "ja": "飛竜種",
+            "en": "Flying Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 2
+    },
+    {
+        "index": 229,
+        "name": {
+            "ja": "エスピナス亜種",
+            "en": "Flaming Espinas"
+        },
+        "tribe": {
+            "ja": "飛竜種",
+            "en": "Flying Wyvern"
+        },
+        "MH": 0,
+        "MHG": 0,
+        "MHP": 0,
+        "MH2": 0,
+        "P2nd": 0,
+        "P2G": 0,
+        "MH3": 0,
+        "P3rd": 0,
+        "MH3G": 0,
+        "MH4": 0,
+        "MH4G": 0,
+        "MHX": 0,
+        "MHXX": 0,
+        "MHW": 0,
+        "MHWI": 0,
+        "MHR": 0,
+        "MHRS": 2
+    }
+]
