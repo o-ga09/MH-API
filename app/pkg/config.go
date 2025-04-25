@@ -9,6 +9,7 @@ type Config struct {
 	Port         string `env:"PORT" envDefault:"80"`
 	Database_url string `env:"DATABASE_URL" envDefult:""`
 	ProjectID    string `env:"PROJECTID" envDefault:""`
+	SentryDSN    string `env:"SENTRY_DSN" envDefault:""`
 }
 
 func New() (*Config, error) {
