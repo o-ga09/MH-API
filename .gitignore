@@ -35,3 +35,4 @@ makefile
 .DS_Store
 .env
 *.csv
+*.json
