@@ -30,7 +30,7 @@ func (r *fieldRepository) Save(ctx context.Context, f fields.Field) error {
 	err := r.conn.Save(&field).Error
 	r.conn.Exec("SET foreign_key_checks = 1")
 	if err != nil {
-		return fmt.Errorf(err.Error())
+		return fmt.Errorf("%s", err.Error())
 	}
 	return nil
 }
@@ -43,7 +43,7 @@ func (r *fieldRepository) Remove(ctx context.Context, fieldId string) error {
 	err := r.conn.Delete(&field).Error
 	r.conn.Exec("SET foreign_key_checks = 1")
 	if err != nil {
-		return fmt.Errorf(err.Error())
+		return fmt.Errorf("%s", err.Error())
 	}
 	return nil
 }

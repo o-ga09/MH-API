@@ -71,7 +71,7 @@ func (m *MonsterHandler) GetAll(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"err": "can not get records",
 		})
-		slog.Log(c, middleware.SeverityError, "err", err)
+		slog.Log(c, middleware.SeverityError, "database error", "error", err)
 		return
 	}
 
@@ -148,7 +148,7 @@ func (m *MonsterHandler) GetById(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"err": "can not get records",
 		})
-		slog.Log(c, middleware.SeverityError, "err", err)
+		slog.Log(c, middleware.SeverityError, "database error", "error", err)
 		return
 	}
 
@@ -237,7 +237,7 @@ func (m *MonsterHandler) GetRankingMonster(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"err": "can not get records",
 		})
-		slog.Log(c, middleware.SeverityError, "err", err)
+		slog.Log(c, middleware.SeverityError, "database error", "error", err)
 		return
 	}
 
