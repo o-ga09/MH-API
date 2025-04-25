@@ -32,7 +32,7 @@ resource "google_cloud_run_service" "stg-mh-api" {
             value_from {
               secret_key_ref {
                 name = "DATABASE_URL"
-                key  = 1
+                key  = latest
               }
             }
           }
