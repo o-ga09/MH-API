@@ -2,12 +2,8 @@ name: terraform
 
 on:
   push:
-    branches-ignore:
-      - "**"
-    tags:
-      - "v*"
-    paths:
-      - "**.go"
+    branches:
+      - main
   pull_request:
     paths:
       - "terraform/**"
@@ -133,6 +129,6 @@ jobs:
 
       - name: Terraform Apply
         run: |
-          if [ "${{ startsWith(github.ref, 'refs/tags/') }}" = "true" ]; then
+          if [ "${{ github.ref == 'refs/heads/main' }}" = "true" ]; then
             terraform apply -auto-approve -input=false
           fi
