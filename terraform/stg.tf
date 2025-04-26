@@ -59,7 +59,7 @@ resource "google_cloud_run_service" "stg-mh-api" {
           }
           env {
             name = "SERVICE_NAME"
-            value = "mh-api" `
+            value = "mh-api"
           }
 
           ports {
