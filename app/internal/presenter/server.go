@@ -5,6 +5,7 @@ import (
 	"mh-api/app/internal/presenter/middleware"
 	"mh-api/app/pkg"
 
+	sentrygin "github.com/getsentry/sentry-go/gin"
 	"github.com/gin-gonic/gin"
 )
 
@@ -33,6 +34,7 @@ func NewServer() (*gin.Engine, error) {
 	r.Use(withCtx)
 	r.Use(cors)
 	r.Use(httpLogger)
+	r.Use(sentrygin.New(sentrygin.Options{}))
 
 	// ヘルスチェック
 	v1 := r.Group("/v1")

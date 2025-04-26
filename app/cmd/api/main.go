@@ -1,6 +1,12 @@
 package main
 
-import "mh-api/app/internal/presenter"
+import (
+	"mh-api/app/internal/presenter"
+	"mh-api/app/pkg"
+	"time"
+
+	"github.com/getsentry/sentry-go"
+)
 
 //		@title			MH-API
 //		@version		v0.1.0
@@ -12,6 +18,20 @@ import "mh-api/app/internal/presenter"
 //	 @externalDocs.description  OpenAPI
 //	 @externalDocs.url          https://swagger.io/resources/open-api/
 func main() {
+	cfg, err := pkg.New()
+	if err != nil {
+		panic(err)
+	}
+
+	if err := sentry.Init(sentry.ClientOptions{
+		Dsn:              cfg.SentryDSN,
+		EnableTracing:    true,
+		TracesSampleRate: 1.0,
+	}); err != nil {
+		panic(err)
+	}
+	defer sentry.Flush(2 * time.Second)
+
 	s, err := presenter.NewServer()
 	if err != nil {
 		panic(err)

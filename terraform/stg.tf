@@ -37,13 +37,29 @@ resource "google_cloud_run_service" "stg-mh-api" {
             }
           }
           env {
-            name  = "ENV"
+            name  = "SENTRY_DSN"
             value_from {
               secret_key_ref {
-                name = "ENV"
-                key  = 1
+                name = "SENTRY_DSN"
+                key  = "latest"
               }
             }
+          }
+          env {
+            name = "ENV"
+            value = "prod"
+          }
+          env {
+            name = "LOG_LEVEL"
+            value = "INFO" 
+          }
+          env {
+            name = "GIN_MODE"
+            value = "release" 
+          }
+          env {
+            name = "SERVICE_NAME"
+            value = "mh-api"
           }
 
           ports {
