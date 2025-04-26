@@ -36,3 +36,4 @@ makefile
 .env
 *.csv
 *.json
+!.vscode/*.json
