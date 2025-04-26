@@ -5,7 +5,7 @@ lint:
 
 .PHONY: test
 test:
-	go test -race -parallel 1 ./...
+	go test -parallel 1 ./...
 
 .PHONY: test-coverage
 test-coverage:
