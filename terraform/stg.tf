@@ -47,7 +47,7 @@ resource "google_cloud_run_service" "stg-mh-api" {
           }
           env {
             name = "ENV"
-            value = "prod" `
+            value = "prod"
           }
           env {
             name = "LOG_LEVEL"
