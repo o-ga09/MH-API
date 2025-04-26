@@ -1,10 +1,11 @@
 package main
 
 import (
-	"github.com/getsentry/sentry-go"
-	"time"
 	"mh-api/app/internal/presenter"
 	"mh-api/app/pkg"
+	"time"
+
+	"github.com/getsentry/sentry-go"
 )
 
 //		@title			MH-API
@@ -23,7 +24,9 @@ func main() {
 	}
 
 	if err := sentry.Init(sentry.ClientOptions{
-		Dsn: cfg.SentryDSN,
+		Dsn:              cfg.SentryDSN,
+		EnableTracing:    true,
+		TracesSampleRate: 1.0,
 	}); err != nil {
 		panic(err)
 	}
