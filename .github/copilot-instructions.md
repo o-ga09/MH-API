@@ -18,24 +18,20 @@
 
 ### リポジトリ層のテストの書き方のついて
 
-対象ディレクトリ：`internal/database/mysql`
+対象ディレクトリ：`app/internal/driver/`
 
 ルール：
-- 主キーには、ulidを使用すること
-- テストデータ作成のヘルパー関数を作成する場合は、`CtxFromDB`を使用して直接gormのメソッドを呼び出すこと
 - 外部制約を持つテーブルのテストデータの作成は、関連テーブルのデータも作成すること
-- `internal/pkg`配下のディレクトリに共通処理があるので適宜使用すること
+- `app/internal/pkg`配下のディレクトリに共通処理があるので適宜使用すること
 
 
 以下の例に示すようにしてください。
 
 ```go
 func TestCostRepository_FindByID(t *testing.T) {
-
     // テストごとの準備
-	ctx := context.Background()
-	setupTestDB(ctx)
-	ctx = context.WithValue(ctx, CtxKey, testDB)
+	ctx := t.Context()
+	mysql.SetupTestDB(ctx)
 	testDB.Begin()
 	defer testDB.Rollback()
 
