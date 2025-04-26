@@ -23,14 +23,16 @@ func main() {
 		panic(err)
 	}
 
-	if err := sentry.Init(sentry.ClientOptions{
-		Dsn:              cfg.SentryDSN,
-		EnableTracing:    true,
-		TracesSampleRate: 1.0,
-	}); err != nil {
-		panic(err)
+	if cfg.Env == "PROD" {
+		if err := sentry.Init(sentry.ClientOptions{
+			Dsn:              cfg.SentryDSN,
+			EnableTracing:    true,
+			TracesSampleRate: 1.0,
+		}); err != nil {
+			panic(err)
+		}
+		defer sentry.Flush(2 * time.Second)
 	}
-	defer sentry.Flush(2 * time.Second)
 
 	s, err := presenter.NewServer()
 	if err != nil {
