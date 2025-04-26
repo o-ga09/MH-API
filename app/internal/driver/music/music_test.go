@@ -112,8 +112,6 @@ func Test_musicRepository_Remove(t *testing.T) {
 }
 
 func TestFetchList(t *testing.T) {
-	t.Skip()
-	t.Helper()
 	mysql.BeforeTest()
 	t.Cleanup(mysql.AfetrTest())
 	ctx := context.Background()
@@ -180,7 +178,7 @@ func TestFetchList(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			ctx = context.WithValue(context.Background(), paramKey, tt.args.param)
+			ctx = context.WithValue(context.Background(), param.ParamKey, tt.args.param)
 			s := &musicQueryService{
 				conn: tt.fields.conn,
 			}
@@ -197,8 +195,6 @@ func TestFetchList(t *testing.T) {
 }
 
 func TestFetchRank(t *testing.T) {
-	t.Skip()
-	t.Helper()
 	mysql.BeforeTest()
 	t.Cleanup(mysql.AfetrTest())
 	ctx := context.Background()
@@ -260,7 +256,7 @@ func TestFetchRank(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			ctx = context.WithValue(context.Background(), paramKey, tt.args.param)
+			ctx = context.WithValue(context.Background(), param.ParamKey, tt.args.param)
 			s := &musicQueryService{
 				conn: tt.fields.conn,
 			}

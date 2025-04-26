@@ -51,9 +51,9 @@ func Test_partRepository_Save(t *testing.T) {
 		wantErr bool
 	}{
 		// Test case 1
-		{name: "Save part successfully", fields: fields{conn: conn}, args: args{ctx: context.Background(), p: *part.NewPart("0000000001", "test", "test", "test")}, wantErr: false},
+		{name: "Save part successfully", fields: fields{conn: conn}, args: args{ctx: context.Background(), p: *part.NewPart("0000000001", "test", "test")}, wantErr: false},
 		// Test case 2
-		{name: "Save part with error", fields: fields{conn: conn}, args: args{ctx: context.Background(), p: *part.NewPart("@$%&^#%$&&*%*&)(*)()", "", "", "")}, wantErr: true},
+		{name: "Save part with error", fields: fields{conn: conn}, args: args{ctx: context.Background(), p: *part.NewPart("@$%&^#%$&&*%*&)(*)()", "", "")}, wantErr: true},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
