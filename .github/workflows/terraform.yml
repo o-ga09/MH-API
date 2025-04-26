@@ -43,7 +43,7 @@ jobs:
 
       - name: Build a docker image
         working-directory: ./
-        run: docker build --platform linux/amd64 -t ${{ env.IMAGE }} -f environment/go/Dockerfile --target deploy-api .
+        run: docker build --platform linux/amd64 -t ${{ env.IMAGE }} -f Dockerfile --target deploy-api .
 
       - name: Push the docker image
         run: docker push ${{ env.IMAGE }}
