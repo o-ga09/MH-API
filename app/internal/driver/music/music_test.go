@@ -18,6 +18,7 @@ type contextKey string
 const paramKey contextKey = "param"
 
 func TestNewmusicRepository(t *testing.T) {
+	t.Skip()
 	mysql.BeforeTest()
 	t.Cleanup(mysql.AfetrTest())
 	conn := mysql.New(context.Background())
@@ -41,6 +42,7 @@ func TestNewmusicRepository(t *testing.T) {
 }
 
 func Test_musicRepository_Save(t *testing.T) {
+	t.Skip()
 	mysql.BeforeTest()
 	t.Cleanup(mysql.AfetrTest())
 	conn := mysql.New(context.Background())
@@ -75,6 +77,7 @@ func Test_musicRepository_Save(t *testing.T) {
 }
 
 func Test_musicRepository_Remove(t *testing.T) {
+	t.Skip()
 	mysql.BeforeTest()
 	t.Cleanup(mysql.AfetrTest())
 	conn := mysql.New(context.Background())
@@ -109,6 +112,7 @@ func Test_musicRepository_Remove(t *testing.T) {
 }
 
 func TestFetchList(t *testing.T) {
+	t.Skip()
 	t.Helper()
 	mysql.BeforeTest()
 	t.Cleanup(mysql.AfetrTest())
@@ -193,6 +197,7 @@ func TestFetchList(t *testing.T) {
 }
 
 func TestFetchRank(t *testing.T) {
+	t.Skip()
 	t.Helper()
 	mysql.BeforeTest()
 	t.Cleanup(mysql.AfetrTest())

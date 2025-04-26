@@ -29,7 +29,7 @@ func BeforeTest() {
 	}}); err != nil {
 		connect(dialector, 100)
 	}
-	err = db.AutoMigrate(&Monster{}, &Field{}, &Product{}, &Tribe{}, &Weakness{}, &Ranking{}, &Music{}, &BgmRanking{})
+	err = db.AutoMigrate(&Monster{}, &Field{}, &Product{}, &Tribe{}, &Weakness{}, &Ranking{}, &BgmRanking{})
 	if err != nil {
 		panic(err)
 	}

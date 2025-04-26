@@ -35,7 +35,7 @@ func (r *weaponRepository) Save(ctx context.Context, w weapons.Weapon) error {
 	err := r.conn.Save(&weapon).Error
 	r.conn.Exec("SET foreign_key_checks = 1")
 	if err != nil {
-		return fmt.Errorf(err.Error())
+		return fmt.Errorf("%s", err.Error())
 	}
 	return nil
 }

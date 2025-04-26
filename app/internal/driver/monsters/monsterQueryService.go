@@ -76,6 +76,8 @@ func (s *monsterQueryService) FetchList(ctx context.Context, id string) ([]*mons
 		var t []string
 		var weak_attack []monsters.Weakness_attack
 		var weak_element []monsters.Weakness_element
+		var firstWeaknessAttack, secondWeaknessAttack, firstWeaknesselement, secondWeaknessElement string
+
 		for _, f := range m.Field {
 			l = append(l, f.Name)
 		}
@@ -101,6 +103,13 @@ func (s *monsterQueryService) FetchList(ctx context.Context, id string) ([]*mons
 			})
 		}
 
+		if len(m.Weakness) > 0 {
+			firstWeaknessAttack = m.Weakness[0].FirstWeakAttack
+			secondWeaknessAttack = m.Weakness[0].SecondWeakAttack
+			firstWeaknesselement = m.Weakness[0].FirstWeakElement
+			secondWeaknessElement = m.Weakness[0].SecondWeakElement
+		}
+
 		r := monsters.FetchMonsterListDto{
 			Id:                 m.MonsterId,
 			Name:               m.Name,
@@ -108,10 +117,10 @@ func (s *monsterQueryService) FetchList(ctx context.Context, id string) ([]*mons
 			Location:           l,
 			Category:           m.Tribe.Name_ja,
 			Title:              t,
-			FirstWeak_Attack:   m.Weakness[0].FirstWeakAttack,
-			SecondWeak_Attack:  m.Weakness[0].SecondWeakAttack,
-			FirstWeak_Element:  m.Weakness[0].FirstWeakElement,
-			SecondWeak_Element: m.Weakness[0].SecondWeakElement,
+			FirstWeak_Attack:   firstWeaknessAttack,
+			SecondWeak_Attack:  secondWeaknessAttack,
+			FirstWeak_Element:  firstWeaknesselement,
+			SecondWeak_Element: secondWeaknessElement,
 			Weakness_attack:    weak_attack,
 			Weakness_element:   weak_element,
 		}
