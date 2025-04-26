@@ -99,7 +99,7 @@ func InsertDB(ctx context.Context, batchService *BatchService, data *[][]string,
 		}
 	case "part":
 		for _, r := range *data {
-			m := part.NewPart(r[0], r[1], r[2], r[3])
+			m := part.NewPart(r[0], r[2], r[3])
 			err := batchService.partService.Save(ctx, *m)
 			if err != nil {
 				slog.Log(ctx, middleware.SeverityError, "[Batch Error Occurred]: data Insert to DB", "error message", err)

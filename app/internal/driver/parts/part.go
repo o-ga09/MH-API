@@ -22,7 +22,6 @@ func (r *partRepository) Save(ctx context.Context, p part.Part) error {
 	data := mysql.Part{
 		PartId:      p.GetID(),
 		MonsterId:   p.GetMonsterID(),
-		Name:        p.GetName(),
 		Description: p.GetDescription(),
 	}
 	r.conn.Exec("SET foreign_key_checks = 0")

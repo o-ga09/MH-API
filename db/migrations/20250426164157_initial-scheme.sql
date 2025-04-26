@@ -1,6 +1,4 @@
-CREATE DATABASE ci;
-USE ci;
-
+-- +migrate Up
 CREATE TABLE `monster` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` datetime(3) DEFAULT NULL,
@@ -63,7 +61,6 @@ CREATE TABLE `part` (
   `updated_at` datetime(3) DEFAULT NULL,
   `deleted_at` datetime(3) DEFAULT NULL,
   `part_id` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `monster_id` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `decription` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`,`part_id`),
@@ -169,3 +166,16 @@ CREATE TABLE `bgm_ranking` (
   KEY `idx_music_id` (`music_id`),
   CONSTRAINT `fk_bgm_ranking` FOREIGN KEY (`music_id`) REFERENCES `music` (`music_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- +migrate Down
+DROP TABLE IF EXISTS `field`;
+DROP TABLE IF EXISTS `item`;
+DROP TABLE IF EXISTS `monster`;
+DROP TABLE IF EXISTS `music`;
+DROP TABLE IF EXISTS `part`;
+DROP TABLE IF EXISTS `product`;
+DROP TABLE IF EXISTS `tribe`;
+DROP TABLE IF EXISTS `weakness`;
+DROP TABLE IF EXISTS `weapon`;
+DROP TABLE IF EXISTS `ranking`;
+DROP TABLE IF EXISTS `bgm_ranking`;

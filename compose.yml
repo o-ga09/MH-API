@@ -15,16 +15,16 @@ services:
     command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     volumes:
       - mh-api-dbsrv01-data:/var/lib/mysql
-      - ./mysql/conf.d/my.cnf:/etc/mysql/conf.d/my.cnf
-      - ./mysql/sql:/docker-entrypoint-initdb.d
+      - ./db/mysql/conf.d/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./db/mysql/sql:/docker-entrypoint-initdb.d
     ports:
       - "3306:3306"
   mh-api-srv:
     depends_on:
       - mh-api-dbsrv01
     build:
-      context: ../
-      dockerfile: environment/go/Dockerfile
+      context: .
+      dockerfile: Dockerfile
       target: dev
     container_name: mh-api-srv
     environment:
@@ -34,7 +34,7 @@ services:
       ALLOW_URL: "*"
       SENTRY_DSN: sentry
     volumes:
-      - ../:/app
+      - ./:/app
     ports:
       - "8080:8080"
 volumes:
