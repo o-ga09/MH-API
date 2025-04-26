@@ -74,7 +74,7 @@ func (h *BGMHandler) GetBGM(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"err": "can not get records",
 		})
-		slog.Log(c, middleware.SeverityError, "err", err)
+		slog.Log(c, middleware.SeverityError, "error occurred", "error", err)
 		return
 	}
 
@@ -143,7 +143,7 @@ func (h *BGMHandler) GetBGMById(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"err": "can not get records",
 		})
-		slog.Log(c, middleware.SeverityError, "err", err)
+		slog.Log(c, middleware.SeverityError, "error occurred", "error", err)
 		return
 	}
 
@@ -204,7 +204,7 @@ func (h *BGMHandler) GetRankingBGM(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"err": "can not get records",
 		})
-		slog.Log(c, middleware.SeverityError, "err", err)
+		slog.Log(c, middleware.SeverityError, "error occurred", "error", err)
 		return
 	}
 

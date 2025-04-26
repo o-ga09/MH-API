@@ -1,5 +1,5 @@
 #API用コンテナに含めるバイナリを作成するコンテナ
-FROM golang:1.22-bullseye as deploy-builder
+FROM golang:1.24-bullseye as deploy-builder
 
 WORKDIR /app
 
@@ -10,7 +10,7 @@ COPY . .
 RUN go build -trimpath -ldflags "-w -s" -o main ./app/cmd/api/main.go
 
 #バッチ用コンテナに含めるバイナリを作成するコンテナ
-FROM golang:1.22-bullseye as deploy-batch-builder
+FROM golang:1.24-bullseye as deploy-batch-builder
 
 WORKDIR /app
 
@@ -22,9 +22,10 @@ RUN go build -trimpath -ldflags "-w -s" -o main ./app/cmd/batch/main.go
 
 #-----------------------------------------------
 #API デプロイ用コンアテナ
-FROM centos:centos7 as deploy-api
+FROM ubuntu:22.04 as deploy-api
 
-RUN yum -y update
+RUN apt update
+RUN apt-get install -y ca-certificates openssl
 
 EXPOSE "8080"
 
@@ -46,11 +47,10 @@ CMD ["./main"]
 
 #-----------------------------------------------
 #ローカル開発環境で利用するホットリロード環境
-FROM golang:1.22 as dev
+FROM golang:1.24 as dev
 
 WORKDIR /app
 
 COPY go.mod go.sum ./
-
-RUN go install github.com/cosmtrek/air@latest
+RUN go install github.com/air-verse/air@latest
 CMD ["air"]

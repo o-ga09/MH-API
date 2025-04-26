@@ -27,7 +27,7 @@ func (r *itemRepository) Save(ctx context.Context, m items.Item) error {
 	}
 	r.conn.Exec("SET foreign_key_checks = 0")
 	if err := r.conn.Save(&i).Error; err != nil {
-		return fmt.Errorf(err.Error())
+		return fmt.Errorf("%s", err.Error())
 	}
 	r.conn.Exec("SET foreign_key_checks = 1")
 	return nil
