@@ -35,9 +35,10 @@ CMD ["./main"]
 
 #-----------------------------------------------
 #バッチ デプロイ用コンアテナ
-FROM centos:centos7 as deploy-batch
+FROM ubuntu:22.04 as deploy-batch
 
-RUN yum -y update
+RUN apt update
+RUN apt-get install -y ca-certificates openssl
 
 EXPOSE "8080"
 
