@@ -6,6 +6,7 @@ require (
 	cloud.google.com/go/logging v1.8.1
 	cloud.google.com/go/storage v1.30.1
 	github.com/caarlos0/env/v6 v6.10.1
+	github.com/getsentry/sentry-go v0.32.0
 	github.com/gin-contrib/cors v1.4.0
 	github.com/gin-gonic/gin v1.9.0
 	github.com/go-playground/validator/v10 v10.11.2
@@ -71,8 +72,8 @@ require (
 	go.opentelemetry.io/otel v1.19.0 // indirect
 	golang.org/x/arch v0.0.0-20210923205945-b76863e36670 // indirect
 	golang.org/x/crypto v0.14.0 // indirect
-	golang.org/x/sys v0.13.0 // indirect
-	golang.org/x/text v0.13.0 // indirect
+	golang.org/x/sys v0.18.0 // indirect
+	golang.org/x/text v0.14.0 // indirect
 	golang.org/x/tools v0.7.0 // indirect
 	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect
 	google.golang.org/protobuf v1.31.0 // indirect
