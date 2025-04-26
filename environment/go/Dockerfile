@@ -22,9 +22,10 @@ RUN go build -trimpath -ldflags "-w -s" -o main ./app/cmd/batch/main.go
 
 #-----------------------------------------------
 #API デプロイ用コンアテナ
-FROM centos:centos7 as deploy-api
+FROM ubuntu:22.04 as deploy
 
-RUN yum -y update
+RUN apt update
+RUN apt-get install -y ca-certificates openssl
 
 EXPOSE "8080"
 
