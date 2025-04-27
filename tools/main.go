@@ -19,6 +19,11 @@ type Monster struct {
 		Ja string
 		En string
 	}
+	BGM struct {
+		Ja string
+		En string
+	}
+	Yid     string
 	MH      int
 	MHG     int
 	MHP     int
@@ -50,11 +55,12 @@ const (
 	TRIBE_DATA_SQL   = "INSERT INTO tribe (tribe_id, name_ja, name_en, monster_id, created_at, updated_at) VALUES (%s, \"%s\", \"%s\", %s, now(), now());"
 	PRODUCT_DATA_SQL = "INSERT INTO product (product_id, name, monster_id, created_at, updated_at) VALUES (%s, \"%s\", %s, now(), now());"
 	RANKING_DATA_SQL = "INSERT INTO ranking (ranking, vote_year, monster_id, created_at, updated_at) VALUES (%s, \"%s\", %s, now(), now());"
+	BGM_DATA_SQL     = "INSERT INTO music (monster_id, music_id, name, image_url, created_at, updated_at) VALUES (%s,%s, \"%s\", \"%s\", now(), now());"
 )
 
 func main() {
 	// Example usage
-	filePath := "MH_DATA_1.json"
+	filePath := "MH_DATA_5.json"
 	data, err := ReadJsonFile(filePath)
 	if err != nil {
 		panic(err)
@@ -87,17 +93,18 @@ func main() {
 		}
 	}
 
-	_, _, productSQL, _ := CreateSQL(monsters)
-	for _, sql := range productSQL {
+	_, _, _, _, bgmSQL := CreateSQL(monsters)
+	for _, sql := range bgmSQL {
 		fmt.Println(sql)
 	}
 }
 
-func CreateSQL(m []Monster) ([]string, []string, []string, []string) {
+func CreateSQL(m []Monster) ([]string, []string, []string, []string, []string) {
 	var monsterSQL []string
 	var tribeSQL []string
 	var productSQL []string
 	var rankingSQL []string
+	var bgmSQL []string
 	for i, item := range m {
 		index := strconv.Itoa(item.Index)
 		no := strconv.Itoa(i + 1)
@@ -156,8 +163,9 @@ func CreateSQL(m []Monster) ([]string, []string, []string, []string) {
 			productSQL = append(productSQL, fmt.Sprintf(PRODUCT_DATA_SQL, "17", "MHRS", index))
 		}
 		rankingSQL = append(rankingSQL, fmt.Sprintf(RANKING_DATA_SQL, rank, "2024", index))
+		bgmSQL = append(bgmSQL, fmt.Sprintf(BGM_DATA_SQL, index, no, item.BGM.Ja, item.Yid))
 	}
-	return monsterSQL, tribeSQL, productSQL, rankingSQL
+	return monsterSQL, tribeSQL, productSQL, rankingSQL, bgmSQL
 }
 
 func ReadJsonFile(filePath string) ([]map[string]interface{}, error) {
