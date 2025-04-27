@@ -52,14 +52,5 @@ func NewServer() (*gin.Engine, error) {
 		monsters.GET("/:id", monsterHandler.GetById)
 	}
 
-	// BGM検索
-	bgm := v1.Group("/bgms")
-	bgmHandler := di.InitBGMHandler()
-	{
-		bgm.GET("", bgmHandler.GetBGM)
-		bgm.GET("/:id", bgmHandler.GetBGMById)
-		bgm.GET("/ranking", bgmHandler.GetRankingBGM)
-	}
-
 	return r, nil
 }

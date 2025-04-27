@@ -1,6 +1,7 @@
 package monster
 
 import (
+	"fmt"
 	"log/slog"
 
 	"mh-api/app/internal/presenter/middleware"
@@ -13,6 +14,8 @@ import (
 	"golang.org/x/net/context"
 	"gorm.io/gorm"
 )
+
+const YOUTUBE_URL = "https://www.youtube.com/watch?v="
 
 type MonsterHandler struct {
 	monsterService monsters.MonsterService
@@ -80,6 +83,7 @@ func (m *MonsterHandler) GetAll(c *gin.Context) {
 		var wa []*Weakness_attack
 		var we []*Weakness_element
 		var ranking []*Ranking
+		var bgm []*Music
 		for _, w := range r.Weakness_attack {
 			wa = append(wa, &Weakness_attack{
 				Slashing: w.Slashing,
@@ -103,11 +107,19 @@ func (m *MonsterHandler) GetAll(c *gin.Context) {
 				VoteYear: r.VoteYear,
 			})
 		}
+		for _, bg := range r.BGM {
+			bgm = append(bgm, &Music{
+				Name: bg.GetName(),
+				Url:  fmt.Sprintf("%s%s", YOUTUBE_URL, bg.GetURL()),
+			})
+		}
 
 		monsters = append(monsters, ResponseJson{
 			Id:                 r.Id,
 			Name:               r.Name,
-			AnotherName:        pkg.StrToPtr(r.Description),
+			Description:        pkg.StrToPtr(r.Description),
+			AnotherName:        pkg.StrToPtr(r.AnotherName),
+			NameEn:             pkg.StrToPtr(r.NameEn),
 			Location:           pkg.StrArrayToPtr(r.Location),
 			Category:           r.Category,
 			Title:              pkg.StrArrayToPtr(r.Title),
@@ -118,6 +130,8 @@ func (m *MonsterHandler) GetAll(c *gin.Context) {
 			Weakness_attack:    wa,
 			Weakness_element:   we,
 			Ranking:            ranking,
+			ImageUrl:           pkg.CreateImageURL(r.Id),
+			BGM:                bgm,
 		})
 	}
 	response := Monsters{
@@ -166,6 +180,7 @@ func (m *MonsterHandler) GetById(c *gin.Context) {
 		var wa []*Weakness_attack
 		var we []*Weakness_element
 		var ranking []*Ranking
+		var bgm []*Music
 		for _, w := range r.Weakness_attack {
 			wa = append(wa, &Weakness_attack{
 				Slashing: w.Slashing,
@@ -191,6 +206,13 @@ func (m *MonsterHandler) GetById(c *gin.Context) {
 			})
 		}
 
+		for _, bg := range r.BGM {
+			bgm = append(bgm, &Music{
+				Name: bg.GetName(),
+				Url:  fmt.Sprintf("%s%s", YOUTUBE_URL, bg.GetURL()),
+			})
+		}
+
 		monster = ResponseJson{
 			Id:                 r.Id,
 			Name:               r.Name,
@@ -206,6 +228,7 @@ func (m *MonsterHandler) GetById(c *gin.Context) {
 			Weakness_element:   we,
 			Ranking:            ranking,
 			ImageUrl:           pkg.CreateImageURL(r.Id),
+			BGM:                bgm,
 		}
 	}
 	response := Monster{

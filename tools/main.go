@@ -3,10 +3,13 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"os"
 	"reflect"
 	"strconv"
 	"unicode"
+
+	"github.com/PuerkitoBio/goquery"
 )
 
 type Monster struct {
@@ -19,6 +22,11 @@ type Monster struct {
 		Ja string
 		En string
 	}
+	BGM struct {
+		Ja string
+		En string
+	}
+	Yid     string
 	MH      int
 	MHG     int
 	MHP     int
@@ -50,54 +58,68 @@ const (
 	TRIBE_DATA_SQL   = "INSERT INTO tribe (tribe_id, name_ja, name_en, monster_id, created_at, updated_at) VALUES (%s, \"%s\", \"%s\", %s, now(), now());"
 	PRODUCT_DATA_SQL = "INSERT INTO product (product_id, name, monster_id, created_at, updated_at) VALUES (%s, \"%s\", %s, now(), now());"
 	RANKING_DATA_SQL = "INSERT INTO ranking (ranking, vote_year, monster_id, created_at, updated_at) VALUES (%s, \"%s\", %s, now(), now());"
+	BGM_DATA_SQL     = "INSERT INTO music (monster_id, music_id, name, image_url, created_at, updated_at) VALUES (%s,%s, \"%s\", \"%s\", now(), now());"
 )
 
 func main() {
-	// Example usage
-	filePath := "MH_DATA_1.json"
-	data, err := ReadJsonFile(filePath)
+	// Path to the HTML file
+	filePath := "/Users/taichi/Downloads/MH素材/wiki.html"
+
+	// Parse the HTML file
+	monsters, err := parseHTMLFile(filePath)
 	if err != nil {
-		panic(err)
+		log.Fatalf("Error parsing HTML file: %v", err)
 	}
 
-	filePath1 := "MH_DATA_4.json"
-	data1, err := ReadJsonFile(filePath1)
-	if err != nil {
-		panic(err)
+	// Print the extracted monsters
+	for _, monster := range monsters {
+		fmt.Printf("%s, %s, %s, %s\n", monster.Name, monster.Anothername, monster.NameEn, monster.First)
 	}
+	// filePath := "MH_DATA_5.json"
+	// data, err := ReadJsonFile(filePath)
+	// if err != nil {
+	// 	panic(err)
+	// }
 
-	monsters, err := MapToStruct[Monster](data)
-	if err != nil {
-		panic(err)
-	}
+	// filePath1 := "MH_DATA_4.json"
+	// data1, err := ReadJsonFile(filePath1)
+	// if err != nil {
+	// 	panic(err)
+	// }
 
-	ranking, err := MapToStruct[Ranking](data1)
-	if err != nil {
-		panic(err)
-	}
+	// monsters, err := MapToStruct[Monster](data)
+	// if err != nil {
+	// 	panic(err)
+	// }
 
-	for i, r := range monsters {
-		for _, v := range ranking {
-			if r.Name.Ja == v.Name {
-				monsters[i].Ranking.Name = v.Name
-				monsters[i].Ranking.Rank = v.Rank
-				monsters[i].Ranking.Video_url = v.Video_url
-				break
-			}
-		}
-	}
+	// ranking, err := MapToStruct[Ranking](data1)
+	// if err != nil {
+	// 	panic(err)
+	// }
 
-	_, _, productSQL, _ := CreateSQL(monsters)
-	for _, sql := range productSQL {
-		fmt.Println(sql)
-	}
+	// for i, r := range monsters {
+	// 	for _, v := range ranking {
+	// 		if r.Name.Ja == v.Name {
+	// 			monsters[i].Ranking.Name = v.Name
+	// 			monsters[i].Ranking.Rank = v.Rank
+	// 			monsters[i].Ranking.Video_url = v.Video_url
+	// 			break
+	// 		}
+	// 	}
+	// }
+
+	// _, _, _, _, bgmSQL := CreateSQL(monsters)
+	// for _, sql := range bgmSQL {
+	// 	fmt.Println(sql)
+	// }
 }
 
-func CreateSQL(m []Monster) ([]string, []string, []string, []string) {
+func CreateSQL(m []Monster) ([]string, []string, []string, []string, []string) {
 	var monsterSQL []string
 	var tribeSQL []string
 	var productSQL []string
 	var rankingSQL []string
+	var bgmSQL []string
 	for i, item := range m {
 		index := strconv.Itoa(item.Index)
 		no := strconv.Itoa(i + 1)
@@ -156,8 +178,9 @@ func CreateSQL(m []Monster) ([]string, []string, []string, []string) {
 			productSQL = append(productSQL, fmt.Sprintf(PRODUCT_DATA_SQL, "17", "MHRS", index))
 		}
 		rankingSQL = append(rankingSQL, fmt.Sprintf(RANKING_DATA_SQL, rank, "2024", index))
+		bgmSQL = append(bgmSQL, fmt.Sprintf(BGM_DATA_SQL, index, no, item.BGM.Ja, item.Yid))
 	}
-	return monsterSQL, tribeSQL, productSQL, rankingSQL
+	return monsterSQL, tribeSQL, productSQL, rankingSQL, bgmSQL
 }
 
 func ReadJsonFile(filePath string) ([]map[string]interface{}, error) {
@@ -290,4 +313,64 @@ func mapToNestedStruct(data map[string]interface{}, result reflect.Value) error 
 		}
 	}
 	return nil
+}
+
+// Monster represents a single monster entry from the table
+type MonsterTable struct {
+	Name        string
+	Anothername string
+	NameEn      string
+	First       string
+}
+
+// parseHTMLFile parses the HTML file and extracts the monster list
+func parseHTMLFile(filePath string) ([]MonsterTable, error) {
+	// Open the HTML file
+	file, err := os.Open(filePath)
+	if err != nil {
+		return nil, fmt.Errorf("failed to open file: %w", err)
+	}
+	defer file.Close()
+
+	// Load the HTML document
+	doc, err := goquery.NewDocumentFromReader(file)
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse HTML: %w", err)
+	}
+
+	var monsters []MonsterTable
+
+	// Find the "モンスター一覧" table
+	doc.Find("table").Each(func(index int, table *goquery.Selection) {
+		// Check if the table contains the "モンスター一覧" header
+		header := table.Find("th").First().Text()
+		if header == "モンスター名" {
+			// Iterate over table rows
+			table.Find("tr").Each(func(rowIndex int, row *goquery.Selection) {
+				// Extract columns (cells)
+				cells := row.Find("td")
+
+				nameEn := "-"
+				first := "-"
+				if cells.Length() >= 2 { // Ensure there are at least 2 columns
+					name := cells.Eq(0).Text()
+					anothername := cells.Eq(1).Text()
+					if cells.Length() >= 3 {
+						nameEn = cells.Eq(2).Text()
+					}
+					if cells.Length() >= 4 {
+						first = cells.Eq(3).Text()
+					}
+					monsters = append(monsters, MonsterTable{
+						Name:        name,
+						Anothername: anothername,
+						NameEn:      nameEn,
+						First:       first,
+					})
+				}
+			})
+		}
+	})
+
+	return monsters, nil
 }

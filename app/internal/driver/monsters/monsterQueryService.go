@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	param "mh-api/app/internal/controller/monster"
+	"mh-api/app/internal/domain/music"
 	"mh-api/app/internal/driver/mysql"
 	"mh-api/app/internal/service/monsters"
 	"strings"
@@ -50,19 +51,19 @@ func (s *monsterQueryService) FetchList(ctx context.Context, id string) ([]*mons
 	}
 
 	if p.Sort == "1" {
-		sort = "monster_id ASC"
-	} else {
 		sort = "monster_id DESC"
+	} else {
+		sort = "monster_id ASC"
 	}
 
 	if id != "" {
-		result = s.conn.Model(&monster).Preload("Weakness").Preload("Field").Preload("Tribe").Preload("Product").Preload("Ranking").Where("monster_id = ? ", id).Find(&monster)
+		result = s.conn.Model(&monster).Preload("Weakness").Preload("Field").Preload("Tribe").Preload("Product").Preload("Ranking").Preload("BGM").Where("monster_id = ? ", id).Find(&monster)
 	} else if where_clade != "" && p.MonsterIds != "" {
-		result = s.conn.Model(&monster).Preload("Weakness").Preload("Field").Preload("Tribe").Preload("Product").Preload("Ranking").Where(where_clade, monsterIds).Limit(limit).Offset(offset).Order(sort).Find(&monster)
+		result = s.conn.Model(&monster).Preload("Weakness").Preload("Field").Preload("Tribe").Preload("Product").Preload("Ranking").Preload("BGM").Where(where_clade, monsterIds).Limit(limit).Offset(offset).Order(sort).Find(&monster)
 	} else if where_clade != "" {
-		result = s.conn.Model(&monster).Preload("Weakness").Preload("Field").Preload("Tribe").Preload("Product").Preload("Ranking").Where(where_clade).Limit(limit).Offset(offset).Order(sort).Find(&monster)
+		result = s.conn.Model(&monster).Preload("Weakness").Preload("Field").Preload("Tribe").Preload("Product").Preload("Ranking").Preload("BGM").Where(where_clade).Limit(limit).Offset(offset).Order(sort).Find(&monster)
 	} else {
-		result = s.conn.Model(&monster).Preload("Weakness").Preload("Field").Preload("Tribe").Preload("Product").Preload("Ranking").Limit(limit).Offset(offset).Order(sort).Find(&monster)
+		result = s.conn.Model(&monster).Preload("Weakness").Preload("Field").Preload("Tribe").Preload("Product").Preload("Ranking").Preload("BGM").Limit(limit).Offset(offset).Order(sort).Find(&monster)
 	}
 
 	if result.Error != nil {
@@ -78,6 +79,7 @@ func (s *monsterQueryService) FetchList(ctx context.Context, id string) ([]*mons
 		var weak_element []monsters.Weakness_element
 		var firstWeaknessAttack, secondWeaknessAttack, firstWeaknesselement, secondWeaknessElement string
 		var ranking []monsters.Ranking
+		var bgm []music.Music
 
 		for _, f := range m.Field {
 			l = append(l, f.Name)
@@ -111,6 +113,10 @@ func (s *monsterQueryService) FetchList(ctx context.Context, id string) ([]*mons
 			})
 		}
 
+		for _, b := range m.BGM {
+			bgm = append(bgm, *music.NewMusic(b.MonsterId, b.MonsterId, b.Name, b.Url))
+		}
+
 		if len(m.Weakness) > 0 {
 			firstWeaknessAttack = m.Weakness[0].FirstWeakAttack
 			secondWeaknessAttack = m.Weakness[0].SecondWeakAttack
@@ -122,6 +128,8 @@ func (s *monsterQueryService) FetchList(ctx context.Context, id string) ([]*mons
 			Id:                 m.MonsterId,
 			Name:               m.Name,
 			Description:        m.Description,
+			AnotherName:        m.AnotherName,
+			NameEn:             m.NameEn,
 			Location:           l,
 			Category:           m.Tribe.Name_ja,
 			Title:              t,
@@ -132,6 +140,7 @@ func (s *monsterQueryService) FetchList(ctx context.Context, id string) ([]*mons
 			Weakness_attack:    weak_attack,
 			Weakness_element:   weak_element,
 			Ranking:            ranking,
+			BGM:                bgm,
 		}
 		res = append(res, &r)
 	}

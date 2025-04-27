@@ -6,18 +6,18 @@ type Music struct {
 	musicId   MusicId
 	monsterId monsters.MonsterId
 	name      MusicName
-	imageUrl  MusicImageUrl
+	Url       MusicUrl
 }
 
-func newMusic(MusicId MusicId, monsterId monsters.MonsterId, name MusicName, imageUrl MusicImageUrl) *Music {
-	return &Music{MusicId, monsterId, name, imageUrl}
+func newMusic(musicId MusicId, monsterId monsters.MonsterId, name MusicName, url MusicUrl) *Music {
+	return &Music{musicId, monsterId, name, url}
 }
 
-func NewMusic(musicId string, monsterId string, name string, imageUrl string) *Music {
+func NewMusic(musicId string, monsterId string, name string, url string) *Music {
 	return newMusic(
 		MusicId{value: musicId},
 		monsters.MonsterId{Value: monsterId},
 		MusicName{value: name},
-		MusicImageUrl{value: imageUrl},
+		MusicUrl{value: url},
 	)
 }

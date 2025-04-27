@@ -1,15 +1,15 @@
 -- モンスター
-INSERT INTO monster (monster_id, name, created_at, updated_at) VALUES 
- (1, "リオレイア", now(), now()),
- (2, "リオレイア亜種", now(), now()),
- (3, "リオレイア希少種", now(), now()),
- (4, "紫毒姫リオレイア", now(), now()),
- (5, "ヌシ・リオレイア", now(), now()),
- (6, "リオレウス", now(), now()),
- (7, "リオレウス亜種", now(), now()),
- (8, "リオレウス希少種", now(), now()),
- (9, "黒炎王リオレウス", now(), now()),
- (10, "ヌシ・リオレウス", now(), now());
+INSERT INTO monster (monster_id, name, another_name, created_at, updated_at) VALUES 
+ (1, "リオレイア", "雌火竜", now(), now()),
+ (2, "リオレイア亜種", "桜火竜", now(), now()),
+ (3, "リオレイア希少種", "金火竜", now(), now()),
+ (4, "紫毒姫リオレイア", "", now(), now()),
+ (5, "ヌシ・リオレイア", "雌火竜（二つ名）", now(), now()),
+ (6, "リオレウス", "火竜", now(), now()),
+ (7, "リオレウス亜種", "蒼火竜", now(), now()),
+ (8, "リオレウス希少種", "銀火竜", now(), now()),
+ (9, "黒炎王リオレウス", "火竜（二つ名）", now(), now()),
+ (10, "ヌシ・リオレウス", "火竜（ヌシ）", now(), now());
  -- 種族
 INSERT INTO tribe (tribe_id, name_ja, name_en, monster_id, created_at, updated_at) VALUES
  (1, "飛竜種", "Flying Wyvern", 1, now(), now()),
@@ -124,4 +124,15 @@ INSERT INTO ranking (ranking, vote_year, monster_id, created_at, updated_at) VAL
  (74, "2024", 8, now(), now()),
  (66, "2024", 9, now(), now()),
  (149, "2024", 10, now(), now());
- 
+-- BGM
+ INSERT INTO music (monster_id, music_id, name, url, created_at, updated_at) VALUES 
+ (1,1, "太古の律動/リオレイア", "jLgjOfT_elA", now(), now()),
+ (2,2, "太古の律動/リオレイア", "jLgjOfT_elA", now(), now()),
+ (3,3, "塔に現る幻/キリン", "u9VKblxtzyQ", now(), now()),
+ (4,4, "決意を胸に灯して", "27tXmZCFtzU", now(), now()),
+ (5,5, "采邑追われし赤き咆哮", "D5Qp6zUa828", now(), now()),
+ (6,6, "咆哮/リオレウス", "R7OgSwgUQSQ", now(), now()),
+ (7,7, "咆哮/リオレウス", "R7OgSwgUQSQ", now(), now()),
+ (8,8, "塔に現る幻/キリン", "u9VKblxtzyQ", now(), now()),
+ (9,9, "決意を胸に灯して", "27tXmZCFtzU", now(), now()),
+ (10,10, "采邑追われし赤き咆哮", "D5Qp6zUa828", now(), now());

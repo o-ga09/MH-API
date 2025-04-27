@@ -3,9 +3,11 @@ package monsters
 type Monsters []Monster
 
 type Monster struct {
-	id   MonsterId
-	name MonsterName
-	desc MonsterDesc
+	id          MonsterId
+	name        MonsterName
+	desc        MonsterDesc
+	anotherName MonsterName
+	nameEn      MonsterName
 }
 
 func newMonster(id MonsterId, name MonsterName, desc MonsterDesc) Monster {
@@ -34,4 +36,12 @@ func (m *Monster) GetName() string {
 
 func (m *Monster) GetDesc() string {
 	return m.desc.Value
+}
+
+func (m *Monster) GetAnotherName() string {
+	return m.anotherName.Value
+}
+
+func (m *Monster) GetNameEn() string {
+	return m.nameEn.Value
 }
