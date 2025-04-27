@@ -1,5 +1,8 @@
 # MH-API (Monster Hunter API)
 
+This API Endpoint is 
+https://mh-api-v2-8aznfogc.an.gateway.dev
+
 MH-API is an open source project that provides strategy information and other information related to the Monster Hunter series. This project is developing an API to allow players of the Monster Hunter series to access game strategy information, etc., and to easily create secondary works and tools, etc.
 
 ## Introduction

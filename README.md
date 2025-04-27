@@ -1,5 +1,8 @@
 # MH-API (モンスターハンター API)
 
+APIのエンドポイントは、こちら
+https://mh-api-v2-8aznfogc.an.gateway.dev
+
 [![lint and test](https://github.com/o-ga09/MH-API/actions/workflows/lint_and_test.yml/badge.svg)](https://github.com/o-ga09/MH-API/actions/workflows/lint_and_test.yml)
 
 English version is [here](./README_EN.md)
