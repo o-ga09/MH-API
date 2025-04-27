@@ -124,4 +124,15 @@ INSERT INTO ranking (ranking, vote_year, monster_id, created_at, updated_at) VAL
  (74, "2024", 8, now(), now()),
  (66, "2024", 9, now(), now()),
  (149, "2024", 10, now(), now());
- 
+-- BGM
+ INSERT INTO music (monster_id, music_id, name, image_url, created_at, updated_at) VALUES 
+ (1,1, "太古の律動/リオレイア", "jLgjOfT_elA", now(), now()),
+ (2,2, "太古の律動/リオレイア", "jLgjOfT_elA", now(), now()),
+ (3,3, "塔に現る幻/キリン", "u9VKblxtzyQ", now(), now()),
+ (4,4, "決意を胸に灯して", "27tXmZCFtzU", now(), now()),
+ (5,5, "采邑追われし赤き咆哮", "D5Qp6zUa828", now(), now()),
+ (6,6, "咆哮/リオレウス", "R7OgSwgUQSQ", now(), now()),
+ (7,7, "咆哮/リオレウス", "R7OgSwgUQSQ", now(), now()),
+ (8,8, "塔に現る幻/キリン", "u9VKblxtzyQ", now(), now()),
+ (9,9, "決意を胸に灯して", "27tXmZCFtzU", now(), now()),
+ (10,10, "采邑追われし赤き咆哮", "D5Qp6zUa828", now(), now());
