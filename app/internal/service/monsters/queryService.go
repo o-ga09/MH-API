@@ -1,6 +1,9 @@
 package monsters
 
-import "context"
+import (
+	"context"
+	"mh-api/app/internal/domain/music"
+)
 
 //go:generate moq -out queryService_mock.go . MonsterQueryService
 type MonsterQueryService interface {
@@ -23,6 +26,7 @@ type FetchMonsterListDto struct {
 	Weakness_attack    []Weakness_attack  `json:"weakness___attack,omitempty"`
 	Weakness_element   []Weakness_element `json:"weakness___element,omitempty"`
 	Ranking            []Ranking          `json:"ranking,omitempty"`
+	BGM                []music.Music      `json:"bgm,omitempty"`
 }
 
 type Weakness_attack struct {
