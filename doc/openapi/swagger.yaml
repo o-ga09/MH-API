@@ -5,28 +5,6 @@ definitions:
       item:
         $ref: '#/definitions/item.ResponseJson'
     type: object
-  item.Items:
-    properties:
-      items:
-        items:
-          $ref: '#/definitions/item.ResponseJson'
-        type: array
-      limit:
-        type: integer
-      offset:
-        type: integer
-      total:
-        type: integer
-    type: object
-  item.ItemsByMonster:
-    properties:
-      item_id:
-        type: string
-      item_name:
-        type: string
-      monsters:
-        $ref: '#/definitions/monster.Monsters'
-    type: object
   item.MessageResponse:
     properties:
       message:
@@ -202,55 +180,6 @@ info:
   title: MH-API
   version: v0.1.0
 paths:
-  /items:
-    get:
-      consumes:
-      - application/json
-      description: アイテムを検索して、条件に合致するアイテムを複数件取得する
-      parameters:
-      - in: query
-        name: item_name
-        type: string
-      - in: query
-        name: item_name_kana
-        type: string
-      - in: query
-        name: limit
-        type: integer
-      - in: query
-        name: monster_id
-        type: string
-      - in: query
-        name: offset
-        type: integer
-      - in: query
-        name: order
-        type: integer
-      - in: query
-        name: sort
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/item.Items'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/item.MessageResponse'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/item.MessageResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/item.MessageResponse'
-      summary: アイテム検索（複数件）
-      tags:
-      - アイテム検索
   /items/:itemId:
     get:
       consumes:
@@ -298,55 +227,6 @@ paths:
           schema:
             $ref: '#/definitions/item.MessageResponse'
       summary: アイテム検索（1件）
-      tags:
-      - アイテム検索
-  /items/monsters:
-    get:
-      consumes:
-      - application/json
-      description: 指定のアイテムが取得可能なモンスターの一覧
-      parameters:
-      - in: query
-        name: item_name
-        type: string
-      - in: query
-        name: item_name_kana
-        type: string
-      - in: query
-        name: limit
-        type: integer
-      - in: query
-        name: monster_id
-        type: string
-      - in: query
-        name: offset
-        type: integer
-      - in: query
-        name: order
-        type: integer
-      - in: query
-        name: sort
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/item.ItemsByMonster'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/item.MessageResponse'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/item.MessageResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/item.MessageResponse'
-      summary: アイテム検索（モンスター別）
       tags:
       - アイテム検索
   /monsters:
