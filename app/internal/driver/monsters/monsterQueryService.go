@@ -128,6 +128,8 @@ func (s *monsterQueryService) FetchList(ctx context.Context, id string) ([]*mons
 			Id:                 m.MonsterId,
 			Name:               m.Name,
 			Description:        m.Description,
+			AnotherName:        m.AnotherName,
+			NameEn:             m.NameEn,
 			Location:           l,
 			Category:           m.Tribe.Name_ja,
 			Title:              t,
