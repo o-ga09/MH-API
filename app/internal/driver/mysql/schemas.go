@@ -7,6 +7,8 @@ type Monster struct {
 	MonsterId   string      `gorm:"column:monster_id;primaryKey;type:varchar(10);not null;index"`
 	Name        string      `gorm:"column:name;type:varchar(255)"`
 	Description string      `gorm:"column:description;type:varchar(255)"`
+	AnotherName string      `gorm:"column:another_name;type:varchar(255)"`
+	NameEn      string      `gorm:"column:name_en;type:varchar(255)"`
 	Weakness    []*Weakness `gorm:"foreignKey:monster_id;references:monster_id"`
 	Tribe       *Tribe      `gorm:"foreignKey:monster_id;references:monster_id"`
 	Product     []*Product  `gorm:"foreignKey:monster_id;references:monster_id"`
