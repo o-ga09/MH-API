@@ -21,9 +21,6 @@ var _ MonsterQueryService = &MonsterQueryServiceMock{}
 //			FetchListFunc: func(ctx context.Context, id string) ([]*FetchMonsterListDto, error) {
 //				panic("mock out the FetchList method")
 //			},
-//			FetchRankFunc: func(ctx context.Context) ([]*FetchMonsterRankingDto, error) {
-//				panic("mock out the FetchRank method")
-//			},
 //		}
 //
 //		// use mockedMonsterQueryService in code that requires MonsterQueryService
@@ -34,9 +31,6 @@ type MonsterQueryServiceMock struct {
 	// FetchListFunc mocks the FetchList method.
 	FetchListFunc func(ctx context.Context, id string) ([]*FetchMonsterListDto, error)
 
-	// FetchRankFunc mocks the FetchRank method.
-	FetchRankFunc func(ctx context.Context) ([]*FetchMonsterRankingDto, error)
-
 	// calls tracks calls to the methods.
 	calls struct {
 		// FetchList holds details about calls to the FetchList method.
@@ -46,14 +40,8 @@ type MonsterQueryServiceMock struct {
 			// ID is the id argument value.
 			ID string
 		}
-		// FetchRank holds details about calls to the FetchRank method.
-		FetchRank []struct {
-			// Ctx is the ctx argument value.
-			Ctx context.Context
-		}
 	}
 	lockFetchList sync.RWMutex
-	lockFetchRank sync.RWMutex
 }
 
 // FetchList calls FetchListFunc.
@@ -89,37 +77,5 @@ func (mock *MonsterQueryServiceMock) FetchListCalls() []struct {
 	mock.lockFetchList.RLock()
 	calls = mock.calls.FetchList
 	mock.lockFetchList.RUnlock()
-	return calls
-}
-
-// FetchRank calls FetchRankFunc.
-func (mock *MonsterQueryServiceMock) FetchRank(ctx context.Context) ([]*FetchMonsterRankingDto, error) {
-	if mock.FetchRankFunc == nil {
-		panic("MonsterQueryServiceMock.FetchRankFunc: method is nil but MonsterQueryService.FetchRank was just called")
-	}
-	callInfo := struct {
-		Ctx context.Context
-	}{
-		Ctx: ctx,
-	}
-	mock.lockFetchRank.Lock()
-	mock.calls.FetchRank = append(mock.calls.FetchRank, callInfo)
-	mock.lockFetchRank.Unlock()
-	return mock.FetchRankFunc(ctx)
-}
-
-// FetchRankCalls gets all the calls that were made to FetchRank.
-// Check the length with:
-//
-//	len(mockedMonsterQueryService.FetchRankCalls())
-func (mock *MonsterQueryServiceMock) FetchRankCalls() []struct {
-	Ctx context.Context
-} {
-	var calls []struct {
-		Ctx context.Context
-	}
-	mock.lockFetchRank.RLock()
-	calls = mock.calls.FetchRank
-	mock.lockFetchRank.RUnlock()
 	return calls
 }

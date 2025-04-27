@@ -5,15 +5,16 @@ import "context"
 //go:generate moq -out queryService_mock.go . MonsterQueryService
 type MonsterQueryService interface {
 	FetchList(ctx context.Context, id string) ([]*FetchMonsterListDto, error)
-	FetchRank(ctx context.Context) ([]*FetchMonsterRankingDto, error)
 }
 
 type FetchMonsterListDto struct {
 	Id                 string             `json:"id,omitempty"`
 	Name               string             `json:"name,omitempty"`
+	NameEnglish        *string            `json:"name_english,omitempty"`
 	Description        string             `json:"description,omitempty"`
 	Location           []string           `json:"location,omitempty"`
 	Category           string             `json:"category,omitempty"`
+	CategoryEnglish    *string            `json:"category_english,omitempty"`
 	Title              []string           `json:"title,omitempty"`
 	FirstWeak_Attack   string             `json:"first_weak_attack,omitempty"`
 	SecondWeak_Attack  string             `json:"second_weak_attack,omitempty"`
@@ -21,16 +22,7 @@ type FetchMonsterListDto struct {
 	SecondWeak_Element string             `json:"second_weak_element,omitempty"`
 	Weakness_attack    []Weakness_attack  `json:"weakness___attack,omitempty"`
 	Weakness_element   []Weakness_element `json:"weakness___element,omitempty"`
-}
-
-type FetchMonsterRankingDto struct {
-	Id          string    `json:"id,omitempty"`
-	Name        string    `json:"name,omitempty"`
-	Description string    `json:"description,omitempty"`
-	Location    []string  `json:"location,omitempty"`
-	Category    string    `json:"category,omitempty"`
-	Title       []string  `json:"title,omitempty"`
-	Ranking     []Ranking `json:"ranking,omitempty"`
+	Ranking            []Ranking          `json:"ranking,omitempty"`
 }
 
 type Weakness_attack struct {

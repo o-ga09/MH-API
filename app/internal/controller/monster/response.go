@@ -11,45 +11,25 @@ type Monster struct {
 	Monster ResponseJson `json:"monster"`
 }
 
-type MonsterRanking struct {
-	Ranking []ResponseRankingJson `json:"ranking,omitempty"`
-}
-
 type MessageResponse struct {
 	Message string `json:"message"`
 }
 
 type ResponseJson struct {
-	Id                 string             `json:"monster_id,omitempty"`
-	Name               string             `json:"name,omitempty"`
-	Desc               string             `json:"desc,omitempty"`
-	Location           Location           `json:"location,omitempty"`
-	Category           string             `json:"category,omitempty"`
-	Title              Title              `json:"title,omitempty"`
-	FirstWeak_Attack   string             `json:"first_weak_attack,omitempty"`
-	SecondWeak_Attack  string             `json:"second_weak_attack,omitempty"`
-	FirstWeak_Element  string             `json:"first_weak_element,omitempty"`
-	SecondWeak_Element string             `json:"second_weak_element,omitempty"`
-	Weakness_attack    []Weakness_attack  `json:"weakness_attack,omitempty"`
-	Weakness_element   []Weakness_element `json:"weakness_element,omitempty"`
-}
-
-type ResponseRankingJson struct {
-	Id       string    `json:"monster_id,omitempty"`
-	Name     string    `json:"name,omitempty"`
-	Desc     string    `json:"desc,omitempty"`
-	Location Location  `json:"location,omitempty"`
-	Category string    `json:"category,omitempty"`
-	Title    Title     `json:"title,omitempty"`
-	Ranking  []Ranking `json:"ranking,omitempty"`
-}
-
-type Location struct {
-	Name []string
-}
-
-type Title struct {
-	Name []string
+	Id                 string              `json:"monster_id,omitempty"`          // モンスターID
+	Name               string              `json:"name,omitempty"`                // モンスター名
+	AnotherName        *string             `json:"another_name,omitempty"`        // モンスター別名
+	Location           []*string           `json:"location,omitempty"`            // モンスターの出現場所
+	Category           string              `json:"category,omitempty"`            // モンスターのカテゴリ
+	Title              []*string           `json:"title,omitempty"`               // 登場作品
+	FirstWeak_Attack   *string             `json:"first_weak_attack,omitempty"`   // 最有効弱点
+	SecondWeak_Attack  *string             `json:"second_weak_attack,omitempty"`  // 2番目に有効な弱点
+	FirstWeak_Element  *string             `json:"first_weak_element,omitempty"`  // 最有効属性
+	SecondWeak_Element *string             `json:"second_weak_element,omitempty"` // 2番目に有効な属性
+	Weakness_attack    []*Weakness_attack  `json:"weakness_attack,omitempty"`     // 弱点肉質（物理）
+	Weakness_element   []*Weakness_element `json:"weakness_element,omitempty"`    // 弱点肉質（属性）
+	Ranking            []*Ranking          `json:"ranking,omitempty"`             // 人気投票ランキング
+	ImageUrl           *string             `json:"image_url,omitempty"`           // モンスター画像URL
 }
 
 type Weakness_attack struct {
