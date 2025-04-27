@@ -10,6 +10,7 @@ type Config struct {
 	Database_url string `env:"DATABASE_URL" envDefult:""`
 	ProjectID    string `env:"PROJECTID" envDefault:""`
 	SentryDSN    string `env:"SENTRY_DSN" envDefault:""`
+	CloudFlareR2 string `env:"CLOUDFLARE_R2" envDefault:""`
 }
 
 func New() (*Config, error) {
