@@ -125,7 +125,7 @@ INSERT INTO ranking (ranking, vote_year, monster_id, created_at, updated_at) VAL
  (66, "2024", 9, now(), now()),
  (149, "2024", 10, now(), now());
 -- BGM
- INSERT INTO music (monster_id, music_id, name, image_url, created_at, updated_at) VALUES 
+ INSERT INTO music (monster_id, music_id, name, url, created_at, updated_at) VALUES 
  (1,1, "太古の律動/リオレイア", "jLgjOfT_elA", now(), now()),
  (2,2, "太古の律動/リオレイア", "jLgjOfT_elA", now(), now()),
  (3,3, "塔に現る幻/キリン", "u9VKblxtzyQ", now(), now()),
