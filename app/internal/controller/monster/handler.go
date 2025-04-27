@@ -117,7 +117,9 @@ func (m *MonsterHandler) GetAll(c *gin.Context) {
 		monsters = append(monsters, ResponseJson{
 			Id:                 r.Id,
 			Name:               r.Name,
-			AnotherName:        pkg.StrToPtr(r.Description),
+			Description:        pkg.StrToPtr(r.Description),
+			AnotherName:        pkg.StrToPtr(r.AnotherName),
+			NameEn:             pkg.StrToPtr(r.NameEn),
 			Location:           pkg.StrArrayToPtr(r.Location),
 			Category:           r.Category,
 			Title:              pkg.StrArrayToPtr(r.Title),
