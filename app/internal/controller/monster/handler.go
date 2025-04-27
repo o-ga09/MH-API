@@ -77,10 +77,11 @@ func (m *MonsterHandler) GetAll(c *gin.Context) {
 
 	monsters := []ResponseJson{}
 	for _, r := range res {
-		var wa []Weakness_attack
-		var we []Weakness_element
+		var wa []*Weakness_attack
+		var we []*Weakness_element
+		var ranking []*Ranking
 		for _, w := range r.Weakness_attack {
-			wa = append(wa, Weakness_attack{
+			wa = append(wa, &Weakness_attack{
 				Slashing: w.Slashing,
 				Blow:     w.Blow,
 				Bullet:   w.Bullet,
@@ -88,7 +89,7 @@ func (m *MonsterHandler) GetAll(c *gin.Context) {
 		}
 
 		for _, w := range r.Weakness_element {
-			we = append(we, Weakness_element{
+			we = append(we, &Weakness_element{
 				Fire:    w.Fire,
 				Water:   w.Water,
 				Thunder: w.Thunder,
@@ -96,19 +97,27 @@ func (m *MonsterHandler) GetAll(c *gin.Context) {
 				Dragon:  w.Dragon,
 			})
 		}
+		for _, r := range r.Ranking {
+			ranking = append(ranking, &Ranking{
+				Ranking:  r.Ranking,
+				VoteYear: r.VoteYear,
+			})
+		}
+
 		monsters = append(monsters, ResponseJson{
 			Id:                 r.Id,
 			Name:               r.Name,
-			Desc:               r.Description,
-			Location:           Location{Name: r.Location},
+			AnotherName:        pkg.StrToPtr(r.Description),
+			Location:           pkg.StrArrayToPtr(r.Location),
 			Category:           r.Category,
-			Title:              Title{Name: r.Title},
-			FirstWeak_Attack:   r.FirstWeak_Attack,
-			FirstWeak_Element:  r.FirstWeak_Element,
-			SecondWeak_Attack:  r.SecondWeak_Attack,
-			SecondWeak_Element: r.SecondWeak_Element,
+			Title:              pkg.StrArrayToPtr(r.Title),
+			FirstWeak_Attack:   pkg.StrToPtr(r.FirstWeak_Attack),
+			FirstWeak_Element:  pkg.StrToPtr(r.FirstWeak_Element),
+			SecondWeak_Attack:  pkg.StrToPtr(r.SecondWeak_Attack),
+			SecondWeak_Element: pkg.StrToPtr(r.SecondWeak_Element),
 			Weakness_attack:    wa,
 			Weakness_element:   we,
+			Ranking:            ranking,
 		})
 	}
 	response := Monsters{
@@ -154,10 +163,11 @@ func (m *MonsterHandler) GetById(c *gin.Context) {
 
 	monster := ResponseJson{}
 	for _, r := range res {
-		var wa []Weakness_attack
-		var we []Weakness_element
+		var wa []*Weakness_attack
+		var we []*Weakness_element
+		var ranking []*Ranking
 		for _, w := range r.Weakness_attack {
-			wa = append(wa, Weakness_attack{
+			wa = append(wa, &Weakness_attack{
 				Slashing: w.Slashing,
 				Blow:     w.Blow,
 				Bullet:   w.Bullet,
@@ -165,7 +175,7 @@ func (m *MonsterHandler) GetById(c *gin.Context) {
 		}
 
 		for _, w := range r.Weakness_element {
-			we = append(we, Weakness_element{
+			we = append(we, &Weakness_element{
 				Fire:    w.Fire,
 				Water:   w.Water,
 				Thunder: w.Thunder,
@@ -173,96 +183,33 @@ func (m *MonsterHandler) GetById(c *gin.Context) {
 				Dragon:  w.Dragon,
 			})
 		}
+
+		for _, rank := range r.Ranking {
+			ranking = append(ranking, &Ranking{
+				Ranking:  rank.Ranking,
+				VoteYear: rank.VoteYear,
+			})
+		}
+
 		monster = ResponseJson{
 			Id:                 r.Id,
 			Name:               r.Name,
-			Desc:               r.Description,
-			Location:           Location{Name: r.Location},
+			AnotherName:        pkg.StrToPtr(r.Description),
+			Location:           pkg.StrArrayToPtr(r.Location),
 			Category:           r.Category,
-			Title:              Title{Name: r.Title},
-			FirstWeak_Attack:   r.FirstWeak_Attack,
-			FirstWeak_Element:  r.FirstWeak_Element,
-			SecondWeak_Attack:  r.SecondWeak_Attack,
-			SecondWeak_Element: r.SecondWeak_Element,
+			Title:              pkg.StrArrayToPtr(r.Title),
+			FirstWeak_Attack:   pkg.StrToPtr(r.FirstWeak_Attack),
+			FirstWeak_Element:  pkg.StrToPtr(r.FirstWeak_Element),
+			SecondWeak_Attack:  pkg.StrToPtr(r.SecondWeak_Attack),
+			SecondWeak_Element: pkg.StrToPtr(r.SecondWeak_Element),
 			Weakness_attack:    wa,
 			Weakness_element:   we,
+			Ranking:            ranking,
+			ImageUrl:           pkg.CreateImageURL(r.Id),
 		}
 	}
 	response := Monster{
 		Monster: monster,
-	}
-	c.JSON(http.StatusOK, response)
-}
-
-// GetRankingMonster godoc
-// @Summary モンスター人気投票結果検索
-// @Description 人気投票ランキングの結果を検索する
-// @Tags モンスター検索
-// @Accept json
-// @Produce json
-// @Param request query RequestParam true  "クエリパラメータ"
-// @Success 200 {object} Monsters
-// @Failure      400  {object}  MessageResponse
-// @Failure      404  {object}  MessageResponse
-// @Failure      500  {object}  MessageResponse
-// @Router /monsters/ranking [get]
-func (m *MonsterHandler) GetRankingMonster(c *gin.Context) {
-	var param RequestRankingParam
-	err := c.ShouldBindQuery(&param)
-	if err != nil {
-		slog.Log(c, middleware.SeverityError, "param marshal error", "error message", err)
-		c.JSON(http.StatusBadRequest, MessageResponse{Message: "BAD REQUEST"})
-		return
-	}
-
-	if param.Limit == 0 {
-		param.Limit = 100
-	}
-	validate := pkg.GetValidator()
-	err = validate.Struct(&param)
-	if err != nil {
-		slog.Log(c, middleware.SeverityError, "validation error", "error message", err)
-		c.JSON(http.StatusBadRequest, MessageResponse{Message: "BAD REQUEST"})
-		return
-	}
-
-	ctx := context.WithValue(c.Request.Context(), "param", param)
-	res, err := m.monsterService.FetchMonsterRanking(ctx)
-
-	if err == gorm.ErrRecordNotFound {
-		slog.Log(c, middleware.SeverityError, "Record Not Found", "error message", err)
-		c.JSON(http.StatusNotFound, MessageResponse{Message: "NOT FOUND"})
-		return
-	} else if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"err": "can not get records",
-		})
-		slog.Log(c, middleware.SeverityError, "database error", "error", err)
-		return
-	}
-
-	monsters := []ResponseRankingJson{}
-	for _, r := range res {
-		var rankings []Ranking
-		for _, rank := range r.Ranking {
-			ranking := Ranking{
-				Ranking:  rank.Ranking,
-				VoteYear: rank.VoteYear,
-			}
-			rankings = append(rankings, ranking)
-		}
-		monsters = append(monsters, ResponseRankingJson{
-			Id:       r.Id,
-			Name:     r.Name,
-			Desc:     r.Description,
-			Location: Location{Name: r.Location},
-			Category: r.Category,
-			Title:    Title{Name: r.Title},
-			Ranking:  rankings,
-		})
-	}
-	response := MonsterRanking{
-		Ranking: monsters,
 	}
 	c.JSON(http.StatusOK, response)
 }
