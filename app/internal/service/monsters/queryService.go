@@ -15,6 +15,8 @@ type FetchMonsterListDto struct {
 	Name               string             `json:"name,omitempty"`
 	NameEnglish        *string            `json:"name_english,omitempty"`
 	Description        string             `json:"description,omitempty"`
+	AnotherName        string             `json:"another_name,omitempty"`
+	NameEn             string             `json:"name_en,omitempty"`
 	Location           []string           `json:"location,omitempty"`
 	Category           string             `json:"category,omitempty"`
 	CategoryEnglish    *string            `json:"category_english,omitempty"`
