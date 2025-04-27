@@ -12,6 +12,7 @@ type Monster struct {
 	Product     []*Product  `gorm:"foreignKey:monster_id;references:monster_id"`
 	Field       []*Field    `gorm:"foreignKey:monster_id;references:monster_id"`
 	Ranking     []*Ranking  `gorm:"foreignKey:monster_id;references:monster_id"`
+	BGM         []*Music    `gorm:"foreignKey:monster_id;references:monster_id"`
 }
 
 type Field struct {
