@@ -51,9 +51,9 @@ func (s *monsterQueryService) FetchList(ctx context.Context, id string) ([]*mons
 	}
 
 	if p.Sort == "1" {
-		sort = "monster_id ASC"
-	} else {
 		sort = "monster_id DESC"
+	} else {
+		sort = "monster_id ASC"
 	}
 
 	if id != "" {
