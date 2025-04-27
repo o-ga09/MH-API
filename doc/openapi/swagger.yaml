@@ -1,12 +1,5 @@
 basePath: /v1
 definitions:
-  app_internal_controller_music.Ranking:
-    properties:
-      ranking:
-        type: string
-      vote_year:
-        type: string
-    type: object
   item.Item:
     properties:
       item:
@@ -46,13 +39,6 @@ definitions:
       item_name:
         type: string
     type: object
-  monster.Location:
-    properties:
-      name:
-        items:
-          type: string
-        type: array
-    type: object
   monster.MessageResponse:
     properties:
       message:
@@ -76,42 +62,78 @@ definitions:
       total:
         type: integer
     type: object
-  monster.ResponseJson:
+  monster.Music:
     properties:
-      category:
-        type: string
-      desc:
-        type: string
-      first_weak_attack:
-        type: string
-      first_weak_element:
-        type: string
-      location:
-        $ref: '#/definitions/monster.Location'
-      monster_id:
-        type: string
       name:
         type: string
+      url:
+        type: string
+    type: object
+  monster.Ranking:
+    properties:
+      ranking:
+        type: string
+      vote_year:
+        type: string
+    type: object
+  monster.ResponseJson:
+    properties:
+      another_name:
+        description: モンスター別名
+        type: string
+      bgm:
+        description: BGM
+        items:
+          $ref: '#/definitions/monster.Music'
+        type: array
+      category:
+        description: モンスターのカテゴリ
+        type: string
+      first_weak_attack:
+        description: 最有効弱点
+        type: string
+      first_weak_element:
+        description: 最有効属性
+        type: string
+      image_url:
+        description: モンスター画像URL
+        type: string
+      location:
+        description: モンスターの出現場所
+        items:
+          type: string
+        type: array
+      monster_id:
+        description: モンスターID
+        type: string
+      name:
+        description: モンスター名
+        type: string
+      ranking:
+        description: 人気投票ランキング
+        items:
+          $ref: '#/definitions/monster.Ranking'
+        type: array
       second_weak_attack:
+        description: 2番目に有効な弱点
         type: string
       second_weak_element:
+        description: 2番目に有効な属性
         type: string
       title:
-        $ref: '#/definitions/monster.Title'
+        description: 登場作品
+        items:
+          type: string
+        type: array
       weakness_attack:
+        description: 弱点肉質（物理）
         items:
           $ref: '#/definitions/monster.Weakness_attack'
         type: array
       weakness_element:
+        description: 弱点肉質（属性）
         items:
           $ref: '#/definitions/monster.Weakness_element'
-        type: array
-    type: object
-  monster.Title:
-    properties:
-      name:
-        items:
-          type: string
         type: array
     type: object
   monster.Weakness_attack:
@@ -134,64 +156,6 @@ definitions:
       thunder:
         type: string
       water:
-        type: string
-    type: object
-  music.BGM:
-    properties:
-      bgm:
-        $ref: '#/definitions/music.ResponseJson'
-    type: object
-  music.BGMRankings:
-    properties:
-      limit:
-        type: integer
-      offset:
-        type: integer
-      ranking:
-        items:
-          $ref: '#/definitions/music.ResponseRankingJson'
-        type: array
-      total:
-        type: integer
-    type: object
-  music.BGMs:
-    properties:
-      bgm:
-        items:
-          $ref: '#/definitions/music.ResponseJson'
-        type: array
-      limit:
-        type: integer
-      offset:
-        type: integer
-      total:
-        type: integer
-    type: object
-  music.MessageResponse:
-    properties:
-      message:
-        type: string
-    type: object
-  music.ResponseJson:
-    properties:
-      music_id:
-        type: string
-      name:
-        type: string
-      url:
-        type: string
-    type: object
-  music.ResponseRankingJson:
-    properties:
-      music_id:
-        type: string
-      name:
-        type: string
-      ranking:
-        items:
-          $ref: '#/definitions/app_internal_controller_music.Ranking'
-        type: array
-      url:
         type: string
     type: object
   weapon.MessageResponse:
@@ -238,153 +202,6 @@ info:
   title: MH-API
   version: v0.1.0
 paths:
-  /bgms:
-    get:
-      consumes:
-      - application/json
-      description: モンスターのBGMを検索して、条件に合致するモンスターのBGMを複数件取得する
-      parameters:
-      - in: query
-        name: limit
-        type: integer
-      - in: query
-        name: monster_id
-        type: string
-      - in: query
-        name: name
-        type: string
-      - in: query
-        name: name_kana
-        type: string
-      - in: query
-        name: offset
-        type: integer
-      - in: query
-        name: order
-        type: integer
-      - in: query
-        name: sort
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/music.BGMs'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/music.MessageResponse'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/music.MessageResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/music.MessageResponse'
-      summary: BGM検索（複数件）
-      tags:
-      - BGM検索
-  /bgms/:bgmid:
-    get:
-      consumes:
-      - application/json
-      description: モンスターのBGMを検索して、条件に合致するモンスターのBGMを1件取得する
-      parameters:
-      - in: query
-        name: limit
-        type: integer
-      - in: query
-        name: monster_id
-        type: string
-      - in: query
-        name: name
-        type: string
-      - in: query
-        name: name_kana
-        type: string
-      - in: query
-        name: offset
-        type: integer
-      - in: query
-        name: order
-        type: integer
-      - in: query
-        name: sort
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/music.BGM'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/music.MessageResponse'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/music.MessageResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/music.MessageResponse'
-      summary: BGM検索（1件）
-      tags:
-      - BGM検索
-  /bgms/ranking:
-    get:
-      consumes:
-      - application/json
-      description: 人気投票ランキングの結果を検索する
-      parameters:
-      - in: query
-        name: limit
-        type: integer
-      - in: query
-        name: monster_id
-        type: string
-      - in: query
-        name: name
-        type: string
-      - in: query
-        name: name_kana
-        type: string
-      - in: query
-        name: offset
-        type: integer
-      - in: query
-        name: order
-        type: integer
-      - in: query
-        name: sort
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/music.BGMRankings'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/music.MessageResponse'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/music.MessageResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/music.MessageResponse'
-      summary: BGM人気投票結果検索
-      tags:
-      - BGM検索
   /items:
     get:
       consumes:
@@ -605,49 +422,6 @@ paths:
           schema:
             $ref: '#/definitions/monster.MessageResponse'
       summary: モンスター検索（1件）
-      tags:
-      - モンスター検索
-  /monsters/ranking:
-    get:
-      consumes:
-      - application/json
-      description: 人気投票ランキングの結果を検索する
-      parameters:
-      - in: query
-        name: MonsterIds
-        type: string
-      - in: query
-        name: MonsterName
-        type: string
-      - in: query
-        name: limit
-        type: integer
-      - in: query
-        name: offset
-        type: integer
-      - in: query
-        name: sort
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/monster.Monsters'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/monster.MessageResponse'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/monster.MessageResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/monster.MessageResponse'
-      summary: モンスター人気投票結果検索
       tags:
       - モンスター検索
   /weapons:

@@ -19,240 +19,6 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/bgms": {
-            "get": {
-                "description": "モンスターのBGMを検索して、条件に合致するモンスターのBGMを複数件取得する",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "BGM検索"
-                ],
-                "summary": "BGM検索（複数件）",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "name": "limit",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "name": "monster_id",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "name": "name",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "name": "name_kana",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "name": "offset",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "name": "order",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "name": "sort",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/music.BGMs"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/music.MessageResponse"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/music.MessageResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/music.MessageResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/bgms/:bgmid": {
-            "get": {
-                "description": "モンスターのBGMを検索して、条件に合致するモンスターのBGMを1件取得する",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "BGM検索"
-                ],
-                "summary": "BGM検索（1件）",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "name": "limit",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "name": "monster_id",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "name": "name",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "name": "name_kana",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "name": "offset",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "name": "order",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "name": "sort",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/music.BGM"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/music.MessageResponse"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/music.MessageResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/music.MessageResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/bgms/ranking": {
-            "get": {
-                "description": "人気投票ランキングの結果を検索する",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "BGM検索"
-                ],
-                "summary": "BGM人気投票結果検索",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "name": "limit",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "name": "monster_id",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "name": "name",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "name": "name_kana",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "name": "offset",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "name": "order",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "name": "sort",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/music.BGMRankings"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/music.MessageResponse"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/music.MessageResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/music.MessageResponse"
-                        }
-                    }
-                }
-            }
-        },
         "/items": {
             "get": {
                 "description": "アイテムを検索して、条件に合致するアイテムを複数件取得する",
@@ -604,74 +370,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/monsters/ranking": {
-            "get": {
-                "description": "人気投票ランキングの結果を検索する",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "モンスター検索"
-                ],
-                "summary": "モンスター人気投票結果検索",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "name": "MonsterIds",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "name": "MonsterName",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "name": "limit",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "name": "offset",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "name": "sort",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/monster.Monsters"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/monster.MessageResponse"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/monster.MessageResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/monster.MessageResponse"
-                        }
-                    }
-                }
-            }
-        },
         "/weapons": {
             "get": {
                 "description": "武器を検索して、条件に合致する武器を複数件取得する",
@@ -830,17 +528,6 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "app_internal_controller_music.Ranking": {
-            "type": "object",
-            "properties": {
-                "ranking": {
-                    "type": "string"
-                },
-                "vote_year": {
-                    "type": "string"
-                }
-            }
-        },
         "item.Item": {
             "type": "object",
             "properties": {
@@ -902,17 +589,6 @@ const docTemplate = `{
                 }
             }
         },
-        "monster.Location": {
-            "type": "object",
-            "properties": {
-                "name": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                }
-            }
-        },
         "monster.MessageResponse": {
             "type": "object",
             "properties": {
@@ -949,60 +625,107 @@ const docTemplate = `{
                 }
             }
         },
-        "monster.ResponseJson": {
+        "monster.Music": {
             "type": "object",
             "properties": {
-                "category": {
-                    "type": "string"
-                },
-                "desc": {
-                    "type": "string"
-                },
-                "first_weak_attack": {
-                    "type": "string"
-                },
-                "first_weak_element": {
-                    "type": "string"
-                },
-                "location": {
-                    "$ref": "#/definitions/monster.Location"
-                },
-                "monster_id": {
-                    "type": "string"
-                },
                 "name": {
                     "type": "string"
                 },
+                "url": {
+                    "type": "string"
+                }
+            }
+        },
+        "monster.Ranking": {
+            "type": "object",
+            "properties": {
+                "ranking": {
+                    "type": "string"
+                },
+                "vote_year": {
+                    "type": "string"
+                }
+            }
+        },
+        "monster.ResponseJson": {
+            "type": "object",
+            "properties": {
+                "another_name": {
+                    "description": "モンスター別名",
+                    "type": "string"
+                },
+                "bgm": {
+                    "description": "BGM",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/monster.Music"
+                    }
+                },
+                "category": {
+                    "description": "モンスターのカテゴリ",
+                    "type": "string"
+                },
+                "first_weak_attack": {
+                    "description": "最有効弱点",
+                    "type": "string"
+                },
+                "first_weak_element": {
+                    "description": "最有効属性",
+                    "type": "string"
+                },
+                "image_url": {
+                    "description": "モンスター画像URL",
+                    "type": "string"
+                },
+                "location": {
+                    "description": "モンスターの出現場所",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "monster_id": {
+                    "description": "モンスターID",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "モンスター名",
+                    "type": "string"
+                },
+                "ranking": {
+                    "description": "人気投票ランキング",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/monster.Ranking"
+                    }
+                },
                 "second_weak_attack": {
+                    "description": "2番目に有効な弱点",
                     "type": "string"
                 },
                 "second_weak_element": {
+                    "description": "2番目に有効な属性",
                     "type": "string"
                 },
                 "title": {
-                    "$ref": "#/definitions/monster.Title"
+                    "description": "登場作品",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 },
                 "weakness_attack": {
+                    "description": "弱点肉質（物理）",
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/monster.Weakness_attack"
                     }
                 },
                 "weakness_element": {
+                    "description": "弱点肉質（属性）",
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/monster.Weakness_element"
-                    }
-                }
-            }
-        },
-        "monster.Title": {
-            "type": "object",
-            "properties": {
-                "name": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
                     }
                 }
             }
@@ -1037,96 +760,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "water": {
-                    "type": "string"
-                }
-            }
-        },
-        "music.BGM": {
-            "type": "object",
-            "properties": {
-                "bgm": {
-                    "$ref": "#/definitions/music.ResponseJson"
-                }
-            }
-        },
-        "music.BGMRankings": {
-            "type": "object",
-            "properties": {
-                "limit": {
-                    "type": "integer"
-                },
-                "offset": {
-                    "type": "integer"
-                },
-                "ranking": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/music.ResponseRankingJson"
-                    }
-                },
-                "total": {
-                    "type": "integer"
-                }
-            }
-        },
-        "music.BGMs": {
-            "type": "object",
-            "properties": {
-                "bgm": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/music.ResponseJson"
-                    }
-                },
-                "limit": {
-                    "type": "integer"
-                },
-                "offset": {
-                    "type": "integer"
-                },
-                "total": {
-                    "type": "integer"
-                }
-            }
-        },
-        "music.MessageResponse": {
-            "type": "object",
-            "properties": {
-                "message": {
-                    "type": "string"
-                }
-            }
-        },
-        "music.ResponseJson": {
-            "type": "object",
-            "properties": {
-                "music_id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "url": {
-                    "type": "string"
-                }
-            }
-        },
-        "music.ResponseRankingJson": {
-            "type": "object",
-            "properties": {
-                "music_id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "ranking": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/app_internal_controller_music.Ranking"
-                    }
-                },
-                "url": {
                     "type": "string"
                 }
             }
