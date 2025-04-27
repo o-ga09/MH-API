@@ -18,9 +18,6 @@ var _ Repository = &RepositoryMock{}
 //
 //		// make and configure a mocked Repository
 //		mockedRepository := &RepositoryMock{
-//			GetFunc: func(ctx context.Context, monsterId string) (Musics, error) {
-//				panic("mock out the Get method")
-//			},
 //			RemoveFunc: func(ctx context.Context, monsterId string) error {
 //				panic("mock out the Remove method")
 //			},
@@ -34,9 +31,6 @@ var _ Repository = &RepositoryMock{}
 //
 //	}
 type RepositoryMock struct {
-	// GetFunc mocks the Get method.
-	GetFunc func(ctx context.Context, monsterId string) (Musics, error)
-
 	// RemoveFunc mocks the Remove method.
 	RemoveFunc func(ctx context.Context, monsterId string) error
 
@@ -45,13 +39,6 @@ type RepositoryMock struct {
 
 	// calls tracks calls to the methods.
 	calls struct {
-		// Get holds details about calls to the Get method.
-		Get []struct {
-			// Ctx is the ctx argument value.
-			Ctx context.Context
-			// MonsterId is the monsterId argument value.
-			MonsterId string
-		}
 		// Remove holds details about calls to the Remove method.
 		Remove []struct {
 			// Ctx is the ctx argument value.
@@ -67,45 +54,8 @@ type RepositoryMock struct {
 			M Music
 		}
 	}
-	lockGet    sync.RWMutex
 	lockRemove sync.RWMutex
 	lockSave   sync.RWMutex
-}
-
-// Get calls GetFunc.
-func (mock *RepositoryMock) Get(ctx context.Context, monsterId string) (Musics, error) {
-	if mock.GetFunc == nil {
-		panic("RepositoryMock.GetFunc: method is nil but Repository.Get was just called")
-	}
-	callInfo := struct {
-		Ctx       context.Context
-		MonsterId string
-	}{
-		Ctx:       ctx,
-		MonsterId: monsterId,
-	}
-	mock.lockGet.Lock()
-	mock.calls.Get = append(mock.calls.Get, callInfo)
-	mock.lockGet.Unlock()
-	return mock.GetFunc(ctx, monsterId)
-}
-
-// GetCalls gets all the calls that were made to Get.
-// Check the length with:
-//
-//	len(mockedRepository.GetCalls())
-func (mock *RepositoryMock) GetCalls() []struct {
-	Ctx       context.Context
-	MonsterId string
-} {
-	var calls []struct {
-		Ctx       context.Context
-		MonsterId string
-	}
-	mock.lockGet.RLock()
-	calls = mock.calls.Get
-	mock.lockGet.RUnlock()
-	return calls
 }
 
 // Remove calls RemoveFunc.
