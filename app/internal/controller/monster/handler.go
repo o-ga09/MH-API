@@ -128,6 +128,7 @@ func (m *MonsterHandler) GetAll(c *gin.Context) {
 			Weakness_attack:    wa,
 			Weakness_element:   we,
 			Ranking:            ranking,
+			ImageUrl:           pkg.CreateImageURL(r.Id),
 			BGM:                bgm,
 		})
 	}

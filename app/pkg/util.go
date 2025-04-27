@@ -1,5 +1,7 @@
 package pkg
 
+const IMAGE_URL = "https://raw.githubusercontent.com/o-ga09/MH-API/main/data/monster"
+
 func StrToPtr(s string) *string {
 	if s == "" {
 		return nil
@@ -22,14 +24,6 @@ func CreateImageURL(id string) *string {
 	if id == "" {
 		return nil
 	}
-	cfg, err := New()
-	if err != nil {
-		return nil
-	}
 
-	if cfg.CloudFlareR2 == "" {
-		return nil
-	}
-
-	return StrToPtr(cfg.CloudFlareR2 + "/" + id + ".png")
+	return StrToPtr(IMAGE_URL + "/" + id + ".png")
 }
