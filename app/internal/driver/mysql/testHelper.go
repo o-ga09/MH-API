@@ -15,6 +15,7 @@ import (
 func BeforeTest() {
 	var err error
 	os.Setenv("DATABASE_URL", "root:pass@tcp(127.0.0.1:3306)/ci?charset=utf8&parseTime=True&loc=Local")
+	ctx := context.Background()
 
 	cfg, err := pkg.New()
 	if err != nil {
@@ -27,7 +28,7 @@ func BeforeTest() {
 	if db, err = gorm.Open(dialector, &gorm.Config{NamingStrategy: schema.NamingStrategy{
 		SingularTable: true,
 	}}); err != nil {
-		connect(dialector, 100)
+		connect(ctx, dialector, 100)
 	}
 
 	weak1 := []*Weakness{
@@ -79,6 +80,7 @@ func BeforeTest() {
 func AfetrTest() func() {
 	return func() {
 		var err error
+		ctx := context.Background()
 
 		cfg, err := pkg.New()
 		if err != nil {
@@ -91,7 +93,7 @@ func AfetrTest() func() {
 		if db, err = gorm.Open(dialector, &gorm.Config{NamingStrategy: schema.NamingStrategy{
 			SingularTable: true,
 		}}); err != nil {
-			connect(dialector, 100)
+			connect(ctx, dialector, 100)
 		}
 
 		db.Exec("SET foreign_key_checks = 0")
