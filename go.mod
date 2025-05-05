@@ -13,7 +13,7 @@ require (
 	github.com/go-sql-driver/mysql v1.9.2
 	github.com/google/uuid v1.6.0
 	github.com/rubenv/sql-migrate v1.8.0
-	github.com/swaggo/swag v1.16.3
+	github.com/swaggo/swag v1.16.4
 	github.com/uptrace/opentelemetry-go-extra/otelgorm v0.3.2
 	go.opentelemetry.io/otel v1.35.0
 	go.opentelemetry.io/otel/trace v1.35.0
@@ -60,7 +60,6 @@ require (
 	github.com/envoyproxy/protoc-gen-validate v1.2.1 // indirect
 	github.com/felixge/httpsnoop v1.0.4 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.3 // indirect
-	github.com/getsentry/sentry-go/gin v0.32.0 // indirect
 	github.com/gin-contrib/sse v1.1.0 // indirect
 	github.com/go-gorp/gorp/v3 v3.1.0 // indirect
 	github.com/go-jose/go-jose/v4 v4.1.0 // indirect
