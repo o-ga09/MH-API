@@ -32,7 +32,7 @@ services:
       PORT: 8080
       DATABASE_URL: mh-api:P@ssw0rd@tcp(mh-api-dbsrv01)/mh-api?charset=utf8&parseTime=True&loc=Local
       ALLOW_URL: "*"
-      SENTRY_DSN: https://7f9767a1fa7379a3f8fcb8a618339b39@o4508995869343745.ingest.us.sentry.io/4509218119286784
+      SENTRY_DSN: sentry
     volumes:
       - ./:/app
     ports:
