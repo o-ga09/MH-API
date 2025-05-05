@@ -38,6 +38,7 @@ func New(ctx context.Context) *gorm.DB {
 	span.SetAttributes(attribute.String("db.connection_string", cfg.Database_url))
 
 	if db, err = gorm.Open(dialector, &gorm.Config{
+		Logger: NewSentryLogger(),
 		NamingStrategy: schema.NamingStrategy{
 			SingularTable: true,
 		},

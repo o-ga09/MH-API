@@ -10,6 +10,7 @@ import (
 
 	"net/http"
 
+	"github.com/getsentry/sentry-go"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/net/context"
 	"gorm.io/gorm"
@@ -40,6 +41,11 @@ func NewMonsterHandler(s monsters.MonsterService) *MonsterHandler {
 // @Failure      500  {object}  MessageResponse
 // @Router /monsters [get]
 func (m *MonsterHandler) GetAll(c *gin.Context) {
+	ctx := c.Request.Context()
+	span := sentry.StartSpan(ctx, "handler.GetAll")
+	span.Description = "GetAll"
+	defer span.Finish()
+
 	var param RequestParam
 	err := c.ShouldBindQuery(&param)
 	if err != nil {
@@ -63,7 +69,7 @@ func (m *MonsterHandler) GetAll(c *gin.Context) {
 	if ok {
 		id = ""
 	}
-	ctx := context.WithValue(c.Request.Context(), "param", param)
+	ctx = context.WithValue(ctx, "param", param)
 	res, err := m.monsterService.FetchMonsterDetail(ctx, id)
 
 	if err == gorm.ErrRecordNotFound {
@@ -154,6 +160,12 @@ func (m *MonsterHandler) GetAll(c *gin.Context) {
 // @Failure      500  {object}  MessageResponse
 // @Router /monsters/:monsterid [get]
 func (m *MonsterHandler) GetById(c *gin.Context) {
+	// トレーシング用のスパンを作成（親トランザクションの子スパンとして）
+	ctx := c.Request.Context()
+	span := sentry.StartSpan(ctx, "handler.GetById")
+	span.SetTag("handler", "monsterHandler")
+	defer span.Finish()
+
 	id, ook := c.Params.Get("id")
 	if !ook {
 		slog.Log(c, middleware.SeverityError, "path parameter required")

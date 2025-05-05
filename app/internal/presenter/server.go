@@ -5,7 +5,6 @@ import (
 	"mh-api/app/internal/presenter/middleware"
 	"mh-api/app/pkg"
 
-	sentrygin "github.com/getsentry/sentry-go/gin"
 	"github.com/gin-gonic/gin"
 )
 
@@ -29,12 +28,15 @@ func NewServer() (*gin.Engine, error) {
 	// リクエストID付与
 	withReqId := middleware.AddID()
 
+	// Sentry設定
+	sentryMiddleware := middleware.SentryTracingMiddleware(gin.Logger())
+
 	// ミドルウェア設定
 	r.Use(withReqId)
 	r.Use(withCtx)
 	r.Use(cors)
 	r.Use(httpLogger)
-	r.Use(sentrygin.New(sentrygin.Options{}))
+	r.Use(sentryMiddleware)
 
 	// ヘルスチェック
 	v1 := r.Group("/v1")
