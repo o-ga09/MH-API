@@ -1,7 +1,7 @@
 # MH-API (モンスターハンター API)
 
 APIのエンドポイントは、こちら
-https://mh-api-v2-8aznfogc.an.gateway.dev
+https://api.mh-api.com/v1
 
 [![lint and test](https://github.com/o-ga09/MH-API/actions/workflows/lint_and_test.yml/badge.svg)](https://github.com/o-ga09/MH-API/actions/workflows/lint_and_test.yml)
 
@@ -42,10 +42,16 @@ MH-API プロジェクトに参加するためには、以下の手順に従っ�
 
    ```bash
         # dockerを立ち上げる
-        make up
+        make compose-start
+
+        # DBをマイグレーションする
+        make migrate-up
+
+        # Seedデータを入れる
+        make seed
 
         # {"message": "ok"}とレスポンスが返ること
-        curl http://localhost:8080/v1/system/health
+        curl http://localhost:8080/v1/health
    ```
 
 5. テストを実行する
@@ -64,8 +70,6 @@ MH-API プロジェクトに参加するには、以下のコミュニケーシ�
 - Slack チャンネル: [slack.mhapi.org](https://mh-api.slack.com) に参加して、他のコントリビューターやメンバーと交流しましょう。
 
 - Issue トラッカー: [MH-API Issue トラッカー](https://github.com/o-ga09/MH-API/issues) を使用して、バグ報告や新しい機能の提案を行ってください。
-
-- メーリングリスト: [mhapi-dev@groups.com](mailto:mhapiadm@gmail.com) に参加して、メールを通じたディスカッションや重要なお知らせを受け取りましょう。
 
 ## ライセンス
 
