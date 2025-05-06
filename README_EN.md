@@ -37,11 +37,17 @@ To join the MH-API project, please follow the steps below.
 4. Check that it works.
 
    ```bash
-        # start up docker
-        make up
+        # start docker
+        make compose-start
+
+        # migrate DB
+        make migrate-up
+
+        # insert seed data
+        make seed
 
         # Make sure the response is {"message": "ok"}.
-        curl http://localhost:8080/v1/system/health
+        curl http://localhost:8080/v1/health
    ````
 
 5. Run the test
@@ -60,8 +66,6 @@ To participate in the MH-API project, the following communication channels are a
 - Slack channel: join [slack.mhapi.org](https://mh-api.slack.com) to interact with other contributors and members.
 
 - Issue Tracker: Use the [MH-API Issue Tracker](https://github.com/o-ga09/MH-API/issues) to report bugs and suggest new features.
-
-- Mailing Lists: Join [mhapi-dev@groups.com](mailto:mhapiadm@gmail.com) to receive discussions and important announcements via email.
 
 ## License
 
