@@ -52,6 +52,10 @@ resource "google_cloud_run_service" "stg-mh-api" {
             name = "SERVICE_NAME"
             value = "mh-api"
           }
+          env {
+            name = "PROJECTID"
+            value = "mh-api"
+          }
 
           ports {
             container_port = 8080
