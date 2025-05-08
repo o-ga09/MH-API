@@ -38,8 +38,12 @@ func (h *traceHandler) Enabled(ctx context.Context, l slog.Level) bool {
 func (h *traceHandler) Handle(ctx context.Context, r slog.Record) error {
 	if sc := trace.SpanContextFromContext(ctx); sc.IsValid() {
 		trace := fmt.Sprintf("projects/%s/traces/%s", h.projectID, sc.TraceID().String())
-		r.AddAttrs(slog.String("logging.googleapis.com/trace", trace),
-			slog.String("logging.googleapis.com/spanId", sc.SpanID().String()))
+		r.AddAttrs(
+			slog.String("logging.googleapis.com/trace", trace),
+			slog.String("logging.googleapis.com/spanId", sc.SpanID().String()),
+			slog.Bool("logging.googleapis.com/trace_sampled", sc.TraceFlags().IsSampled()),
+		)
+
 	}
 	r.AddAttrs(
 		slog.Group("logging.googleapis.com/labels",
