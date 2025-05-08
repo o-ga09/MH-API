@@ -8,8 +8,8 @@ import (
 	"mh-api/app/internal/service/health"
 )
 
-func InitHealthService() *controller.SystemHandler {
-	db := mysql.New(context.Background())
+func InitHealthService(ctx context.Context) *controller.SystemHandler {
+	db := mysql.New(ctx)
 	driver := healthDriver.NewHealthRepository(db)
 	service := health.NewHealthService(driver)
 	handler := controller.NewHealthService(*service)

@@ -3,7 +3,8 @@ package mysql
 import (
 	"context"
 	"fmt"
-	"log"
+	"log/slog"
+	"mh-api/app/internal/presenter/middleware"
 	"time"
 
 	"github.com/getsentry/sentry-go"
@@ -30,19 +31,19 @@ func (l *SentryLogger) LogMode(level logger.LogLevel) logger.Interface {
 
 func (l *SentryLogger) Info(ctx context.Context, msg string, data ...interface{}) {
 	if l.logLevel >= logger.Info {
-		log.Printf("[GORM INFO] %s\n", fmt.Sprintf(msg, data...))
+		slog.Log(ctx, middleware.SeverityInfo, fmt.Sprintf(msg, data...))
 	}
 }
 
 func (l *SentryLogger) Warn(ctx context.Context, msg string, data ...interface{}) {
 	if l.logLevel >= logger.Warn {
-		log.Printf("[GORM WARN] %s\n", fmt.Sprintf(msg, data...))
+		slog.Log(ctx, middleware.SeverityWarn, fmt.Sprintf(msg, data...))
 	}
 }
 
 func (l *SentryLogger) Error(ctx context.Context, msg string, data ...interface{}) {
 	if l.logLevel >= logger.Error {
-		log.Printf("[GORM ERROR] %s\n", fmt.Sprintf(msg, data...))
+		slog.Log(ctx, middleware.SeverityError, fmt.Sprintf(msg, data...))
 	}
 }
 
@@ -58,14 +59,25 @@ func (l *SentryLogger) Trace(ctx context.Context, begin time.Time, fc func() (st
 	span.SetData("sql", sql)
 	span.SetData("rows", rows)
 	span.SetData("elapsed", elapsed.String())
-	if err != nil {
-		span.Description = err.Error()
-	} else if l.slowThreshold != 0 && elapsed > l.slowThreshold {
-		span.Description = "slow query"
-	}
-	span.Finish()
-
-	if l.logLevel >= logger.Info {
-		log.Printf("[GORM TRACE] [%.3fms] [rows:%v] %s\n", float64(elapsed.Nanoseconds())/1e6, rows, sql)
+	defer span.Finish()
+	switch {
+	case err != nil && l.logLevel >= logger.Error:
+		if rows == -1 {
+			slog.Log(ctx, middleware.SeverityError, fmt.Sprintf("[%.3fms] [rows:%s] %s", float64(elapsed.Nanoseconds())/1e6, "-", sql), slog.String("error", err.Error()))
+		} else {
+			slog.Log(ctx, middleware.SeverityError, fmt.Sprintf("[%.3fms] [rows:%d] %s", float64(elapsed.Nanoseconds())/1e6, rows, sql), slog.String("error", err.Error()))
+		}
+	case elapsed > l.slowThreshold && l.slowThreshold != 0 && l.logLevel >= logger.Warn:
+		if rows == -1 {
+			slog.Log(ctx, middleware.SeverityWarn, fmt.Sprintf("[%.3fms] [rows:%s] %s", float64(elapsed.Nanoseconds())/1e6, "-", sql))
+		} else {
+			slog.Log(ctx, middleware.SeverityWarn, fmt.Sprintf("[%.3fms] [rows:%d] %s", float64(elapsed.Nanoseconds())/1e6, rows, sql))
+		}
+	case l.logLevel == logger.Info:
+		if rows == -1 {
+			slog.Log(ctx, middleware.SeverityInfo, fmt.Sprintf("[%.3fms] [rows:%s] %s", float64(elapsed.Nanoseconds())/1e6, "-", sql))
+		} else {
+			slog.Log(ctx, middleware.SeverityInfo, fmt.Sprintf("[%.3fms] [rows:%d] %s", float64(elapsed.Nanoseconds())/1e6, rows, sql))
+		}
 	}
 }

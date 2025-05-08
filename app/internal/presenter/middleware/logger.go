@@ -3,6 +3,7 @@ package middleware
 import (
 	"context"
 	"fmt"
+	"log"
 	"mh-api/app/pkg"
 
 	"os"
@@ -26,6 +27,7 @@ var (
 type traceHandler struct {
 	slog.Handler
 	projectID string
+	env       string
 }
 
 // traceHandler 実装
@@ -39,12 +41,17 @@ func (h *traceHandler) Handle(ctx context.Context, r slog.Record) error {
 		r.AddAttrs(slog.String("logging.googleapis.com/trace", trace),
 			slog.String("logging.googleapis.com/spanId", sc.SpanID().String()))
 	}
-
+	r.AddAttrs(
+		slog.Group("logging.googleapis.com/labels",
+			slog.String("app", "MH-API"),
+			slog.String("env", h.env),
+		),
+	)
 	return h.Handler.Handle(ctx, r)
 }
 
 func (h *traceHandler) WithAttr(attrs []slog.Attr) slog.Handler {
-	return &traceHandler{h.Handler.WithAttrs(attrs), h.projectID}
+	return &traceHandler{h.Handler.WithAttrs(attrs), h.projectID, h.env}
 }
 
 func (h *traceHandler) WithGroup(g string) slog.Handler {
@@ -52,7 +59,7 @@ func (h *traceHandler) WithGroup(g string) slog.Handler {
 }
 
 // logger 生成関数
-func New() *slog.Logger {
+func New() {
 	replacer := func(groups []string, a slog.Attr) slog.Attr {
 		if a.Key == slog.MessageKey {
 			a.Key = "message"
@@ -69,16 +76,12 @@ func New() *slog.Logger {
 
 		return a
 	}
-	cfg, _ := pkg.New()
-	projectID := cfg.ProjectID
-	h := traceHandler{slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{AddSource: true, ReplaceAttr: replacer}), projectID}
-	newh := h.WithAttr([]slog.Attr{
-		slog.Group("logging.googleapis.com/labels",
-			slog.String("app", "MH-API"),
-			slog.String("env", cfg.Env),
-		),
-	})
-	logger := slog.New(newh)
+	cfg, err := pkg.New()
+	if err != nil {
+		log.Fatal(err)
+	}
+	h := traceHandler{slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{AddSource: true, ReplaceAttr: replacer}), cfg.ProjectID, cfg.Env}
+
+	logger := slog.New(&h)
 	slog.SetDefault(logger)
-	return logger
 }

@@ -8,8 +8,8 @@ import (
 	"mh-api/app/internal/service/monsters"
 )
 
-func InitMonstersHandler() *handler.MonsterHandler {
-	db := mysql.New(context.Background())
+func InitMonstersHandler(ctx context.Context) *handler.MonsterHandler {
+	db := mysql.New(ctx)
 	repo := monsterDriver.NewMonsterRepository(db)
 	qs := monsterDriver.NewmonsterQueryService(db)
 	service := monsters.NewMonsterService(repo, qs)
