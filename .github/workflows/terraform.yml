@@ -90,7 +90,7 @@ jobs:
 
       - name: Terraform Plan
         id: plan
-        run: terraform plan -no-color -lock=false
+        run: terraform plan -no-color
         continue-on-error: true
 
       - name: Comment Terraform Plan
@@ -130,5 +130,5 @@ jobs:
       - name: Terraform Apply
         run: |
           if [ "${{ github.ref == 'refs/heads/main' }}" = "true" ]; then
-            terraform apply -auto-approve -input=false -lock=false
+            terraform apply -auto-approve -input=false
           fi
