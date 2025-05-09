@@ -130,5 +130,5 @@ jobs:
       - name: Terraform Apply
         run: |
           if [ "${{ github.ref == 'refs/heads/main' }}" = "true" ]; then
-            terraform apply -auto-approve -input=false
+            terraform apply -auto-approve -input=false -lock=false
           fi
