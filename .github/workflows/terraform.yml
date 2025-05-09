@@ -8,6 +8,7 @@ on:
     paths:
       - "terraform/**"
       - ".github/workflows/terraform.yml"
+  workflow_dispatch:
 env:
   GCP_PROJECT_NUMBER: ${{ secrets.GCP_PROJECT_NUMBER }}
   TERRAFORM_LOCAL_VARIABLE: ${{ secrets.TERRAFORM_LOCAL_VARIABLE }}
