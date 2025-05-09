@@ -90,7 +90,7 @@ jobs:
 
       - name: Terraform Plan
         id: plan
-        run: terraform plan -no-color
+        run: terraform plan -no-color -lock=false
         continue-on-error: true
 
       - name: Comment Terraform Plan
