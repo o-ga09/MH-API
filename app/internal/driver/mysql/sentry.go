@@ -63,21 +63,21 @@ func (l *SentryLogger) Trace(ctx context.Context, begin time.Time, fc func() (st
 	switch {
 	case err != nil && l.logLevel >= logger.Error:
 		if rows == -1 {
-			slog.Log(ctx, middleware.SeverityError, fmt.Sprintf("[%.3fms] [rows:%s] %s", float64(elapsed.Nanoseconds())/1e6, "-", sql), slog.String("error", err.Error()))
+			slog.Log(ctx, middleware.SeverityError, fmt.Sprintf("[%.3fms] [rows:%s]", float64(elapsed.Nanoseconds())/1e6, "-"), "sql", sql, "error", err.Error())
 		} else {
-			slog.Log(ctx, middleware.SeverityError, fmt.Sprintf("[%.3fms] [rows:%d] %s", float64(elapsed.Nanoseconds())/1e6, rows, sql), slog.String("error", err.Error()))
+			slog.Log(ctx, middleware.SeverityError, fmt.Sprintf("[%.3fms] [rows:%d]", float64(elapsed.Nanoseconds())/1e6, rows), "sql", sql, "error", err.Error())
 		}
 	case elapsed > l.slowThreshold && l.slowThreshold != 0 && l.logLevel >= logger.Warn:
 		if rows == -1 {
-			slog.Log(ctx, middleware.SeverityWarn, fmt.Sprintf("[%.3fms] [rows:%s] %s", float64(elapsed.Nanoseconds())/1e6, "-", sql))
+			slog.Log(ctx, middleware.SeverityWarn, fmt.Sprintf("[%.3fms] [rows:%s]", float64(elapsed.Nanoseconds())/1e6, "-"), "sql", sql)
 		} else {
-			slog.Log(ctx, middleware.SeverityWarn, fmt.Sprintf("[%.3fms] [rows:%d] %s", float64(elapsed.Nanoseconds())/1e6, rows, sql))
+			slog.Log(ctx, middleware.SeverityWarn, fmt.Sprintf("[%.3fms] [rows:%d]", float64(elapsed.Nanoseconds())/1e6, rows), "sql", sql)
 		}
 	case l.logLevel == logger.Info:
 		if rows == -1 {
-			slog.Log(ctx, middleware.SeverityInfo, fmt.Sprintf("[%.3fms] [rows:%s] %s", float64(elapsed.Nanoseconds())/1e6, "-", sql))
+			slog.Log(ctx, middleware.SeverityInfo, fmt.Sprintf("[%.3fms] [rows:%s]", float64(elapsed.Nanoseconds())/1e6, "-"), "sql", sql)
 		} else {
-			slog.Log(ctx, middleware.SeverityInfo, fmt.Sprintf("[%.3fms] [rows:%d] %s", float64(elapsed.Nanoseconds())/1e6, rows, sql))
+			slog.Log(ctx, middleware.SeverityInfo, fmt.Sprintf("[%.3fms] [rows:%d]", float64(elapsed.Nanoseconds())/1e6, rows), "sql", sql)
 		}
 	}
 }
