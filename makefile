@@ -5,6 +5,7 @@ lint:
 
 .PHONY: test
 test:
+	docker compose up -d mh-api-dbsrv01
 	go test -parallel 1 ./...
 
 .PHONY: test-coverage
