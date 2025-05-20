@@ -1,9 +1,6 @@
 name: terraform
 
 on:
-  push:
-    branches:
-      - main
   pull_request:
     paths:
       - "terraform/**"
