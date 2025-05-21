@@ -155,7 +155,7 @@ CREATE TABLE IF NOT EXISTS `ranking` (
   CONSTRAINT `fk_monster_ranking` FOREIGN KEY (`monster_id`) REFERENCES `monster` (`monster_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE `bgm_ranking` (
+CREATE TABLE IF NOT EXISTS `bgm_ranking` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` datetime(3) DEFAULT NULL,
   `updated_at` datetime(3) DEFAULT NULL,
