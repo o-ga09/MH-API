@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
 jobs:
   lint:
-    name: golangci-lint
+    name: migration
     runs-on: ubuntu-latest
     steps:
       - name: Check out code into the Go module directory
