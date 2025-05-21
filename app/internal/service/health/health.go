@@ -1,6 +1,9 @@
 package health
 
-import "mh-api/app/internal/domain/health"
+import (
+	"context"
+	"mh-api/app/internal/domain/health"
+)
 
 type HealthService struct {
 	repo health.HealthRepository
@@ -12,7 +15,7 @@ func NewHealthService(repo health.HealthRepository) *HealthService {
 	}
 }
 
-func (s *HealthService) GetStatus() error {
-	err := s.repo.GetStatus()
+func (s *HealthService) GetStatus(ctx context.Context) error {
+	err := s.repo.GetStatus(ctx)
 	return err
 }
