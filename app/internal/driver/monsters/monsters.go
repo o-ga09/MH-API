@@ -4,6 +4,7 @@ import (
 	"context"
 	"mh-api/app/internal/domain/monsters"
 	"mh-api/app/internal/driver/mysql"
+	"mh-api/app/pkg"
 )
 
 type monsterRepository struct {
@@ -22,7 +23,9 @@ func (r *monsterRepository) Get(ctx context.Context, monsterId string) (monsters
 
 	res := monsters.Monsters{}
 	for _, r := range monster {
-		res = append(res, monsters.NewMonster(r.MonsterId, r.Name, r.Description))
+		element := pkg.PtrToStr(r.Element)
+		domainMonster := monsters.NewMonster(r.MonsterId, r.Name, r.Description, element)
+		res = append(res, domainMonster)
 	}
 
 	return res, nil
@@ -33,6 +36,7 @@ func (r *monsterRepository) Save(ctx context.Context, m monsters.Monster) error 
 		MonsterId:   m.GetId(),
 		Name:        m.GetName(),
 		Description: m.GetDesc(),
+		Element:     pkg.StrToPtr(m.GetElement()),
 	}
 	mysql.CtxFromDB(ctx).Exec("SET foreign_key_checks = 0")
 	err := mysql.CtxFromDB(ctx).Save(&monster).Error

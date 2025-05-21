@@ -31,7 +31,7 @@ func Test_monsterRepository_Save(t *testing.T) {
 	mysql.BeforeTest()
 	t.Cleanup(mysql.AfetrTest())
 
-	saveMonster1 := monsters.NewMonster("0000000004", "ライゼクス", "雷の反逆者")
+	saveMonster1 := monsters.NewMonster("0000000004", "ライゼクス", "雷の反逆者", "雷属性")
 
 	type args struct {
 		m monsters.Monster

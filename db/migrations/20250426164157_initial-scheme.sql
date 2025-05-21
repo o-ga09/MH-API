@@ -1,5 +1,5 @@
 -- +migrate Up
-CREATE TABLE `monster` (
+CREATE TABLE IF NOT EXISTS `monster` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` datetime(3) DEFAULT NULL,
   `updated_at` datetime(3) DEFAULT NULL,
@@ -14,7 +14,7 @@ CREATE TABLE `monster` (
   KEY `idx_monster_monster_id` (`monster_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE `item` (
+CREATE TABLE IF NOT EXISTS `item` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` datetime(3) DEFAULT NULL,
   `updated_at` datetime(3) DEFAULT NULL,
@@ -26,7 +26,7 @@ CREATE TABLE `item` (
   KEY `idx_item_deleted_at` (`deleted_at`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE `field` (
+CREATE TABLE IF NOT EXISTS `field` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` datetime(3) DEFAULT NULL,
   `updated_at` datetime(3) DEFAULT NULL,
@@ -41,7 +41,7 @@ CREATE TABLE `field` (
   CONSTRAINT `fk_monster_field` FOREIGN KEY (`monster_id`) REFERENCES `monster` (`monster_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE `product` (
+CREATE TABLE IF NOT EXISTS `product` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` datetime(3) DEFAULT NULL,
   `updated_at` datetime(3) DEFAULT NULL,
@@ -57,7 +57,7 @@ CREATE TABLE `product` (
   CONSTRAINT `fk_monster_product` FOREIGN KEY (`monster_id`) REFERENCES `monster` (`monster_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE `part` (
+CREATE TABLE IF NOT EXISTS `part` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` datetime(3) DEFAULT NULL,
   `updated_at` datetime(3) DEFAULT NULL,
@@ -69,7 +69,7 @@ CREATE TABLE `part` (
   KEY `idx_part_deleted_at` (`deleted_at`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE `music` (
+CREATE TABLE IF NOT EXISTS `music` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` datetime(3) DEFAULT NULL,
   `updated_at` datetime(3) DEFAULT NULL,
@@ -83,7 +83,7 @@ CREATE TABLE `music` (
   KEY `idx_music_id` (`music_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE `tribe` (
+CREATE TABLE IF NOT EXISTS `tribe` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` datetime(3) DEFAULT NULL,
   `updated_at` datetime(3) DEFAULT NULL,
@@ -98,7 +98,7 @@ CREATE TABLE `tribe` (
   CONSTRAINT `fk_monster_tribe` FOREIGN KEY (`monster_id`) REFERENCES `monster` (`monster_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE `weakness` (
+CREATE TABLE IF NOT EXISTS `weakness` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` datetime(3) DEFAULT NULL,
   `updated_at` datetime(3) DEFAULT NULL,
@@ -123,7 +123,7 @@ CREATE TABLE `weakness` (
   CONSTRAINT `fk_monster_weakness` FOREIGN KEY (`monster_id`) REFERENCES `monster` (`monster_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE `weapon` (
+CREATE TABLE IF NOT EXISTS `weapon` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` datetime(3) DEFAULT NULL,
   `updated_at` datetime(3) DEFAULT NULL,
@@ -141,7 +141,7 @@ CREATE TABLE `weapon` (
   KEY `idx_weapon_deleted_at` (`deleted_at`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE `ranking` (
+CREATE TABLE IF NOT EXISTS `ranking` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` datetime(3) DEFAULT NULL,
   `updated_at` datetime(3) DEFAULT NULL,
@@ -155,20 +155,6 @@ CREATE TABLE `ranking` (
   CONSTRAINT `fk_monster_ranking` FOREIGN KEY (`monster_id`) REFERENCES `monster` (`monster_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE `bgm_ranking` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` datetime(3) DEFAULT NULL,
-  `updated_at` datetime(3) DEFAULT NULL,
-  `deleted_at` datetime(3) DEFAULT NULL,
-  `music_id` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `ranking` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `vote_year` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `idx_music_deleted_at` (`deleted_at`),
-  KEY `idx_music_id` (`music_id`),
-  CONSTRAINT `fk_bgm_ranking` FOREIGN KEY (`music_id`) REFERENCES `music` (`music_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
 -- +migrate Down
 DROP TABLE IF EXISTS `field`;
 DROP TABLE IF EXISTS `item`;
@@ -180,4 +166,3 @@ DROP TABLE IF EXISTS `tribe`;
 DROP TABLE IF EXISTS `weakness`;
 DROP TABLE IF EXISTS `weapon`;
 DROP TABLE IF EXISTS `ranking`;
-DROP TABLE IF EXISTS `bgm_ranking`;

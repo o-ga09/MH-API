@@ -1,0 +1,15 @@
+name: migration
+on:
+  workflow_dispatch:
+jobs:
+  lint:
+    name: migration
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v3
+      - name: migrate DB
+        run: |
+          make migrate-up
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}

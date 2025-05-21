@@ -23,3 +23,7 @@ type MonsterCategory struct {
 type GameTitle struct {
 	Value string // 登場したゲームタイトル
 }
+
+type MonsterElement struct {
+	Value string //モンスターの属性
+}
