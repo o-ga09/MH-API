@@ -166,4 +166,3 @@ DROP TABLE IF EXISTS `tribe`;
 DROP TABLE IF EXISTS `weakness`;
 DROP TABLE IF EXISTS `weapon`;
 DROP TABLE IF EXISTS `ranking`;
-DROP TABLE IF EXISTS `bgm_ranking`;
