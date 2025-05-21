@@ -31,18 +31,18 @@ func New(ctx context.Context) context.Context {
 	once.Do(func() {
 		cfg, err := pkg.New()
 		if err != nil {
-			log.Fatal(err)
+			return
 		}
 
 		dialector := mysql.Open(cfg.Database_url)
 		db, err = gorm.Open(dialector, &gorm.Config{
 			NamingStrategy: schema.NamingStrategy{
-				SingularTable: false,
+				SingularTable: true,
 			},
 			Logger: logger.Default.LogMode(logger.Info),
 		})
 		if err != nil {
-			connect(ctx, dialector)
+			ctx = connect(ctx, dialector)
 		}
 
 		// SQLDBインスタンスを取得
