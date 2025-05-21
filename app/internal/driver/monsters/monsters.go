@@ -4,23 +4,18 @@ import (
 	"context"
 	"mh-api/app/internal/domain/monsters"
 	"mh-api/app/internal/driver/mysql"
-
-	"gorm.io/gorm"
 )
 
 type monsterRepository struct {
-	conn *gorm.DB
 }
 
-func NewMonsterRepository(conn *gorm.DB) *monsterRepository {
-	return &monsterRepository{
-		conn: conn,
-	}
+func NewMonsterRepository() *monsterRepository {
+	return &monsterRepository{}
 }
 
 func (r *monsterRepository) Get(ctx context.Context, monsterId string) (monsters.Monsters, error) {
 	monster := []mysql.Monster{}
-	err := r.conn.Find(&monster).Error
+	err := mysql.CtxFromDB(ctx).Find(&monster).Error
 	if err != nil {
 		return nil, err
 	}
@@ -39,9 +34,9 @@ func (r *monsterRepository) Save(ctx context.Context, m monsters.Monster) error 
 		Name:        m.GetName(),
 		Description: m.GetDesc(),
 	}
-	r.conn.Exec("SET foreign_key_checks = 0")
-	err := r.conn.Save(&monster).Error
-	r.conn.Exec("SET foreign_key_checks = 1")
+	mysql.CtxFromDB(ctx).Exec("SET foreign_key_checks = 0")
+	err := mysql.CtxFromDB(ctx).Save(&monster).Error
+	mysql.CtxFromDB(ctx).Exec("SET foreign_key_checks = 1")
 	if err != nil {
 		return err
 	}
@@ -52,7 +47,7 @@ func (r *monsterRepository) Remove(ctx context.Context, monsterId string) error 
 	monster := mysql.Monster{
 		MonsterId: monsterId,
 	}
-	err := r.conn.Delete(&monster).Error
+	err := mysql.CtxFromDB(ctx).Delete(&monster).Error
 	if err != nil {
 		return err
 	}
