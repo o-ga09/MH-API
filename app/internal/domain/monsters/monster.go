@@ -8,22 +8,24 @@ type Monster struct {
 	desc        MonsterDesc
 	anotherName MonsterName
 	nameEn      MonsterName
-	Element     string `json:"element"` // THIS IS THE ONLY CHANGE
+	element     MonsterElement
 }
 
-func newMonster(id MonsterId, name MonsterName, desc MonsterDesc) Monster {
+func newMonster(id MonsterId, name MonsterName, desc MonsterDesc, element MonsterElement) Monster {
 	return Monster{
-		id:   id,
-		name: name,
-		desc: desc,
+		id:      id,
+		name:    name,
+		desc:    desc,
+		element: element,
 	}
 }
 
-func NewMonster(id string, name string, desc string) Monster {
+func NewMonster(id string, name string, desc string, element string) Monster {
 	return newMonster(
 		MonsterId{Value: id},
 		MonsterName{Value: name},
 		MonsterDesc{Value: desc},
+		MonsterElement{Value: element},
 	)
 }
 
@@ -45,4 +47,8 @@ func (m *Monster) GetAnotherName() string {
 
 func (m *Monster) GetNameEn() string {
 	return m.nameEn.Value
+}
+
+func (m *Monster) GetElement() string {
+	return m.element.Value
 }
