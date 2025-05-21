@@ -5,18 +5,13 @@ import (
 	"fmt"
 	"mh-api/app/internal/domain/weapons"
 	"mh-api/app/internal/driver/mysql"
-
-	"gorm.io/gorm"
 )
 
 type weaponRepository struct {
-	conn *gorm.DB
 }
 
-func NewweaponRepository(conn *gorm.DB) *weaponRepository {
-	return &weaponRepository{
-		conn: conn,
-	}
+func NewweaponRepository() *weaponRepository {
+	return &weaponRepository{}
 }
 
 func (r *weaponRepository) Save(ctx context.Context, w weapons.Weapon) error {
@@ -31,9 +26,9 @@ func (r *weaponRepository) Save(ctx context.Context, w weapons.Weapon) error {
 		Shapness:      w.GetShapness(),
 		Description:   w.GetDescription(),
 	}
-	r.conn.Exec("SET foreign_key_checks = 0")
-	err := r.conn.Save(&weapon).Error
-	r.conn.Exec("SET foreign_key_checks = 1")
+	mysql.CtxFromDB(ctx).Exec("SET foreign_key_checks = 0")
+	err := mysql.CtxFromDB(ctx).Save(&weapon).Error
+	mysql.CtxFromDB(ctx).Exec("SET foreign_key_checks = 1")
 	if err != nil {
 		return fmt.Errorf("%s", err.Error())
 	}
@@ -44,7 +39,7 @@ func (r *weaponRepository) Remove(ctx context.Context, weaponId string) error {
 	weapon := mysql.Weapon{
 		WeaponId: weaponId,
 	}
-	err := r.conn.Delete(&weapon).Error
+	err := mysql.CtxFromDB(ctx).Delete(&weapon).Error
 	if err != nil {
 		return err
 	}
