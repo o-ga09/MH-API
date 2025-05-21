@@ -27,7 +27,7 @@ func (s *MonsterService) FetchMonsterDetail(ctx context.Context, id string) ([]*
 }
 
 func (s *MonsterService) SaveMonsters(ctx context.Context, param MonsterDto) error {
-	saveData := monsters.NewMonster(param.ID, param.Name, param.Description)
+	saveData := monsters.NewMonster(param.ID, param.Name, param.Description, param.Element)
 	err := s.repo.Save(ctx, saveData)
 	if err != nil {
 		return err

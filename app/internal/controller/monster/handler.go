@@ -138,6 +138,7 @@ func (m *MonsterHandler) GetAll(c *gin.Context) {
 			Ranking:            ranking,
 			ImageUrl:           pkg.CreateImageURL(r.Id),
 			BGM:                bgm,
+			Element:            r.Element,
 		})
 	}
 	response := Monsters{
@@ -241,6 +242,7 @@ func (m *MonsterHandler) GetById(c *gin.Context) {
 			Ranking:            ranking,
 			ImageUrl:           pkg.CreateImageURL(r.Id),
 			BGM:                bgm,
+			Element:            r.Element, // Added Element
 		}
 	}
 	response := Monster{

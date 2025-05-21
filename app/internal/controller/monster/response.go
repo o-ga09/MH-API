@@ -19,6 +19,7 @@ type ResponseJson struct {
 	Id                 string              `json:"monster_id,omitempty"`          // モンスターID
 	Name               string              `json:"name,omitempty"`                // モンスター名
 	Description        *string             `json:"description,omitempty"`         // モンスターの説明
+	Element            *string             `json:"element,omitempty"`             // モンスターの属性
 	AnotherName        *string             `json:"another_name,omitempty"`        // モンスター別名
 	NameEn             *string             `json:"name_en,omitempty"`             // モンスター名（英語）
 	Location           []*string           `json:"location,omitempty"`            // モンスターの出現場所

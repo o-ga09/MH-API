@@ -141,6 +141,7 @@ func (s *monsterQueryService) FetchList(ctx context.Context, id string) ([]*mons
 			Weakness_element:   weak_element,
 			Ranking:            ranking,
 			BGM:                bgm,
+			Element:            m.Element,
 		}
 		res = append(res, &r)
 	}
