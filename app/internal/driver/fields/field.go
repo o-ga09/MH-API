@@ -5,18 +5,12 @@ import (
 	"fmt"
 	"mh-api/app/internal/domain/fields"
 	"mh-api/app/internal/driver/mysql"
-
-	"gorm.io/gorm"
 )
 
-type fieldRepository struct {
-	conn *gorm.DB
-}
+type fieldRepository struct{}
 
-func NewfieldRepository(conn *gorm.DB) *fieldRepository {
-	return &fieldRepository{
-		conn: conn,
-	}
+func NewfieldRepository() *fieldRepository {
+	return &fieldRepository{}
 }
 
 func (r *fieldRepository) Save(ctx context.Context, f fields.Field) error {
@@ -26,9 +20,9 @@ func (r *fieldRepository) Save(ctx context.Context, f fields.Field) error {
 		Name:      f.GetName(),
 		ImageUrl:  f.GetURL(),
 	}
-	r.conn.Exec("SET foreign_key_checks = 0")
-	err := r.conn.Save(&field).Error
-	r.conn.Exec("SET foreign_key_checks = 1")
+	mysql.CtxFromDB(ctx).Exec("SET foreign_key_checks = 0")
+	err := mysql.CtxFromDB(ctx).Save(&field).Error
+	mysql.CtxFromDB(ctx).Exec("SET foreign_key_checks = 1")
 	if err != nil {
 		return fmt.Errorf("%s", err.Error())
 	}
@@ -39,9 +33,9 @@ func (r *fieldRepository) Remove(ctx context.Context, fieldId string) error {
 	field := mysql.Field{
 		FieldId: fieldId,
 	}
-	r.conn.Exec("SET foreign_key_checks = 0")
-	err := r.conn.Delete(&field).Error
-	r.conn.Exec("SET foreign_key_checks = 1")
+	mysql.CtxFromDB(ctx).Exec("SET foreign_key_checks = 0")
+	err := mysql.CtxFromDB(ctx).Delete(&field).Error
+	mysql.CtxFromDB(ctx).Exec("SET foreign_key_checks = 1")
 	if err != nil {
 		return fmt.Errorf("%s", err.Error())
 	}
