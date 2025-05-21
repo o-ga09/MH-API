@@ -155,20 +155,6 @@ CREATE TABLE IF NOT EXISTS `ranking` (
   CONSTRAINT `fk_monster_ranking` FOREIGN KEY (`monster_id`) REFERENCES `monster` (`monster_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE IF NOT EXISTS `bgm_ranking` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` datetime(3) DEFAULT NULL,
-  `updated_at` datetime(3) DEFAULT NULL,
-  `deleted_at` datetime(3) DEFAULT NULL,
-  `music_id` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `ranking` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `vote_year` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `idx_music_deleted_at` (`deleted_at`),
-  KEY `idx_music_id` (`music_id`),
-  CONSTRAINT `fk_bgm_ranking` FOREIGN KEY (`music_id`) REFERENCES `music` (`music_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
 -- +migrate Down
 DROP TABLE IF EXISTS `field`;
 DROP TABLE IF EXISTS `item`;
