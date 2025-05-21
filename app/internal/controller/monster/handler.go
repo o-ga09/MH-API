@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log/slog"
 
-	"mh-api/app/internal/presenter/middleware"
 	"mh-api/app/internal/service/monsters"
 	"mh-api/app/pkg"
 
@@ -164,19 +163,13 @@ func (m *MonsterHandler) GetAll(c *gin.Context) {
 func (m *MonsterHandler) GetById(c *gin.Context) {
 	// トレーシング用のスパンを作成（親トランザクションの子スパンとして）
 	ctx := c.Request.Context()
-	db := middleware.GetDB(ctx)
-	if db == nil {
-		slog.Log(c, pkg.SeverityError, "database connection not found in context")
-		c.JSON(http.StatusInternalServerError, MessageResponse{Message: "INTERNAL SERVER ERROR"})
-		return
-	}
 
 	span := sentry.StartSpan(ctx, "handler.GetById")
 	span.SetTag("handler", "monsterHandler")
 	defer span.Finish()
 
-	id, ook := c.Params.Get("id")
-	if !ook {
+	id, ok := c.Params.Get("id")
+	if !ok {
 		slog.Log(c, pkg.SeverityError, "path parameter required")
 		c.JSON(http.StatusBadRequest, MessageResponse{Message: "BAD REQUEST"})
 		return
