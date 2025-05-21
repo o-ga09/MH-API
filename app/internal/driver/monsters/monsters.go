@@ -27,7 +27,9 @@ func (r *monsterRepository) Get(ctx context.Context, monsterId string) (monsters
 
 	res := monsters.Monsters{}
 	for _, r := range monster {
-		res = append(res, monsters.NewMonster(r.MonsterId, r.Name, r.Description))
+		domainMonster := monsters.NewMonster(r.MonsterId, r.Name, r.Description)
+		domainMonster.Element = r.Element // Assign Element from db model to domain model
+		res = append(res, domainMonster)
 	}
 
 	return res, nil
@@ -38,6 +40,7 @@ func (r *monsterRepository) Save(ctx context.Context, m monsters.Monster) error 
 		MonsterId:   m.GetId(),
 		Name:        m.GetName(),
 		Description: m.GetDesc(),
+		Element:     m.Element, // Assign Element from domain model to db model
 	}
 	r.conn.Exec("SET foreign_key_checks = 0")
 	err := r.conn.Save(&monster).Error

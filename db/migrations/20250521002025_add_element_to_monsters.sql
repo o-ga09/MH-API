@@ -1,0 +1,1 @@
+ALTER TABLE monster ADD COLUMN element VARCHAR(255) NULL;

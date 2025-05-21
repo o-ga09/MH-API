@@ -8,6 +8,7 @@ type Monster struct {
 	desc        MonsterDesc
 	anotherName MonsterName
 	nameEn      MonsterName
+	Element     string `json:"element"` // THIS IS THE ONLY CHANGE
 }
 
 func newMonster(id MonsterId, name MonsterName, desc MonsterDesc) Monster {

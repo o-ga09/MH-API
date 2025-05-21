@@ -33,6 +33,7 @@ type ResponseJson struct {
 	Ranking            []*Ranking          `json:"ranking,omitempty"`             // 人気投票ランキング
 	ImageUrl           *string             `json:"image_url,omitempty"`           // モンスター画像URL
 	BGM                []*Music            `json:"bgm,omitempty"`                 // BGM
+	Element            string              `json:"element"`                       // モンスターの属性 (changed to string, removed omitempty)
 }
 
 type Weakness_attack struct {
