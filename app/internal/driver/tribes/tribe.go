@@ -10,13 +10,10 @@ import (
 )
 
 type tribeRepository struct {
-	conn *gorm.DB
 }
 
-func NewtribeRepository(conn *gorm.DB) *tribeRepository {
-	return &tribeRepository{
-		conn: conn,
-	}
+func NewtribeRepository() *tribeRepository {
+	return &tribeRepository{}
 }
 
 func (r *tribeRepository) Save(ctx context.Context, t Tribes.Tribe) error {
@@ -26,9 +23,9 @@ func (r *tribeRepository) Save(ctx context.Context, t Tribes.Tribe) error {
 		Name_en:     t.GetNameEN(),
 		Description: t.GetDescription(),
 	}
-	r.conn.Exec("SET foreign_key_checks = 0")
-	err := r.conn.Save(&tribe).Error
-	r.conn.Exec("SET foreign_key_checks = 1")
+	mysql.CtxFromDB(ctx).Exec("SET foreign_key_checks = 0")
+	err := mysql.CtxFromDB(ctx).Save(&tribe).Error
+	mysql.CtxFromDB(ctx).Exec("SET foreign_key_checks = 1")
 	if err != nil {
 		return err
 	}
@@ -40,7 +37,7 @@ func (r *tribeRepository) Remove(ctx context.Context, Id string) error {
 	tribe := mysql.Tribe{
 		Model: gorm.Model{ID: uint(i)},
 	}
-	err := r.conn.Delete(&tribe).Error
+	err := mysql.CtxFromDB(ctx).Delete(&tribe).Error
 	if err != nil {
 		return err
 	}
