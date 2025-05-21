@@ -42,14 +42,6 @@ func NewMonsterHandler(s monsters.MonsterService) *MonsterHandler {
 // @Router /monsters [get]
 func (m *MonsterHandler) GetAll(c *gin.Context) {
 	ctx := c.Request.Context()
-	// ADDED: Retrieve DB
-	db := middleware.GetDB(ctx)
-	if db == nil {
-		slog.Log(c, middleware.SeverityError, "database connection not found in context")
-		c.JSON(http.StatusInternalServerError, MessageResponse{Message: "INTERNAL SERVER ERROR"})
-		return
-	}
-	// END ADDED
 
 	span := sentry.StartSpan(ctx, "handler.GetAll")
 	span.Description = "GetAll"
@@ -58,7 +50,7 @@ func (m *MonsterHandler) GetAll(c *gin.Context) {
 	var param RequestParam
 	err := c.ShouldBindQuery(&param)
 	if err != nil {
-		slog.Log(c, middleware.SeverityError, "param marshal error", "error message", err)
+		slog.Log(c, pkg.SeverityError, "param marshal error", "error message", err)
 		c.JSON(http.StatusBadRequest, MessageResponse{Message: "BAD REQUEST"})
 		return
 	}
@@ -69,7 +61,7 @@ func (m *MonsterHandler) GetAll(c *gin.Context) {
 	validate := pkg.GetValidator()
 	err = validate.Struct(&param)
 	if err != nil {
-		slog.Log(c, middleware.SeverityError, "validation error", "error message", err)
+		slog.Log(c, pkg.SeverityError, "validation error", "error message", err)
 		c.JSON(http.StatusBadRequest, MessageResponse{Message: "BAD REQUEST"})
 		return
 	}
@@ -79,18 +71,17 @@ func (m *MonsterHandler) GetAll(c *gin.Context) {
 		id = ""
 	}
 	ctx = context.WithValue(ctx, "param", param)
-	// UPDATED: Pass db to service call
-	res, err := m.monsterService.FetchMonsterDetail(ctx, db, id)
+	res, err := m.monsterService.FetchMonsterDetail(ctx, id)
 
 	if err == gorm.ErrRecordNotFound {
-		slog.Log(c, middleware.SeverityError, "Record Not Found", "error message", err)
+		slog.Log(c, pkg.SeverityError, "Record Not Found", "error message", err)
 		c.JSON(http.StatusNotFound, MessageResponse{Message: "NOT FOUND"})
 		return
 	} else if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"err": "can not get records",
 		})
-		slog.Log(c, middleware.SeverityError, "database error", "error", err)
+		slog.Log(c, pkg.SeverityError, "database error", "error", err)
 		return
 	}
 
@@ -172,37 +163,35 @@ func (m *MonsterHandler) GetAll(c *gin.Context) {
 func (m *MonsterHandler) GetById(c *gin.Context) {
 	// トレーシング用のスパンを作成（親トランザクションの子スパンとして）
 	ctx := c.Request.Context()
-	// ADDED: Retrieve DB
 	db := middleware.GetDB(ctx)
 	if db == nil {
-		slog.Log(c, middleware.SeverityError, "database connection not found in context")
+		slog.Log(c, pkg.SeverityError, "database connection not found in context")
 		c.JSON(http.StatusInternalServerError, MessageResponse{Message: "INTERNAL SERVER ERROR"})
 		return
 	}
-	// END ADDED
+
 	span := sentry.StartSpan(ctx, "handler.GetById")
 	span.SetTag("handler", "monsterHandler")
 	defer span.Finish()
 
 	id, ook := c.Params.Get("id")
 	if !ook {
-		slog.Log(c, middleware.SeverityError, "path parameter required")
+		slog.Log(c, pkg.SeverityError, "path parameter required")
 		c.JSON(http.StatusBadRequest, MessageResponse{Message: "BAD REQUEST"})
 		return
 	}
 
-	// UPDATED: Pass db to service call
-	res, err := m.monsterService.FetchMonsterDetail(c.Request.Context(), db, id)
+	res, err := m.monsterService.FetchMonsterDetail(ctx, id)
 
 	if err == gorm.ErrRecordNotFound {
-		slog.Log(c, middleware.SeverityError, "Record Not Found", "error message", err)
+		slog.Log(c, pkg.SeverityError, "Record Not Found", "error message", err)
 		c.JSON(http.StatusNotFound, MessageResponse{Message: "NOT FOUND"})
 		return
 	} else if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"err": "can not get records",
 		})
-		slog.Log(c, middleware.SeverityError, "database error", "error", err)
+		slog.Log(c, pkg.SeverityError, "database error", "error", err)
 		return
 	}
 

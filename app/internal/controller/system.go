@@ -1,10 +1,8 @@
 package controller
 
 import (
-	"log/slog" // Added
-	"mh-api/app/internal/presenter/middleware" // Added
 	"mh-api/app/internal/service/health"
-	"net/http" // Added
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
@@ -26,23 +24,16 @@ func (s *SystemHandler) Health(c *gin.Context) {
 }
 
 func (s *SystemHandler) DBHealth(c *gin.Context) {
-	// ADDED: Retrieve DB
-	db := middleware.GetDB(c.Request.Context())
-	if db == nil {
-		slog.Log(c, middleware.SeverityError, "database connection not found in context")
-		c.JSON(http.StatusInternalServerError, gin.H{"Message": "INTERNAL SERVER ERROR"})
-		return
-	}
-	// END ADDED
+	ctx := c.Request.Context()
 
-	err := s.service.GetStatus(db) // MODIFIED: pass db
+	err := s.service.GetStatus(ctx)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{ // Changed to 500 to be consistent
+		c.JSON(http.StatusInternalServerError, gin.H{
 			"Message": err.Error(),
 		})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{ // Changed to 200 to be consistent
+	c.JSON(http.StatusOK, gin.H{
 		"Message": "db ok",
 	})
 }
