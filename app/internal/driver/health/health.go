@@ -1,19 +1,25 @@
 package mysql
 
-import "gorm.io/gorm"
+import (
+	"context"
+	"errors"
+	"mh-api/app/internal/driver/mysql"
+)
 
-type healthRepository struct {
-	conn *gorm.DB
+type healthRepository struct{}
+
+func NewHealthRepository() *healthRepository {
+	return &healthRepository{}
 }
 
-func NewHealthRepository(conn *gorm.DB) *healthRepository {
-	return &healthRepository{conn: conn}
-}
-
-func (h *healthRepository) GetStatus() error {
-	db, err := h.conn.DB()
+func (h *healthRepository) GetStatus(ctx context.Context) error {
+	db := mysql.CtxFromDB(ctx)
+	if db == nil {
+		return errors.New("database connection not found")
+	}
+	conn, err := db.DB()
 	if err != nil {
 		return err
 	}
-	return db.Ping()
+	return conn.Ping()
 }
