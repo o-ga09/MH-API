@@ -4,6 +4,7 @@ import (
 	"context"
 	"mh-api/app/internal/domain/monsters"
 	"mh-api/app/internal/driver/mysql"
+	"mh-api/app/pkg"
 
 	"gorm.io/gorm"
 )
@@ -27,8 +28,8 @@ func (r *monsterRepository) Get(ctx context.Context, monsterId string) (monsters
 
 	res := monsters.Monsters{}
 	for _, r := range monster {
-		domainMonster := monsters.NewMonster(r.MonsterId, r.Name, r.Description)
-		domainMonster.Element = r.Element // Assign Element from db model to domain model
+		element := pkg.PtrToStr(r.Element)
+		domainMonster := monsters.NewMonster(r.MonsterId, r.Name, r.Description, element)
 		res = append(res, domainMonster)
 	}
 
@@ -40,7 +41,7 @@ func (r *monsterRepository) Save(ctx context.Context, m monsters.Monster) error 
 		MonsterId:   m.GetId(),
 		Name:        m.GetName(),
 		Description: m.GetDesc(),
-		Element:     m.Element, // Assign Element from domain model to db model
+		Element:     pkg.StrToPtr(m.GetElement()),
 	}
 	r.conn.Exec("SET foreign_key_checks = 0")
 	err := r.conn.Save(&monster).Error
