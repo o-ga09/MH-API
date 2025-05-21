@@ -43,6 +43,7 @@ func NewServer() (*gin.Engine, error) {
 	r.Use(withCtx)
 	r.Use(cors)
 	r.Use(middleware.RequestLogger())
+	r.Use(middleware.WithDB()) // Add the WithDB middleware here
 	r.Use(sentryMiddleware)
 
 	// ヘルスチェック
