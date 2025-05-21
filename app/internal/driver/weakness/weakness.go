@@ -10,18 +10,15 @@ import (
 )
 
 type weakRepository struct {
-	conn *gorm.DB
 }
 
-func NewweakRepository(conn *gorm.DB) *weakRepository {
-	return &weakRepository{
-		conn: conn,
-	}
+func NewweakRepository() *weakRepository {
+	return &weakRepository{}
 }
 
 func (r *weakRepository) Get(ctx context.Context, monsterId string) (weakness.Weaknesses, error) {
 	weak := []mysql.Weakness{}
-	err := r.conn.Find(&weak).Error
+	err := mysql.CtxFromDB(ctx).Find(&weak).Error
 	if err != nil {
 		return nil, err
 	}
@@ -66,9 +63,9 @@ func (r *weakRepository) Save(ctx context.Context, w weakness.Weakness) error {
 		FirstWeakElement:  w.GetFirstWeakElement(),
 		SecondWeakElement: w.GetSecondWeakElement(),
 	}
-	r.conn.Exec("SET foreign_key_checks = 0")
-	err := r.conn.Save(&weak).Error
-	r.conn.Exec("SET foreign_key_checks = 1")
+	mysql.CtxFromDB(ctx).Exec("SET foreign_key_checks = 0")
+	err := mysql.CtxFromDB(ctx).Save(&weak).Error
+	mysql.CtxFromDB(ctx).Exec("SET foreign_key_checks = 1")
 	if err != nil {
 		return err
 	}
@@ -80,7 +77,7 @@ func (r *weakRepository) Remove(ctx context.Context, Id string) error {
 	weak := mysql.Weakness{
 		Model: gorm.Model{ID: uint(i)},
 	}
-	err := r.conn.Delete(&weak).Error
+	err := mysql.CtxFromDB(ctx).Delete(&weak).Error
 	if err != nil {
 		return err
 	}

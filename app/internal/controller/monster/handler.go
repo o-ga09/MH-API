@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log/slog"
 
-	"mh-api/app/internal/presenter/middleware"
 	"mh-api/app/internal/service/monsters"
 	"mh-api/app/pkg"
 
@@ -42,6 +41,7 @@ func NewMonsterHandler(s monsters.MonsterService) *MonsterHandler {
 // @Router /monsters [get]
 func (m *MonsterHandler) GetAll(c *gin.Context) {
 	ctx := c.Request.Context()
+
 	span := sentry.StartSpan(ctx, "handler.GetAll")
 	span.Description = "GetAll"
 	defer span.Finish()
@@ -49,7 +49,7 @@ func (m *MonsterHandler) GetAll(c *gin.Context) {
 	var param RequestParam
 	err := c.ShouldBindQuery(&param)
 	if err != nil {
-		slog.Log(c, middleware.SeverityError, "param marshal error", "error message", err)
+		slog.Log(c, pkg.SeverityError, "param marshal error", "error message", err)
 		c.JSON(http.StatusBadRequest, MessageResponse{Message: "BAD REQUEST"})
 		return
 	}
@@ -60,7 +60,7 @@ func (m *MonsterHandler) GetAll(c *gin.Context) {
 	validate := pkg.GetValidator()
 	err = validate.Struct(&param)
 	if err != nil {
-		slog.Log(c, middleware.SeverityError, "validation error", "error message", err)
+		slog.Log(c, pkg.SeverityError, "validation error", "error message", err)
 		c.JSON(http.StatusBadRequest, MessageResponse{Message: "BAD REQUEST"})
 		return
 	}
@@ -73,14 +73,14 @@ func (m *MonsterHandler) GetAll(c *gin.Context) {
 	res, err := m.monsterService.FetchMonsterDetail(ctx, id)
 
 	if err == gorm.ErrRecordNotFound {
-		slog.Log(c, middleware.SeverityError, "Record Not Found", "error message", err)
+		slog.Log(c, pkg.SeverityError, "Record Not Found", "error message", err)
 		c.JSON(http.StatusNotFound, MessageResponse{Message: "NOT FOUND"})
 		return
 	} else if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"err": "can not get records",
 		})
-		slog.Log(c, middleware.SeverityError, "database error", "error", err)
+		slog.Log(c, pkg.SeverityError, "database error", "error", err)
 		return
 	}
 
@@ -163,28 +163,29 @@ func (m *MonsterHandler) GetAll(c *gin.Context) {
 func (m *MonsterHandler) GetById(c *gin.Context) {
 	// トレーシング用のスパンを作成（親トランザクションの子スパンとして）
 	ctx := c.Request.Context()
+
 	span := sentry.StartSpan(ctx, "handler.GetById")
 	span.SetTag("handler", "monsterHandler")
 	defer span.Finish()
 
-	id, ook := c.Params.Get("id")
-	if !ook {
-		slog.Log(c, middleware.SeverityError, "path parameter required")
+	id, ok := c.Params.Get("id")
+	if !ok {
+		slog.Log(c, pkg.SeverityError, "path parameter required")
 		c.JSON(http.StatusBadRequest, MessageResponse{Message: "BAD REQUEST"})
 		return
 	}
 
-	res, err := m.monsterService.FetchMonsterDetail(c.Request.Context(), id)
+	res, err := m.monsterService.FetchMonsterDetail(ctx, id)
 
 	if err == gorm.ErrRecordNotFound {
-		slog.Log(c, middleware.SeverityError, "Record Not Found", "error message", err)
+		slog.Log(c, pkg.SeverityError, "Record Not Found", "error message", err)
 		c.JSON(http.StatusNotFound, MessageResponse{Message: "NOT FOUND"})
 		return
 	} else if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"err": "can not get records",
 		})
-		slog.Log(c, middleware.SeverityError, "database error", "error", err)
+		slog.Log(c, pkg.SeverityError, "database error", "error", err)
 		return
 	}
 

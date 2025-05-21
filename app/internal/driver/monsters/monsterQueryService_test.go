@@ -9,28 +9,22 @@ import (
 
 	"github.com/google/go-cmp/cmp"
 	"golang.org/x/net/context"
-
-	"gorm.io/gorm"
 )
 
 func TestNewmonsterQueryService(t *testing.T) {
 	t.Skip()
 	mysql.BeforeTest()
 	t.Cleanup(mysql.AfetrTest())
-	conn := mysql.New(context.Background())
-	type args struct {
-		conn *gorm.DB
-	}
+
 	tests := []struct {
 		name string
-		args args
 		want *monsterQueryService
 	}{
-		{name: "QueryService構造体を生成する", args: args{conn: conn}, want: NewmonsterQueryService(conn)},
+		{name: "QueryService構造体を生成する", want: NewmonsterQueryService()},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got := NewmonsterQueryService(tt.args.conn)
+			got := NewmonsterQueryService()
 			if !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("NewmonsterQueryService() = %v, want %v", got, tt.want)
 			}
@@ -44,7 +38,7 @@ func Test_monsterQueryService_FetchList(t *testing.T) {
 	mysql.BeforeTest()
 	t.Cleanup(mysql.AfetrTest())
 	ctx := context.Background()
-	conn := mysql.New(ctx)
+
 	weak_A := []monsters.Weakness_attack{
 		{PartId: "0001", Slashing: "45", Blow: "45", Bullet: "45"},
 	}
@@ -86,35 +80,29 @@ func Test_monsterQueryService_FetchList(t *testing.T) {
 	param5 := param.RequestParam{MonsterIds: "", MonsterName: "", Limit: 100, Offset: 0, Sort: "2"}
 	param6 := param.RequestParam{MonsterIds: "0000000001", MonsterName: "リオレウス", Limit: 100, Offset: 0, Sort: "1"}
 
-	type fields struct {
-		conn *gorm.DB
-	}
 	type args struct {
 		id    string
 		param param.RequestParam
 	}
 	tests := []struct {
 		name    string
-		fields  fields
 		args    args
 		want    []*monsters.FetchMonsterListDto
 		wantErr bool
 	}{
-		{name: "DBからモンスターデータを複数件取得できる", fields: fields{conn: conn}, args: args{id: "", param: param1}, want: wantMonsters1, wantErr: false},
-		{name: "DBからモンスターデータをmonsterIdを複数件指定して取得できる", fields: fields{conn: conn}, args: args{id: "", param: param2}, want: wantMonsters2, wantErr: false},
-		{name: "DBからモンスターの名前を部分一致検索で指定して取得できる", fields: fields{conn: conn}, args: args{id: "", param: param3}, want: wantMonsters3, wantErr: false},
-		{name: "DBからモンスターデータをmonsterIdでソート（昇順）して取得できる", fields: fields{conn: conn}, args: args{id: "", param: param4}, want: wantMonsters4, wantErr: false},
-		{name: "DBからモンスターデータをmonsterIdでソート（降順）して取得できる", fields: fields{conn: conn}, args: args{id: "", param: param5}, want: wantMonsters5, wantErr: false},
-		{name: "DBからモンスターデータをid指定で1件取得できる", fields: fields{conn: conn}, args: args{id: "0000000002", param: param.RequestParam{}}, want: wantMonsters6, wantErr: false},
-		{name: "DBからモンスターデータを取得できない場合、NotFoundErrorで返す", fields: fields{conn: conn}, args: args{id: "", param: param.RequestParam{}}, want: nil, wantErr: true},
-		{name: "DBからモンスターデータをmonsterIdとmonsterNameを指定して取得できる", fields: fields{conn: conn}, args: args{id: "", param: param6}, want: wantMonsters7, wantErr: false},
+		{name: "DBからモンスターデータを複数件取得できる", args: args{id: "", param: param1}, want: wantMonsters1, wantErr: false},
+		{name: "DBからモンスターデータをmonsterIdを複数件指定して取得できる", args: args{id: "", param: param2}, want: wantMonsters2, wantErr: false},
+		{name: "DBからモンスターの名前を部分一致検索で指定して取得できる", args: args{id: "", param: param3}, want: wantMonsters3, wantErr: false},
+		{name: "DBからモンスターデータをmonsterIdでソート（昇順）して取得できる", args: args{id: "", param: param4}, want: wantMonsters4, wantErr: false},
+		{name: "DBからモンスターデータをmonsterIdでソート（降順）して取得できる", args: args{id: "", param: param5}, want: wantMonsters5, wantErr: false},
+		{name: "DBからモンスターデータをid指定で1件取得できる", args: args{id: "0000000002", param: param.RequestParam{}}, want: wantMonsters6, wantErr: false},
+		{name: "DBからモンスターデータを取得できない場合、NotFoundErrorで返す", args: args{id: "", param: param.RequestParam{}}, want: nil, wantErr: true},
+		{name: "DBからモンスターデータをmonsterIdとmonsterNameを指定して取得できる", args: args{id: "", param: param6}, want: wantMonsters7, wantErr: false},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			ctx = context.WithValue(context.Background(), "param", tt.args.param)
-			s := &monsterQueryService{
-				conn: tt.fields.conn,
-			}
+			s := &monsterQueryService{}
 			got, err := s.FetchList(ctx, tt.args.id)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("monsterQueryService.FetchList() error = %v, wantErr %v", err, tt.wantErr)

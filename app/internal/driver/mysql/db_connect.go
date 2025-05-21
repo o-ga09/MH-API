@@ -2,78 +2,90 @@ package mysql
 
 import (
 	"context"
+	"fmt"
+	"log"
 	"log/slog"
-	"mh-api/app/internal/presenter/middleware"
 	"mh-api/app/pkg"
+	"sync"
+	"testing"
 
 	"time"
 
-	"github.com/uptrace/opentelemetry-go-extra/otelgorm"
-	"go.opentelemetry.io/otel/attribute"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 	"gorm.io/gorm/schema"
-	"gorm.io/plugin/opentelemetry/tracing"
 )
 
-var db *gorm.DB
+type ctxKey string
 
-func New(ctx context.Context) *gorm.DB {
-	cfg, err := pkg.New()
-	if err != nil {
-		slog.Log(ctx, middleware.SeverityError, "environment variable error", "error", err)
-		return nil
-	}
+const CtxKey ctxKey = "db"
+const MAX_RETRY = 10
 
-	dialector := mysql.Open(cfg.Database_url)
+var (
+	db   *gorm.DB
+	once sync.Once
+)
 
-	if db, err = gorm.Open(dialector, &gorm.Config{
-		Logger: NewSentryLogger(),
-		NamingStrategy: schema.NamingStrategy{
-			SingularTable: true,
-		},
-		// コールバックでスパンを作成するよう設定
-		QueryFields: true,
-	}); err != nil {
-		connect(ctx, dialector, 100)
-	}
-
-	// SQLクエリをトレースできるようにOpenTelemetryプラグインを登録
-	if err := db.Use(tracing.NewPlugin(tracing.WithoutMetrics())); err != nil {
-		slog.Log(ctx, middleware.SeverityError, "failed to register otelgorm plugin", "error", err)
-	}
-
-	return db
-}
-
-func connect(ctx context.Context, dialector gorm.Dialector, count uint) {
-	var err error
-	if db, err = gorm.Open(dialector, &gorm.Config{NamingStrategy: schema.NamingStrategy{
-		SingularTable: true,
-	}}); err != nil {
-		if count > 1 {
-			time.Sleep(time.Second * 2)
-			count--
-			slog.Log(ctx, middleware.SeverityInfo, "db connection retry")
-			connect(ctx, dialector, count)
+func New(ctx context.Context) context.Context {
+	once.Do(func() {
+		cfg, err := pkg.New()
+		if err != nil {
 			return
 		}
-		slog.Log(ctx, middleware.SeverityInfo, "db connection retry count 100")
-		panic(err.Error())
-	}
 
-	// リトライ接続でもトレースを有効化
-	cfg, _ := pkg.New()
-	if cfg.Env == "PROD" || cfg.Env == "STAGE" {
-		if err := db.Use(otelgorm.NewPlugin(
-			otelgorm.WithDBName("mh-api"),
-			otelgorm.WithAttributes(
-				attribute.String("db.type", "mysql"),
-				attribute.String("db.env", cfg.Env),
-				attribute.Bool("db.retry_connection", true),
-			),
-		)); err != nil {
-			slog.Log(ctx, middleware.SeverityError, "failed to register otelgorm plugin in retry", "error", err)
+		dialector := mysql.Open(cfg.Database_url)
+		db, err = gorm.Open(dialector, &gorm.Config{
+			NamingStrategy: schema.NamingStrategy{
+				SingularTable: true,
+			},
+			Logger: logger.Default.LogMode(logger.Info),
+		})
+		if err != nil {
+			ctx = connect(ctx, dialector)
 		}
+
+		// SQLDBインスタンスを取得
+		sqlDB, err := db.DB()
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		// コネクションプールの設定
+		sqlDB.SetMaxIdleConns(10)           // アイドル状態の最大接続数
+		sqlDB.SetMaxOpenConns(100)          // 最大接続数
+		sqlDB.SetConnMaxLifetime(time.Hour) // 接続の最大生存期間
+	})
+
+	return context.WithValue(ctx, CtxKey, db)
+}
+
+func connect(ctx context.Context, dialector gorm.Dialector) context.Context {
+	var err error
+	for i := 0; i < MAX_RETRY; i++ {
+		if db, err = gorm.Open(dialector, &gorm.Config{
+			NamingStrategy: schema.NamingStrategy{
+				SingularTable: false,
+			},
+			Logger: logger.Default.LogMode(logger.Info),
+		}); err == nil {
+			return context.WithValue(ctx, CtxKey, db)
+		}
+		time.Sleep(5 * time.Second)
+		slog.InfoContext(ctx, fmt.Sprintf("Failed to connect to database. Retry after 5 seconds.: %d times", i))
 	}
+	return ctx
+}
+
+func SetTestDB(t *testing.T, db *gorm.DB) {
+	t.Helper()
+
+	tx := db.Begin() // トランザクションを開始
+
+	// テスト終了後にロールバック
+	defer tx.Rollback()
+}
+
+func CtxFromDB(ctx context.Context) *gorm.DB {
+	return ctx.Value(CtxKey).(*gorm.DB)
 }

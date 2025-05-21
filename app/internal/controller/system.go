@@ -2,6 +2,7 @@ package controller
 
 import (
 	"mh-api/app/internal/service/health"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
@@ -23,14 +24,16 @@ func (s *SystemHandler) Health(c *gin.Context) {
 }
 
 func (s *SystemHandler) DBHealth(c *gin.Context) {
-	err := s.service.GetStatus()
+	ctx := c.Request.Context()
+
+	err := s.service.GetStatus(ctx)
 	if err != nil {
-		c.JSON(500, gin.H{
+		c.JSON(http.StatusInternalServerError, gin.H{
 			"Message": err.Error(),
 		})
 		return
 	}
-	c.JSON(200, gin.H{
+	c.JSON(http.StatusOK, gin.H{
 		"Message": "db ok",
 	})
 }

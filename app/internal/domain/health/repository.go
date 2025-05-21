@@ -1,5 +1,7 @@
 package health
 
+import "context"
+
 type HealthRepository interface {
-	GetStatus() error
+	GetStatus(ctx context.Context) error
 }

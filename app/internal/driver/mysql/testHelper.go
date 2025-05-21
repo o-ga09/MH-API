@@ -3,7 +3,7 @@ package mysql
 import (
 	"context"
 	"log/slog"
-	"mh-api/app/internal/presenter/middleware"
+
 	"mh-api/app/pkg"
 	"os"
 
@@ -19,7 +19,7 @@ func BeforeTest() {
 
 	cfg, err := pkg.New()
 	if err != nil {
-		slog.Log(context.Background(), middleware.SeverityError, "environment variable error", "error", err)
+		slog.Log(context.Background(), pkg.SeverityError, "environment variable error", "error", err)
 	}
 	dialector := mysql.Open(cfg.Database_url)
 
@@ -28,7 +28,7 @@ func BeforeTest() {
 	if db, err = gorm.Open(dialector, &gorm.Config{NamingStrategy: schema.NamingStrategy{
 		SingularTable: true,
 	}}); err != nil {
-		connect(ctx, dialector, 100)
+		connect(ctx, dialector)
 	}
 
 	weak1 := []*Weakness{
@@ -84,7 +84,7 @@ func AfetrTest() func() {
 
 		cfg, err := pkg.New()
 		if err != nil {
-			slog.Log(context.Background(), middleware.SeverityError, "environment variable error", "error", err)
+			slog.Log(context.Background(), pkg.SeverityError, "environment variable error", "error", err)
 		}
 		dialector := mysql.Open(cfg.Database_url)
 
@@ -93,7 +93,7 @@ func AfetrTest() func() {
 		if db, err = gorm.Open(dialector, &gorm.Config{NamingStrategy: schema.NamingStrategy{
 			SingularTable: true,
 		}}); err != nil {
-			connect(ctx, dialector, 100)
+			connect(ctx, dialector)
 		}
 
 		db.Exec("SET foreign_key_checks = 0")

@@ -12,14 +12,10 @@ import (
 	"gorm.io/gorm"
 )
 
-type monsterQueryService struct {
-	conn *gorm.DB
-}
+type monsterQueryService struct{}
 
-func NewmonsterQueryService(conn *gorm.DB) *monsterQueryService {
-	return &monsterQueryService{
-		conn: conn,
-	}
+func NewmonsterQueryService() *monsterQueryService {
+	return &monsterQueryService{}
 }
 
 func (s *monsterQueryService) FetchList(ctx context.Context, id string) ([]*monsters.FetchMonsterListDto, error) {
@@ -57,13 +53,13 @@ func (s *monsterQueryService) FetchList(ctx context.Context, id string) ([]*mons
 	}
 
 	if id != "" {
-		result = s.conn.WithContext(ctx).Model(&monster).Preload("Weakness").Preload("Field").Preload("Tribe").Preload("Product").Preload("Ranking").Preload("BGM").Where("monster_id = ? ", id).Find(&monster)
+		result = mysql.CtxFromDB(ctx).WithContext(ctx).Model(&monster).Preload("Weakness").Preload("Field").Preload("Tribe").Preload("Product").Preload("Ranking").Preload("BGM").Where("monster_id = ? ", id).Find(&monster)
 	} else if where_clade != "" && p.MonsterIds != "" {
-		result = s.conn.WithContext(ctx).Model(&monster).Preload("Weakness").Preload("Field").Preload("Tribe").Preload("Product").Preload("Ranking").Preload("BGM").Where(where_clade, monsterIds).Limit(limit).Offset(offset).Order(sort).Find(&monster)
+		result = mysql.CtxFromDB(ctx).WithContext(ctx).Model(&monster).Preload("Weakness").Preload("Field").Preload("Tribe").Preload("Product").Preload("Ranking").Preload("BGM").Where(where_clade, monsterIds).Limit(limit).Offset(offset).Order(sort).Find(&monster)
 	} else if where_clade != "" {
-		result = s.conn.WithContext(ctx).Model(&monster).Preload("Weakness").Preload("Field").Preload("Tribe").Preload("Product").Preload("Ranking").Preload("BGM").Where(where_clade).Limit(limit).Offset(offset).Order(sort).Find(&monster)
+		result = mysql.CtxFromDB(ctx).WithContext(ctx).Model(&monster).Preload("Weakness").Preload("Field").Preload("Tribe").Preload("Product").Preload("Ranking").Preload("BGM").Where(where_clade).Limit(limit).Offset(offset).Order(sort).Find(&monster)
 	} else {
-		result = s.conn.WithContext(ctx).Model(&monster).Preload("Weakness").Preload("Field").Preload("Tribe").Preload("Product").Preload("Ranking").Preload("BGM").Limit(limit).Offset(offset).Order(sort).Find(&monster)
+		result = mysql.CtxFromDB(ctx).WithContext(ctx).Model(&monster).Preload("Weakness").Preload("Field").Preload("Tribe").Preload("Product").Preload("Ranking").Preload("BGM").Limit(limit).Offset(offset).Order(sort).Find(&monster)
 	}
 
 	if result.Error != nil {
