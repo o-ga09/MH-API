@@ -9,5 +9,4 @@ TRUNCATE TABLE `tribe`;
 TRUNCATE TABLE `weakness`;
 TRUNCATE TABLE `weapon`;
 TRUNCATE TABLE `ranking`;
-TRUNCATE TABLE `bgm_ranking`;
 SET FOREIGN_KEY_CHECKS = 1;
