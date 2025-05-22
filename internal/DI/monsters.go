@@ -13,7 +13,7 @@ func InitMonstersHandler(ctx context.Context) *handler.MonsterHandler {
 	repo := mysql.NewMonsterRepository()
 	qs := mysql.NewmonsterQueryService()
 	service := monsters.NewMonsterService(repo, qs)
-	h := handler.NewMonsterHandler(*service)
+	h := handler.NewMonsterHandler(service)
 
 	return h
 }
