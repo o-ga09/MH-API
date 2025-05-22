@@ -34,5 +34,4 @@ doc/openapi/APIGateway.md
 .DS_Store
 .env
 *.csv
-*.json
 !.vscode/*.json
