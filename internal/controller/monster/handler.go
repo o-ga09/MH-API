@@ -19,10 +19,10 @@ import (
 const YOUTUBE_URL = "https://www.youtube.com/watch?v="
 
 type MonsterHandler struct {
-	monsterService monsters.MonsterService
+	monsterService monsters.IMonsterService
 }
 
-func NewMonsterHandler(s monsters.MonsterService) *MonsterHandler {
+func NewMonsterHandler(s monsters.IMonsterService) *MonsterHandler {
 	return &MonsterHandler{
 		monsterService: s,
 	}
