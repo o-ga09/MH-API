@@ -1,0 +1,89 @@
+{
+  "total": 2,
+  "monsters": [
+    {
+      "monster_id": "1",
+      "name": "リオレウス",
+      "description": "天空を司る王者",
+      "location": ["森林", "砂漠"],
+      "category": "飛竜種",
+      "title": ["MH1", "MH2"],
+      "first_weak_attack": "頭部",
+      "first_weak_element": "雷",
+      "second_weak_attack": "翼",
+      "second_weak_element": "龍",
+      "weakness_attack": [
+        {
+          "slashing": "30",
+          "blow": "25",
+          "bullet": "20"
+        }
+      ],
+      "weakness_element": [
+        {
+          "fire": "0",
+          "water": "10",
+          "thunder": "20",
+          "ice": "15",
+          "dragon": "15"
+        }
+      ],
+      "ranking": [
+        {
+          "ranking": "1",
+          "vote_year": "2020"
+        }
+      ],
+      "image_url": "https://raw.githubusercontent.com/o-ga09/MH-API/main/data/monster/1.png",
+      "bgm": [
+        {
+          "name": "森と火の戦い",
+          "url": "https://www.youtube.com/watch?v=abcdefg"
+        }
+      ],
+      "element": "火"
+    },
+    {
+      "monster_id": "2",
+      "name": "ジンオウガ",
+      "description": "雷を纏いし獣",
+      "location": ["高地", "森林"],
+      "category": "牙獣種",
+      "title": ["MH3", "MH4"],
+      "first_weak_attack": "頭部",
+      "first_weak_element": "水",
+      "second_weak_attack": "尻尾",
+      "second_weak_element": "氷",
+      "weakness_attack": [
+        {
+          "slashing": "25",
+          "blow": "30",
+          "bullet": "20"
+        }
+      ],
+      "weakness_element": [
+        {
+          "fire": "5",
+          "water": "20",
+          "thunder": "0",
+          "ice": "15",
+          "dragon": "10"
+        }
+      ],
+      "ranking": [
+        {
+          "ranking": "3",
+          "vote_year": "2020"
+        }
+      ],
+      "image_url": "https://raw.githubusercontent.com/o-ga09/MH-API/main/data/monster/2.png",
+      "bgm": [
+        {
+          "name": "雷鳴の如く",
+          "url": "https://www.youtube.com/watch?v=hijklmn"
+        }
+      ],
+      "element": "雷"
+    }
+  ]
+}
