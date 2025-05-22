@@ -7,7 +7,6 @@ import (
 	"log/slog"
 	"mh-api/pkg/config"
 	"sync"
-	"testing"
 	"time"
 
 	"gorm.io/driver/mysql"
@@ -74,15 +73,6 @@ func connect(ctx context.Context, dialector gorm.Dialector) context.Context {
 		slog.InfoContext(ctx, fmt.Sprintf("Failed to connect to database. Retry after 5 seconds.: %d times", i))
 	}
 	return ctx
-}
-
-func SetTestDB(t *testing.T, db *gorm.DB) {
-	t.Helper()
-
-	tx := db.Begin() // トランザクションを開始
-
-	// テスト終了後にロールバック
-	defer tx.Rollback()
 }
 
 func CtxFromDB(ctx context.Context) *gorm.DB {

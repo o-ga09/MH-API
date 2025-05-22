@@ -2,16 +2,23 @@ package mysql
 
 import (
 	"context"
+	"database/sql"
+	"fmt"
+	"log"
 	"log/slog"
+	"strings"
 
 	"mh-api/pkg/config"
 	"mh-api/pkg/constant"
 	"os"
 
+	migrate "github.com/rubenv/sql-migrate"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/schema"
 )
+
+var testDB *gorm.DB
 
 func BeforeTest() {
 	var err error
@@ -78,34 +85,93 @@ func BeforeTest() {
 	db.Create(bgms)
 }
 
-func AfetrTest() func() {
-	return func() {
-		var err error
-		ctx := context.Background()
-
-		cfg, err := config.New()
-		if err != nil {
-			slog.Log(context.Background(), constant.SeverityError, "environment variable error", "error", err)
-		}
-		dialector := mysql.Open(cfg.Database_url)
-
-		var db *gorm.DB
-
-		if db, err = gorm.Open(dialector, &gorm.Config{NamingStrategy: schema.NamingStrategy{
-			SingularTable: true,
-		}}); err != nil {
-			connect(ctx, dialector)
-		}
-
-		db.Exec("SET foreign_key_checks = 0")
-		db.Exec("TRUNCATE TABLE monster")
-		db.Exec("TRUNCATE TABLE field")
-		db.Exec("TRUNCATE TABLE product")
-		db.Exec("TRUNCATE TABLE tribe")
-		db.Exec("TRUNCATE TABLE weakness")
-		db.Exec("TRUNCATE TABLE ranking")
-		db.Exec("TRUNCATE TABLE music")
-		db.Exec("TRUNCATE TABLE bgm_ranking")
-		db.Exec("SET foreign_key_checks = 1")
+// setupTestDB はテスト用のDBセットアップを行うヘルパー関数
+func setupTestDB(ctx context.Context) context.Context {
+	os.Setenv("DATABASE_URL", "mh-api:P@ssw0rd@tcp(127.0.0.1:3306)/ci?charset=utf8&parseTime=True&loc=Local")
+	cfg, err := config.New()
+	if err != nil {
+		log.Fatal(err)
 	}
+
+	// テスト用DBの接続情報
+	dsn := cfg.Database_url
+
+	// テスト用DBに接続
+	testDB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{
+		NamingStrategy: schema.NamingStrategy{
+			SingularTable: true,
+		},
+	})
+	if err != nil {
+		log.Fatal(err)
+	}
+	ctx = context.WithValue(ctx, CtxKey, testDB)
+
+	// シードデータ投入
+	migrationTestData()
+	return ctx
+}
+
+// cleanupTestDB はテスト用のDBクリーンアップを行うヘルパー関数
+func cleanupTestDB(_ context.Context) {
+	// TRUNCATE文のSQLの読み込み
+	truncateSQL, err := os.ReadFile("../../../db/seed/00_trancate.sql")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// テーブルのクリーンアップ
+	statements := strings.Split(string(truncateSQL), ";")
+	// テーブルのクリーンアップ
+	for _, stmt := range statements {
+		// 空の文を除外
+		if strings.TrimSpace(stmt) != "" {
+			if err := testDB.Exec(stmt).Error; err != nil {
+				log.Fatal(err)
+			}
+		}
+	}
+	log.Println("successfully cleaned up tables!")
+}
+
+// テスト用のDBのマイグレーション
+func migrationTestData() {
+	// マイグレーション
+	migrations := &migrate.FileMigrationSource{
+		Dir: "../../../db/migrations",
+	}
+
+	dsn := os.Getenv("DATABASE_URL")
+	db, err := sql.Open("mysql", dsn)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	n, err := migrate.Exec(db, "mysql", migrations, migrate.Up)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Printf("Applied %d migrations\n", n)
+
+	// TRUNCATE文のSQLの読み込み
+	truncateSQL, err := os.ReadFile("../../../db/seed/00_truncate.sql")
+	if err != nil {
+		log.Fatal(err)
+	}
+	// テーブルのクリーンアップ
+	statements := strings.Split(string(truncateSQL), ";")
+	// テーブルのクリーンアップ
+	for _, stmt := range statements {
+		// 空の文を除外
+		if strings.TrimSpace(stmt) != "" {
+			if err := testDB.Exec(stmt).Error; err != nil {
+				log.Fatal(err)
+			}
+		}
+	}
+}
+
+// CtxFromDB はコンテキストからDBを取得するヘルパー関数
+func CtxFromTestDB(ctx context.Context) *gorm.DB {
+	return testDB
 }
