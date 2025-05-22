@@ -1,0 +1,44 @@
+{
+  "monster": {
+    "monster_id": "1",
+    "name": "リオレウス",
+    "another_name": "天空を司る王者",
+    "location": ["森林", "砂漠"],
+    "category": "飛竜種",
+    "title": ["MH1", "MH2"],
+    "first_weak_attack": "頭部",
+    "first_weak_element": "雷",
+    "second_weak_attack": "翼",
+    "second_weak_element": "龍",
+    "weakness_attack": [
+      {
+        "slashing": "30",
+        "blow": "25",
+        "bullet": "20"
+      }
+    ],
+    "weakness_element": [
+      {
+        "fire": "0",
+        "water": "10",
+        "thunder": "20",
+        "ice": "15",
+        "dragon": "15"
+      }
+    ],
+    "ranking": [
+      {
+        "ranking": "1",
+        "vote_year": "2020"
+      }
+    ],
+    "image_url": "https://raw.githubusercontent.com/o-ga09/MH-API/main/data/monster/1.png",
+    "bgm": [
+      {
+        "name": "森と火の戦い",
+        "url": "https://www.youtube.com/watch?v=abcdefg"
+      }
+    ],
+    "element": "火"
+  }
+}
