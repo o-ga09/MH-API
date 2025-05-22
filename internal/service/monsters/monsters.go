@@ -5,6 +5,11 @@ import (
 	"mh-api/internal/domain/monsters"
 )
 
+//go:generate moq -out monsterservice_mock.go . IMonsterService
+type IMonsterService interface {
+	FetchMonsterDetail(ctx context.Context, id string) ([]*FetchMonsterListDto, error)
+}
+
 type MonsterService struct {
 	repo monsters.Repository
 	qs   MonsterQueryService
@@ -24,23 +29,4 @@ func (s *MonsterService) FetchMonsterDetail(ctx context.Context, id string) ([]*
 	}
 
 	return res, nil
-}
-
-func (s *MonsterService) SaveMonsters(ctx context.Context, param MonsterDto) error {
-	saveData := monsters.NewMonster(param.ID, param.Name, param.Description, param.Element)
-	err := s.repo.Save(ctx, saveData)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (s *MonsterService) RemoveMonsters(ctx context.Context, id string) error {
-	err := s.repo.Remove(ctx, id)
-	if err != nil {
-		return err
-	}
-
-	return nil
 }
