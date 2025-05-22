@@ -32,9 +32,7 @@ jobs:
       
       - name: run Docker
         run: |
-          DATABASE_URL="mh-api:P@ssw0rd@tcp(mh-api-dbsrv01)/ci?charset=utf8&parseTime=True&loc=Local" make compose-up
-          DATABASE_URL="mh-api:P@ssw0rd@tcp(127.0.0.1:3306)/ci?charset=utf8&parseTime=True&loc=Local" make migrate-up
-
+          make compose-up
 
       - name: testing
         run: |
