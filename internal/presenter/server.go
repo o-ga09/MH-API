@@ -69,19 +69,6 @@ func NewServer() (*gin.Engine, error) {
 		items.GET("", itemHandler.GetItems) // ItemHandler の GetItems メソッドをルーティングに設定
 	}
 
-	// アイテム検索
-	itemHandler := di.InitItemsHandler(ctx) // di.InitItemsHandler を呼び出して ItemHandler を初期化
-	items := v1.Group("/items")
-	{
-		items.GET("", itemHandler.GetItems) // ItemHandler の GetItems メソッドをルーティングに設定
-	}
-
-	// 武器検索
-	weaponHandler := di.InitWeaponHandler(ctx)
-	weapons := v1.Group("/weapons")
-	{
-		weapons.GET("", weaponHandler.SearchWeapons)
-	}
 	// 武器検索
 	weaponHandler := di.InitWeaponHandler(ctx)
 	weapons := v1.Group("/weapons")

@@ -1,8 +1,7 @@
 package item
 
 import (
-	"mh-api/internal/controller/item/response" // エラーレスポンス用にインポート
-	itemService "mh-api/internal/service/items"  // ★ サービス層のitemsパッケージをインポート
+	"mh-api/internal/service/items"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -10,10 +9,10 @@ import (
 
 type ItemHandler struct {
 	// 依存するサービスを itemService.Service に変更
-	service *itemService.Service
+	service *items.Service
 }
 
-func NewItemHandler(s *itemService.Service) *ItemHandler {
+func NewItemHandler(s *items.Service) *ItemHandler {
 	return &ItemHandler{
 		service: s,
 	}
@@ -31,7 +30,7 @@ func (h *ItemHandler) GetItems(c *gin.Context) {
 	itemsResponse, err := h.service.GetAllItems(c.Request.Context())
 	if err != nil {
 		// TODO: エラーの種類に応じてステータスコードを出し分ける (例: 404 Not Found)
-		c.JSON(http.StatusInternalServerError, response.MessageResponse{Message: "Failed to get items"})
+		c.JSON(http.StatusInternalServerError, MessageResponse{Message: "Failed to get items"})
 		return
 	}
 	c.JSON(http.StatusOK, itemsResponse)
@@ -50,8 +49,7 @@ func (h *ItemHandler) GetItems(c *gin.Context) {
 // @Failure      500  {object}  MessageResponse
 // @Router /items/:itemId [get]
 func (h *ItemHandler) GetItem(c *gin.Context) {
-	// 今回は実装しないので、既存のままか、Not Implemented などを返す
-	c.JSON(http.StatusNotImplemented, response.MessageResponse{Message: "Not Implemented"})
+	c.JSON(http.StatusNotImplemented, MessageResponse{Message: "Not Implemented"})
 }
 
 // GetItemByMonster godoc
@@ -67,6 +65,5 @@ func (h *ItemHandler) GetItem(c *gin.Context) {
 // @Failure      500  {object}  MessageResponse
 // @Router /items/monsters [get]
 func (h *ItemHandler) GetItemByMonster(c *gin.Context) {
-	// 今回は実装しないので、既存のままか、Not Implemented などを返す
-	c.JSON(http.StatusNotImplemented, response.MessageResponse{Message: "Not Implemented"})
+	c.JSON(http.StatusNotImplemented, MessageResponse{Message: "Not Implemented"})
 }

@@ -4,8 +4,8 @@ import (
 	"context" // contextパッケージのインポートを追加
 	"encoding/json"
 	"errors"
-	"mh-api/internal/controller/item/response" // エラーレスポンス型のため
-	"mh-api/internal/domain/items"             // itemsドメインパッケージのインポートを追加
+
+	"mh-api/internal/domain/items"
 	itemService "mh-api/internal/service/items"
 	"net/http"
 	"net/http/httptest"
@@ -106,7 +106,7 @@ func TestItemHandler_GetItems_ServiceError(t *testing.T) {
 
 	// アサーション
 	assert.Equal(t, http.StatusInternalServerError, wError.Code)
-	var errorResponse response.MessageResponse
+	var errorResponse MessageResponse
 	err := json.Unmarshal(wError.Body.Bytes(), &errorResponse)
 	assert.NoError(t, err)
 	assert.Equal(t, "Failed to get items", errorResponse.Message)
@@ -130,7 +130,7 @@ func TestItemHandler_GetItem_NotImplemented(t *testing.T) {
 	r.ServeHTTP(w, req)
 
 	assert.Equal(t, http.StatusNotImplemented, w.Code)
-	var actualResponse response.MessageResponse
+	var actualResponse MessageResponse
 	err := json.Unmarshal(w.Body.Bytes(), &actualResponse)
 	assert.NoError(t, err)
 	assert.Equal(t, "Not Implemented", actualResponse.Message)
@@ -150,7 +150,7 @@ func TestItemHandler_GetItemByMonster_NotImplemented(t *testing.T) {
 	r.ServeHTTP(w, req)
 
 	assert.Equal(t, http.StatusNotImplemented, w.Code)
-	var actualResponse response.MessageResponse
+	var actualResponse MessageResponse
 	err := json.Unmarshal(w.Body.Bytes(), &actualResponse)
 	assert.NoError(t, err)
 	assert.Equal(t, "Not Implemented", actualResponse.Message)
