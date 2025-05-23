@@ -7,7 +7,7 @@ COPY go.mod go.sum ./
 RUN go mod download
 COPY . .
 
-RUN go build -trimpath -ldflags "-w -s" -o main ./app/cmd/api/main.go
+RUN go build -trimpath -ldflags "-w -s" -o main ./cmd/api/main.go
 
 #バッチ用コンテナに含めるバイナリを作成するコンテナ
 FROM golang:1.24-bullseye as deploy-batch-builder
@@ -18,7 +18,7 @@ COPY go.mod go.sum ./
 RUN go mod download
 COPY . .
 
-RUN go build -trimpath -ldflags "-w -s" -o main ./app/cmd/batch/main.go
+RUN go build -trimpath -ldflags "-w -s" -o main ./cmd/batch/main.go
 
 #-----------------------------------------------
 #API デプロイ用コンアテナ

@@ -1,0 +1,28 @@
+{
+  "total_count": 2,
+  "limit": 20,
+  "weapons": [
+    {
+      "monster_id": "1",
+      "name": "リオレウス剣",
+      "image_url": "http://example.com/weapon1.jpg",
+      "rare": "5",
+      "attack": "800",
+      "element_attack": "火 200",
+      "sharpness": "青",
+      "critical": "0%",
+      "description": "リオレウスの素材から作られた剣"
+    },
+    {
+      "monster_id": "2",
+      "name": "ジンオウガ太刀",
+      "image_url": "http://example.com/weapon2.jpg",
+      "rare": "6",
+      "attack": "750",
+      "element_attack": "雷 300",
+      "sharpness": "白",
+      "critical": "10%",
+      "description": "ジンオウガの素材から作られた太刀"
+    }
+  ]
+}
