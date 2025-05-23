@@ -1,12 +1,11 @@
 package weapon
 
 import (
-	"context" // gin.Context から標準の context.Context を取り出すために使用
+	"context"
+	"mh-api/internal/service/weapons"
 	"net/http"
-	// "strconv" // 不要なら削除
 
-	"github.com/gin-gonic/gin"    // Ginフレームワーク
-	"github.com/o-ga09/MH-API/internal/service/weapons" // サービス層のweaponsパッケージ
+	"github.com/gin-gonic/gin"
 )
 
 // IWeaponService はサービス層のインターフェースです。
@@ -44,7 +43,7 @@ func (h *WeaponHandler) SearchWeapons(c *gin.Context) { // 引数を *gin.Contex
 	appCtx := c.Request.Context() // Ginのコンテキストから標準のcontext.Contextを取得
 
 	// 1. リクエストパラメータのバインドとバリデーション
-	var req SearchWeaponsRequest // controller/weapon/request.go で定義した構造体
+	var req SearchWeaponsRequest                    // controller/weapon/request.go で定義した構造体
 	if err := c.ShouldBindQuery(&req); err != nil { // c.Bind() から c.ShouldBindQuery() に変更
 		// return c.JSON(http.StatusBadRequest, ErrorResponse{Message: "Invalid request parameters: " + err.Error()})
 		c.JSON(http.StatusBadRequest, ErrorResponse{Message: "Invalid request parameters: " + err.Error()}) // Ginのレスポンス方法
