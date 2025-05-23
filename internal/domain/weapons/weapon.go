@@ -1,40 +1,40 @@
 package weapons
 
 type Weapon struct {
-	weaponId      WeaponId
+	weaponID      WeaponId
 	name          WeaponName
 	imageUrl      WeaponImageUrl
 	rare          WeaponRarity
 	attack        WeaponAttack
-	elemantAttaxk WeaponElementAttack
-	shapness      WeaponShapness
+	elementAttack WeaponElementAttack
+	sharpness     WeaponShapness
 	critical      WeaponCritical
 	description   WeaponDescription
 }
 
 func newWeapon(
-	weaponId WeaponId,
+	monsterId WeaponId,
 	name WeaponName,
 	imageUrl WeaponImageUrl,
-	rerarity WeaponRarity,
+	rarity WeaponRarity,
 	attack WeaponAttack,
-	elementattack WeaponElementAttack,
-	shapness WeaponShapness,
+	elementAttack WeaponElementAttack,
+	sharpness WeaponShapness,
 	critical WeaponCritical,
 	description WeaponDescription,
 ) *Weapon {
-	return &Weapon{weaponId, name, imageUrl, rerarity, attack, elementattack, shapness, critical, description}
+	return &Weapon{monsterId, name, imageUrl, rarity, attack, elementAttack, sharpness, critical, description}
 }
 
-func NewWeapon(weaponId string, name string, imageUrl string, rerarity string, attack string, elementAttac string, shapness string, critical string, description string) *Weapon {
+func NewWeapon(monsterId string, name string, imageUrl string, rarity string, attack string, elementAttack string, sharpness string, critical string, description string) *Weapon {
 	return newWeapon(
-		WeaponId{value: weaponId},
+		WeaponId{value: monsterId},
 		WeaponName{value: name},
 		WeaponImageUrl{value: imageUrl},
-		WeaponRarity{value: rerarity},
+		WeaponRarity{value: rarity},
 		WeaponAttack{value: attack},
-		WeaponElementAttack{value: elementAttac},
-		WeaponShapness{value: shapness},
+		WeaponElementAttack{value: elementAttack},
+		WeaponShapness{value: sharpness},
 		WeaponCritical{value: critical},
 		WeaponDescription{value: description},
 	)

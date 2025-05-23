@@ -2,7 +2,6 @@ package presenter
 
 import (
 	"context"
-	"context"
 	di "mh-api/internal/DI"
 	"mh-api/internal/presenter/middleware"
 	"mh-api/pkg/config"
@@ -56,8 +55,8 @@ func NewServer() (*gin.Engine, error) {
 	}
 
 	// モンスター検索
-	monsters := v1.Group("/monsters")
 	monsterHandler := di.InitMonstersHandler(ctx)
+	monsters := v1.Group("/monsters")
 	{
 		monsters.GET("", monsterHandler.GetAll)
 		monsters.GET("/:id", monsterHandler.GetById)
@@ -70,5 +69,24 @@ func NewServer() (*gin.Engine, error) {
 		items.GET("", itemHandler.GetItems) // ItemHandler の GetItems メソッドをルーティングに設定
 	}
 
+	// アイテム検索
+	itemHandler := di.InitItemsHandler(ctx) // di.InitItemsHandler を呼び出して ItemHandler を初期化
+	items := v1.Group("/items")
+	{
+		items.GET("", itemHandler.GetItems) // ItemHandler の GetItems メソッドをルーティングに設定
+	}
+
+	// 武器検索
+	weaponHandler := di.InitWeaponHandler(ctx)
+	weapons := v1.Group("/weapons")
+	{
+		weapons.GET("", weaponHandler.SearchWeapons)
+	}
+	// 武器検索
+	weaponHandler := di.InitWeaponHandler(ctx)
+	weapons := v1.Group("/weapons")
+	{
+		weapons.GET("", weaponHandler.SearchWeapons)
+	}
 	return r, nil
 }

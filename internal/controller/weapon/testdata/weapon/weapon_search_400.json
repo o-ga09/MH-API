@@ -1,0 +1,3 @@
+{
+  "message": "Invalid request parameters: Key: 'SearchWeaponsRequest.Limit' Error:Field validation for 'Limit' failed on the 'min' tag"
+}
