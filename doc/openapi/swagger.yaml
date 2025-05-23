@@ -1,405 +1,450 @@
-basePath: /v1
-definitions:
-  item.Item:
-    properties:
-      item:
-        $ref: '#/definitions/item.ResponseJson'
-    type: object
-  item.MessageResponse:
-    properties:
-      message:
-        type: string
-    type: object
-  item.ResponseJson:
-    properties:
-      item_id:
-        type: string
-      item_name:
-        type: string
-    type: object
-  monster.MessageResponse:
-    properties:
-      message:
-        type: string
-    type: object
-  monster.Monster:
-    properties:
-      monster:
-        $ref: '#/definitions/monster.ResponseJson'
-    type: object
-  monster.Monsters:
-    properties:
-      limit:
-        type: integer
-      monsters:
-        items:
-          $ref: '#/definitions/monster.ResponseJson'
-        type: array
-      offset:
-        type: integer
-      total:
-        type: integer
-    type: object
-  monster.Music:
-    properties:
-      name:
-        type: string
-      url:
-        type: string
-    type: object
-  monster.Ranking:
-    properties:
-      ranking:
-        type: string
-      vote_year:
-        type: string
-    type: object
-  monster.ResponseJson:
-    properties:
-      another_name:
-        description: モンスター別名
-        type: string
-      bgm:
-        description: BGM
-        items:
-          $ref: '#/definitions/monster.Music'
-        type: array
-      category:
-        description: モンスターのカテゴリ
-        type: string
-      first_weak_attack:
-        description: 最有効弱点
-        type: string
-      first_weak_element:
-        description: 最有効属性
-        type: string
-      image_url:
-        description: モンスター画像URL
-        type: string
-      location:
-        description: モンスターの出現場所
-        items:
-          type: string
-        type: array
-      monster_id:
-        description: モンスターID
-        type: string
-      name:
-        description: モンスター名
-        type: string
-      ranking:
-        description: 人気投票ランキング
-        items:
-          $ref: '#/definitions/monster.Ranking'
-        type: array
-      second_weak_attack:
-        description: 2番目に有効な弱点
-        type: string
-      second_weak_element:
-        description: 2番目に有効な属性
-        type: string
-      title:
-        description: 登場作品
-        items:
-          type: string
-        type: array
-      weakness_attack:
-        description: 弱点肉質（物理）
-        items:
-          $ref: '#/definitions/monster.Weakness_attack'
-        type: array
-      weakness_element:
-        description: 弱点肉質（属性）
-        items:
-          $ref: '#/definitions/monster.Weakness_element'
-        type: array
-    type: object
-  monster.Weakness_attack:
-    properties:
-      blow:
-        type: string
-      bullet:
-        type: string
-      slashing:
-        type: string
-    type: object
-  monster.Weakness_element:
-    properties:
-      dragon:
-        type: string
-      fire:
-        type: string
-      ice:
-        type: string
-      thunder:
-        type: string
-      water:
-        type: string
-    type: object
-  weapon.MessageResponse:
-    properties:
-      message:
-        type: string
-    type: object
-  weapon.ResponseJson:
-    properties:
-      attack:
-        type: string
-      critical:
-        type: string
-      description:
-        type: string
-      elemant_attaxk:
-        type: string
-      image_url:
-        type: string
-      monster_id:
-        type: string
-      name:
-        type: string
-      rare:
-        type: string
-      shapness:
-        type: string
-    type: object
-  weapon.Weapon:
-    properties:
-      monster:
-        $ref: '#/definitions/weapon.ResponseJson'
-    type: object
-externalDocs:
-  description: OpenAPI
-  url: https://swagger.io/resources/open-api/
-host: https://mh-api-v2-8aznfogc.an.gateway.dev/
+openapi: 3.0.0
 info:
-  contact: {}
-  description: モンスターハンターAPI
-  license:
-    name: Apache 2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0.html
   title: MH-API
-  version: v0.1.0
+  description: Monster Hunter API Documentation
+  version: 1.0.0
+servers:
+  - url: https://mh-api-v2-8aznfogc.an.gateway.dev/
+    description: PROD環境
+  - url: http://localhost:8080
+    description: ローカル環境
 paths:
-  /items/:itemId:
+  /v1/health:
     get:
-      consumes:
-      - application/json
-      description: アイテムを検索して、条件に合致するアイテムを1件取得する
-      parameters:
-      - in: query
-        name: item_name
-        type: string
-      - in: query
-        name: item_name_kana
-        type: string
-      - in: query
-        name: limit
-        type: integer
-      - in: query
-        name: monster_id
-        type: string
-      - in: query
-        name: offset
-        type: integer
-      - in: query
-        name: order
-        type: integer
-      - in: query
-        name: sort
-        type: string
-      produces:
-      - application/json
+      summary: ヘルスチェックエンドポイント
       responses:
         "200":
           description: OK
-          schema:
-            $ref: '#/definitions/item.Item'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/item.MessageResponse'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/item.MessageResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/item.MessageResponse'
-      summary: アイテム検索（1件）
-      tags:
-      - アイテム検索
-  /monsters:
+          content:
+            application/json:
+              example:
+                Message: OK
+  /v1/monsters:
     get:
-      consumes:
-      - application/json
-      description: モンスターを検索して、条件に合致するモンスターを複数件取得する
-      parameters:
-      - in: query
-        name: MonsterIds
-        type: string
-      - in: query
-        name: MonsterName
-        type: string
-      - in: query
-        name: limit
-        type: integer
-      - in: query
-        name: offset
-        type: integer
-      - in: query
-        name: sort
-        type: string
-      produces:
-      - application/json
+      summary: 全てのモンスター情報を取得する
       responses:
         "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/monster.Monsters'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/monster.MessageResponse'
+          description: モンスター情報の取得に成功
+          content:
+            application/json:
+              example:
+                total: 2
+                monsters:
+                  - monster_id: "1"
+                    name: "Rathalos"
+                    desc: "King of the Skies"
+                    location: "Ancient Forest"
+                    category: "Flying Wyvern"
+                    title: "King of the Skies"
+                    weakness_attack:
+                      front_legs:
+                        slashing: "10"
+                        blow: "10"
+                        bullet: "10"
+                      tail:
+                        slashing: "10"
+                        blow: "10"
+                        bullet: "10"
+                      hind_legs:
+                        slashing: "10"
+                        blow: "10"
+                        bullet: "10"
+                      body:
+                        slashing: "10"
+                        blow: "10"
+                        bullet: "10"
+                      head:
+                        slashing: "10"
+                        blow: "10"
+                        bullet: "10"
+                    weakness_element:
+                      front_legs:
+                        fire: "10"
+                        water: "10"
+                        lightning: "10"
+                        ice: "10"
+                        dragon: "10"
+                      tail:
+                        fire: "10"
+                        water: "10"
+                        lightning: "10"
+                        ice: "10"
+                        dragon: "10"
+                      hind_legs:
+                        fire: "10"
+                        water: "10"
+                        lightning: "10"
+                        ice: "10"
+                        dragon: "10"
+                      body:
+                        fire: "10"
+                        water: "10"
+                        lightning: "10"
+                        ice: "10"
+                        dragon: "10"
+                      head:
+                        fire: "10"
+                        water: "10"
+                        lightning: "10"
+                        ice: "10"
+                        dragon: "10"
+                  - monster_id: "2"
+                    name: "Diablos"
+                    desc: "Horned Wyvern"
+                    location: "Wildspire Waste"
+                    category: "Brute Wyvern"
+                    title: "Horned Tyrant"
+                    weakness_attack:
+                      front_legs:
+                        slashing: "15"
+                        blow: "12"
+                        bullet: "8"
+                      tail:
+                        slashing: "18"
+                        blow: "15"
+                        bullet: "10"
+                      hind_legs:
+                        slashing: "12"
+                        blow: "10"
+                        bullet: "8"
+                      body:
+                        slashing: "20"
+                        blow: "18"
+                        bullet: "15"
+                      head:
+                        slashing: "25"
+                        blow: "20"
+                        bullet: "18"
+                    weakness_element:
+                      front_legs:
+                        fire: "20"
+                        water: "15"
+                        lightning: "10"
+                        ice: "5"
+                        dragon: "15"
+                      tail:
+                        fire: "15"
+                        water: "10"
+                        lightning: "5"
+                        ice: "20"
+                        dragon: "18"
+                      hind_legs:
+                        fire: "10"
+                        water: "5"
+                        lightning: "20"
+                        ice: "15"
+                        dragon: "10"
+                      body:
+                        fire: "5"
+                        water: "18"
+                        lightning: "15"
+                        ice: "10"
+                        dragon: "20"
+                      head:
+                        fire: "18"
+                        water: "20"
+                        lightning: "12"
+                        ice: "15"
+                        dragon: "25"
         "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/monster.MessageResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/monster.MessageResponse'
-      summary: モンスター検索（複数件）
-      tags:
-      - モンスター検索
-  /monsters/:monsterid:
-    get:
-      consumes:
-      - application/json
-      description: モンスターを検索して、条件に合致するモンスターを1件取得する
-      parameters:
-      - description: モンスターID
-        in: path
-        name: request
-        type: string
-      produces:
-      - application/json
+          description: モンスターが見つかりません
+          content:
+            application/json:
+              example:
+                message: Not Found
+    post:
+      summary: モンスターの情報を追加する
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Json"
       responses:
         "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/monster.Monster'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/monster.MessageResponse'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/monster.MessageResponse'
+          description: モンスターの情報の登録に成功
+          content:
+            application/json:
+              example:
+                message: "success!"
+        "403":
+          description: 認証失敗
+          content:
+            application/json:
+              example:
+                message: Authentication error
+
         "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/monster.MessageResponse'
-      summary: モンスター検索（1件）
-      tags:
-      - モンスター検索
-  /weapons:
+          description: サーバエラーにより更新失敗
+          content:
+            application/json:
+              example:
+                message: Internal Server Error
+
+  /v1/monsters/{id}:
     get:
-      consumes:
-      - application/json
-      description: 武器を検索して、条件に合致する武器を複数件取得する
+      summary: モンスター情報を取得する
       parameters:
-      - in: query
-        name: limit
-        type: integer
-      - in: query
-        name: monster_id
-        type: string
-      - in: query
-        name: name
-        type: string
-      - in: query
-        name: name_kana
-        type: string
-      - in: query
-        name: offset
-        type: integer
-      - in: query
-        name: order
-        type: integer
-      - in: query
-        name: sort
-        type: string
-      produces:
-      - application/json
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
       responses:
         "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/weapon.Weapon'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/weapon.MessageResponse'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/weapon.MessageResponse'
+          description: モンスターの情報の登録に成功
+          content:
+            application/json:
+              example:
+                monster:
+                  monster_id: "1"
+                  name: "Rathalos"
+                  desc: "King of the Skies"
+                  location: "Ancient Forest"
+                  category: "Flying Wyvern"
+                  title: "King of the Skies"
+                  weakness_attack:
+                    front_legs:
+                      slashing: "10"
+                      blow: "10"
+                      bullet: "10"
+                    tail:
+                      slashing: "10"
+                      blow: "10"
+                      bullet: "10"
+                    hind_legs:
+                      slashing: "10"
+                      blow: "10"
+                      bullet: "10"
+                    body:
+                      slashing: "10"
+                      blow: "10"
+                      bullet: "10"
+                    head:
+                      slashing: "10"
+                      blow: "10"
+                      bullet: "10"
+                  weakness_element:
+                    front_legs:
+                      fire: "10"
+                      water: "10"
+                      lightning: "10"
+                      ice: "10"
+                      dragon: "10"
+                    tail:
+                      fire: "10"
+                      water: "10"
+                      lightning: "10"
+                      ice: "10"
+                      dragon: "10"
+                    hind_legs:
+                      fire: "10"
+                      water: "10"
+                      lightning: "10"
+                      ice: "10"
+                      dragon: "10"
+                    body:
+                      fire: "10"
+                      water: "10"
+                      lightning: "10"
+                      ice: "10"
+                      dragon: "10"
+                    head:
+                      fire: "10"
+                      water: "10"
+                      lightning: "10"
+                      ice: "10"
+                      dragon: "10"
+        "403":
+          description: 認証失敗
+          content:
+            application/json:
+              example:
+                message: Authentication error
         "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/weapon.MessageResponse'
-      summary: 武器検索（複数件）
-      tags:
-      - 武器検索
-  /weapons/:bgmid:
-    get:
-      consumes:
-      - application/json
-      description: 武器を検索して、条件に合致する武器を1件取得する
+          description: サーバエラーによ登録失敗
+          content:
+            application/json:
+              example:
+                message: Internal Server Error
+    put:
+      summary: モンスターの情報の更新に成功
       parameters:
-      - in: query
-        name: limit
-        type: integer
-      - in: query
-        name: monster_id
-        type: string
-      - in: query
-        name: name
-        type: string
-      - in: query
-        name: name_kana
-        type: string
-      - in: query
-        name: offset
-        type: integer
-      - in: query
-        name: order
-        type: integer
-      - in: query
-        name: sort
-        type: string
-      produces:
-      - application/json
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Json"
       responses:
         "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/weapon.Weapon'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/weapon.MessageResponse'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/weapon.MessageResponse'
+          description: モンスターの情報の更新に成功
+          content:
+            application/json:
+              example:
+                message: "success!"
+        "403":
+          description: 認証失敗
+          content:
+            application/json:
+              example:
+                meesage: Authentication error
         "500":
-          description: Internal Server Error
+          description: サーバエラーにより更新失敗
+          content:
+            application/json:
+              example:
+                message: Internal Server Errorr
+  /v1/monsters/{deleteid}:
+    delete:
+      summary: モンスターの情報を削除する
+      parameters:
+        - in: path
+          name: id
+          required: true
           schema:
-            $ref: '#/definitions/weapon.MessageResponse'
-      summary: 武器検索（1件）
-      tags:
-      - 武器検索
-swagger: "2.0"
+            type: string
+      responses:
+        "200":
+          description: モンスターの情報の削除に成功
+          content:
+            application/json:
+              example:
+                message: "success!"
+        "403":
+          description: 認証失敗
+          content:
+            application/json:
+              example:
+                message: Authentication error
+        "500":
+          description: サーバエラーにより削除失敗
+          content:
+            application/json:
+              example:
+                message: Internal Server Error
+  /v1/items:
+    get:
+      summary: アイテム名の一覧を取得する
+      responses:
+        "200":
+          description: アイテム一覧の取得に成功
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ItemListResponse"
+        "404":
+          description: アイテムが見つかりません
+          content:
+            application/json:
+              example:
+                message: Not Found
+
+components:
+  schemas:
+    Json:
+      type: object
+      properties:
+        monster_id:
+          type: string
+          example: "1"
+        name:
+          type: string
+          example: "Rathalos"
+        desc:
+          type: string
+          example: "King of the Skies"
+        location:
+          type: string
+          example: "Ancient Forest"
+        category:
+          type: string
+          example: "Flying Wyvern"
+        title:
+          type: string
+          example: "King of the Skies"
+        weakness_attack:
+          $ref: "#/components/schemas/Weakness_attack"
+        weakness_element:
+          $ref: "#/components/schemas/Weakness_element"
+
+    Weakness_attack:
+      type: object
+      properties:
+        front_legs:
+          $ref: "#/components/schemas/AttackCatetgory"
+        tail:
+          $ref: "#/components/schemas/AttackCatetgory"
+        hind_legs:
+          $ref: "#/components/schemas/AttackCatetgory"
+        body:
+          $ref: "#/components/schemas/AttackCatetgory"
+        head:
+          $ref: "#/components/schemas/AttackCatetgory"
+
+    Weakness_element:
+      type: object
+      properties:
+        front_legs:
+          $ref: "#/components/schemas/Elements"
+        tail:
+          $ref: "#/components/schemas/Elements"
+        hind_legs:
+          $ref: "#/components/schemas/Elements"
+        body:
+          $ref: "#/components/schemas/Elements"
+        head:
+          $ref: "#/components/schemas/Elements"
+
+    AttackCatetgory:
+      type: object
+      properties:
+        slashing:
+          type: string
+          example: "10"
+        blow:
+          type: string
+          example: "10"
+        bullet:
+          type: string
+          example: "10"
+
+    Elements:
+      type: object
+      properties:
+        fire:
+          type: string
+          example: "10"
+        water:
+          type: string
+          example: "10"
+        lightning:
+          type: string
+          example: "10"
+        ice:
+          type: string
+          example: "10"
+        dragon:
+          type: string
+          example: "10"
+    Item:
+      type: object
+      properties:
+        item_id:
+          type: string
+          example: "item_001"
+        item_name:
+          type: string
+          example: "Potion"
+    ItemListResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/Item"

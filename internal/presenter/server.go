@@ -2,6 +2,7 @@ package presenter
 
 import (
 	"context"
+	"context"
 	di "mh-api/internal/DI"
 	"mh-api/internal/presenter/middleware"
 	"mh-api/pkg/config"
@@ -60,6 +61,13 @@ func NewServer() (*gin.Engine, error) {
 	{
 		monsters.GET("", monsterHandler.GetAll)
 		monsters.GET("/:id", monsterHandler.GetById)
+	}
+
+	// アイテム検索
+	itemHandler := di.InitItemsHandler(ctx) // di.InitItemsHandler を呼び出して ItemHandler を初期化
+	items := v1.Group("/items")
+	{
+		items.GET("", itemHandler.GetItems) // ItemHandler の GetItems メソッドをルーティングに設定
 	}
 
 	return r, nil

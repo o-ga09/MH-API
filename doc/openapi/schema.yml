@@ -328,6 +328,22 @@ paths:
             application/json:
               example:
                 message: Internal Server Error
+  /v1/items:
+    get:
+      summary: アイテム名の一覧を取得する
+      responses:
+        "200":
+          description: アイテム一覧の取得に成功
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ItemListResponse"
+        "404":
+          description: アイテムが見つかりません
+          content:
+            application/json:
+              example:
+                message: Not Found
 
 components:
   schemas:
@@ -416,3 +432,19 @@ components:
         dragon:
           type: string
           example: "10"
+    Item:
+      type: object
+      properties:
+        item_id:
+          type: string
+          example: "item_001"
+        item_name:
+          type: string
+          example: "Potion"
+    ItemListResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/Item"
