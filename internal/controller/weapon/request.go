@@ -28,5 +28,5 @@ type SearchWeaponsRequest struct {
 	Limit     *int    `form:"limit" binding:"omitempty,min=1"`
 	Offset    *int    `form:"offset" binding:"omitempty,min=0"`
 	Sort      *string `form:"sort"`
-	Order     *int    `form:"order"` // 例: 0=asc, 1=desc など具体的な仕様に応じてバリデーションを追加することも検討
+	Order     *int    `form:"order"`
 }
