@@ -63,13 +63,10 @@ func NewServer() (*gin.Engine, error) {
 	}
 
 	// 武器検索
-	weaponHandler := di.InitWeaponHandler(ctx) // ctx を渡してWeaponHandlerを初期化
+	weaponHandler := di.InitWeaponHandler(ctx)
 	weapons := v1.Group("/weapons")
 	{
-		weapons.GET("", weaponHandler.SearchWeapons) // GET /v1/weapons
+		weapons.GET("", weaponHandler.SearchWeapons)
 	}
-	// ★ここまで追加★
-	}
-
 	return r, nil
 }

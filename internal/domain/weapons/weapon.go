@@ -1,15 +1,15 @@
 package weapons
 
 type Weapon struct {
-	MonsterId     WeaponId            `json:"monster_id"`
-	Name          WeaponName          `json:"name"`
-	ImageUrl      WeaponImageUrl      `json:"image_url"`
-	Rare          WeaponRarity        `json:"rare"`
-	Attack        WeaponAttack        `json:"attack"`
-	ElementAttack WeaponElementAttack `json:"element_attack"`
-	Sharpness     WeaponShapness      `json:"sharpness"`
-	Critical      WeaponCritical      `json:"critical"`
-	Description   WeaponDescription   `json:"description"`
+	weaponID      WeaponId
+	name          WeaponName
+	imageUrl      WeaponImageUrl
+	rare          WeaponRarity
+	attack        WeaponAttack
+	elementAttack WeaponElementAttack
+	sharpness     WeaponShapness
+	critical      WeaponCritical
+	description   WeaponDescription
 }
 
 func newWeapon(
