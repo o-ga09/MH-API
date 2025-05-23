@@ -2,11 +2,9 @@ package di
 
 import (
 	"context"
-
-	"github.com/o-ga09/MH-API/internal/controller/weapon"     // コントローラー層
-	"github.com/o-ga09/MH-API/internal/database/mysql"         // データベース層
-	weapons_service "github.com/o-ga09/MH-API/internal/service/weapons" // サービス層 (エイリアスを使用)
-	// middleware パッケージはDB取得に直接は不要になる
+	"mh-api/internal/controller/weapon"
+	"mh-api/internal/database/mysql"
+	weapons_service "mh-api/internal/service/weapons"
 )
 
 // InitWeaponHandler は WeaponHandler とその依存関係を初期化し、返します。
