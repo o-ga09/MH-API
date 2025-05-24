@@ -9,7 +9,10 @@ INSERT INTO monster (monster_id, name, element, another_name, created_at, update
  (7, "リオレウス亜種","火", "蒼火竜", now(), now()),
  (8, "リオレウス希少種","火", "銀火竜", now(), now()),
  (9, "黒炎王リオレウス","火", "火竜（二つ名）", now(), now()),
- (10, "ヌシ・リオレウス","火", "火竜（ヌシ）", now(), now());
+ (10, "ヌシ・リオレウス","火", "火竜（ヌシ）", now(), now()),
+ (11, "ラギアクルス","雷", "海竜", now(), now()),
+ (12, "ジンオウガ","雷", "雷狼竜", now(), now());
+
  -- 種族
 INSERT INTO tribe (tribe_id, name_ja, name_en, monster_id, created_at, updated_at) VALUES
  (1, "飛竜種", "Flying Wyvern", 1, now(), now()),
@@ -223,25 +226,25 @@ VALUES
 '12', '372', '氷350', 'N/A', '5%', '凍てつく力を宿した弓。冷気の矢が敵を貫く');
 
 -- アイテムテーブルのシードデータ
-INSERT INTO `item` (`created_at`, `updated_at`, `deleted_at`, `item_id`, `name`, `image_url`) VALUES
-  (NOW(), NOW(), NULL, 'ITM0001', 'ポーション', 'https://example.com/images/items/potion.png'),
-  (NOW(), NOW(), NULL, 'ITM0002', '回復薬グレート', 'https://example.com/images/items/mega_potion.png'),
-  (NOW(), NOW(), NULL, 'ITM0003', 'ペイントボール', 'https://example.com/images/items/paint_ball.png'),
-  (NOW(), NOW(), NULL, 'ITM0004', 'こんがり肉', 'https://example.com/images/items/well_done_steak.png'),
-  (NOW(), NOW(), NULL, 'ITM0005', '砥石', 'https://example.com/images/items/whetstone.png'),
-  (NOW(), NOW(), NULL, 'ITM0006', '閃光玉', 'https://example.com/images/items/flash_bomb.png'),
-  (NOW(), NOW(), NULL, 'ITM0007', '音爆弾', 'https://example.com/images/items/sonic_bomb.png'),
-  (NOW(), NOW(), NULL, 'ITM0008', '罠道具', 'https://example.com/images/items/trap_tool.png'),
-  (NOW(), NOW(), NULL, 'ITM0009', '落とし穴', 'https://example.com/images/items/pitfall_trap.png'),
-  (NOW(), NOW(), NULL, 'ITM0010', 'シビレ罠', 'https://example.com/images/items/shock_trap.png'),
-  (NOW(), NOW(), NULL, 'ITM0011', '麻痺玉', 'https://example.com/images/items/tranq_bomb.png'),
-  (NOW(), NOW(), NULL, 'ITM0012', '鬼人薬', 'https://example.com/images/items/demondrug.png'),
-  (NOW(), NOW(), NULL, 'ITM0013', '忍耐の薬', 'https://example.com/images/items/armorskin.png'),
-  (NOW(), NOW(), NULL, 'ITM0014', 'ハチミツ', 'https://example.com/images/items/honey.png'),
-  (NOW(), NOW(), NULL, 'ITM0015', '解毒薬', 'https://example.com/images/items/antidote.png'),
-  (NOW(), NOW(), NULL, 'ITM0016', 'ドラグライト鉱石', 'https://example.com/images/items/dragonite_ore.png'),
-  (NOW(), NOW(), NULL, 'ITM0017', '大地の結晶', 'https://example.com/images/items/earth_crystal.png'),
-  (NOW(), NOW(), NULL, 'ITM0018', '海竜の牙', 'https://example.com/images/items/wyvern_fang.png'),
-  (NOW(), NOW(), NULL, 'ITM0019', 'リオレウスの鱗', 'https://example.com/images/items/rathalos_scale.png'),
-  (NOW(), NOW(), NULL, 'ITM0020', 'ジンオウガの電極殻', 'https://example.com/images/items/zinogre_shell.png');
+INSERT INTO `item` (`created_at`, `updated_at`, `deleted_at`, `item_id`, `name`, `image_url`,`monster_id`) VALUES
+  (NOW(), NOW(), NULL, 'ITM0001', 'ポーション', 'https://example.com/images/items/potion.png', NULL),
+  (NOW(), NOW(), NULL, 'ITM0002', '回復薬グレート', 'https://example.com/images/items/mega_potion.png', NULL),
+  (NOW(), NOW(), NULL, 'ITM0003', 'ペイントボール', 'https://example.com/images/items/paint_ball.png', NULL),
+  (NOW(), NOW(), NULL, 'ITM0004', 'こんがり肉', 'https://example.com/images/items/well_done_steak.png', NULL),
+  (NOW(), NOW(), NULL, 'ITM0005', '砥石', 'https://example.com/images/items/whetstone.png', NULL),
+  (NOW(), NOW(), NULL, 'ITM0006', '閃光玉', 'https://example.com/images/items/flash_bomb.png', NULL),
+  (NOW(), NOW(), NULL, 'ITM0007', '音爆弾', 'https://example.com/images/items/sonic_bomb.png', NULL),
+  (NOW(), NOW(), NULL, 'ITM0008', '罠道具', 'https://example.com/images/items/trap_tool.png', NULL),
+  (NOW(), NOW(), NULL, 'ITM0009', '落とし穴', 'https://example.com/images/items/pitfall_trap.png', NULL),
+  (NOW(), NOW(), NULL, 'ITM0010', 'シビレ罠', 'https://example.com/images/items/shock_trap.png', NULL),
+  (NOW(), NOW(), NULL, 'ITM0011', '麻痺玉', 'https://example.com/images/items/tranq_bomb.png', NULL),
+  (NOW(), NOW(), NULL, 'ITM0012', '鬼人薬', 'https://example.com/images/items/demondrug.png', NULL),
+  (NOW(), NOW(), NULL, 'ITM0013', '忍耐の薬', 'https://example.com/images/items/armorskin.png', NULL),
+  (NOW(), NOW(), NULL, 'ITM0014', 'ハチミツ', 'https://example.com/images/items/honey.png', NULL),
+  (NOW(), NOW(), NULL, 'ITM0015', '解毒薬', 'https://example.com/images/items/antidote.png', NULL),
+  (NOW(), NOW(), NULL, 'ITM0016', 'ドラグライト鉱石', 'https://example.com/images/items/dragonite_ore.png', NULL),
+  (NOW(), NOW(), NULL, 'ITM0017', '大地の結晶', 'https://example.com/images/items/earth_crystal.png', NULL),
+  (NOW(), NOW(), NULL, 'ITM0018', '海竜の牙', 'https://example.com/images/items/wyvern_fang.png', '11'),
+  (NOW(), NOW(), NULL, 'ITM0019', 'リオレウスの鱗', 'https://example.com/images/items/rathalos_scale.png', '6'),
+  (NOW(), NOW(), NULL, 'ITM0020', 'ジンオウガの電極殻', 'https://example.com/images/items/zinogre_shell.png', '12');
   
