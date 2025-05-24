@@ -50,17 +50,14 @@ func (h *WeaponHandler) SearchWeapons(c *gin.Context) { // 引数を *gin.Contex
 		return
 	}
 
-	// TODO: 詳細なバリデーション (現状維持)
-
 	// 2. サービス層へのパラメータ変換
 	serviceParams := weapons.SearchWeaponsParams{
-		Limit:     req.Limit,
-		Offset:    req.Offset,
-		Sort:      req.Sort,
-		Order:     req.Order,
-		MonsterID: req.MonsterID,
-		Name:      req.Name,
-		NameKana:  req.NameKana,
+		Limit:    req.Limit,
+		Offset:   req.Offset,
+		Sort:     req.Sort,
+		Order:    req.Order,
+		WeaponID: req.WeaponID,
+		Name:     req.Name,
 	}
 
 	// 3. サービス層の呼び出し
