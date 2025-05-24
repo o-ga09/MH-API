@@ -14,8 +14,8 @@ func TestItemQueryService_FindAll(t *testing.T) {
 	ctx := t.Context()
 	ctx = setupTestDB(ctx)
 	db = ctx.Value(CtxKey).(*gorm.DB)
-	db.Begin()
-	defer db.Rollback()
+	tx := db.Begin()
+	defer tx.Rollback()
 
 	// テストデータを準備
 	testItems := createItemData(t, ctx)
