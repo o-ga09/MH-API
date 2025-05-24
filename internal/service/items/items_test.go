@@ -2,16 +2,13 @@ package items
 
 import (
 	"context"
-	"errors" // エラーのテスト用にインポート
+	"errors"
 	"mh-api/internal/domain/items"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
 
-// MockItemRepository は items.Repository インターフェースのモック実装です。
-// 注意: これは go generate で生成される repository_mock.go が不完全な場合の代替または補完です。
-// 本来は自動生成されたモックを使用すべきです。
 type MockItemRepository struct {
 	FindAllFunc func(ctx context.Context) (items.Items, error)
 	SaveFunc    func(ctx context.Context, m items.Item) error
@@ -44,13 +41,11 @@ func TestService_GetAllItems_Success(t *testing.T) {
 	mockRepo := &MockItemRepository{}
 	itemService := NewService(mockRepo)
 
-	// モックリポジトリが返すダミーのアイテムデータ
 	dummyDomainItems := items.Items{
 		*items.NewItem("1", "Item One", "url1"),
 		*items.NewItem("2", "Item Two", "url2"),
 	}
 
-	// FindAllFunc を設定
 	mockRepo.FindAllFunc = func(ctx context.Context) (items.Items, error) {
 		return dummyDomainItems, nil
 	}
@@ -73,7 +68,6 @@ func TestService_GetAllItems_Empty(t *testing.T) {
 	mockRepo := &MockItemRepository{}
 	itemService := NewService(mockRepo)
 
-	// モックリポジトリが空のリストを返すように設定
 	mockRepo.FindAllFunc = func(ctx context.Context) (items.Items, error) {
 		return items.Items{}, nil
 	}
@@ -93,7 +87,6 @@ func TestService_GetAllItems_RepositoryError(t *testing.T) {
 	mockRepo := &MockItemRepository{}
 	itemService := NewService(mockRepo)
 
-	// モックリポジトリがエラーを返すように設定
 	expectedError := errors.New("repository error")
 	mockRepo.FindAllFunc = func(ctx context.Context) (items.Items, error) {
 		return nil, expectedError
@@ -103,5 +96,5 @@ func TestService_GetAllItems_RepositoryError(t *testing.T) {
 
 	assert.Error(t, err)
 	assert.Nil(t, actualDTO)
-	assert.Equal(t, expectedError, err) // エラーがそのまま伝播されることを確認
+	assert.Equal(t, expectedError, err)
 }

@@ -1,9 +1,8 @@
 package di
 
 import (
-	"context" // context パッケージが必要な場合に備えてインポート (今回は未使用)
+	"context"
 
-	// 依存パッケージのインポートパスをプロジェクトに合わせて調整してください
 	itemController "mh-api/internal/controller/item"
 	"mh-api/internal/database/mysql"
 	itemService "mh-api/internal/service/items"

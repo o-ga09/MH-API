@@ -29,7 +29,6 @@ func NewItemHandler(s *items.Service) *ItemHandler {
 func (h *ItemHandler) GetItems(c *gin.Context) {
 	itemsResponse, err := h.service.GetAllItems(c.Request.Context())
 	if err != nil {
-		// TODO: エラーの種類に応じてステータスコードを出し分ける (例: 404 Not Found)
 		c.JSON(http.StatusInternalServerError, MessageResponse{Message: "Failed to get items"})
 		return
 	}
