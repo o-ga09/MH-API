@@ -23,13 +23,12 @@ type ListWeaponsResponse struct {
 	Limit      int          `json:"limit"`
 }
 type SearchWeaponsParams struct {
-	Limit     *int
-	Offset    *int
-	Sort      *string
-	Order     *int
-	MonsterID *string
-	Name      *string
-	NameKana  *string
+	Limit    *int
+	Offset   *int
+	Sort     *string
+	Order    *int
+	WeaponID *string
+	Name     *string
 }
 
 func ToWeaponData(weapon *weapons.Weapon) WeaponData {

@@ -86,8 +86,7 @@ func TestWeaponService_SearchWeapons_ByMonsterID(t *testing.T) {
 	ctx := t.Context()
 	mockQueryService := &IWeaponQueryServiceMock{
 		FindWeaponsFunc: func(ctx context.Context, params SearchWeaponsParams) ([]*weapons.Weapon, int, error) {
-			// パラメータチェック
-			if params.MonsterID != nil && *params.MonsterID == "monster_1" {
+			if params.WeaponID != nil && *params.WeaponID == "weapon_1" {
 				dummyWeapons := []*weapons.Weapon{
 					weapons.NewWeapon("4", "モンスター1の武器", "http://example.com/weapon4.jpg", "10", "150", "龍30", "紫10", "20%", "モンスター1の強力な武器"),
 				}
@@ -101,9 +100,9 @@ func TestWeaponService_SearchWeapons_ByMonsterID(t *testing.T) {
 	weaponService := NewWeaponService(mockQueryService)
 
 	// テストパラメータの設定
-	monsterID := "monster_1"
+	weaponID := "weapon_1"
 	params := SearchWeaponsParams{
-		MonsterID: &monsterID,
+		WeaponID: &weaponID,
 	}
 
 	// テスト実行
