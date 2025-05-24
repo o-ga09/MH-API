@@ -24,7 +24,7 @@ var _ IitemService = &IitemServiceMock{}
 //			GetItemByIDFunc: func(ctx context.Context, itemID string) (*ItemDTO, error) {
 //				panic("mock out the GetItemByID method")
 //			},
-//			GetItemByMonsterIDFunc: func(ctx context.Context, monsterID string) (*ItemListResponseDTO, error) {
+//			GetItemByMonsterIDFunc: func(ctx context.Context, monsterID string) (*ItemByMonster, error) {
 //				panic("mock out the GetItemByMonsterID method")
 //			},
 //		}
@@ -41,7 +41,7 @@ type IitemServiceMock struct {
 	GetItemByIDFunc func(ctx context.Context, itemID string) (*ItemDTO, error)
 
 	// GetItemByMonsterIDFunc mocks the GetItemByMonsterID method.
-	GetItemByMonsterIDFunc func(ctx context.Context, monsterID string) (*ItemListResponseDTO, error)
+	GetItemByMonsterIDFunc func(ctx context.Context, monsterID string) (*ItemByMonster, error)
 
 	// calls tracks calls to the methods.
 	calls struct {
@@ -139,7 +139,7 @@ func (mock *IitemServiceMock) GetItemByIDCalls() []struct {
 }
 
 // GetItemByMonsterID calls GetItemByMonsterIDFunc.
-func (mock *IitemServiceMock) GetItemByMonsterID(ctx context.Context, monsterID string) (*ItemListResponseDTO, error) {
+func (mock *IitemServiceMock) GetItemByMonsterID(ctx context.Context, monsterID string) (*ItemByMonster, error) {
 	if mock.GetItemByMonsterIDFunc == nil {
 		panic("IitemServiceMock.GetItemByMonsterIDFunc: method is nil but IitemService.GetItemByMonsterID was just called")
 	}

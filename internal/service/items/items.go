@@ -3,13 +3,14 @@ package items
 import (
 	"context"
 	"mh-api/internal/domain/items"
+	"mh-api/internal/service/monsters"
 )
 
 //go:generate moq -out items_mock.go . IitemService
 type IitemService interface {
 	GetAllItems(ctx context.Context) (*ItemListResponseDTO, error)
 	GetItemByID(ctx context.Context, itemID string) (*ItemDTO, error)
-	GetItemByMonsterID(ctx context.Context, monsterID string) (*ItemListResponseDTO, error)
+	GetItemByMonsterID(ctx context.Context, monsterID string) (*ItemByMonster, error)
 }
 
 type ItemDTO struct {
@@ -29,12 +30,14 @@ type ItemByMonster struct {
 }
 
 type Service struct {
-	itemRepo items.Repository
+	monsterQueryService monsters.MonsterQueryService
+	itemRepo            items.Repository
 }
 
-func NewService(itemRepo items.Repository) *Service {
+func NewService(monsterQueryService monsters.MonsterQueryService, itemRepo items.Repository) *Service {
 	return &Service{
-		itemRepo: itemRepo,
+		monsterQueryService: monsterQueryService,
+		itemRepo:            itemRepo,
 	}
 }
 
@@ -67,8 +70,12 @@ func (s *Service) GetItemByID(ctx context.Context, itemID string) (*ItemDTO, err
 	}, nil
 }
 
-func (s *Service) GetItemByMonsterID(ctx context.Context, monsterID string) (*ItemListResponseDTO, error) {
+func (s *Service) GetItemByMonsterID(ctx context.Context, monsterID string) (*ItemByMonster, error) {
 	domainItems, err := s.itemRepo.FindByMonsterID(ctx, monsterID)
+	if err != nil {
+		return nil, err
+	}
+	monster, err := s.monsterQueryService.FetchList(ctx, monsterID)
 	if err != nil {
 		return nil, err
 	}
@@ -81,5 +88,9 @@ func (s *Service) GetItemByMonsterID(ctx context.Context, monsterID string) (*It
 		})
 	}
 
-	return &ItemListResponseDTO{Items: itemDTOs}, nil
+	return &ItemByMonster{
+		MonsterID:   monster[0].Id,
+		MonsterName: monster[0].Name,
+		Item:        itemDTOs,
+	}, nil
 }

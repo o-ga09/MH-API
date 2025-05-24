@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"mh-api/internal/domain/items"
+	"mh-api/internal/service/monsters"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -65,9 +66,14 @@ func TestService_GetAllItems(t *testing.T) {
 					return tt.mockFunc()
 				},
 			}
+			mockMonster := &monsters.MonsterQueryServiceMock{
+				FetchListFunc: func(ctx context.Context, monsterID string) ([]*monsters.FetchMonsterListDto, error) {
+					return nil, nil
+				},
+			}
 
 			// テスト対象のサービスを初期化
-			service := NewService(mockRepo)
+			service := NewService(mockMonster, mockRepo)
 
 			// テスト実行
 			got, err := service.GetAllItems(context.Background())
@@ -143,9 +149,14 @@ func TestService_GetItemByID(t *testing.T) {
 					return tt.mockFunc(itemID)
 				},
 			}
+			mockMonster := &monsters.MonsterQueryServiceMock{
+				FetchListFunc: func(ctx context.Context, monsterID string) ([]*monsters.FetchMonsterListDto, error) {
+					return nil, nil
+				},
+			}
 
 			// テスト対象のサービスを初期化
-			service := NewService(mockRepo)
+			service := NewService(mockMonster, mockRepo)
 
 			// テスト実行
 			got, err := service.GetItemByID(context.Background(), tt.itemID)
@@ -227,9 +238,19 @@ func TestService_GetItemByMonsterID(t *testing.T) {
 					return tt.mockFunc(monsterID)
 				},
 			}
+			mockMonster := &monsters.MonsterQueryServiceMock{
+				FetchListFunc: func(ctx context.Context, monsterID string) ([]*monsters.FetchMonsterListDto, error) {
+					return []*monsters.FetchMonsterListDto{
+						{
+							Id:   "0000000001",
+							Name: "リオレウス",
+						},
+					}, nil
+				},
+			}
 
 			// テスト対象のサービスを初期化
-			service := NewService(mockRepo)
+			service := NewService(mockMonster, mockRepo)
 
 			// テスト実行
 			got, err := service.GetItemByMonsterID(context.Background(), tt.monsterID)
@@ -241,8 +262,8 @@ func TestService_GetItemByMonsterID(t *testing.T) {
 			}
 
 			require.NotNil(t, got)
-			assert.Equal(t, len(tt.want.Items), len(got.Items))
-			for i, item := range got.Items {
+			assert.Equal(t, len(tt.want.Items), len(got.Item))
+			for i, item := range got.Item {
 				assert.Equal(t, tt.want.Items[i].ItemID, item.ItemID)
 				assert.Equal(t, tt.want.Items[i].ItemName, item.ItemName)
 			}
