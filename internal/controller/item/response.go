@@ -1,7 +1,6 @@
 package item
 
 import (
-	"mh-api/internal/controller/monster"
 	"mh-api/internal/service/items"
 )
 
@@ -17,9 +16,9 @@ type Item struct {
 }
 
 type ItemsByMonster struct {
-	ItemId   string           `json:"item_id,omitempty"`
-	ItemName string           `json:"item_name,omitempty"`
-	Monsters monster.Monsters `json:"monsters,omitempty"`
+	MonsterId   string `json:"monster_id,omitempty"`
+	MonsterName string `json:"monster_name,omitempty"`
+	Item        []Item `json:"items,omitempty"`
 }
 
 type MessageResponse struct {
@@ -53,5 +52,23 @@ func ToItemResponse(item items.ItemDTO) Item {
 			Id:       item.ItemID,
 			ItemName: item.ItemName,
 		},
+	}
+}
+
+func ToItemByMonsterResponse(item items.ItemByMonster) ItemsByMonster {
+	resItem := make([]Item, len(item.Item))
+	for i, it := range item.Item {
+		resItem[i] = Item{
+			Item: ResponseJson{
+				Id:       it.ItemID,
+				ItemName: it.ItemName,
+			},
+		}
+	}
+
+	return ItemsByMonster{
+		MonsterId:   item.MonsterID,
+		MonsterName: item.MonsterName,
+		Item:        resItem,
 	}
 }

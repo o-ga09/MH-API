@@ -1,9 +1,18 @@
 {
   "items": [
     {
-      "item_id": "1",
-      "item_name": "回復薬"
+      "item": {
+        "item_id": "1",
+        "item_name": "イャンクックの羽"
+      }
+    },
+    {
+      "item": {
+        "item_id": "2",
+        "item_name": "イャンクックの鱗"
+      }
     }
   ],
-  "total": 1
+  "monster_id": "1",
+  "monster_name": "イャンクック"
 }
