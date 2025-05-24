@@ -63,10 +63,12 @@ func NewServer() (*gin.Engine, error) {
 	}
 
 	// アイテム検索
-	itemHandler := di.InitItemsHandler(ctx) // di.InitItemsHandler を呼び出して ItemHandler を初期化
+	itemHandler := di.InitItemsHandler(ctx)
 	items := v1.Group("/items")
 	{
-		items.GET("", itemHandler.GetItems) // ItemHandler の GetItems メソッドをルーティングに設定
+		items.GET("", itemHandler.GetItems)
+		items.GET("/:id", itemHandler.GetItem)
+		items.GET("/monster/:monster_id", itemHandler.GetItemByMonster)
 	}
 
 	// 武器検索

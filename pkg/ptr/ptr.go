@@ -34,3 +34,10 @@ func CreateImageURL(id string) *string {
 
 	return StrToPtr(IMAGE_URL + "/" + id + ".png")
 }
+
+func IntToPtr(i int) *int {
+	if i == 0 {
+		return nil
+	}
+	return &i
+}

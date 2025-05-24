@@ -120,7 +120,7 @@ func createTestWeaponsResponse() *weapons.ListWeaponsResponse {
 	return &weapons.ListWeaponsResponse{
 		Weapons: []weapons.WeaponData{
 			{
-				MonsterID:     "1",
+				WeaponID:      "1",
 				Name:          "リオレウス剣",
 				ImageURL:      "http://example.com/weapon1.jpg",
 				Rare:          "5",
@@ -131,7 +131,7 @@ func createTestWeaponsResponse() *weapons.ListWeaponsResponse {
 				Description:   "リオレウスの素材から作られた剣",
 			},
 			{
-				MonsterID:     "2",
+				WeaponID:      "2",
 				Name:          "ジンオウガ太刀",
 				ImageURL:      "http://example.com/weapon2.jpg",
 				Rare:          "6",

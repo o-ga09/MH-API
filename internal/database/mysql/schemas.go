@@ -28,9 +28,10 @@ type Field struct {
 
 type Item struct {
 	gorm.Model
-	ItemId   string `gorm:"column:item_id;primaryKey;type:varchar(10);not null"`
-	Name     string `gorm:"column:name;type:varchar(255);not null"`
-	ImageUrl string `gorm:"column:image_url;type:varchar(255)"`
+	ItemId    string `gorm:"column:item_id;primaryKey;type:varchar(10);not null"`
+	Name      string `gorm:"column:name;type:varchar(255);not null"`
+	ImageUrl  string `gorm:"column:image_url;type:varchar(255)"`
+	MonsterId string `gorm:"column:monster_id;type:varchar(10)"`
 }
 
 type Music struct {
@@ -87,13 +88,13 @@ type Weakness struct {
 
 type Weapon struct {
 	gorm.Model
-	MonsterId     string `gorm:"column:monster_id;primaryKey;type:varchar(255);not null"`
+	WeaponID      string `gorm:"column:weapon_id;primaryKey;type:varchar(255);not null"`
 	Name          string `gorm:"column:name;type:varchar(255);not null"`
 	ImageUrl      string `gorm:"column:image_url;type:varchar(255)"`
-	Rare          string `gorm:"column:rare;type:varchar(255)"`
+	Rarerity      string `gorm:"column:rarerity;type:varchar(255)"`
 	Attack        string `gorm:"column:attack;type:varchar(255)"`
 	ElementAttack string `gorm:"column:element_attack;type:varchar(255)"`
-	Sharpness     string `gorm:"column:sharpness;type:varchar(255)"`
+	Shapness      string `gorm:"column:shapness;type:varchar(255)"`
 	Critical      string `gorm:"column:critical;type:varchar(255)"`
 	Description   string `gorm:"column:description;type:varchar(255)"`
 }

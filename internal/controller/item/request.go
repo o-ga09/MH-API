@@ -22,3 +22,11 @@ type RequestParam struct {
 	Sort         string
 	Order        int
 }
+
+type RequestItemByID struct {
+	ItemId string `uri:"itemId" form:"itemId" validate:"required" binding:"required"`
+}
+
+type RequestItemByMonster struct {
+	MonsterId string `uri:"monsterId" form:"monsterId" validate:"required" binding:"required"`
+}
