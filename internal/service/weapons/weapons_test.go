@@ -13,7 +13,7 @@ import (
 // テストケース1: 正常系 - パラメータ指定なしでWeaponsを取得できる
 func TestWeaponService_SearchWeapons_Success(t *testing.T) {
 	// テスト準備
-	ctx := context.Background()
+	ctx := t.Context()
 	mockQueryService := &IWeaponQueryServiceMock{
 		FindWeaponsFunc: func(ctx context.Context, params SearchWeaponsParams) ([]*weapons.Weapon, int, error) {
 			dummyWeapons := []*weapons.Weapon{
@@ -45,7 +45,7 @@ func TestWeaponService_SearchWeapons_Success(t *testing.T) {
 // テストケース2: 正常系 - Limit, Offsetを指定してWeaponsを取得できる
 func TestWeaponService_SearchWeapons_WithPagination(t *testing.T) {
 	// テスト準備
-	ctx := context.Background()
+	ctx := t.Context()
 	mockQueryService := &IWeaponQueryServiceMock{
 		FindWeaponsFunc: func(ctx context.Context, params SearchWeaponsParams) ([]*weapons.Weapon, int, error) {
 			dummyWeapons := []*weapons.Weapon{
@@ -83,7 +83,7 @@ func TestWeaponService_SearchWeapons_WithPagination(t *testing.T) {
 // テストケース3: 正常系 - モンスターIDを指定してWeaponsを取得できる
 func TestWeaponService_SearchWeapons_ByMonsterID(t *testing.T) {
 	// テスト準備
-	ctx := context.Background()
+	ctx := t.Context()
 	mockQueryService := &IWeaponQueryServiceMock{
 		FindWeaponsFunc: func(ctx context.Context, params SearchWeaponsParams) ([]*weapons.Weapon, int, error) {
 			// パラメータチェック
@@ -120,7 +120,7 @@ func TestWeaponService_SearchWeapons_ByMonsterID(t *testing.T) {
 // テストケース4: 正常系 - 武器名を指定して検索できる
 func TestWeaponService_SearchWeapons_ByName(t *testing.T) {
 	// テスト準備
-	ctx := context.Background()
+	ctx := t.Context()
 	mockQueryService := &IWeaponQueryServiceMock{
 		FindWeaponsFunc: func(ctx context.Context, params SearchWeaponsParams) ([]*weapons.Weapon, int, error) {
 			// パラメータチェック
@@ -159,7 +159,7 @@ func TestWeaponService_SearchWeapons_ByName(t *testing.T) {
 // テストケース5: 異常系 - クエリサービスでエラーが発生する場合
 func TestWeaponService_SearchWeapons_QueryServiceError(t *testing.T) {
 	// テスト準備
-	ctx := context.Background()
+	ctx := t.Context()
 	mockQueryService := &IWeaponQueryServiceMock{
 		FindWeaponsFunc: func(ctx context.Context, params SearchWeaponsParams) ([]*weapons.Weapon, int, error) {
 			return nil, 0, errors.New("データベース接続エラー")

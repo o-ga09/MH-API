@@ -10,7 +10,7 @@ import (
 )
 
 func TestService_GetAllItems_Success(t *testing.T) {
-	ctx := context.Background()
+	ctx := t.Context()
 	mockRepo := &items.RepositoryMock{}
 	itemService := NewService(mockRepo)
 
@@ -37,7 +37,7 @@ func TestService_GetAllItems_Success(t *testing.T) {
 }
 
 func TestService_GetAllItems_Empty(t *testing.T) {
-	ctx := context.Background()
+	ctx := t.Context()
 	mockRepo := &items.RepositoryMock{}
 	itemService := NewService(mockRepo)
 
@@ -52,7 +52,7 @@ func TestService_GetAllItems_Empty(t *testing.T) {
 }
 
 func TestService_GetAllItems_RepositoryError(t *testing.T) {
-	ctx := context.Background()
+	ctx := t.Context()
 	mockRepo := &items.RepositoryMock{}
 	itemService := NewService(mockRepo)
 

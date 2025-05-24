@@ -12,6 +12,7 @@ import (
 )
 
 func TestMonsterService_FetchMonsterDetail(t *testing.T) {
+	ctx := t.Context()
 	repo := monsterDomain.RepositoryMock{}
 	qs := monsterService.MonsterQueryServiceMock{}
 
@@ -62,9 +63,9 @@ func TestMonsterService_FetchMonsterDetail(t *testing.T) {
 		want      []*monsterService.FetchMonsterListDto
 		wantErr   bool
 	}{
-		{name: "モンスター検索結果を取得する(複数件)", fields: fields{repo: &repo, qs: &qs}, args: args{ctx: context.Background(), id: ""}, mockValue: mockValue{value: expectedMockValues, err: nil}, want: wantMonsters, wantErr: false},
-		{name: "モンスター検索結果を取得する(1件)", fields: fields{repo: &repo, qs: &qs}, args: args{ctx: context.Background(), id: "0000000001"}, mockValue: mockValue{value: expectedMockValues, err: nil}, want: wantMonsters, wantErr: false},
-		{name: "モンスター検索結果を取得できない", fields: fields{repo: &repo, qs: &qs}, args: args{ctx: context.Background(), id: ""}, mockValue: mockValue{value: nil, err: fmt.Errorf("can not get record")}, want: nil, wantErr: true},
+		{name: "モンスター検索結果を取得する(複数件)", fields: fields{repo: &repo, qs: &qs}, args: args{ctx: ctx, id: ""}, mockValue: mockValue{value: expectedMockValues, err: nil}, want: wantMonsters, wantErr: false},
+		{name: "モンスター検索結果を取得する(1件)", fields: fields{repo: &repo, qs: &qs}, args: args{ctx: ctx, id: "0000000001"}, mockValue: mockValue{value: expectedMockValues, err: nil}, want: wantMonsters, wantErr: false},
+		{name: "モンスター検索結果を取得できない", fields: fields{repo: &repo, qs: &qs}, args: args{ctx: ctx, id: ""}, mockValue: mockValue{value: nil, err: fmt.Errorf("can not get record")}, want: nil, wantErr: true},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
