@@ -62,6 +62,13 @@ func NewServer() (*gin.Engine, error) {
 		monsters.GET("/:id", monsterHandler.GetById)
 	}
 
+	// アイテム検索
+	itemHandler := di.InitItemsHandler(ctx) // di.InitItemsHandler を呼び出して ItemHandler を初期化
+	items := v1.Group("/items")
+	{
+		items.GET("", itemHandler.GetItems) // ItemHandler の GetItems メソッドをルーティングに設定
+	}
+
 	// 武器検索
 	weaponHandler := di.InitWeaponHandler(ctx)
 	weapons := v1.Group("/weapons")
