@@ -10,7 +10,7 @@ type WeaponData struct {
 	Description   string `json:"description"`
 	ElementAttack string `json:"element_attack"`
 	ImageURL      string `json:"image_url"`
-	MonsterID     string `json:"monster_id"`
+	WeaponID      string `json:"weapon_id"`
 	Name          string `json:"name"`
 	Rare          string `json:"rare"`
 	Sharpness     string `json:"sharpness"`
@@ -33,7 +33,7 @@ type SearchWeaponsParams struct {
 
 func ToWeaponData(weapon *weapons.Weapon) WeaponData {
 	return WeaponData{
-		MonsterID:     weapon.GetID(),
+		WeaponID:      weapon.GetID(),
 		Name:          weapon.GetName(),
 		ImageURL:      weapon.GetURL(),
 		Rare:          weapon.GetRERATY(),
