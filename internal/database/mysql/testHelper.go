@@ -112,28 +112,6 @@ func setupTestDB(ctx context.Context) context.Context {
 	return ctx
 }
 
-// cleanupTestDB はテスト用のDBクリーンアップを行うヘルパー関数
-func cleanupTestDB(_ context.Context) {
-	// TRUNCATE文のSQLの読み込み
-	truncateSQL, err := os.ReadFile("../../../db/seed/00_trancate.sql")
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	// テーブルのクリーンアップ
-	statements := strings.Split(string(truncateSQL), ";")
-	// テーブルのクリーンアップ
-	for _, stmt := range statements {
-		// 空の文を除外
-		if strings.TrimSpace(stmt) != "" {
-			if err := testDB.Exec(stmt).Error; err != nil {
-				log.Fatal(err)
-			}
-		}
-	}
-	log.Println("successfully cleaned up tables!")
-}
-
 // テスト用のDBのマイグレーション
 func migrationTestData() {
 	// マイグレーション
