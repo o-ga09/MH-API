@@ -8,11 +8,10 @@ import (
 )
 
 type ItemHandler struct {
-	// 依存するサービスを itemService.Service に変更
-	service *items.Service
+	service items.IitemService
 }
 
-func NewItemHandler(s *items.Service) *ItemHandler {
+func NewItemHandler(s items.IitemService) *ItemHandler {
 	return &ItemHandler{
 		service: s,
 	}
