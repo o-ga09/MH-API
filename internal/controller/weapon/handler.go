@@ -8,8 +8,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// IWeaponService はサービス層のインターフェースです。
-// メソッドシグネチャを context.Context を受け取るように変更（サービス層に合わせて）
 type IWeaponService interface {
 	SearchWeapons(ctx context.Context, params weapons.SearchWeaponsParams) (*weapons.ListWeaponsResponse, error)
 }
@@ -42,15 +40,12 @@ func NewWeaponHandler(s IWeaponService) *WeaponHandler {
 func (h *WeaponHandler) SearchWeapons(c *gin.Context) { // 引数を *gin.Context に変更
 	appCtx := c.Request.Context() // Ginのコンテキストから標準のcontext.Contextを取得
 
-	// 1. リクエストパラメータのバインドとバリデーション
-	var req SearchWeaponsRequest                    // controller/weapon/request.go で定義した構造体
-	if err := c.ShouldBindQuery(&req); err != nil { // c.Bind() から c.ShouldBindQuery() に変更
-		// return c.JSON(http.StatusBadRequest, ErrorResponse{Message: "Invalid request parameters: " + err.Error()})
+	var req SearchWeaponsRequest
+	if err := c.ShouldBindQuery(&req); err != nil {
 		c.JSON(http.StatusBadRequest, ErrorResponse{Message: "Invalid request parameters: " + err.Error()}) // Ginのレスポンス方法
 		return
 	}
 
-	// 2. サービス層へのパラメータ変換
 	serviceParams := weapons.SearchWeaponsParams{
 		Limit:    req.Limit,
 		Offset:   req.Offset,
@@ -60,20 +55,16 @@ func (h *WeaponHandler) SearchWeapons(c *gin.Context) { // 引数を *gin.Contex
 		Name:     req.Name,
 	}
 
-	// 3. サービス層の呼び出し
-	//    サービス層の SearchWeapons は context.Context を期待しているので appCtx を渡す
 	serviceRes, err := h.service.SearchWeapons(appCtx, serviceParams)
 	if err != nil {
-		// c.JSON(http.StatusInternalServerError, ErrorResponse{Message: "Failed to search weapons: " + err.Error()}) // Ginのレスポンス方法
 		c.JSON(http.StatusInternalServerError, ErrorResponse{Message: "Failed to search weapons: " + err.Error()})
 		return
 	}
 
-	// 4. コントローラー層のレスポンスDTOへの詰め替え (現状維持)
 	ctrlResponseWeapons := make([]WeaponDetailResponse, len(serviceRes.Weapons))
 	for i, sw := range serviceRes.Weapons {
 		ctrlResponseWeapons[i] = WeaponDetailResponse{
-			MonsterID:     sw.MonsterID,
+			WeaponID:      sw.WeaponID,
 			Name:          sw.Name,
 			ImageURL:      sw.ImageURL,
 			Rare:          sw.Rare,
@@ -92,10 +83,9 @@ func (h *WeaponHandler) SearchWeapons(c *gin.Context) { // 引数を *gin.Contex
 		Weapons:    ctrlResponseWeapons,
 	}
 
-	c.JSON(http.StatusOK, ctrlResponse) // Ginのレスポンス方法
+	c.JSON(http.StatusOK, ctrlResponse)
 }
 
-// ErrorResponse はエラーレスポンスの共通構造体（仮） (現状維持)
 type ErrorResponse struct {
 	Message string `json:"message"`
 }
