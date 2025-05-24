@@ -31,7 +31,7 @@ func (h *ItemHandler) GetItems(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, MessageResponse{Message: "Failed to get items"})
 		return
 	}
-	c.JSON(http.StatusOK, itemsResponse)
+	c.JSON(http.StatusOK, ToItemListResponse(*itemsResponse))
 }
 
 // GetItem godoc
@@ -47,7 +47,24 @@ func (h *ItemHandler) GetItems(c *gin.Context) {
 // @Failure      500  {object}  MessageResponse
 // @Router /items/:itemId [get]
 func (h *ItemHandler) GetItem(c *gin.Context) {
-	c.JSON(http.StatusNotImplemented, MessageResponse{Message: "Not Implemented"})
+	itemID := c.Param("itemId")
+	if itemID == "" {
+		c.JSON(http.StatusBadRequest, MessageResponse{Message: "Item ID is required"})
+		return
+	}
+
+	item, err := h.service.GetItemByID(c.Request.Context(), itemID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, MessageResponse{Message: "Failed to get item"})
+		return
+	}
+
+	if item == nil {
+		c.JSON(http.StatusNotFound, MessageResponse{Message: "Item not found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, ToItemResponse(*item))
 }
 
 // GetItemByMonster godoc
@@ -63,5 +80,22 @@ func (h *ItemHandler) GetItem(c *gin.Context) {
 // @Failure      500  {object}  MessageResponse
 // @Router /items/monsters [get]
 func (h *ItemHandler) GetItemByMonster(c *gin.Context) {
-	c.JSON(http.StatusNotImplemented, MessageResponse{Message: "Not Implemented"})
+	monsterID := c.Query("monster_id")
+	if monsterID == "" {
+		c.JSON(http.StatusBadRequest, MessageResponse{Message: "Monster ID is required"})
+		return
+	}
+
+	item, err := h.service.GetItemByMonsterID(c.Request.Context(), monsterID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, MessageResponse{Message: "Failed to get item by monster ID"})
+		return
+	}
+
+	if item == nil {
+		c.JSON(http.StatusNotFound, MessageResponse{Message: "Item not found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, ToItemListResponse(*item))
 }

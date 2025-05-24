@@ -120,15 +120,71 @@ func TestItemHandler_GetItem(t *testing.T) {
 		goldenFile string
 	}{
 		{
-			name: "正常系：NotImplemented が返される",
+			name: "正常系：アイテムが取得できる",
 			input: map[string]any{
 				"itemId": "1",
 			},
 			mock: func() *items.IitemServiceMock {
-				return &items.IitemServiceMock{}
+				mock := &items.IitemServiceMock{
+					GetItemByIDFunc: func(ctx context.Context, itemID string) (*items.ItemDTO, error) {
+						return &items.ItemDTO{
+							ItemID:   "1",
+							ItemName: "回復薬",
+						}, nil
+					},
+				}
+				return mock
 			},
-			wantStatus: http.StatusNotImplemented,
-			goldenFile: "items/get_item_not_implemented.json",
+			wantStatus: http.StatusOK,
+			goldenFile: "items/get_item_success.json",
+		},
+		{
+			name: "異常系：アイテムが見つからない場合（404エラー）",
+			input: map[string]any{
+				"itemId": "invalid_path",
+			},
+			mock: func() *items.IitemServiceMock {
+				mock := &items.IitemServiceMock{
+					GetItemByIDFunc: func(ctx context.Context, itemID string) (*items.ItemDTO, error) {
+						return nil, nil
+					},
+				}
+				return mock
+			},
+			wantStatus: http.StatusNotFound,
+			goldenFile: "items/get_item_not_found.json",
+		},
+		{
+			name: "異常系：アイテムが見つからない場合",
+			input: map[string]any{
+				"itemId": "999",
+			},
+			mock: func() *items.IitemServiceMock {
+				mock := &items.IitemServiceMock{
+					GetItemByIDFunc: func(ctx context.Context, itemID string) (*items.ItemDTO, error) {
+						return nil, nil
+					},
+				}
+				return mock
+			},
+			wantStatus: http.StatusNotFound,
+			goldenFile: "items/get_item_not_found.json",
+		},
+		{
+			name: "異常系：サービスからのエラーが発生",
+			input: map[string]any{
+				"itemId": "1",
+			},
+			mock: func() *items.IitemServiceMock {
+				mock := &items.IitemServiceMock{
+					GetItemByIDFunc: func(ctx context.Context, itemID string) (*items.ItemDTO, error) {
+						return nil, errors.New("service error")
+					},
+				}
+				return mock
+			},
+			wantStatus: http.StatusInternalServerError,
+			goldenFile: "items/get_item_error.json",
 		},
 	}
 
@@ -146,7 +202,13 @@ func TestItemHandler_GetItem(t *testing.T) {
 
 			// リクエストの作成
 			w := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodGet, "/v1/items/"+tt.input["itemId"].(string), nil)
+			var req *http.Request
+			if itemId, ok := tt.input["itemId"].(string); ok {
+				req, _ = http.NewRequest(http.MethodGet, "/v1/items/"+itemId, nil)
+			} else {
+				// アイテムIDがない場合は、ルーティングが合わないようにする
+				req, _ = http.NewRequest(http.MethodGet, "/v1/items/invalid_path", nil)
+			}
 
 			// リクエストの実行
 			r.ServeHTTP(w, req)
@@ -172,13 +234,54 @@ func TestItemHandler_GetItemByMonster(t *testing.T) {
 		goldenFile string
 	}{
 		{
-			name:  "正常系：NotImplemented が返される",
+			name: "正常系：モンスターIDに紐づくアイテムが取得できる",
+			input: map[string]any{
+				"monster_id": "1",
+			},
+			mock: func() *items.IitemServiceMock {
+				mock := &items.IitemServiceMock{
+					GetItemByMonsterIDFunc: func(ctx context.Context, monsterID string) (*items.ItemListResponseDTO, error) {
+						return &items.ItemListResponseDTO{
+							Items: []items.ItemDTO{
+								{
+									ItemID:   "1",
+									ItemName: "回復薬",
+								},
+							},
+						}, nil
+					},
+				}
+				return mock
+			},
+			wantStatus: http.StatusOK,
+			goldenFile: "items/get_item_by_monster_success.json",
+		},
+		{
+			name:  "異常系：モンスターIDが空の場合",
 			input: map[string]any{},
 			mock: func() *items.IitemServiceMock {
 				return &items.IitemServiceMock{}
 			},
-			wantStatus: http.StatusNotImplemented,
-			goldenFile: "items/get_item_by_monster_not_implemented.json",
+			wantStatus: http.StatusBadRequest,
+			goldenFile: "items/get_item_by_monster_bad_request.json",
+		},
+		{
+			name: "正常系：アイテムが空の場合",
+			input: map[string]any{
+				"monster_id": "999",
+			},
+			mock: func() *items.IitemServiceMock {
+				mock := &items.IitemServiceMock{
+					GetItemByMonsterIDFunc: func(ctx context.Context, monsterID string) (*items.ItemListResponseDTO, error) {
+						return &items.ItemListResponseDTO{
+							Items: []items.ItemDTO{},
+						}, nil
+					},
+				}
+				return mock
+			},
+			wantStatus: http.StatusOK,
+			goldenFile: "items/get_item_by_monster_empty.json",
 		},
 	}
 
@@ -197,6 +300,13 @@ func TestItemHandler_GetItemByMonster(t *testing.T) {
 			// リクエストの作成
 			w := httptest.NewRecorder()
 			req, _ := http.NewRequest(http.MethodGet, "/v1/items/monsters", nil)
+
+			// クエリパラメータの追加
+			if monsterID, ok := tt.input["monster_id"]; ok {
+				q := req.URL.Query()
+				q.Add("monster_id", monsterID.(string))
+				req.URL.RawQuery = q.Encode()
+			}
 
 			// リクエストの実行
 			r.ServeHTTP(w, req)

@@ -1,6 +1,9 @@
 package item
 
-import "mh-api/internal/controller/monster"
+import (
+	"mh-api/internal/controller/monster"
+	"mh-api/internal/service/items"
+)
 
 type Items struct {
 	Total  int            `json:"total,omitempty"`
@@ -26,4 +29,29 @@ type MessageResponse struct {
 type ResponseJson struct {
 	Id       string `json:"item_id,omitempty"`
 	ItemName string `json:"item_name,omitempty"`
+}
+
+func ToItemListResponse(items items.ItemListResponseDTO) Items {
+	res := make([]ResponseJson, len(items.Items))
+	for i, item := range items.Items {
+		res[i] = ResponseJson{
+			Id:       item.ItemID,
+			ItemName: item.ItemName,
+		}
+	}
+	return Items{
+		Total:  len(items.Items),
+		Limit:  items.Limit,
+		Offset: items.Offset,
+		Item:   res,
+	}
+}
+
+func ToItemResponse(item items.ItemDTO) Item {
+	return Item{
+		Item: ResponseJson{
+			Id:       item.ItemID,
+			ItemName: item.ItemName,
+		},
+	}
 }
