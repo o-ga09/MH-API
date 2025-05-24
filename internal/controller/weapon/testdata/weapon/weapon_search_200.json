@@ -3,7 +3,7 @@
   "limit": 20,
   "weapons": [
     {
-      "monster_id": "1",
+      "weapon_id": "1",
       "name": "リオレウス剣",
       "image_url": "http://example.com/weapon1.jpg",
       "rare": "5",
@@ -14,7 +14,7 @@
       "description": "リオレウスの素材から作られた剣"
     },
     {
-      "monster_id": "2",
+      "weapon_id": "2",
       "name": "ジンオウガ太刀",
       "image_url": "http://example.com/weapon2.jpg",
       "rare": "6",
