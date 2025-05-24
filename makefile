@@ -25,36 +25,36 @@ endif
 
 .PHONY: migrate-up
 migrate-up:
-	$(eval MIGRATE_CMD := go run app/cmd/migration/main.go)
+	$(eval MIGRATE_CMD := go run cmd/migration/main.go)
 	$(MIGRATE_CMD) -command up
 
 .PHONY: migrate-down
 migrate-down:
-	$(eval MIGRATE_CMD := go run app/cmd/migration/main.go)
+	$(eval MIGRATE_CMD := go run cmd/migration/main.go)
 	$(MIGRATE_CMD) -command down
 
 .PHONY: migrate-status
 migrate-status:
-	$(eval MIGRATE_CMD := go run app/cmd/migration/main.go)
+	$(eval MIGRATE_CMD := go run cmd/migration/main.go)
 	$(MIGRATE_CMD) -command status
 
 .PHONY: migrate-new
 migrate-new:
-	$(eval MIGRATE_CMD := go run app/cmd/migration/main.go)
+	$(eval MIGRATE_CMD := go run cmd/migration/main.go)
 	$(MIGRATE_CMD) -command new -name $(name)
 
 .PHONY: seed
 seed:
-	$(eval MIGRATE_CMD := go run app/cmd/migration/main.go)
+	$(eval MIGRATE_CMD := go run cmd/migration/main.go)
 	$(MIGRATE_CMD) -command seed
 
 .PHONY: run
 run:
-	go run app/cmd/api/main.go
+	go run cmd/api/main.go
 
 .PHONY: build
 build:
-	go build -o bin/api app/cmd/api/main.go
+	go build -o bin/api cmd/api/main.go
 
 .PHONY: compose-up
 compose-up:
