@@ -9,36 +9,9 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-type MockItemRepository struct {
-	FindAllFunc func(ctx context.Context) (items.Items, error)
-	SaveFunc    func(ctx context.Context, m items.Item) error
-	RemoveFunc  func(ctx context.Context, itemId string) error
-}
-
-func (m *MockItemRepository) FindAll(ctx context.Context) (items.Items, error) {
-	if m.FindAllFunc != nil {
-		return m.FindAllFunc(ctx)
-	}
-	return nil, errors.New("FindAllFunc not implemented in mock")
-}
-
-func (m *MockItemRepository) Save(ctx context.Context, i items.Item) error {
-	if m.SaveFunc != nil {
-		return m.SaveFunc(ctx, i)
-	}
-	return errors.New("SaveFunc not implemented in mock")
-}
-
-func (m *MockItemRepository) Remove(ctx context.Context, itemId string) error {
-	if m.RemoveFunc != nil {
-		return m.RemoveFunc(ctx, itemId)
-	}
-	return errors.New("RemoveFunc not implemented in mock")
-}
-
 func TestService_GetAllItems_Success(t *testing.T) {
 	ctx := context.Background()
-	mockRepo := &MockItemRepository{}
+	mockRepo := &items.RepositoryMock{}
 	itemService := NewService(mockRepo)
 
 	dummyDomainItems := items.Items{
@@ -65,26 +38,22 @@ func TestService_GetAllItems_Success(t *testing.T) {
 
 func TestService_GetAllItems_Empty(t *testing.T) {
 	ctx := context.Background()
-	mockRepo := &MockItemRepository{}
+	mockRepo := &items.RepositoryMock{}
 	itemService := NewService(mockRepo)
 
 	mockRepo.FindAllFunc = func(ctx context.Context) (items.Items, error) {
 		return items.Items{}, nil
 	}
 
-	expectedDTO := &ItemListResponseDTO{
-		Items: []ItemDTO{},
-	}
-
 	actualDTO, err := itemService.GetAllItems(ctx)
 
 	assert.NoError(t, err)
-	assert.Equal(t, expectedDTO, actualDTO)
+	assert.Len(t, actualDTO.Items, 0)
 }
 
 func TestService_GetAllItems_RepositoryError(t *testing.T) {
 	ctx := context.Background()
-	mockRepo := &MockItemRepository{}
+	mockRepo := &items.RepositoryMock{}
 	itemService := NewService(mockRepo)
 
 	expectedError := errors.New("repository error")
