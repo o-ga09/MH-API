@@ -5,6 +5,11 @@ import (
 	"mh-api/internal/domain/items"
 )
 
+//go:generate moq -out items_mock.go . IitemService
+type IitemService interface {
+	GetAllItems(ctx context.Context) (*ItemListResponseDTO, error)
+}
+
 type ItemDTO struct {
 	ItemID   string `json:"item_id"`
 	ItemName string `json:"item_name"`
