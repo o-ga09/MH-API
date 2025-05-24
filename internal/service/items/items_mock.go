@@ -21,6 +21,12 @@ var _ IitemService = &IitemServiceMock{}
 //			GetAllItemsFunc: func(ctx context.Context) (*ItemListResponseDTO, error) {
 //				panic("mock out the GetAllItems method")
 //			},
+//			GetItemByIDFunc: func(ctx context.Context, itemID string) (*ItemDTO, error) {
+//				panic("mock out the GetItemByID method")
+//			},
+//			GetItemByMonsterIDFunc: func(ctx context.Context, monsterID string) (*ItemListResponseDTO, error) {
+//				panic("mock out the GetItemByMonsterID method")
+//			},
 //		}
 //
 //		// use mockedIitemService in code that requires IitemService
@@ -31,6 +37,12 @@ type IitemServiceMock struct {
 	// GetAllItemsFunc mocks the GetAllItems method.
 	GetAllItemsFunc func(ctx context.Context) (*ItemListResponseDTO, error)
 
+	// GetItemByIDFunc mocks the GetItemByID method.
+	GetItemByIDFunc func(ctx context.Context, itemID string) (*ItemDTO, error)
+
+	// GetItemByMonsterIDFunc mocks the GetItemByMonsterID method.
+	GetItemByMonsterIDFunc func(ctx context.Context, monsterID string) (*ItemListResponseDTO, error)
+
 	// calls tracks calls to the methods.
 	calls struct {
 		// GetAllItems holds details about calls to the GetAllItems method.
@@ -38,8 +50,24 @@ type IitemServiceMock struct {
 			// Ctx is the ctx argument value.
 			Ctx context.Context
 		}
+		// GetItemByID holds details about calls to the GetItemByID method.
+		GetItemByID []struct {
+			// Ctx is the ctx argument value.
+			Ctx context.Context
+			// ItemID is the itemID argument value.
+			ItemID string
+		}
+		// GetItemByMonsterID holds details about calls to the GetItemByMonsterID method.
+		GetItemByMonsterID []struct {
+			// Ctx is the ctx argument value.
+			Ctx context.Context
+			// MonsterID is the monsterID argument value.
+			MonsterID string
+		}
 	}
-	lockGetAllItems sync.RWMutex
+	lockGetAllItems        sync.RWMutex
+	lockGetItemByID        sync.RWMutex
+	lockGetItemByMonsterID sync.RWMutex
 }
 
 // GetAllItems calls GetAllItemsFunc.
@@ -71,5 +99,77 @@ func (mock *IitemServiceMock) GetAllItemsCalls() []struct {
 	mock.lockGetAllItems.RLock()
 	calls = mock.calls.GetAllItems
 	mock.lockGetAllItems.RUnlock()
+	return calls
+}
+
+// GetItemByID calls GetItemByIDFunc.
+func (mock *IitemServiceMock) GetItemByID(ctx context.Context, itemID string) (*ItemDTO, error) {
+	if mock.GetItemByIDFunc == nil {
+		panic("IitemServiceMock.GetItemByIDFunc: method is nil but IitemService.GetItemByID was just called")
+	}
+	callInfo := struct {
+		Ctx    context.Context
+		ItemID string
+	}{
+		Ctx:    ctx,
+		ItemID: itemID,
+	}
+	mock.lockGetItemByID.Lock()
+	mock.calls.GetItemByID = append(mock.calls.GetItemByID, callInfo)
+	mock.lockGetItemByID.Unlock()
+	return mock.GetItemByIDFunc(ctx, itemID)
+}
+
+// GetItemByIDCalls gets all the calls that were made to GetItemByID.
+// Check the length with:
+//
+//	len(mockedIitemService.GetItemByIDCalls())
+func (mock *IitemServiceMock) GetItemByIDCalls() []struct {
+	Ctx    context.Context
+	ItemID string
+} {
+	var calls []struct {
+		Ctx    context.Context
+		ItemID string
+	}
+	mock.lockGetItemByID.RLock()
+	calls = mock.calls.GetItemByID
+	mock.lockGetItemByID.RUnlock()
+	return calls
+}
+
+// GetItemByMonsterID calls GetItemByMonsterIDFunc.
+func (mock *IitemServiceMock) GetItemByMonsterID(ctx context.Context, monsterID string) (*ItemListResponseDTO, error) {
+	if mock.GetItemByMonsterIDFunc == nil {
+		panic("IitemServiceMock.GetItemByMonsterIDFunc: method is nil but IitemService.GetItemByMonsterID was just called")
+	}
+	callInfo := struct {
+		Ctx       context.Context
+		MonsterID string
+	}{
+		Ctx:       ctx,
+		MonsterID: monsterID,
+	}
+	mock.lockGetItemByMonsterID.Lock()
+	mock.calls.GetItemByMonsterID = append(mock.calls.GetItemByMonsterID, callInfo)
+	mock.lockGetItemByMonsterID.Unlock()
+	return mock.GetItemByMonsterIDFunc(ctx, monsterID)
+}
+
+// GetItemByMonsterIDCalls gets all the calls that were made to GetItemByMonsterID.
+// Check the length with:
+//
+//	len(mockedIitemService.GetItemByMonsterIDCalls())
+func (mock *IitemServiceMock) GetItemByMonsterIDCalls() []struct {
+	Ctx       context.Context
+	MonsterID string
+} {
+	var calls []struct {
+		Ctx       context.Context
+		MonsterID string
+	}
+	mock.lockGetItemByMonsterID.RLock()
+	calls = mock.calls.GetItemByMonsterID
+	mock.lockGetItemByMonsterID.RUnlock()
 	return calls
 }
