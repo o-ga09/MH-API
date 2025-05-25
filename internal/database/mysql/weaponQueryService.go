@@ -2,63 +2,101 @@ package mysql
 
 import (
 	"context"
+	"errors"
 	"mh-api/internal/domain/weapons"
 	weaponService "mh-api/internal/service/weapons"
 
 	"gorm.io/gorm"
 )
 
-// WeaponQueryService は武器データに関するクエリサービスです。
-type WeaponQueryService struct {
-	db *gorm.DB
-}
+type WeaponQueryService struct{}
 
-// NewWeaponQueryService は新しい WeaponQueryService をインスタンス化します。
-func NewWeaponQueryService(db *gorm.DB) *WeaponQueryService {
-	return &WeaponQueryService{db: db}
-}
-
-// FindWeaponsParams は武器検索時のパラメータです。
-// Issue #83 で定義されたリクエストパラメータに対応します。
-type FindWeaponsParams struct {
-	Limit     *int    `json:"limit"`
-	Offset    *int    `json:"offset"`
-	Sort      *string `json:"sort"`
-	Order     *int    `json:"order"` // 0: Asc, 1: Desc (仮)
-	MonsterID *string `json:"monster_id"`
-	Name      *string `json:"name"`
-	NameKana  *string `json:"name_kana"`
-	// 他にも必要なパラメータがあればここに追加
+func NewWeaponQueryService() *WeaponQueryService {
+	return &WeaponQueryService{}
 }
 
 func (qs *WeaponQueryService) FindWeapons(ctx context.Context, params weaponService.SearchWeaponsParams) ([]*weapons.Weapon, int, error) {
-	dummyWeapons := []*weapons.Weapon{}
+	var weaponsList []*Weapon
+	var total int64
 
-	dummyTotalCount := len(dummyWeapons)
+	// コンテキストからDBを取得
+	db := CtxFromDB(ctx)
 
-	start := 0
-	if params.Offset != nil {
-		start = *params.Offset
+	if params.WeaponID != nil {
+		db = db.Where("weapon_id = ?", *params.WeaponID)
 	}
-	end := dummyTotalCount
-	if params.Limit != nil {
-		if start+*params.Limit < dummyTotalCount {
-			end = start + *params.Limit
+
+	if params.Name != nil {
+		db = db.Where("name LIKE ?", "%"+*params.Name+"%")
+	}
+
+	if params.Sort != nil {
+		if *params.Sort == "asc" {
+			db = db.Order("id ASC")
+		} else if *params.Sort == "desc" {
+			db = db.Order("id DESC")
 		}
 	}
 
-	if start > dummyTotalCount {
-		return []*weapons.Weapon{}, dummyTotalCount, nil
+	if params.Order != nil {
+		if *params.Order == 1 {
+			db = db.Order("id ASC")
+		} else if *params.Order == 2 {
+			db = db.Order("id DESC")
+		}
 	}
-	if end > dummyTotalCount {
-		end = dummyTotalCount
+	if params.Limit != nil && *params.Limit > 0 {
+		db = db.Limit(*params.Limit)
+	} else {
+		defaultLimit := 20
+		db = db.Limit(defaultLimit)
 	}
 
-	return dummyWeapons[start:end], dummyTotalCount, nil
+	if params.Offset != nil {
+		db = db.Offset(*params.Offset)
+	}
+
+	result := db.Find(&weaponsList)
+	if result.Error != nil {
+		return nil, 0, result.Error
+	}
+
+	total = result.RowsAffected
+	weaponDomainList := ToWeaponList(weaponsList)
+
+	return weaponDomainList, int(total), nil
 }
 
-// FindWeaponByID は指定されたIDで武器を1件検索します。(これはIssueにはないが、あると便利かもしれないので枠だけ)
-// (注意: この初期実装ではダミーデータを返します)
 func (qs *WeaponQueryService) FindWeaponByID(ctx context.Context, weaponID string) (*weapons.Weapon, error) {
-	return nil, nil // 見つからない場合はnilを返す
+	var weapon Weapon
+	result := CtxFromDB(ctx).Where("weapon_id = ?", weaponID).First(&weapon)
+	if result.Error != nil {
+		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+			return nil, gorm.ErrRecordNotFound
+		}
+		return nil, result.Error
+	}
+	res := ToWeapon(&weapon)
+	return res, nil
+}
+
+func ToWeapon(weapon *Weapon) *weapons.Weapon {
+	return weapons.NewWeapon(
+		weapon.WeaponID,
+		weapon.Name,
+		weapon.ImageUrl,
+		weapon.Rarerity,
+		weapon.Attack,
+		weapon.ElementAttack,
+		weapon.Shapness,
+		weapon.Critical,
+		weapon.Description,
+	)
+}
+func ToWeaponList(weaponsList []*Weapon) []*weapons.Weapon {
+	weaponDomainList := make([]*weapons.Weapon, len(weaponsList))
+	for i, w := range weaponsList {
+		weaponDomainList[i] = ToWeapon(w)
+	}
+	return weaponDomainList
 }

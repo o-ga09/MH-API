@@ -3,6 +3,7 @@ package item
 import (
 	"context"
 	"errors"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -27,7 +28,7 @@ func MockNewServer(t *testing.T, itemHandler *ItemHandler) *gin.Engine {
 func (h *ItemHandler) SetupRouter(r *gin.Engine) {
 	r.GET("/v1/items", h.GetItems)
 	r.GET("/v1/items/:itemId", h.GetItem)
-	r.GET("/v1/items/monsters", h.GetItemByMonster)
+	r.GET("/v1/items/monsters/:monsterId", h.GetItemByMonster)
 }
 
 func TestItemHandler_GetItems(t *testing.T) {
@@ -114,21 +115,69 @@ func TestItemHandler_GetItem(t *testing.T) {
 	// テストケースを定義
 	tests := []struct {
 		name       string
-		input      map[string]any
+		pathParam  string
 		mock       func() *items.IitemServiceMock
 		wantStatus int
 		goldenFile string
 	}{
 		{
-			name: "正常系：NotImplemented が返される",
-			input: map[string]any{
-				"itemId": "1",
-			},
+			name:      "正常系：アイテムが取得できる",
+			pathParam: "1",
 			mock: func() *items.IitemServiceMock {
-				return &items.IitemServiceMock{}
+				mock := &items.IitemServiceMock{
+					GetItemByIDFunc: func(ctx context.Context, itemID string) (*items.ItemDTO, error) {
+						return &items.ItemDTO{
+							ItemID:   "1",
+							ItemName: "回復薬",
+						}, nil
+					},
+				}
+				return mock
 			},
-			wantStatus: http.StatusNotImplemented,
-			goldenFile: "items/get_item_not_implemented.json",
+			wantStatus: http.StatusOK,
+			goldenFile: "items/get_item_success.json",
+		},
+		{
+			name:      "異常系：アイテムが見つからない場合（404エラー）",
+			pathParam: "999",
+			mock: func() *items.IitemServiceMock {
+				mock := &items.IitemServiceMock{
+					GetItemByIDFunc: func(ctx context.Context, itemID string) (*items.ItemDTO, error) {
+						return nil, nil
+					},
+				}
+				return mock
+			},
+			wantStatus: http.StatusNotFound,
+			goldenFile: "items/get_item_not_found.json",
+		},
+		{
+			name:      "異常系：アイテムが見つからない場合",
+			pathParam: "999",
+			mock: func() *items.IitemServiceMock {
+				mock := &items.IitemServiceMock{
+					GetItemByIDFunc: func(ctx context.Context, itemID string) (*items.ItemDTO, error) {
+						return nil, nil
+					},
+				}
+				return mock
+			},
+			wantStatus: http.StatusNotFound,
+			goldenFile: "items/get_item_not_found.json",
+		},
+		{
+			name:      "異常系：サービスからのエラーが発生",
+			pathParam: "1",
+			mock: func() *items.IitemServiceMock {
+				mock := &items.IitemServiceMock{
+					GetItemByIDFunc: func(ctx context.Context, itemID string) (*items.ItemDTO, error) {
+						return nil, errors.New("service error")
+					},
+				}
+				return mock
+			},
+			wantStatus: http.StatusInternalServerError,
+			goldenFile: "items/get_item_error.json",
 		},
 	}
 
@@ -146,7 +195,8 @@ func TestItemHandler_GetItem(t *testing.T) {
 
 			// リクエストの作成
 			w := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodGet, "/v1/items/"+tt.input["itemId"].(string), nil)
+			var req *http.Request
+			req, _ = http.NewRequest(http.MethodGet, fmt.Sprintf("/v1/items/%s", tt.pathParam), nil)
 
 			// リクエストの実行
 			r.ServeHTTP(w, req)
@@ -166,19 +216,83 @@ func TestItemHandler_GetItemByMonster(t *testing.T) {
 	// テストケースを定義
 	tests := []struct {
 		name       string
-		input      map[string]any
+		pathParam  string
 		mock       func() *items.IitemServiceMock
 		wantStatus int
 		goldenFile string
 	}{
 		{
-			name:  "正常系：NotImplemented が返される",
-			input: map[string]any{},
+			name:      "正常系：モンスターIDに紐づくアイテムが取得できる",
+			pathParam: "1",
 			mock: func() *items.IitemServiceMock {
-				return &items.IitemServiceMock{}
+				mock := &items.IitemServiceMock{
+					GetItemByMonsterIDFunc: func(ctx context.Context, monsterID string) (*items.ItemByMonster, error) {
+						return &items.ItemByMonster{
+							MonsterID:   "1",
+							MonsterName: "イャンクック",
+							Item: []items.ItemDTO{
+								{
+									ItemID:   "1",
+									ItemName: "イャンクックの羽",
+								},
+								{
+									ItemID:   "2",
+									ItemName: "イャンクックの鱗",
+								},
+							},
+						}, nil
+					},
+				}
+				return mock
 			},
-			wantStatus: http.StatusNotImplemented,
-			goldenFile: "items/get_item_by_monster_not_implemented.json",
+			wantStatus: http.StatusOK,
+			goldenFile: "items/get_item_by_monster_success.json",
+		},
+		{
+			name:      "異常系：モンスターIDが空の場合",
+			pathParam: "",
+			mock: func() *items.IitemServiceMock {
+				mock := &items.IitemServiceMock{
+					GetItemByMonsterIDFunc: func(ctx context.Context, monsterID string) (*items.ItemByMonster, error) {
+						return nil, errors.New("invalid monster ID")
+					},
+				}
+				return mock
+			},
+			wantStatus: http.StatusInternalServerError,
+			goldenFile: "items/get_item_by_monster_bad_request.json",
+		},
+		{
+			name:      "正常系：アイテムが空の場合",
+			pathParam: "999",
+			mock: func() *items.IitemServiceMock {
+				mock := &items.IitemServiceMock{
+					GetItemByMonsterIDFunc: func(ctx context.Context, monsterID string) (*items.ItemByMonster, error) {
+						return &items.ItemByMonster{
+							MonsterID:   "999",
+							MonsterName: "テストモンスター",
+							Item:        []items.ItemDTO{},
+						}, nil
+					},
+				}
+				return mock
+			},
+			wantStatus: http.StatusOK,
+			goldenFile: "items/get_item_by_monster_empty.json",
+		},
+		{
+			name:      "異常系：サービスからのエラーが発生",
+			pathParam: "1",
+			mock: func() *items.IitemServiceMock {
+				mock := &items.IitemServiceMock{
+					GetItemByMonsterIDFunc: func(ctx context.Context, monsterID string) (*items.ItemByMonster, error) {
+						return nil, errors.New("service error")
+					},
+				}
+				return mock
+			},
+			wantStatus: http.StatusInternalServerError,
+			goldenFile: "items/get_item_by_monster_error.json",
 		},
 	}
 
@@ -196,7 +310,16 @@ func TestItemHandler_GetItemByMonster(t *testing.T) {
 
 			// リクエストの作成
 			w := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodGet, "/v1/items/monsters", nil)
+
+			// リクエストを作成
+			var req *http.Request
+			// 空のパスパラメータの場合はクエリパラメータで処理（リダイレクトを避けるため）
+			if tt.pathParam == "" {
+				// 不正なIDとして空文字列を渡す
+				req, _ = http.NewRequest(http.MethodGet, "/v1/items/monsters/ ", nil)
+			} else {
+				req, _ = http.NewRequest(http.MethodGet, fmt.Sprintf("/v1/items/monsters/%s", tt.pathParam), nil)
+			}
 
 			// リクエストの実行
 			r.ServeHTTP(w, req)

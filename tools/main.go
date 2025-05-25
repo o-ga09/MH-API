@@ -6,7 +6,9 @@ import (
 	"log"
 	"os"
 	"reflect"
+	"regexp"
 	"strconv"
+	"strings"
 	"unicode"
 
 	"github.com/PuerkitoBio/goquery"
@@ -61,20 +63,56 @@ const (
 	BGM_DATA_SQL     = "INSERT INTO music (monster_id, music_id, name, image_url, created_at, updated_at) VALUES (%s,%s, \"%s\", \"%s\", now(), now());"
 )
 
+type WeaponTable struct {
+	Col1 string
+	Col2 string
+	Col3 string
+	Col4 string
+}
+
 func main() {
 	// Path to the HTML file
-	filePath := "/Users/taichi/Downloads/MH素材/wiki.html"
+	filePath := "../weapon.html"
 
 	// Parse the HTML file
-	monsters, err := parseHTMLFile(filePath)
+	res, err := parseHTMLFile[WeaponTable](filePath, "武器")
 	if err != nil {
 		log.Fatalf("Error parsing HTML file: %v", err)
 	}
 
-	// Print the extracted monsters
-	for _, monster := range monsters {
-		fmt.Printf("%s, %s, %s, %s\n", monster.Name, monster.Anothername, monster.NameEn, monster.First)
+	fmt.Println("Name,Rare,slot,Attack,Element,Element Attack,Critical,skill1,skill2")
+	for _, item := range res {
+		col1 := strings.Split(item.Col1, " ")
+		var trimCol1 string
+		for _, s := range col1 {
+			trimCol1 += strings.TrimSpace(s) + ","
+		}
+
+		var trimCol2 string
+		col2 := strings.Split(item.Col2, " ")
+		for _, s := range col2 {
+			trimCol1 += strings.TrimSpace(s) + ","
+		}
+
+		var trimCol3 string
+		col3 := strings.Split(item.Col3, " ")
+		for _, s := range col3 {
+			trimCol3 += strings.TrimSpace(s) + ","
+		}
+
+		var trimCol4 string
+		col4 := strings.Split(item.Col4, " ")
+		for _, s := range col4 {
+			trimCol4 += strings.TrimSpace(s) + ","
+		}
+
+		fmt.Println(trimCol1, trimCol2, trimCol3, trimCol4)
 	}
+
+	// Print the extracted monsters
+	// for _, monster := range monsters {
+	// 	fmt.Printf("%s, %s, %s, %s\n", monster.Name, monster.Anothername, monster.NameEn, monster.First)
+	// }
 	// filePath := "MH_DATA_5.json"
 	// data, err := ReadJsonFile(filePath)
 	// if err != nil {
@@ -315,7 +353,7 @@ func mapToNestedStruct(data map[string]interface{}, result reflect.Value) error 
 	return nil
 }
 
-// Monster represents a single monster entry from the table
+// MonsterTable represents a single monster entry from the table
 type MonsterTable struct {
 	Name        string
 	Anothername string
@@ -323,8 +361,8 @@ type MonsterTable struct {
 	First       string
 }
 
-// parseHTMLFile parses the HTML file and extracts the monster list
-func parseHTMLFile(filePath string) ([]MonsterTable, error) {
+// parseHTMLFile parses the HTML file and extracts data into a generic struct
+func parseHTMLFile[T any](filePath string, tableName string) ([]T, error) {
 	// Open the HTML file
 	file, err := os.Open(filePath)
 	if err != nil {
@@ -338,39 +376,62 @@ func parseHTMLFile(filePath string) ([]MonsterTable, error) {
 		return nil, fmt.Errorf("failed to parse HTML: %w", err)
 	}
 
-	var monsters []MonsterTable
+	var results []T
+	var columnNames []string
 
-	// Find the "モンスター一覧" table
+	// Find the table with the given name
 	doc.Find("table").Each(func(index int, table *goquery.Selection) {
-		// Check if the table contains the "モンスター一覧" header
 		header := table.Find("th").First().Text()
-		if header == "モンスター名" {
+		if strings.Contains(header, tableName) {
+			// Get column names from header row if available
+			table.Find("tr").First().Find("th").Each(func(i int, th *goquery.Selection) {
+				columnNames = append(columnNames, fmt.Sprintf("Col%d", i+1))
+			})
+
 			// Iterate over table rows
 			table.Find("tr").Each(func(rowIndex int, row *goquery.Selection) {
+				// Skip header row
+				if rowIndex == 0 && len(columnNames) > 0 {
+					return
+				}
+
 				// Extract columns (cells)
 				cells := row.Find("td")
+				if cells.Length() > 0 {
+					// Create a map to hold the row data
+					rowData := make(map[string]interface{})
 
-				nameEn := "-"
-				first := "-"
-				if cells.Length() >= 2 { // Ensure there are at least 2 columns
-					name := cells.Eq(0).Text()
-					anothername := cells.Eq(1).Text()
-					if cells.Length() >= 3 {
-						nameEn = cells.Eq(2).Text()
-					}
-					if cells.Length() >= 4 {
-						first = cells.Eq(3).Text()
-					}
-					monsters = append(monsters, MonsterTable{
-						Name:        name,
-						Anothername: anothername,
-						NameEn:      nameEn,
-						First:       first,
+					// Extract each cell value
+					cells.Each(func(colIndex int, cell *goquery.Selection) {
+						colName := fmt.Sprintf("Col%d", colIndex+1)
+						cellText := strings.TrimSpace(regexp.MustCompile(`\s+`).ReplaceAllString(cell.Text(), " "))
+						rowData[colName] = cellText
 					})
+
+					// Convert the map to the generic struct type
+					result := reflect.New(reflect.TypeOf(*new(T))).Elem()
+					for key, value := range rowData {
+						field := result.FieldByName(key)
+						if field.IsValid() && field.CanSet() {
+							field.Set(reflect.ValueOf(value))
+						}
+					}
+
+					results = append(results, result.Interface().(T))
 				}
 			})
 		}
 	})
 
-	return monsters, nil
+	return results, nil
+}
+
+// ColumnData is a generic struct for storing table column data
+type ColumnData struct {
+	ColMap map[string]string
+}
+
+// GetColumn retrieves a column value by its name
+func (c ColumnData) GetColumn(name string) string {
+	return c.ColMap[name]
 }
