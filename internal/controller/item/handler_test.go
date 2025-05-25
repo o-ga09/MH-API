@@ -316,7 +316,7 @@ func TestItemHandler_GetItemByMonster(t *testing.T) {
 			// 空のパスパラメータの場合はクエリパラメータで処理（リダイレクトを避けるため）
 			if tt.pathParam == "" {
 				// 不正なIDとして空文字列を渡す
-				req, _ = http.NewRequest(http.MethodGet, "/v1/items/monsters/", nil)
+				req, _ = http.NewRequest(http.MethodGet, "/v1/items/monsters/ ", nil)
 			} else {
 				req, _ = http.NewRequest(http.MethodGet, fmt.Sprintf("/v1/items/monsters/%s", tt.pathParam), nil)
 			}
