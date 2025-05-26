@@ -8,18 +8,18 @@ require (
 	github.com/caarlos0/env/v6 v6.10.1
 	github.com/getsentry/sentry-go v0.32.0
 	github.com/gin-contrib/cors v1.7.5
-	github.com/gin-gonic/gin v1.10.0
+	github.com/gin-gonic/gin v1.10.1
 	github.com/go-playground/validator/v10 v10.26.0
 	github.com/go-sql-driver/mysql v1.9.2
 	github.com/google/uuid v1.6.0
 	github.com/rubenv/sql-migrate v1.8.0
 	github.com/stretchr/testify v1.10.0
 	github.com/swaggo/swag v1.16.4
-	go.opentelemetry.io/contrib/instrumentation/github.com/gin-gonic/gin/otelgin v0.60.0
+	go.opentelemetry.io/contrib/instrumentation/github.com/gin-gonic/gin/otelgin v0.61.0
 	go.opentelemetry.io/contrib/propagators/autoprop v0.60.0
-	go.opentelemetry.io/otel v1.35.0
-	go.opentelemetry.io/otel/sdk v1.35.0
-	go.opentelemetry.io/otel/trace v1.35.0
+	go.opentelemetry.io/otel v1.36.0
+	go.opentelemetry.io/otel/sdk v1.36.0
+	go.opentelemetry.io/otel/trace v1.36.0
 	golang.org/x/net v0.40.0
 	gorm.io/driver/mysql v1.5.7
 	gorm.io/gorm v1.26.0
@@ -100,7 +100,7 @@ require (
 	go.opentelemetry.io/contrib/propagators/b3 v1.35.0 // indirect
 	go.opentelemetry.io/contrib/propagators/jaeger v1.35.0 // indirect
 	go.opentelemetry.io/contrib/propagators/ot v1.35.0 // indirect
-	go.opentelemetry.io/otel/metric v1.35.0 // indirect
+	go.opentelemetry.io/otel/metric v1.36.0 // indirect
 	go.opentelemetry.io/otel/sdk/metric v1.35.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	golang.org/x/arch v0.17.0 // indirect
