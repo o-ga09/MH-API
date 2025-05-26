@@ -22,7 +22,7 @@ require (
 	go.opentelemetry.io/otel/trace v1.35.0
 	golang.org/x/net v0.40.0
 	gorm.io/driver/mysql v1.5.7
-	gorm.io/gorm v1.26.0
+	gorm.io/gorm v1.30.0
 )
 
 require (
