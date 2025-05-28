@@ -1,0 +1,33 @@
+{
+  "id": "1",
+  "name": "レウスヘルム",
+  "skill": [
+    {
+      "id": "1",
+      "name": "攻撃LV1"
+    },
+    {
+      "id": "2",
+      "name": "火属性攻撃強化LV1"
+    }
+  ],
+  "slot": "①②③",
+  "defense": 100,
+  "resistance": {
+    "fire": 10,
+    "water": 5,
+    "lightning": -10,
+    "ice": 5,
+    "dragon": 15
+  },
+  "required": [
+    {
+      "id": "ITM0019",
+      "name": "リオレウスの鱗"
+    },
+    {
+      "id": "ITM0016",
+      "name": "ドラグライト鉱石"
+    }
+  ]
+}
