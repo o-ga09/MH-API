@@ -77,5 +77,13 @@ func NewServer() (*gin.Engine, error) {
 	{
 		weapons.GET("", weaponHandler.SearchWeapons)
 	}
+
+	// スキル検索
+	skillHandler := di.InitSkillsHandler(ctx)
+	skills := v1.Group("/skills")
+	{
+		skills.GET("", skillHandler.GetSkills)
+		skills.GET("/:skillId", skillHandler.GetSkill)
+	}
 	return r, nil
 }
