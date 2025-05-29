@@ -22,7 +22,7 @@ func TestArmorService_GetAllArmors_Success(t *testing.T) {
 				*armors.NewRequiredItem("ITM0019", "リオレウスの鱗"),
 				*armors.NewRequiredItem("ITM0016", "ドラグライト鉱石"),
 			}
-			
+
 			skills2 := []armors.Skill{
 				*armors.NewSkill("1", "攻撃LV2"),
 				*armors.NewSkill("3", "体力増強LV1"),
@@ -49,15 +49,15 @@ func TestArmorService_GetAllArmors_Success(t *testing.T) {
 	assert.Equal(t, 2, len(result.Armors))
 	assert.Equal(t, "レウスヘルム", result.Armors[0].Name)
 	assert.Equal(t, "レウスメイル", result.Armors[1].Name)
-	
+
 	// スキルの確認
 	assert.Equal(t, 2, len(result.Armors[0].Skill))
 	assert.Equal(t, "攻撃LV1", result.Armors[0].Skill[0].Name)
-	
+
 	// 必要素材の確認
 	assert.Equal(t, 2, len(result.Armors[0].Required))
 	assert.Equal(t, "リオレウスの鱗", result.Armors[0].Required[0].Name)
-	
+
 	// 防御力・耐性の確認
 	assert.Equal(t, 100, result.Armors[0].Defense)
 	assert.Equal(t, 10, result.Armors[0].Resistance.Fire)
@@ -104,7 +104,7 @@ func TestArmorService_GetAllArmors_QueryServiceError(t *testing.T) {
 func TestArmorService_GetArmorByID_Success(t *testing.T) {
 	ctx := context.Background()
 	targetArmorID := "1"
-	
+
 	mockQueryService := &IArmorQueryServiceMock{
 		GetByIDFunc: func(ctx context.Context, armorId string) (*armors.Armor, error) {
 			if armorId == targetArmorID {
@@ -116,7 +116,7 @@ func TestArmorService_GetArmorByID_Success(t *testing.T) {
 					*armors.NewRequiredItem("ITM0019", "リオレウスの鱗"),
 					*armors.NewRequiredItem("ITM0016", "ドラグライト鉱石"),
 				}
-				
+
 				return armors.NewArmor("1", "レウスヘルム", "①②③", 100, 10, 5, -10, 5, 15, skills, requiredItems), nil
 			}
 			return nil, errors.New("armor not found")
@@ -133,15 +133,15 @@ func TestArmorService_GetArmorByID_Success(t *testing.T) {
 	assert.Equal(t, "レウスヘルム", result.Name)
 	assert.Equal(t, "①②③", result.Slot)
 	assert.Equal(t, 100, result.Defense)
-	
+
 	// スキルの確認
 	assert.Equal(t, 2, len(result.Skill))
 	assert.Equal(t, "攻撃LV1", result.Skill[0].Name)
-	
+
 	// 必要素材の確認
 	assert.Equal(t, 2, len(result.Required))
 	assert.Equal(t, "リオレウスの鱗", result.Required[0].Name)
-	
+
 	// 耐性の確認
 	assert.Equal(t, 10, result.Resistance.Fire)
 	assert.Equal(t, 5, result.Resistance.Water)

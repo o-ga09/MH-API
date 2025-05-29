@@ -196,4 +196,3 @@ INSERT INTO `armor_required_item` (`created_at`, `updated_at`, `deleted_at`, `ar
   (NOW(), NOW(), NULL, '2', 'ITM0019', 'リオレウスの鱗'),
   (NOW(), NOW(), NULL, '2', 'ITM0017', '大地の結晶'),
   (NOW(), NOW(), NULL, '3', 'ITM0019', 'リオレウスの鱗');
-  

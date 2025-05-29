@@ -23,13 +23,13 @@ type ResistanceData struct {
 }
 
 type ArmorData struct {
-	ID        string             `json:"id"`
-	Name      string             `json:"name"`
-	Skill     []SkillData        `json:"skill"`
-	Slot      string             `json:"slot"`
-	Defense   int                `json:"defense"`
-	Resistance ResistanceData    `json:"resistance"`
-	Required  []RequiredItemData `json:"required"`
+	ID         string             `json:"id"`
+	Name       string             `json:"name"`
+	Skill      []SkillData        `json:"skill"`
+	Slot       string             `json:"slot"`
+	Defense    int                `json:"defense"`
+	Resistance ResistanceData     `json:"resistance"`
+	Required   []RequiredItemData `json:"required"`
 }
 
 type ListArmorsResponse struct {
@@ -54,10 +54,10 @@ func ToArmorData(armor *armors.Armor) ArmorData {
 	}
 
 	return ArmorData{
-		ID:   armor.GetID(),
-		Name: armor.GetName(),
-		Skill: skills,
-		Slot: armor.GetSlot(),
+		ID:      armor.GetID(),
+		Name:    armor.GetName(),
+		Skill:   skills,
+		Slot:    armor.GetSlot(),
 		Defense: armor.GetDefense(),
 		Resistance: ResistanceData{
 			Fire:      armor.GetFireResistance(),

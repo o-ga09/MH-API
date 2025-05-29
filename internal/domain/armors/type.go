@@ -84,14 +84,14 @@ func NewRequiredItem(id string, name string) *RequiredItem {
 func (r *RequiredItem) GetID() string   { return r.itemId.value }
 func (r *RequiredItem) GetName() string { return r.name.value }
 
-func (a *Armor) GetID() string                { return a.armorId.value }
-func (a *Armor) GetName() string              { return a.name.value }
-func (a *Armor) GetSlot() string              { return a.slot.value }
-func (a *Armor) GetDefense() int              { return a.defense.value }
-func (a *Armor) GetFireResistance() int       { return a.fireResistance.value }
-func (a *Armor) GetWaterResistance() int      { return a.waterResistance.value }
-func (a *Armor) GetLightningResistance() int  { return a.lightningResistance.value }
-func (a *Armor) GetIceResistance() int        { return a.iceResistance.value }
-func (a *Armor) GetDragonResistance() int     { return a.dragonResistance.value }
-func (a *Armor) GetSkills() []Skill           { return a.skills }
+func (a *Armor) GetID() string                    { return a.armorId.value }
+func (a *Armor) GetName() string                  { return a.name.value }
+func (a *Armor) GetSlot() string                  { return a.slot.value }
+func (a *Armor) GetDefense() int                  { return a.defense.value }
+func (a *Armor) GetFireResistance() int           { return a.fireResistance.value }
+func (a *Armor) GetWaterResistance() int          { return a.waterResistance.value }
+func (a *Armor) GetLightningResistance() int      { return a.lightningResistance.value }
+func (a *Armor) GetIceResistance() int            { return a.iceResistance.value }
+func (a *Armor) GetDragonResistance() int         { return a.dragonResistance.value }
+func (a *Armor) GetSkills() []Skill               { return a.skills }
 func (a *Armor) GetRequiredItems() []RequiredItem { return a.requiredItems }
