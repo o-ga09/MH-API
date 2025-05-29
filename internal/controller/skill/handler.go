@@ -61,6 +61,10 @@ func (h *SkillHandler) GetSkill(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, MessageResponse{Message: "Validation failed: " + err.Error()})
 		return
 	}
+	if req.SkillId == " " {
+		c.JSON(http.StatusBadRequest, MessageResponse{Message: "Skill ID is required"})
+		return
+	}
 
 	skill, err := h.service.GetSkillByID(c.Request.Context(), req.SkillId)
 	if err != nil {

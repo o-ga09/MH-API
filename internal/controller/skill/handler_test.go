@@ -70,7 +70,7 @@ func TestSkillHandler_GetSkills(t *testing.T) {
 				return mock
 			},
 			wantStatus: http.StatusOK,
-			goldenFile: "get_skills_success",
+			goldenFile: "skills/get_skills_success.json.golden",
 		},
 		{
 			name:  "異常系：サービス層でエラーが発生する",
@@ -84,7 +84,7 @@ func TestSkillHandler_GetSkills(t *testing.T) {
 				return mock
 			},
 			wantStatus: http.StatusInternalServerError,
-			goldenFile: "get_skills_error",
+			goldenFile: "skills/get_skills_error.json.golden",
 		},
 	}
 
@@ -111,7 +111,7 @@ func TestSkillHandler_GetSkills(t *testing.T) {
 			assert.Equal(t, tt.wantStatus, rec.Code)
 
 			// レスポンスボディのアサーション
-			testutil.AssertGoldenJSON(t, "testdata/skills", tt.goldenFile, rec.Body.Bytes())
+			testutil.AssertGoldenJSON(t, tt.goldenFile, rec.Body.Bytes())
 		})
 	}
 }
@@ -145,17 +145,17 @@ func TestSkillHandler_GetSkill(t *testing.T) {
 				return mock
 			},
 			wantStatus: http.StatusOK,
-			goldenFile: "get_skill_success",
+			goldenFile: "skills/get_skill_success.json.golden",
 		},
 		{
 			name:    "準正常系：不正なスキルIDの場合",
-			skillId: "",
+			skillId: " ",
 			mock: func() *skills.ISkillServiceMock {
 				mock := &skills.ISkillServiceMock{}
 				return mock
 			},
 			wantStatus: http.StatusBadRequest,
-			goldenFile: "get_skill_bad_request",
+			goldenFile: "skills/get_skill_bad_request.json.golden",
 		},
 		{
 			name:    "異常系：存在しないスキルIDの場合",
@@ -169,7 +169,7 @@ func TestSkillHandler_GetSkill(t *testing.T) {
 				return mock
 			},
 			wantStatus: http.StatusInternalServerError,
-			goldenFile: "get_skill_error",
+			goldenFile: "skills/get_skill_error.json.golden",
 		},
 	}
 
@@ -197,7 +197,7 @@ func TestSkillHandler_GetSkill(t *testing.T) {
 			assert.Equal(t, tt.wantStatus, rec.Code)
 
 			// レスポンスボディのアサーション
-			testutil.AssertGoldenJSON(t, "testdata/skills", tt.goldenFile, rec.Body.Bytes())
+			testutil.AssertGoldenJSON(t, tt.goldenFile, rec.Body.Bytes())
 		})
 	}
 }
