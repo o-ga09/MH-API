@@ -87,11 +87,11 @@ func createTestArmors(t *testing.T, ctx context.Context) []*Armor {
 }
 
 func TestArmorQueryService_GetAll(t *testing.T) {
-	ctx := context.Background()
-
+	ctx := t.Context()
 	ctx = setupTestDB(ctx)
-	testDB.Begin()
-	defer testDB.Rollback()
+	db := ctx.Value(CtxKey).(*gorm.DB)
+	db.Begin()
+	defer db.Rollback()
 
 	_ = createTestArmors(t, ctx)
 
@@ -116,7 +116,7 @@ func TestArmorQueryService_GetAll(t *testing.T) {
 			assert.True(t, (err != nil) == tt.wantErr)
 			if !tt.wantErr {
 				assert.Len(t, got, tt.wantCount)
-				
+
 				// 最初の防具の詳細をチェック
 				if len(got) > 0 {
 					firstArmor := got[0]
@@ -124,11 +124,11 @@ func TestArmorQueryService_GetAll(t *testing.T) {
 					assert.NotEmpty(t, firstArmor.GetName())
 					assert.NotEmpty(t, firstArmor.GetSlot())
 					assert.Greater(t, firstArmor.GetDefense(), 0)
-					
+
 					// スキルがロードされているかチェック
 					skills := firstArmor.GetSkills()
 					assert.GreaterOrEqual(t, len(skills), 1)
-					
+
 					// 必要素材がロードされているかチェック
 					required := firstArmor.GetRequiredItems()
 					assert.GreaterOrEqual(t, len(required), 1)
@@ -139,11 +139,11 @@ func TestArmorQueryService_GetAll(t *testing.T) {
 }
 
 func TestArmorQueryService_GetByID(t *testing.T) {
-	ctx := context.Background()
-
+	ctx := t.Context()
 	ctx = setupTestDB(ctx)
-	testDB.Begin()
-	defer testDB.Rollback()
+	db := ctx.Value(CtxKey).(*gorm.DB)
+	db.Begin()
+	defer db.Rollback()
 
 	testArmors := createTestArmors(t, ctx)
 
@@ -199,11 +199,11 @@ func TestArmorQueryService_GetByID(t *testing.T) {
 				assert.Equal(t, tt.want.LightningResistance, got.GetLightningResistance())
 				assert.Equal(t, tt.want.IceResistance, got.GetIceResistance())
 				assert.Equal(t, tt.want.DragonResistance, got.GetDragonResistance())
-				
+
 				// スキルがロードされているかチェック
 				skills := got.GetSkills()
 				assert.GreaterOrEqual(t, len(skills), 1)
-				
+
 				// 必要素材がロードされているかチェック
 				required := got.GetRequiredItems()
 				assert.GreaterOrEqual(t, len(required), 1)

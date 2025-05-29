@@ -5,18 +5,18 @@ import (
 	"mh-api/internal/domain/armors"
 )
 
-type armorRepository struct{}
+type armorRepository struct {
+	queryService *ArmorQueryService
+}
 
-func NewArmorRepository() armors.Repository {
-	return &armorRepository{}
+func NewArmorRepository(qs *ArmorQueryService) armors.Repository {
+	return &armorRepository{queryService: qs}
 }
 
 func (r *armorRepository) GetAll(ctx context.Context) (armors.Armors, error) {
-	qs := NewArmorQueryService()
-	return qs.GetAll(ctx)
+	return r.queryService.GetAll(ctx)
 }
 
 func (r *armorRepository) GetByID(ctx context.Context, armorId string) (*armors.Armor, error) {
-	qs := NewArmorQueryService()
-	return qs.GetByID(ctx, armorId)
+	return r.queryService.GetByID(ctx, armorId)
 }

@@ -21,7 +21,7 @@ type ResistanceResponse struct {
 type ArmorDetailResponse struct {
 	ID         string                 `json:"id"`
 	Name       string                 `json:"name"`
-	Skill      []SkillResponse        `json:"skill"`
+	Skills     []SkillResponse        `json:"skills"`
 	Slot       string                 `json:"slot"`
 	Defense    int                    `json:"defense"`
 	Resistance ResistanceResponse     `json:"resistance"`

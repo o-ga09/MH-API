@@ -115,23 +115,23 @@ type BgmRanking struct {
 
 type Armor struct {
 	gorm.Model
-	ArmorId             string           `gorm:"column:armor_id;primaryKey;type:varchar(255);not null"`
-	Name                string           `gorm:"column:name;type:varchar(255);not null"`
-	Slot                string           `gorm:"column:slot;type:varchar(255)"`
-	Defense             int              `gorm:"column:defense;type:int"`
-	FireResistance      int              `gorm:"column:fire_resistance;type:int"`
-	WaterResistance     int              `gorm:"column:water_resistance;type:int"`
-	LightningResistance int              `gorm:"column:lightning_resistance;type:int"`
-	IceResistance       int              `gorm:"column:ice_resistance;type:int"`
-	DragonResistance    int              `gorm:"column:dragon_resistance;type:int"`
-	Skills              []*ArmorSkill    `gorm:"foreignKey:armor_id;references:armor_id"`
+	ArmorId             string               `gorm:"column:armor_id;type:varchar(255);not null"`
+	Name                string               `gorm:"column:name;type:varchar(255);not null"`
+	Slot                string               `gorm:"column:slot;type:varchar(255)"`
+	Defense             int                  `gorm:"column:defense;type:int"`
+	FireResistance      int                  `gorm:"column:fire_resistance;type:int"`
+	WaterResistance     int                  `gorm:"column:water_resistance;type:int"`
+	LightningResistance int                  `gorm:"column:lightning_resistance;type:int"`
+	IceResistance       int                  `gorm:"column:ice_resistance;type:int"`
+	DragonResistance    int                  `gorm:"column:dragon_resistance;type:int"`
+	Skills              []*ArmorSkill        `gorm:"foreignKey:armor_id;references:armor_id"`
 	RequiredItems       []*ArmorRequiredItem `gorm:"foreignKey:armor_id;references:armor_id"`
 }
 
 type ArmorSkill struct {
 	gorm.Model
-	ArmorId  string `gorm:"column:armor_id;type:varchar(255);not null"`
-	SkillId  string `gorm:"column:skill_id;type:varchar(255);not null"`
+	ArmorId   string `gorm:"column:armor_id;type:varchar(255);not null"`
+	SkillId   string `gorm:"column:skill_id;type:varchar(255);not null"`
 	SkillName string `gorm:"column:skill_name;type:varchar(255);not null"`
 }
 

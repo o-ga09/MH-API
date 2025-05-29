@@ -62,7 +62,7 @@ func (h *ArmorHandler) GetAllArmors(c *gin.Context) {
 		ctrlResponseArmors[i] = ArmorDetailResponse{
 			ID:      sa.ID,
 			Name:    sa.Name,
-			Skill:   skills,
+			Skills:  skills,
 			Slot:    sa.Slot,
 			Defense: sa.Defense,
 			Resistance: ResistanceResponse{
@@ -100,7 +100,7 @@ func (h *ArmorHandler) GetArmorByID(c *gin.Context) {
 
 	var req GetArmorByIDRequest
 	if err := c.ShouldBindUri(&req); err != nil {
-		c.JSON(http.StatusBadRequest, ErrorResponse{Message: "Invalid request parameters: " + err.Error()})
+		c.JSON(http.StatusBadRequest, ErrorResponse{Message: "Invalid request parameters"})
 		return
 	}
 	if req.ArmorID == " " {
@@ -137,7 +137,7 @@ func (h *ArmorHandler) GetArmorByID(c *gin.Context) {
 	ctrlResponse := ArmorDetailResponse{
 		ID:      serviceRes.ID,
 		Name:    serviceRes.Name,
-		Skill:   skills,
+		Skills:  skills,
 		Slot:    serviceRes.Slot,
 		Defense: serviceRes.Defense,
 		Resistance: ResistanceResponse{
