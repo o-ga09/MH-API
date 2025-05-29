@@ -95,3 +95,10 @@ resource "google_cloud_run_service_iam_policy" "auth" {
 
   policy_data = data.google_iam_policy.auth.policy_data
 }
+
+# Cloud Run サービスアカウントに Cloud Trace Agent ロールを付与
+resource "google_project_iam_member" "cloud_run_trace_agent" {
+  project = local.project_id
+  role    = "roles/cloudtrace.agent"
+  member  = "serviceAccount:${local.cloud_run_invoke_service_account}"
+}
