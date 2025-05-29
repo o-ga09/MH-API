@@ -16,7 +16,7 @@ func NewArmorQueryService() *ArmorQueryService {
 
 func (qs *ArmorQueryService) GetAll(ctx context.Context) (armors.Armors, error) {
 	var armorsList []*Armor
-	
+
 	db := CtxFromDB(ctx)
 	result := db.Preload("Skills").Preload("RequiredItems").Find(&armorsList)
 	if result.Error != nil {
@@ -36,7 +36,7 @@ func (qs *ArmorQueryService) GetByID(ctx context.Context, armorId string) (*armo
 		}
 		return nil, result.Error
 	}
-	
+
 	res := ToArmor(&armor)
 	return res, nil
 }
