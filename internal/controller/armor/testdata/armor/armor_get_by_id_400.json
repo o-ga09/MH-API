@@ -1,3 +1,0 @@
-{
-  "message": "Invalid request parameters: Key: 'GetArmorByIDRequest.ArmorID' Error:Tag: 'required' Error Field: 'ArmorID' Error Value: '' Error: Error:Field validation for 'ArmorID' failed on the 'required' tag"
-}

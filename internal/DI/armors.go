@@ -1,4 +1,4 @@
-package DI
+package di
 
 import (
 	"mh-api/internal/controller/armor"

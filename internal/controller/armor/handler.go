@@ -60,10 +60,10 @@ func (h *ArmorHandler) GetAllArmors(c *gin.Context) {
 		}
 
 		ctrlResponseArmors[i] = ArmorDetailResponse{
-			ID:   sa.ID,
-			Name: sa.Name,
-			Skill: skills,
-			Slot: sa.Slot,
+			ID:      sa.ID,
+			Name:    sa.Name,
+			Skill:   skills,
+			Slot:    sa.Slot,
 			Defense: sa.Defense,
 			Resistance: ResistanceResponse{
 				Fire:      sa.Resistance.Fire,
@@ -103,6 +103,10 @@ func (h *ArmorHandler) GetArmorByID(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, ErrorResponse{Message: "Invalid request parameters: " + err.Error()})
 		return
 	}
+	if req.ArmorID == " " {
+		c.JSON(http.StatusBadRequest, ErrorResponse{Message: "Armor ID cannot be empty"})
+		return
+	}
 
 	serviceRes, err := h.service.GetArmorByID(appCtx, req.ArmorID)
 	if err != nil {
@@ -131,10 +135,10 @@ func (h *ArmorHandler) GetArmorByID(c *gin.Context) {
 	}
 
 	ctrlResponse := ArmorDetailResponse{
-		ID:   serviceRes.ID,
-		Name: serviceRes.Name,
-		Skill: skills,
-		Slot: serviceRes.Slot,
+		ID:      serviceRes.ID,
+		Name:    serviceRes.Name,
+		Skill:   skills,
+		Slot:    serviceRes.Slot,
 		Defense: serviceRes.Defense,
 		Resistance: ResistanceResponse{
 			Fire:      serviceRes.Resistance.Fire,

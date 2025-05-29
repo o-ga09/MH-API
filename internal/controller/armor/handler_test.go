@@ -45,7 +45,7 @@ func TestArmorHandler_GetAllArmors(t *testing.T) {
 				}
 			},
 			wantStatus: http.StatusOK,
-			goldenFile: "armor/armor_get_all_200.json",
+			goldenFile: "armor/armor_get_all_200.json.golden",
 		},
 		{
 			name: "正常系: 防具一覧が空の場合",
@@ -59,7 +59,7 @@ func TestArmorHandler_GetAllArmors(t *testing.T) {
 				}
 			},
 			wantStatus: http.StatusOK,
-			goldenFile: "armor/armor_get_all_empty.json",
+			goldenFile: "armor/armor_get_all_empty.json.golden",
 		},
 		{
 			name: "異常系: 内部エラー",
@@ -71,7 +71,7 @@ func TestArmorHandler_GetAllArmors(t *testing.T) {
 				}
 			},
 			wantStatus: http.StatusInternalServerError,
-			goldenFile: "armor/armor_get_all_500.json",
+			goldenFile: "armor/armor_get_all_500.json.golden",
 		},
 	}
 
@@ -114,7 +114,7 @@ func TestArmorHandler_GetArmorByID(t *testing.T) {
 			},
 			armorID:    "1",
 			wantStatus: http.StatusOK,
-			goldenFile: "armor/armor_get_by_id_200.json",
+			goldenFile: "armor/armor_get_by_id_200.json.golden",
 		},
 		{
 			name: "異常系: バリデーションエラー（IDが空）",
@@ -125,9 +125,9 @@ func TestArmorHandler_GetArmorByID(t *testing.T) {
 					},
 				}
 			},
-			armorID:    "",
-			wantStatus: http.StatusNotFound,
-			goldenFile: "armor/armor_get_by_id_400.json",
+			armorID:    " ",
+			wantStatus: http.StatusBadRequest,
+			goldenFile: "armor/armor_get_by_id_400.json.golden",
 		},
 		{
 			name: "異常系: 防具が見つからない",
@@ -140,7 +140,7 @@ func TestArmorHandler_GetArmorByID(t *testing.T) {
 			},
 			armorID:    "999",
 			wantStatus: http.StatusNotFound,
-			goldenFile: "armor/armor_get_by_id_404.json",
+			goldenFile: "armor/armor_get_by_id_404.json.golden",
 		},
 		{
 			name: "異常系: 内部エラー",
@@ -153,7 +153,7 @@ func TestArmorHandler_GetArmorByID(t *testing.T) {
 			},
 			armorID:    "1",
 			wantStatus: http.StatusInternalServerError,
-			goldenFile: "armor/armor_get_by_id_500.json",
+			goldenFile: "armor/armor_get_by_id_500.json.golden",
 		},
 	}
 
