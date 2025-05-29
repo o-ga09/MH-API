@@ -1,17 +1,17 @@
 package armors
 
 type Armor struct {
-	armorId              ArmorId
-	name                 ArmorName
-	slot                 ArmorSlot
-	defense              ArmorDefense
-	fireResistance       ArmorFireResistance
-	waterResistance      ArmorWaterResistance
-	lightningResistance  ArmorLightningResistance
-	iceResistance        ArmorIceResistance
-	dragonResistance     ArmorDragonResistance
-	skills               []Skill
-	requiredItems        []RequiredItem
+	armorId             ArmorId
+	name                ArmorName
+	slot                ArmorSlot
+	defense             ArmorDefense
+	fireResistance      ArmorFireResistance
+	waterResistance     ArmorWaterResistance
+	lightningResistance ArmorLightningResistance
+	iceResistance       ArmorIceResistance
+	dragonResistance    ArmorDragonResistance
+	skills              []Skill
+	requiredItems       []RequiredItem
 }
 
 func newArmor(
