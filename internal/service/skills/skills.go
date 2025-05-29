@@ -12,10 +12,10 @@ type ISkillService interface {
 }
 
 type SkillDTO struct {
-	ID          string              `json:"id"`
-	Name        string              `json:"name"`
-	Description string              `json:"description"`
-	Level       []SkillLevelDTO     `json:"level"`
+	ID          string          `json:"id"`
+	Name        string          `json:"name"`
+	Description string          `json:"description"`
+	Level       []SkillLevelDTO `json:"level"`
 }
 
 type SkillLevelDTO struct {

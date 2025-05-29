@@ -1,11 +1,13 @@
 package skill
 
 import (
+	"errors"
 	"mh-api/internal/service/skills"
 	"mh-api/pkg/validator"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
 type SkillHandler struct {
@@ -68,6 +70,10 @@ func (h *SkillHandler) GetSkill(c *gin.Context) {
 
 	skill, err := h.service.GetSkillByID(c.Request.Context(), req.SkillId)
 	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			c.JSON(http.StatusNotFound, MessageResponse{Message: "Skill not found"})
+			return
+		}
 		c.JSON(http.StatusInternalServerError, MessageResponse{Message: "Failed to get skill"})
 		return
 	}
