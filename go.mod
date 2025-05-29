@@ -12,6 +12,7 @@ require (
 	github.com/go-playground/validator/v10 v10.26.0
 	github.com/go-sql-driver/mysql v1.9.2
 	github.com/google/uuid v1.6.0
+	github.com/mark3labs/mcp-go v0.8.0
 	github.com/rubenv/sql-migrate v1.8.0
 	github.com/stretchr/testify v1.10.0
 	github.com/swaggo/swag v1.16.4
