@@ -1,0 +1,70 @@
+{
+  "armors": [
+    {
+      "id": "1",
+      "name": "レウスヘルム",
+      "skills": [
+        {
+          "id": "1",
+          "name": "攻撃LV1"
+        },
+        {
+          "id": "2",
+          "name": "火属性攻撃強化LV1"
+        }
+      ],
+      "slot": "①②③",
+      "defense": 100,
+      "resistance": {
+        "fire": 10,
+        "water": 5,
+        "lightning": -10,
+        "ice": 5,
+        "dragon": 15
+      },
+      "required": [
+        {
+          "id": "ITM0019",
+          "name": "リオレウスの鱗"
+        },
+        {
+          "id": "ITM0016",
+          "name": "ドラグライト鉱石"
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "name": "レウスメイル",
+      "skills": [
+        {
+          "id": "1",
+          "name": "攻撃LV2"
+        },
+        {
+          "id": "3",
+          "name": "体力増強LV1"
+        }
+      ],
+      "slot": "①①②",
+      "defense": 120,
+      "resistance": {
+        "fire": 15,
+        "water": 0,
+        "lightning": -5,
+        "ice": 0,
+        "dragon": 20
+      },
+      "required": [
+        {
+          "id": "ITM0019",
+          "name": "リオレウスの鱗"
+        },
+        {
+          "id": "ITM0017",
+          "name": "大地の結晶"
+        }
+      ]
+    }
+  ]
+}

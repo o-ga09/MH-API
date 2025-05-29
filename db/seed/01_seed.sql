@@ -174,4 +174,25 @@ INSERT INTO `item` (`created_at`, `updated_at`, `deleted_at`, `item_id`, `name`,
   (NOW(), NOW(), NULL, 'ITM0018', '海竜の牙', 'https://example.com/images/items/wyvern_fang.png', '11'),
   (NOW(), NOW(), NULL, 'ITM0019', 'リオレウスの鱗', 'https://example.com/images/items/rathalos_scale.png', '6'),
   (NOW(), NOW(), NULL, 'ITM0020', 'ジンオウガの電極殻', 'https://example.com/images/items/zinogre_shell.png', '12');
-  
+
+-- 防具テーブルのシードデータ
+INSERT INTO `armor` (`created_at`, `updated_at`, `deleted_at`, `armor_id`, `name`, `slot`, `defense`, `fire_resistance`, `water_resistance`, `lightning_resistance`, `ice_resistance`, `dragon_resistance`) VALUES
+  (NOW(), NOW(), NULL, '1', 'レウスヘルム', '①②③', 100, 10, 5, -10, 5, 15),
+  (NOW(), NOW(), NULL, '2', 'レウスメイル', '①①②', 120, 15, 0, -5, 0, 20),
+  (NOW(), NOW(), NULL, '3', 'レウスアーム', '①②', 80, 8, 3, -8, 3, 12);
+
+-- 防具スキルテーブルのシードデータ
+INSERT INTO `armor_skill` (`created_at`, `updated_at`, `deleted_at`, `armor_id`, `skill_id`, `skill_name`) VALUES
+  (NOW(), NOW(), NULL, '1', '1', '攻撃LV1'),
+  (NOW(), NOW(), NULL, '1', '2', '火属性攻撃強化LV1'),
+  (NOW(), NOW(), NULL, '2', '1', '攻撃LV2'),
+  (NOW(), NOW(), NULL, '2', '3', '体力増強LV1'),
+  (NOW(), NOW(), NULL, '3', '4', '見切りLV1');
+
+-- 防具必要素材テーブルのシードデータ
+INSERT INTO `armor_required_item` (`created_at`, `updated_at`, `deleted_at`, `armor_id`, `item_id`, `item_name`) VALUES
+  (NOW(), NOW(), NULL, '1', 'ITM0019', 'リオレウスの鱗'),
+  (NOW(), NOW(), NULL, '1', 'ITM0016', 'ドラグライト鉱石'),
+  (NOW(), NOW(), NULL, '2', 'ITM0019', 'リオレウスの鱗'),
+  (NOW(), NOW(), NULL, '2', 'ITM0017', '大地の結晶'),
+  (NOW(), NOW(), NULL, '3', 'ITM0019', 'リオレウスの鱗');

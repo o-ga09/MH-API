@@ -112,7 +112,6 @@ type BgmRanking struct {
 	Ranking  string `gorm:"column:ranking;type:varchar(10)"`
 	VoteYear string `gorm:"column:vote_year;type:varchar(20)"`
 }
-
 type Skill struct {
 	gorm.Model
 	SkillId     string       `gorm:"column:skill_id;primaryKey;type:varchar(10);not null;index"`
@@ -127,4 +126,33 @@ type SkillLevel struct {
 	SkillId      string `gorm:"column:skill_id;type:varchar(10);not null"`
 	Level        int    `gorm:"column:level;type:int;not null"`
 	Description  string `gorm:"column:description;type:varchar(500);not null"`
+}
+
+type Armor struct {
+	gorm.Model
+	ArmorId             string               `gorm:"column:armor_id;type:varchar(255);not null"`
+	Name                string               `gorm:"column:name;type:varchar(255);not null"`
+	Slot                string               `gorm:"column:slot;type:varchar(255)"`
+	Defense             int                  `gorm:"column:defense;type:int"`
+	FireResistance      int                  `gorm:"column:fire_resistance;type:int"`
+	WaterResistance     int                  `gorm:"column:water_resistance;type:int"`
+	LightningResistance int                  `gorm:"column:lightning_resistance;type:int"`
+	IceResistance       int                  `gorm:"column:ice_resistance;type:int"`
+	DragonResistance    int                  `gorm:"column:dragon_resistance;type:int"`
+	Skills              []*ArmorSkill        `gorm:"foreignKey:armor_id;references:armor_id"`
+	RequiredItems       []*ArmorRequiredItem `gorm:"foreignKey:armor_id;references:armor_id"`
+}
+
+type ArmorSkill struct {
+	gorm.Model
+	ArmorId   string `gorm:"column:armor_id;type:varchar(255);not null"`
+	SkillId   string `gorm:"column:skill_id;type:varchar(255);not null"`
+	SkillName string `gorm:"column:skill_name;type:varchar(255);not null"`
+}
+
+type ArmorRequiredItem struct {
+	gorm.Model
+	ArmorId  string `gorm:"column:armor_id;type:varchar(255);not null"`
+	ItemId   string `gorm:"column:item_id;type:varchar(255);not null"`
+	ItemName string `gorm:"column:item_name;type:varchar(255);not null"`
 }
