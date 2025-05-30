@@ -1,0 +1,42 @@
+services:
+  mcp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: deploy-mcp
+    container_name: mh-mcp-server
+    ports:
+      - "8081:8080"
+    environment:
+      - DATABASE_URL=mysql://root:password@db:3306/mh_api
+      - ENV=DEV
+      - LOG_LEVEL=DEBUG
+      - SERVICE_NAME=mh-mcp
+      - PROJECTID=mh-api-local
+    depends_on:
+      - db
+    networks:
+      - mh-api-network
+
+  db:
+    image: mysql:8.0
+    container_name: mh-api-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: mh_api
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./db/mysql/conf.d:/etc/mysql/conf.d
+      - ./db/mysql/sql:/docker-entrypoint-initdb.d
+      - ./db/seed:/seed
+      - mysql_data:/var/lib/mysql
+    networks:
+      - mh-api-network
+
+volumes:
+  mysql_data:
+
+networks:
+  mh-api-network:
+    driver: bridge

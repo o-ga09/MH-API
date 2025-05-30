@@ -1,25 +1,25 @@
-# Cloud Run作成用
-resource "google_cloud_run_service" "stg-mh-api" {
-    name            = local.cloud_run_service_name
-    project         = local.project_id
-    location        = local.region
+# MCP Cloud Run Service
+resource "google_cloud_run_service" "stg-mh-mcp" {
+  name                       = local.cloud_run_mcp_service_name
+  project                    = local.project_id
+  location                   = local.region
   autogenerate_revision_name = true
   template {
     spec {
       container_concurrency = 10
       containers {
-        image = local.container_image
+        image = local.container_mcp_image
         startup_probe {
           initial_delay_seconds = 0
-            timeout_seconds = 240
-            period_seconds = 240
-            failure_threshold = 1
+          timeout_seconds       = 240
+          period_seconds        = 240
+          failure_threshold     = 1
           tcp_socket {
             port = 8080
           }
         }
         env {
-            name  = "DATABASE_URL"
+          name = "DATABASE_URL"
           value_from {
             secret_key_ref {
               name = "DATABASE_URL"
@@ -28,7 +28,7 @@ resource "google_cloud_run_service" "stg-mh-api" {
           }
         }
         env {
-            name  = "SENTRY_DSN"
+          name = "SENTRY_DSN"
           value_from {
             secret_key_ref {
               name = "SENTRY_DSN"
@@ -37,23 +37,23 @@ resource "google_cloud_run_service" "stg-mh-api" {
           }
         }
         env {
-            name = "ENV"
+          name  = "ENV"
           value = "PROD"
         }
         env {
-            name = "LOG_LEVEL"
+          name  = "LOG_LEVEL"
           value = "INFO"
         }
         env {
-            name = "GIN_MODE"
+          name  = "GIN_MODE"
           value = "release"
         }
         env {
-            name = "SERVICE_NAME"
-          value = "mh-api"
+          name  = "SERVICE_NAME"
+          value = "mh-mcp"
         }
         env {
-            name = "PROJECTID"
+          name  = "PROJECTID"
           value = "mh-api"
         }
 
@@ -61,15 +61,13 @@ resource "google_cloud_run_service" "stg-mh-api" {
           container_port = 8080
           name           = "http1"
         }
-
       }
       service_account_name = local.terraform_service_account
     }
     metadata {
       annotations = {
-          "autoscaling.knative.dev/maxScale"      = "1"
+        "autoscaling.knative.dev/maxScale" = "1"
       }
-
     }
   }
   traffic {
@@ -78,20 +76,21 @@ resource "google_cloud_run_service" "stg-mh-api" {
   }
 }
 
-data "google_iam_policy" "auth" {
+# IAM Policy for MCP Service
+data "google_iam_policy" "mcp_auth" {
   binding {
     role = "roles/run.invoker"
     members = [
+      "serviceAccount:${local.terraform_service_account}",
       "allUsers",
     ]
   }
 }
 
-resource "google_cloud_run_service_iam_policy" "auth" {
-  location    = google_cloud_run_service.stg-mh-api.location
-  project     = google_cloud_run_service.stg-mh-api.project
-  service     = google_cloud_run_service.stg-mh-api.name
+resource "google_cloud_run_service_iam_policy" "mcp_auth" {
+  location    = google_cloud_run_service.stg-mh-mcp.location
+  project     = google_cloud_run_service.stg-mh-mcp.project
+  service     = google_cloud_run_service.stg-mh-mcp.name
 
-  policy_data = data.google_iam_policy.auth.policy_data
+  policy_data = data.google_iam_policy.mcp_auth.policy_data
 }
-

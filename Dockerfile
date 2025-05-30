@@ -20,6 +20,17 @@ COPY . .
 
 RUN go build -trimpath -ldflags "-w -s" -o main ./cmd/batch/main.go
 
+#MCP用コンテナに含めるバイナリを作成するコンテナ
+FROM golang:1.24-bullseye as deploy-mcp-builder
+
+WORKDIR /app
+
+COPY go.mod go.sum ./
+RUN go mod download
+COPY . .
+
+RUN go build -trimpath -ldflags "-w -s" -o main ./cmd/mcp/main.go
+
 #-----------------------------------------------
 #API デプロイ用コンアテナ
 FROM ubuntu:22.04 as deploy-api
@@ -43,6 +54,19 @@ RUN apt-get install -y ca-certificates openssl
 EXPOSE "8080"
 
 COPY --from=deploy-batch-builder /app/main .
+
+CMD ["./main"]
+
+#-----------------------------------------------
+#MCP デプロイ用コンテナ
+FROM ubuntu:22.04 as deploy-mcp
+
+RUN apt update
+RUN apt-get install -y ca-certificates openssl
+
+EXPOSE "8080"
+
+COPY --from=deploy-mcp-builder /app/main .
 
 CMD ["./main"]
 
