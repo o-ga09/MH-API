@@ -17,13 +17,6 @@ terraform {
   }
 }
 
-# Cloud Resource Manager APIを最初に有効化
-resource "google_project_service" "cloudresourcemanager" {
-  project            = local.project_id
-  service            = "cloudresourcemanager.googleapis.com"
-  disable_on_destroy = true
-}
-
 ## その他のAPI の有効化
 resource "google_project_service" "enable_api" {
   for_each                   = local.services
@@ -31,7 +24,6 @@ resource "google_project_service" "enable_api" {
   service                    = each.value
   disable_dependent_services = true
   disable_on_destroy         = true
-  depends_on                 = [google_project_service.cloudresourcemanager]
 }
 
 # Workload Identity Pool 設定
