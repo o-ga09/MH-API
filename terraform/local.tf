@@ -16,8 +16,9 @@ locals {
   cloud_run_mcp_service_name = "stg-mh-mcp"
   
   # コンテナイメージ
-  container_image     = "gcr.io/mh-api/mh-api:latest"
-  container_mcp_image = "gcr.io/mh-api/mh-mcp:latest"
+  container_image     = "asia-northeast1-docker.pkg.dev/${local.project_id}/${local.project_id}/${var.service_name}:${var.image_tag}"
+  container_mcp_image = "asia-northeast1-docker.pkg.dev/${local.project_id}/${local.project_id}/mh-mcp:${var.image_tag}"
+
   
   # 有効化するサービスAPI
   services = toset([
