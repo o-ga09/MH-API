@@ -1,12 +1,8 @@
 # provider 設定
 terraform {
   required_providers {
-    google = {
+        google  = {
       source  = "hashicorp/google"
-      version = ">= 4.0.0"
-    }
-    google-beta = {
-      source  = "hashicorp/google-beta"
       version = ">= 4.0.0"
     }
   }
@@ -17,13 +13,12 @@ terraform {
   }
 }
 
-## その他のAPI の有効化
+## API の有効化(Workload Identity 用)
 resource "google_project_service" "enable_api" {
   for_each                   = local.services
   project                    = local.project_id
   service                    = each.value
   disable_dependent_services = true
-  disable_on_destroy         = true
 }
 
 # Workload Identity Pool 設定
@@ -67,26 +62,20 @@ resource "google_service_account_iam_member" "terraform_sa" {
 }
 
 # Cloud Run サービスアカウントに必要な権限を付与
-resource "google_project_iam_binding" "cloud_run_invoker" {
-  project = local.project_id
-  role    = "roles/run.invoker"
-  members = [
-    "serviceAccount:${local.cloud_run_invoke_service_account}",
-  ]
-}
-
-resource "google_project_iam_binding" "service_account_user" {
+resource "google_project_iam_member" "service_account_user" {
   project = local.project_id
   role    = "roles/iam.serviceAccountUser"
-  members = [
-    "serviceAccount:${local.terraform_service_account}",
-  ]
+  member  = "serviceAccount:${local.terraform_service_account}"
 }
 
-resource "google_project_iam_binding" "cloudtrace_agent" {
+resource "google_project_iam_member" "cloud_run_trace_agent" {
   project = local.project_id
   role    = "roles/cloudtrace.agent"
-  members = [
-    "serviceAccount:${local.cloud_run_invoke_service_account}",
-  ]
+  member  = "serviceAccount:${local.terraform_service_account}"
+}
+
+resource "google_project_iam_member" "logging_writer" {
+  project = local.project_id
+  role    = "roles/logging.logWriter"
+  member  = "serviceAccount:${local.terraform_service_account}"
 }

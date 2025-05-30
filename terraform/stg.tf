@@ -1,8 +1,8 @@
 # Cloud Run作成用
 resource "google_cloud_run_service" "stg-mh-api" {
-  name                       = local.cloud_run_service_name
-  project                    = local.project_id
-  location                   = local.region
+    name            = local.cloud_run_service_name
+    project         = local.project_id
+    location        = local.region
   autogenerate_revision_name = true
   template {
     spec {
@@ -11,15 +11,15 @@ resource "google_cloud_run_service" "stg-mh-api" {
         image = local.container_image
         startup_probe {
           initial_delay_seconds = 0
-          timeout_seconds       = 240
-          period_seconds        = 240
-          failure_threshold     = 1
+            timeout_seconds = 240
+            period_seconds = 240
+            failure_threshold = 1
           tcp_socket {
             port = 8080
           }
         }
         env {
-          name = "DATABASE_URL"
+            name  = "DATABASE_URL"
           value_from {
             secret_key_ref {
               name = "DATABASE_URL"
@@ -28,7 +28,7 @@ resource "google_cloud_run_service" "stg-mh-api" {
           }
         }
         env {
-          name = "SENTRY_DSN"
+            name  = "SENTRY_DSN"
           value_from {
             secret_key_ref {
               name = "SENTRY_DSN"
@@ -37,23 +37,23 @@ resource "google_cloud_run_service" "stg-mh-api" {
           }
         }
         env {
-          name  = "ENV"
+            name = "ENV"
           value = "PROD"
         }
         env {
-          name  = "LOG_LEVEL"
+            name = "LOG_LEVEL"
           value = "INFO"
         }
         env {
-          name  = "GIN_MODE"
+            name = "GIN_MODE"
           value = "release"
         }
         env {
-          name  = "SERVICE_NAME"
+            name = "SERVICE_NAME"
           value = "mh-api"
         }
         env {
-          name  = "PROJECTID"
+            name = "PROJECTID"
           value = "mh-api"
         }
 
@@ -61,13 +61,15 @@ resource "google_cloud_run_service" "stg-mh-api" {
           container_port = 8080
           name           = "http1"
         }
+
       }
       service_account_name = local.cloud_run_invoke_service_account
     }
     metadata {
       annotations = {
-        "autoscaling.knative.dev/maxScale" = "1"
+          "autoscaling.knative.dev/maxScale"      = "1"
       }
+
     }
   }
   traffic {
@@ -80,7 +82,6 @@ data "google_iam_policy" "auth" {
   binding {
     role = "roles/run.invoker"
     members = [
-      "serviceAccount:${local.cloud_run_invoke_service_account}",
       "allUsers",
     ]
   }

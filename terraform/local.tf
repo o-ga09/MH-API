@@ -11,10 +11,13 @@ locals {
 
   # 有効化するAPIサービス
   services = toset([
+    "cloudresourcemanager.googleapis.com",
     "run.googleapis.com",
+    "iam.googleapis.com",
     "artifactregistry.googleapis.com",
     "iamcredentials.googleapis.com",
-    "serviceusage.googleapis.com"
+    "serviceusage.googleapis.com",
+    "logging.googleapis.com",
   ])
 
   # Cloud Run設定
