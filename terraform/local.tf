@@ -13,6 +13,7 @@ locals {
     "cloudresourcemanager.googleapis.com",
     "run.googleapis.com",
     "iam.googleapis.com",
+    "secretmanager.googleapis.com",
     "artifactregistry.googleapis.com",
     "iamcredentials.googleapis.com",
     "serviceusage.googleapis.com",
