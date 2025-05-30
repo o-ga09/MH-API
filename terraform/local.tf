@@ -11,8 +11,7 @@ locals {
 
   # 有効化するAPIサービス
   services = toset([
-    "cloudrun.googleapis.com",
-    "iam.googleapis.com",
+    "run.googleapis.com",
     "artifactregistry.googleapis.com",
     "iamcredentials.googleapis.com",
     "serviceusage.googleapis.com"
