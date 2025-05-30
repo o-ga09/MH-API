@@ -66,10 +66,20 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: terraform local varianle
+      - name: terraform local variable
         run: |
-          echo "${{ secrets.TERRAFORM_LOCAL_VARIABLE }}" | sed 's/X/"/g' > local.txt
-          sed 's/latest/${{ github.sha }}/g' local.txt > local.tf
+          # 既存のlocal.tfの内容を保存し、latestをGitHub SHAに置換
+          cp terraform/local.tf local.original.tf
+          sed -i 's/latest/${{ github.sha }}/g' local.original.tf
+          
+          # secretsの内容を一時ファイルに保存し、ダブルクォートを修正
+          echo "${{ secrets.TERRAFORM_LOCAL_VARIABLE }}" | sed 's/X/"/g' > local.secrets.tf
+          
+          # secretsのファイルもGitHub SHAで置換
+          sed 's/latest/${{ github.sha }}/g' local.secrets.tf > local.secrets.processed.tf
+          
+          # 両方のファイルを結合
+          cat local.original.tf local.secrets.processed.tf > terraform/local.tf
 
       - id: "auth"
         name: "Authenticate to Google Cloud"
