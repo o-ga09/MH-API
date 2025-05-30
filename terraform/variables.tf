@@ -8,3 +8,8 @@ variable "service_name" {
   type        = string
   default     = "mh-api"
 }
+
+variable "project_id" {
+  description = "The GCP project ID"
+  type        = string
+}
