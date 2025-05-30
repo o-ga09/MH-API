@@ -24,6 +24,6 @@ locals {
   cloud_run_mcp_service_name = "stg-mh-mcp"
 
   # コンテナイメージ
-  container_image     = "asia-northeast1-docker.pkg.dev/${local.project_id}/${local.project_id}/${var.service_name}:${var.image_tag}"
-  container_mcp_image = "asia-northeast1-docker.pkg.dev/${local.project_id}/${local.project_id}/mh-mcp:${var.image_tag}"
+  container_image     = "asia-northeast1-docker.pkg.dev/${local.project_id}/mh-api/${var.service_name}:${var.image_tag}"
+  container_mcp_image = "asia-northeast1-docker.pkg.dev/${local.project_id}/mh-api/mh-mcp:${var.image_tag}"
 }
