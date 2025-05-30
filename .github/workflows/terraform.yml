@@ -12,6 +12,9 @@ env:
   API_IMAGE: asia-northeast1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_REPOSITORY }}/${{ secrets.SERVICE_NAME }}:${{ github.sha }}
   MCP_IMAGE: asia-northeast1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_REPOSITORY }}/mh-mcp:${{ github.sha }}
   TERRAFORM_SERVICE_ACCOUNT: ${{ secrets.TERRAFORM_SERVICE_ACCOUNT }}
+  TF_VAR_service_name: ${{ secrets.SERVICE_NAME }}
+  TF_VAR_image_tag: ${{ github.sha }}
+  TF_VAR_project_id: ${{ secrets.GCP_PROJECT_ID }}
 
 defaults:
   run:
@@ -65,21 +68,6 @@ jobs:
     # Workload Identity 連携
     steps:
       - uses: actions/checkout@v3
-
-      - name: terraform local variable
-        run: |
-          # 既存のlocal.tfの内容を保存し、latestをGitHub SHAに置換
-          cp terraform/local.tf local.original.tf
-          sed -i 's/latest/${{ github.sha }}/g' local.original.tf
-          
-          # secretsの内容を一時ファイルに保存し、ダブルクォートを修正
-          echo "${{ secrets.TERRAFORM_LOCAL_VARIABLE }}" | sed 's/X/"/g' > local.secrets.tf
-          
-          # secretsのファイルもGitHub SHAで置換
-          sed 's/latest/${{ github.sha }}/g' local.secrets.tf > local.secrets.processed.tf
-          
-          # 両方のファイルを結合
-          cat local.original.tf local.secrets.processed.tf > terraform/local.tf
 
       - id: "auth"
         name: "Authenticate to Google Cloud"
