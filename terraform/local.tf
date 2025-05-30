@@ -15,7 +15,6 @@ locals {
     "iam.googleapis.com",
     "artifactregistry.googleapis.com",
     "iamcredentials.googleapis.com",
-    "cloudresourcemanager.googleapis.com",
     "serviceusage.googleapis.com"
   ])
 

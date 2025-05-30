@@ -12,13 +12,20 @@ terraform {
         prefix = "terraform/state"
     }
 }
-  
-## API の有効化(Workload Identity 用)
+
+# Cloud Resource Manager APIを最初に有効化
+resource "google_project_service" "cloudresourcemanager" {
+  project = local.project_id
+  service = "cloudresourcemanager.googleapis.com"
+}
+
+## その他のAPI の有効化
 resource "google_project_service" "enable_api" {
   for_each                   = local.services
   project                    = local.project_id
   service                    = each.value
   disable_dependent_services = true
+  depends_on                 = [google_project_service.cloudresourcemanager]
 }
     
 # Workload Identity Pool 設定
