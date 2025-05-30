@@ -79,3 +79,9 @@ resource "google_project_iam_member" "logging_writer" {
   role    = "roles/logging.logWriter"
   member  = "serviceAccount:${local.terraform_service_account}"
 }
+
+resource "google_project_iam_member" "secret_manager_secret_accessor" {
+  project = local.project_id
+  role    = "roles/secretmanager.secretAccessor"
+  member  = "serviceAccount:${local.terraform_service_account}"
+}
