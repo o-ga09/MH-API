@@ -60,3 +60,28 @@ resource "google_service_account_iam_member" "terraform_sa" {
     role               = "roles/iam.workloadIdentityUser"
     member             = "principalSet://iam.googleapis.com/${google_iam_workload_identity_pool.terraform-pool.name}/attribute.repository/${local.github_repository}"
 }
+
+# Cloud Run サービスアカウントに必要な権限を付与
+resource "google_project_iam_binding" "cloud_run_invoker" {
+  project = local.project_id
+  role    = "roles/run.invoker"
+  members = [
+    "serviceAccount:${local.cloud_run_invoke_service_account}",
+  ]
+}
+
+resource "google_project_iam_binding" "service_account_user" {
+  project = local.project_id
+  role    = "roles/iam.serviceAccountUser"
+  members = [
+    "serviceAccount:${local.terraform_service_account}",
+  ]
+}
+
+resource "google_project_iam_binding" "cloudtrace_agent" {
+  project = local.project_id
+  role    = "roles/cloudtrace.agent"
+  members = [
+    "serviceAccount:${local.terraform_service_account}",
+  ]
+}

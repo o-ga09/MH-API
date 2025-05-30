@@ -14,7 +14,9 @@ locals {
     "cloudrun.googleapis.com",
     "iam.googleapis.com",
     "artifactregistry.googleapis.com",
-    "iamcredentials.googleapis.com"
+    "iamcredentials.googleapis.com",
+    "cloudresourcemanager.googleapis.com",
+    "serviceusage.googleapis.com"
   ])
 
   # Cloud Run設定
