@@ -63,7 +63,7 @@ resource "google_cloud_run_service" "stg-mh-api" {
         }
 
       }
-      service_account_name = local.cloud_run_invoke_service_account
+      service_account_name = local.terraform_service_account
     }
     metadata {
       annotations = {

@@ -62,7 +62,7 @@ resource "google_cloud_run_service" "stg-mh-mcp" {
           name           = "http1"
         }
       }
-      service_account_name = local.cloud_run_invoke_service_account
+      service_account_name = local.terraform_service_account
     }
     metadata {
       annotations = {
@@ -81,7 +81,7 @@ data "google_iam_policy" "mcp_auth" {
   binding {
     role = "roles/run.invoker"
     members = [
-      "serviceAccount:${local.cloud_run_invoke_service_account}",
+      "serviceAccount:${local.terraform_service_account}",
       "allUsers",
     ]
   }

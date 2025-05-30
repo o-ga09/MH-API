@@ -3,7 +3,6 @@ locals {
   # プロジェクト設定
   project_id = var.project_id
   terraform_service_account = "terraform@${local.project_id}.iam.gserviceaccount.com"
-  cloud_run_invoke_service_account = "${local.project_id}@appspot.gserviceaccount.com"
   github_repository = "o-ga09/MH-API"  # プロジェクトのカスタムインストラクションから取得
 
   # リージョン設定
