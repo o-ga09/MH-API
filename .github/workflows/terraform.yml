@@ -9,7 +9,8 @@ on:
 env:
   GCP_PROJECT_NUMBER: ${{ secrets.GCP_PROJECT_NUMBER }}
   TERRAFORM_LOCAL_VARIABLE: ${{ secrets.TERRAFORM_LOCAL_VARIABLE }}
-  IMAGE: asia-northeast1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_REPOSITORY }}/${{ secrets.SERVICE_NAME }}:${{ github.sha }}
+  API_IMAGE: asia-northeast1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_REPOSITORY }}/${{ secrets.SERVICE_NAME }}:${{ github.sha }}
+  MCP_IMAGE: asia-northeast1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_REPOSITORY }}/mh-mcp:${{ github.sha }}
   TERRAFORM_SERVICE_ACCOUNT: ${{ secrets.TERRAFORM_SERVICE_ACCOUNT }}
 
 defaults:
@@ -17,7 +18,7 @@ defaults:
     working-directory: ./terraform
 
 jobs:
-  build-containe-image:
+  build-container-image:
     runs-on: ubuntu-latest
     permissions:
       id-token: write
@@ -39,16 +40,22 @@ jobs:
         run: |
           gcloud auth configure-docker asia-northeast1-docker.pkg.dev
 
-      - name: Build a docker image
+      - name: Build API docker image
         working-directory: ./
-        run: docker build --platform linux/amd64 -t ${{ env.IMAGE }} -f Dockerfile --target deploy-api .
+        run: docker build --platform linux/amd64 -t ${{ env.API_IMAGE }} -f Dockerfile --target deploy-api .
 
-      - name: Push the docker image
-        run: docker push ${{ env.IMAGE }}
+      - name: Build MCP docker image
+        working-directory: ./
+        run: docker build --platform linux/amd64 -t ${{ env.MCP_IMAGE }} -f Dockerfile --target deploy-mcp .
+
+      - name: Push docker images
+        run: |
+          docker push ${{ env.API_IMAGE }}
+          docker push ${{ env.MCP_IMAGE }}
 
   terraform-workflow:
-    needs: build-containe-image
-    if: ${{ needs.build-containe-image.result == 'success' }}
+    needs: build-container-image
+    if: ${{ needs.build-container-image.result == 'success' }}
     runs-on: ubuntu-latest
     permissions:
       id-token: write
