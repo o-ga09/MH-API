@@ -266,7 +266,7 @@ func (m *MCPServer) getMonsters(ctx context.Context, args mcp.CallToolRequest) (
 		return mcp.NewToolResultText("No monsters found"), nil
 	}
 
-	return mcp.NewToolResultText(fmt.Sprintf("Found %d monsters", content)), nil
+	return mcp.NewToolResultText(string(content)), nil
 }
 
 func (m *MCPServer) getMonsterByID(ctx context.Context, args mcp.CallToolRequest) (*mcp.CallToolResult, error) {
