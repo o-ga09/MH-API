@@ -54,7 +54,5 @@ services:
       - SENTRY_DSN=sentry
     volumes:
       - ./:/app
-    depends_on:
-      - db
 volumes:
   mh-api-dbsrv01-data:
