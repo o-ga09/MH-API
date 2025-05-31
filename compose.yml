@@ -37,5 +37,22 @@ services:
       - ./:/app
     ports:
       - "8080:8080"
+  mcp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: dev-mcp
+    container_name: mh-mcp-server
+    ports:
+      - "8081:8080"
+    environment:
+      - DATABASE_URL=mh-api:P@ssw0rd@tcp(mh-api-dbsrv01)/mh-api?charset=utf8&parseTime=True&loc=Local
+      - ENV=DEV
+      - LOG_LEVEL=INFO
+      - SERVICE_NAME=mh-mcp
+      - PROJECTID=mh-api-local
+      - SENTRY_DSN=sentry
+    volumes:
+      - ./:/app
 volumes:
   mh-api-dbsrv01-data:

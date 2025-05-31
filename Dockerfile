@@ -78,4 +78,14 @@ WORKDIR /app
 
 COPY go.mod go.sum ./
 RUN go install github.com/air-verse/air@latest
-CMD ["air"]
+CMD ["air","-c", ".air.toml"]
+
+#-----------------------------------------------
+#ローカル開発環境で利用するホットリロード環境
+FROM golang:1.24 as dev-mcp
+
+WORKDIR /app
+
+COPY go.mod go.sum ./
+RUN go install github.com/air-verse/air@latest
+CMD ["air","-c", ".air.mcp.toml"]

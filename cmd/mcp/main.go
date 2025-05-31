@@ -18,10 +18,6 @@ import (
 	"mh-api/internal/service/weapons"
 )
 
-type contextKey string
-
-const paramKey contextKey = "param"
-
 type MCPServer struct {
 	monsterService monsters.IMonsterService
 	weaponService  *weapons.WeaponService
@@ -55,6 +51,19 @@ func main() {
 		"1.0.0",
 		server.WithToolCapabilities(false),
 		server.WithRecovery(),
+		server.WithToolHandlerMiddleware(func(thf server.ToolHandlerFunc) server.ToolHandlerFunc {
+			return func(ctx context.Context, args mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+				log.Printf("Received tool call: %s with args: %v", args.Method, args.Params)
+				ctx = mysql.New(ctx)
+				result, err := thf(ctx, args)
+				if err != nil {
+					log.Printf("Error in tool call %s: %v", args.Method, err)
+					return nil, err
+				}
+				log.Printf("Tool call %s completed successfully", args.Method)
+				return result, nil
+			}
+		}),
 	)
 
 	tools := mcpServer.AddTools()
@@ -252,7 +261,7 @@ func (m *MCPServer) getMonsters(ctx context.Context, args mcp.CallToolRequest) (
 		Limit:       limit,
 		Offset:      (offset - 1) * limit,
 	}
-	ctx = context.WithValue(ctx, paramKey, param)
+	ctx = context.WithValue(ctx, "param", param)
 
 	monsters, err := m.monsterService.FetchMonsterDetail(ctx, "")
 	if err != nil {
