@@ -24,7 +24,9 @@ INSERT INTO tribe (tribe_id, name_ja, name_en, monster_id, created_at, updated_a
  (7, "飛竜種", "Flying Wyvern", 7, now(), now()),
  (8, "飛竜種", "Flying Wyvern", 8, now(), now()),
  (9, "飛竜種", "Flying Wyvern", 9, now(), now()),
- (10, "飛竜種", "Flying Wyvern", 10, now(), now());
+ (10, "飛竜種", "Flying Wyvern", 10, now(), now()),
+ (11, "海竜種", "Sea Wyvern", 11, now(), now()),
+ (12, "牙竜種", "Fanged Wyvern", 12, now(), now());
  -- 作品
  INSERT INTO product (product_id, name, monster_id, created_at, updated_at) VALUES 
  (1, "MH", 1, now(), now()),
@@ -126,7 +128,9 @@ INSERT INTO ranking (ranking, vote_year, monster_id, created_at, updated_at) VAL
  (112, "2024", 7, now(), now()),
  (74, "2024", 8, now(), now()),
  (66, "2024", 9, now(), now()),
- (149, "2024", 10, now(), now());
+ (149, "2024", 10, now(), now()),
+ (3, "2024", 11, now(), now()),
+ (1, "2024", 12, now(), now());
 -- BGM
  INSERT INTO music (monster_id, music_id, name, url, created_at, updated_at) VALUES 
  (1,1, "太古の律動/リオレイア", "jLgjOfT_elA", now(), now()),
