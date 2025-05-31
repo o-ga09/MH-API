@@ -10,12 +10,17 @@ import (
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/mark3labs/mcp-go/server"
 
+	request "mh-api/internal/controller/monster"
 	"mh-api/internal/database/mysql"
 	"mh-api/internal/service/items"
 	"mh-api/internal/service/monsters"
 	"mh-api/internal/service/skills"
 	"mh-api/internal/service/weapons"
 )
+
+type contextKey string
+
+const paramKey contextKey = "param"
 
 type MCPServer struct {
 	monsterService monsters.IMonsterService
@@ -71,10 +76,23 @@ func (m *MCPServer) AddTools() []server.ServerTool {
 				InputSchema: mcp.ToolInputSchema{
 					Type: "object",
 					Properties: map[string]interface{}{
-						"page": map[string]interface{}{
+						"monster_ids": map[string]interface{}{
+							"type":        "string",
+							"description": "Filter by monster ID (optional, can be a comma-separated list of IDs)",
+						},
+						"name": map[string]interface{}{
+							"type":        "string",
+							"description": "Filter by monster name (optional, supports partial matches)",
+						},
+						"sort": map[string]interface{}{
+							"type":        "string",
+							"description": "Sort order for the results (optional, 'asc' for ascending, 'desc' for descending, default is 'asc')",
+							"enum":        []string{"asc", "desc"},
+						},
+						"offset": map[string]interface{}{
 							"type":        "integer",
-							"description": "Page number (optional, default: 1)",
-							"minimum":     1,
+							"description": "Offset for pagination (optional, default: 0)",
+							"minimum":     0,
 						},
 						"limit": map[string]interface{}{
 							"type":        "integer",
@@ -215,9 +233,40 @@ func (m *MCPServer) AddTools() []server.ServerTool {
 }
 
 func (m *MCPServer) getMonsters(ctx context.Context, args mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-	// Note: Current monster service only supports fetching by ID
-	// For listing all monsters, we'll return an informative message
-	return mcp.NewToolResultText("Monster service currently supports fetching specific monsters by ID only. Use get_monster_by_id tool with a specific monster ID."), nil
+	offset := args.GetInt("offset", 0)
+	limit := args.GetInt("limit", 50)
+	if offset < 0 {
+		return mcp.NewToolResultText("Error: offset must be greater than or equal to 0"), nil
+	}
+	if limit < 1 || limit > 100 {
+		return mcp.NewToolResultText("Error: limit must be between 1 and 100"), nil
+	}
+	monsterIDs := args.GetString("monster_ids", "")
+	name := args.GetString("name", "")
+	sort := args.GetString("sort", "asc")
+
+	param := request.RequestParam{
+		MonsterIds:  monsterIDs,
+		MonsterName: name,
+		Sort:        sort,
+		Limit:       limit,
+		Offset:      (offset - 1) * limit,
+	}
+	ctx = context.WithValue(ctx, paramKey, param)
+
+	monsters, err := m.monsterService.FetchMonsterDetail(ctx, "")
+	if err != nil {
+		return mcp.NewToolResultText(fmt.Sprintf("Error retrieving monsters: %v", err)), nil
+	}
+	content, err := json.MarshalIndent(monsters, "", "  ")
+	if err != nil {
+		return mcp.NewToolResultText(fmt.Sprintf("Error formatting monster data: %v", err)), nil
+	}
+	if len(monsters) == 0 {
+		return mcp.NewToolResultText("No monsters found"), nil
+	}
+
+	return mcp.NewToolResultText(string(content)), nil
 }
 
 func (m *MCPServer) getMonsterByID(ctx context.Context, args mcp.CallToolRequest) (*mcp.CallToolResult, error) {
