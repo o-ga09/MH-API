@@ -233,10 +233,10 @@ func (m *MCPServer) AddTools() []server.ServerTool {
 }
 
 func (m *MCPServer) getMonsters(ctx context.Context, args mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-	page := args.GetInt("page", 1)
+	offset := args.GetInt("offset", 0)
 	limit := args.GetInt("limit", 50)
-	if page < 1 {
-		return mcp.NewToolResultText("Error: page must be greater than or equal to 1"), nil
+	if offset < 0 {
+		return mcp.NewToolResultText("Error: offset must be greater than or equal to 0"), nil
 	}
 	if limit < 1 || limit > 100 {
 		return mcp.NewToolResultText("Error: limit must be between 1 and 100"), nil
@@ -250,7 +250,7 @@ func (m *MCPServer) getMonsters(ctx context.Context, args mcp.CallToolRequest) (
 		MonsterName: name,
 		Sort:        sort,
 		Limit:       limit,
-		Offset:      (page - 1) * limit,
+		Offset:      (offset - 1) * limit,
 	}
 	ctx = context.WithValue(ctx, paramKey, param)
 
