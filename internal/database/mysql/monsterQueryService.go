@@ -124,6 +124,33 @@ func (s *monsterQueryService) FetchList(ctx context.Context, id string) ([]*mons
 		where_clade += " name LIKE '%" + p.MonsterName + "%' "
 	}
 
+	// Add usage element search
+	if p.UsageElement != "" {
+		if where_clade != "" {
+			where_clade += " and element = '" + p.UsageElement + "' "
+		} else {
+			where_clade += " element = '" + p.UsageElement + "' "
+		}
+	}
+
+	// Add weakness element search - need to join with Weakness table
+	if p.WeaknessElement != "" {
+		weaknessJoin := " EXISTS (SELECT 1 FROM weakness w WHERE w.monster_id = monster.monster_id AND " +
+			"(w.first_weak_element = '" + p.WeaknessElement + "' OR " +
+			"w.second_weak_element = '" + p.WeaknessElement + "' OR " +
+			"w.fire = '" + p.WeaknessElement + "' OR " +
+			"w.water = '" + p.WeaknessElement + "' OR " +
+			"w.lightning = '" + p.WeaknessElement + "' OR " +
+			"w.ice = '" + p.WeaknessElement + "' OR " +
+			"w.dragon = '" + p.WeaknessElement + "'))"
+		
+		if where_clade != "" {
+			where_clade += " and " + weaknessJoin
+		} else {
+			where_clade += weaknessJoin
+		}
+	}
+
 	if p.Sort == "1" {
 		sort = "CAST(monster_id AS UNSIGNED) DESC"
 	} else {

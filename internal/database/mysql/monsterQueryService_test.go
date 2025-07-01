@@ -44,9 +44,12 @@ func Test_monsterQueryService_FetchList(t *testing.T) {
 	bgm3 := music.NewMusic("0000000003", "0000000003", "ティガレックスのテーマ", "https://www.youtube.com/watch?v=3")
 
 	// ID順に並んでいるデータを適応
-	monster1 := &monsters.FetchMonsterListDto{Id: "0000000001", Name: "リオレウス", Description: "空の王者。", Location: []string{"古代樹の森"}, Category: "飛竜種", Title: []string{"MH"}, FirstWeak_Attack: "頭部", SecondWeak_Attack: "翼", FirstWeak_Element: "龍", SecondWeak_Element: "雷", Weakness_attack: weak_A, Weakness_element: weak_E, Ranking: ranking1, BGM: []music.Music{*bgm1}}
-	monster2 := &monsters.FetchMonsterListDto{Id: "0000000002", Name: "リオレイア", Description: "陸の女王", Location: []string{"古代樹の森"}, Category: "飛竜種", Title: []string{"MH"}, FirstWeak_Attack: "頭部", SecondWeak_Attack: "翼", FirstWeak_Element: "龍", SecondWeak_Element: "雷", Weakness_attack: weak_A, Weakness_element: weak_E, Ranking: ranking2, BGM: []music.Music{*bgm2}}
-	monster3 := &monsters.FetchMonsterListDto{Id: "0000000003", Name: "ティガレックス", Description: "絶対強者", Location: []string{"古代樹の森"}, Category: "飛竜種", Title: []string{"MH"}, FirstWeak_Attack: "頭部", SecondWeak_Attack: "翼", FirstWeak_Element: "雷", SecondWeak_Element: "水", Weakness_attack: weak_A, Weakness_element: weak_E, Ranking: ranking3, BGM: []music.Music{*bgm3}}
+	fireElement := "Fire"
+	waterElement := "Water"
+	dragonElement := "Dragon"
+	monster1 := &monsters.FetchMonsterListDto{Id: "0000000001", Name: "リオレウス", Description: "空の王者。", Element: &fireElement, Location: []string{"古代樹の森"}, Category: "飛竜種", Title: []string{"MH"}, FirstWeak_Attack: "頭部", SecondWeak_Attack: "翼", FirstWeak_Element: "龍", SecondWeak_Element: "雷", Weakness_attack: weak_A, Weakness_element: weak_E, Ranking: ranking1, BGM: []music.Music{*bgm1}}
+	monster2 := &monsters.FetchMonsterListDto{Id: "0000000002", Name: "リオレイア", Description: "陸の女王", Element: &waterElement, Location: []string{"古代樹の森"}, Category: "飛竜種", Title: []string{"MH"}, FirstWeak_Attack: "頭部", SecondWeak_Attack: "翼", FirstWeak_Element: "龍", SecondWeak_Element: "雷", Weakness_attack: weak_A, Weakness_element: weak_E, Ranking: ranking2, BGM: []music.Music{*bgm2}}
+	monster3 := &monsters.FetchMonsterListDto{Id: "0000000003", Name: "ティガレックス", Description: "絶対強者", Element: &dragonElement, Location: []string{"古代樹の森"}, Category: "飛竜種", Title: []string{"MH"}, FirstWeak_Attack: "頭部", SecondWeak_Attack: "翼", FirstWeak_Element: "雷", SecondWeak_Element: "水", Weakness_attack: weak_A, Weakness_element: weak_E, Ranking: ranking3, BGM: []music.Music{*bgm3}}
 
 	param1 := param.RequestParam{MonsterIds: "", MonsterName: "", Limit: 100, Offset: 0, Sort: "1"}
 	param2 := param.RequestParam{MonsterIds: "0000000001,0000000002", MonsterName: "", Limit: 100, Offset: 0, Sort: "1"}
@@ -54,6 +57,10 @@ func Test_monsterQueryService_FetchList(t *testing.T) {
 	param4 := param.RequestParam{MonsterIds: "", MonsterName: "", Limit: 100, Offset: 0, Sort: "1"}
 	param5 := param.RequestParam{MonsterIds: "", MonsterName: "", Limit: 100, Offset: 0, Sort: "2"}
 	param6 := param.RequestParam{MonsterIds: "0000000001", MonsterName: "リオレウス", Limit: 100, Offset: 0, Sort: "1"}
+	param7 := param.RequestParam{MonsterIds: "", MonsterName: "", UsageElement: "Fire", Limit: 100, Offset: 0, Sort: "1"}
+	param8 := param.RequestParam{MonsterIds: "", MonsterName: "", WeaknessElement: "龍", Limit: 100, Offset: 0, Sort: "1"}
+	param9 := param.RequestParam{MonsterIds: "", MonsterName: "", WeaknessElement: "雷", Limit: 100, Offset: 0, Sort: "1"}
+	param10 := param.RequestParam{MonsterIds: "", MonsterName: "", UsageElement: "Water", WeaknessElement: "龍", Limit: 100, Offset: 0, Sort: "1"}
 
 	type args struct {
 		id    string
@@ -112,6 +119,30 @@ func Test_monsterQueryService_FetchList(t *testing.T) {
 			want:    []*monsters.FetchMonsterListDto{monster1},
 			wantErr: false,
 		},
+		{
+			name:    "DBからモンスターデータを使用属性（Fire）で検索して取得できる",
+			args:    args{id: "", param: param7},
+			want:    []*monsters.FetchMonsterListDto{monster1},
+			wantErr: false,
+		},
+		{
+			name:    "DBからモンスターデータを弱点属性（龍）で検索して取得できる",
+			args:    args{id: "", param: param8},
+			want:    []*monsters.FetchMonsterListDto{monster2, monster1},
+			wantErr: false,
+		},
+		{
+			name:    "DBからモンスターデータを弱点属性（雷）で検索して取得できる",
+			args:    args{id: "", param: param9},
+			want:    []*monsters.FetchMonsterListDto{monster3, monster2, monster1},
+			wantErr: false,
+		},
+		{
+			name:    "DBからモンスターデータを使用属性（Water）と弱点属性（龍）の組み合わせで検索して取得できる",
+			args:    args{id: "", param: param10},
+			want:    []*monsters.FetchMonsterListDto{monster2},
+			wantErr: false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -139,10 +170,14 @@ func createMonsterData(t *testing.T, ctx context.Context) []*monsters.FetchMonst
 	weak3 := []*Weakness{
 		{MonsterId: "0000000003", PartId: "0001", Fire: "45", Water: "45", Lightning: "45", Ice: "45", Dragon: "45", Slashing: "45", Blow: "45", Bullet: "45", FirstWeakAttack: "頭部", SecondWeakAttack: "翼", FirstWeakElement: "雷", SecondWeakElement: "水"},
 	}
+	fireElement := "Fire"
+	waterElement := "Water"
+	dragonElement := "Dragon"
+	
 	monster := []Monster{
-		{MonsterId: "0000000001", Name: "リオレウス", Description: "空の王者。", Field: []*Field{{FieldId: "0001", MonsterId: "0000000001", Name: "古代樹の森", ImageUrl: "images/kodaizyu.png"}}, Tribe: &Tribe{TribeId: "0001", MonsterId: "0000000001", Name_ja: "飛竜種", Name_en: "wibarn", Description: "飛竜種"}, Product: []*Product{{ProductId: "0001", MonsterId: "0000000001", Name: "MH", PublishYear: "2004", TotalSales: "200万本"}}, Weakness: weak1, Ranking: []*Ranking{{MonsterId: "0000000001", Ranking: "1", VoteYear: "2024/3/12"}}},
-		{MonsterId: "0000000002", Name: "リオレイア", Description: "陸の女王", Field: []*Field{{FieldId: "0001", MonsterId: "0000000002", Name: "古代樹の森", ImageUrl: "images/kodaizyu.png"}}, Tribe: &Tribe{TribeId: "0001", MonsterId: "0000000002", Name_ja: "飛竜種", Name_en: "wibarn", Description: "飛竜種"}, Product: []*Product{{ProductId: "0001", MonsterId: "0000000002", Name: "MH", PublishYear: "2004", TotalSales: "200万本"}}, Weakness: weak2, Ranking: []*Ranking{{MonsterId: "0000000002", Ranking: "2", VoteYear: "2024/3/12"}}},
-		{MonsterId: "0000000003", Name: "ティガレックス", Description: "絶対強者", Field: []*Field{{FieldId: "0001", MonsterId: "0000000003", Name: "古代樹の森", ImageUrl: "images/kodaizyu.png"}}, Tribe: &Tribe{TribeId: "0001", MonsterId: "0000000003", Name_ja: "飛竜種", Name_en: "wibarn", Description: "飛竜種"}, Product: []*Product{{ProductId: "0001", MonsterId: "0000000003", Name: "MH", PublishYear: "2004", TotalSales: "200万本"}}, Weakness: weak3, Ranking: []*Ranking{{MonsterId: "0000000003", Ranking: "3", VoteYear: "2024/3/12"}}},
+		{MonsterId: "0000000001", Name: "リオレウス", Description: "空の王者。", Element: &fireElement, Field: []*Field{{FieldId: "0001", MonsterId: "0000000001", Name: "古代樹の森", ImageUrl: "images/kodaizyu.png"}}, Tribe: &Tribe{TribeId: "0001", MonsterId: "0000000001", Name_ja: "飛竜種", Name_en: "wibarn", Description: "飛竜種"}, Product: []*Product{{ProductId: "0001", MonsterId: "0000000001", Name: "MH", PublishYear: "2004", TotalSales: "200万本"}}, Weakness: weak1, Ranking: []*Ranking{{MonsterId: "0000000001", Ranking: "1", VoteYear: "2024/3/12"}}},
+		{MonsterId: "0000000002", Name: "リオレイア", Description: "陸の女王", Element: &waterElement, Field: []*Field{{FieldId: "0001", MonsterId: "0000000002", Name: "古代樹の森", ImageUrl: "images/kodaizyu.png"}}, Tribe: &Tribe{TribeId: "0001", MonsterId: "0000000002", Name_ja: "飛竜種", Name_en: "wibarn", Description: "飛竜種"}, Product: []*Product{{ProductId: "0001", MonsterId: "0000000002", Name: "MH", PublishYear: "2004", TotalSales: "200万本"}}, Weakness: weak2, Ranking: []*Ranking{{MonsterId: "0000000002", Ranking: "2", VoteYear: "2024/3/12"}}},
+		{MonsterId: "0000000003", Name: "ティガレックス", Description: "絶対強者", Element: &dragonElement, Field: []*Field{{FieldId: "0001", MonsterId: "0000000003", Name: "古代樹の森", ImageUrl: "images/kodaizyu.png"}}, Tribe: &Tribe{TribeId: "0001", MonsterId: "0000000003", Name_ja: "飛竜種", Name_en: "wibarn", Description: "飛竜種"}, Product: []*Product{{ProductId: "0001", MonsterId: "0000000003", Name: "MH", PublishYear: "2004", TotalSales: "200万本"}}, Weakness: weak3, Ranking: []*Ranking{{MonsterId: "0000000003", Ranking: "3", VoteYear: "2024/3/12"}}},
 	}
 
 	bgms := []Music{
