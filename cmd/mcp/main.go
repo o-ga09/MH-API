@@ -93,6 +93,14 @@ func (m *MCPServer) AddTools() []server.ServerTool {
 							"type":        "string",
 							"description": "Filter by monster name (optional, supports partial matches)",
 						},
+						"usage_element": map[string]interface{}{
+							"type":        "string",
+							"description": "Filter by monster's usage element (optional, e.g., 'Fire', 'Water', 'Lightning', 'Ice', 'Dragon')",
+						},
+						"weakness_element": map[string]interface{}{
+							"type":        "string",
+							"description": "Filter by monster's weakness element (optional, e.g., 'Fire', 'Water', 'Lightning', 'Ice', 'Dragon')",
+						},
 						"sort": map[string]interface{}{
 							"type":        "string",
 							"description": "Sort order for the results (optional, 'asc' for ascending, 'desc' for descending, default is 'asc')",
@@ -252,14 +260,18 @@ func (m *MCPServer) getMonsters(ctx context.Context, args mcp.CallToolRequest) (
 	}
 	monsterIDs := args.GetString("monster_ids", "")
 	name := args.GetString("name", "")
+	usageElement := args.GetString("usage_element", "")
+	weaknessElement := args.GetString("weakness_element", "")
 	sort := args.GetString("sort", "asc")
 
 	param := request.RequestParam{
-		MonsterIds:  monsterIDs,
-		MonsterName: name,
-		Sort:        sort,
-		Limit:       limit,
-		Offset:      (offset - 1) * limit,
+		MonsterIds:      monsterIDs,
+		MonsterName:     name,
+		UsageElement:    usageElement,
+		WeaknessElement: weaknessElement,
+		Sort:            sort,
+		Limit:           limit,
+		Offset:          (offset - 1) * limit,
 	}
 	ctx = context.WithValue(ctx, "param", param)
 
