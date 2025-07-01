@@ -104,6 +104,7 @@ func (s *monsterQueryService) FetchList(ctx context.Context, id string) ([]*mons
 	var err error
 
 	where_clade := ""
+	whereArgs := []interface{}{}
 	sort := ""
 
 	if id == "" {
@@ -116,38 +117,47 @@ func (s *monsterQueryService) FetchList(ctx context.Context, id string) ([]*mons
 	if p.MonsterIds != "" {
 		monsterIds = strings.Split(p.MonsterIds, ",")
 		where_clade = "monster_id IN (?)"
+		whereArgs = append(whereArgs, monsterIds)
 	}
 
-	if p.MonsterName != "" && p.MonsterIds != "" {
-		where_clade += " and name LIKE '%" + p.MonsterName + "%' "
-	} else if p.MonsterName != "" {
-		where_clade += " name LIKE '%" + p.MonsterName + "%' "
+	if p.MonsterName != "" {
+		if where_clade != "" {
+			where_clade += " and name LIKE ?"
+		} else {
+			where_clade = "name LIKE ?"
+		}
+		whereArgs = append(whereArgs, "%"+p.MonsterName+"%")
 	}
 
 	// Add usage element search
 	if p.UsageElement != "" {
 		if where_clade != "" {
-			where_clade += " and element = '" + p.UsageElement + "' "
+			where_clade += " and element = ?"
 		} else {
-			where_clade += " element = '" + p.UsageElement + "' "
+			where_clade = "element = ?"
 		}
+		whereArgs = append(whereArgs, p.UsageElement)
 	}
 
 	// Add weakness element search - need to join with Weakness table
 	if p.WeaknessElement != "" {
 		weaknessJoin := " EXISTS (SELECT 1 FROM weakness w WHERE w.monster_id = monster.monster_id AND " +
-			"(w.first_weak_element = '" + p.WeaknessElement + "' OR " +
-			"w.second_weak_element = '" + p.WeaknessElement + "' OR " +
-			"w.fire = '" + p.WeaknessElement + "' OR " +
-			"w.water = '" + p.WeaknessElement + "' OR " +
-			"w.lightning = '" + p.WeaknessElement + "' OR " +
-			"w.ice = '" + p.WeaknessElement + "' OR " +
-			"w.dragon = '" + p.WeaknessElement + "'))"
+			"(w.first_weak_element = ? OR " +
+			"w.second_weak_element = ? OR " +
+			"w.fire = ? OR " +
+			"w.water = ? OR " +
+			"w.lightning = ? OR " +
+			"w.ice = ? OR " +
+			"w.dragon = ?))"
 		
 		if where_clade != "" {
 			where_clade += " and " + weaknessJoin
 		} else {
-			where_clade += weaknessJoin
+			where_clade = weaknessJoin
+		}
+		// Add the same value 7 times for the 7 placeholders
+		for i := 0; i < 7; i++ {
+			whereArgs = append(whereArgs, p.WeaknessElement)
 		}
 	}
 
@@ -159,10 +169,8 @@ func (s *monsterQueryService) FetchList(ctx context.Context, id string) ([]*mons
 
 	if id != "" {
 		result = CtxFromDB(ctx).WithContext(ctx).Model(&monster).Preload("Weakness").Preload("Field").Preload("Tribe").Preload("Product").Preload("Ranking").Preload("BGM").Where("monster_id = ? ", id).Find(&monster)
-	} else if where_clade != "" && p.MonsterIds != "" {
-		result = CtxFromDB(ctx).WithContext(ctx).Model(&monster).Preload("Weakness").Preload("Field").Preload("Tribe").Preload("Product").Preload("Ranking").Preload("BGM").Where(where_clade, monsterIds).Limit(limit).Offset(offset).Order(sort).Find(&monster)
 	} else if where_clade != "" {
-		result = CtxFromDB(ctx).WithContext(ctx).Model(&monster).Preload("Weakness").Preload("Field").Preload("Tribe").Preload("Product").Preload("Ranking").Preload("BGM").Where(where_clade).Limit(limit).Offset(offset).Order(sort).Find(&monster)
+		result = CtxFromDB(ctx).WithContext(ctx).Model(&monster).Preload("Weakness").Preload("Field").Preload("Tribe").Preload("Product").Preload("Ranking").Preload("BGM").Where(where_clade, whereArgs...).Limit(limit).Offset(offset).Order(sort).Find(&monster)
 	} else {
 		result = CtxFromDB(ctx).WithContext(ctx).Model(&monster).Preload("Weakness").Preload("Field").Preload("Tribe").Preload("Product").Preload("Ranking").Preload("BGM").Limit(limit).Offset(offset).Order(sort).Find(&monster)
 	}
