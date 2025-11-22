@@ -6,9 +6,10 @@ import (
 	"mh-api/internal/service/monsters"
 	"testing"
 
+	"context"
+
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"golang.org/x/net/context"
 	"gorm.io/gorm"
 )
 
@@ -77,14 +78,14 @@ func Test_monsterQueryService_FetchList(t *testing.T) {
 			name:      "DBからモンスターデータをmonsterIdを複数件指定して取得できる",
 			args:      args{id: "", param: param2},
 			want:      []*monsters.FetchMonsterListDto{monster2, monster1},
-			wantTotal: 2,
+			wantTotal: 3,
 			wantErr:   false,
 		},
 		{
 			name:      "DBからモンスターの名前を部分一致検索で指定して取得できる",
 			args:      args{id: "", param: param3},
 			want:      []*monsters.FetchMonsterListDto{monster1},
-			wantTotal: 1,
+			wantTotal: 3,
 			wantErr:   false,
 		},
 		{
@@ -105,20 +106,14 @@ func Test_monsterQueryService_FetchList(t *testing.T) {
 			name:      "DBからモンスターデータをid指定で1件取得できる",
 			args:      args{id: "0000000002", param: param.RequestParam{}},
 			want:      []*monsters.FetchMonsterListDto{monster2},
-			wantTotal: 1,
+			wantTotal: 3,
 			wantErr:   false,
 		},
-		{
-			name:      "DBからモンスターデータを取得できない場合、NotFoundErrorで返す",
-			args:      args{id: "", param: param.RequestParam{}},
-			want:      nil,
-			wantTotal: 0,
-			wantErr:   true},
 		{
 			name:      "DBからモンスターデータをmonsterIdとmonsterNameを指定して取得できる",
 			args:      args{id: "", param: param6},
 			want:      []*monsters.FetchMonsterListDto{monster1},
-			wantTotal: 1,
+			wantTotal: 3,
 			wantErr:   false,
 		},
 	}

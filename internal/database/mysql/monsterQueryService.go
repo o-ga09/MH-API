@@ -112,6 +112,10 @@ func (s *monsterQueryService) FetchList(ctx context.Context, id string) (*monste
 	limit := p.Limit
 	offset := p.Offset
 
+	if limit <= 0 {
+		limit = 100
+	}
+
 	if p.MonsterIds != "" {
 		monsterIds = strings.Split(p.MonsterIds, ",")
 		where_clade = "monster_id IN (?)"
@@ -129,23 +133,23 @@ func (s *monsterQueryService) FetchList(ctx context.Context, id string) (*monste
 		sort = "CAST(monster_id AS UNSIGNED) ASC"
 	}
 
-	db := CtxFromDB(ctx)
-
-	if id != "" {
-		db.Where("monster_id = ? ", id)
-	} else if where_clade != "" && p.MonsterIds != "" {
-		db.Where(where_clade, monsterIds)
-	} else if where_clade != "" {
-		db.Where(where_clade)
-	}
-
-	result = db.
+	query := CtxFromDB(ctx).
 		Preload("Weakness").
 		Preload("Field").
 		Preload("Tribe").
 		Preload("Product").
 		Preload("Ranking").
-		Preload("BGM").
+		Preload("BGM")
+
+	if id != "" {
+		query.Where("monster_id = ? ", id)
+	} else if where_clade != "" && p.MonsterIds != "" {
+		query.Where(where_clade, monsterIds)
+	} else if where_clade != "" {
+		query.Where(where_clade)
+	}
+
+	result = query.
 		Limit(limit).
 		Offset(offset).
 		Order(sort).
@@ -162,7 +166,7 @@ func (s *monsterQueryService) FetchList(ctx context.Context, id string) (*monste
 	}
 
 	var total int64
-	db.Model(&Monster{}).Count(&total)
+	CtxFromDB(ctx).Model(&Monster{}).Count(&total)
 
 	return &monsters.FetchMonsterListResult{
 		Monsters: res,
