@@ -101,7 +101,6 @@ func (s *monsterQueryService) FetchList(ctx context.Context, id string) (*monste
 	var monsterIds []string
 	var result *gorm.DB
 	var p param.RequestParam
-	var err error
 
 	where_clade := ""
 	sort := ""
@@ -169,7 +168,7 @@ func (s *monsterQueryService) FetchList(ctx context.Context, id string) (*monste
 	return &monsters.FetchMonsterListResult{
 		Monsters: res,
 		Total:    int(totalCount),
-	}, err
+	}, nil
 }
 
 func IsPreloadNotFound(monsters *Monster) bool {
