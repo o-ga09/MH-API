@@ -133,7 +133,7 @@ func (s *monsterQueryService) FetchList(ctx context.Context, id string) (*monste
 	// 総件数を取得
 	var totalCount int64
 	db := CtxFromDB(ctx).WithContext(ctx).Model(&Monster{})
-	
+
 	if id != "" {
 		result = db.Preload("Weakness").Preload("Field").Preload("Tribe").Preload("Product").Preload("Ranking").Preload("BGM").Where("monster_id = ? ", id).Find(&monster)
 		totalCount = result.RowsAffected
@@ -155,7 +155,7 @@ func (s *monsterQueryService) FetchList(ctx context.Context, id string) (*monste
 	}
 
 	if result.Error != nil {
-		return nil, err
+		return nil, result.Error
 	} else if result.RowsAffected == 0 {
 		return nil, gorm.ErrRecordNotFound
 	}

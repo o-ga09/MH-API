@@ -231,7 +231,9 @@ func (m *MonsterHandler) GetById(c *gin.Context) {
 		monster = ResponseJson{
 			Id:                 r.Id,
 			Name:               r.Name,
-			AnotherName:        ptr.StrToPtr(r.Description),
+			Description:        ptr.StrToPtr(r.Description),
+			AnotherName:        ptr.StrToPtr(r.AnotherName),
+			NameEn:             ptr.StrToPtr(r.NameEn),
 			Location:           ptr.StrArrayToPtr(r.Location),
 			Category:           r.Category,
 			Title:              ptr.StrArrayToPtr(r.Title),
