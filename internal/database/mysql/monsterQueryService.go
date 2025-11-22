@@ -96,7 +96,7 @@ func MonsterToDTO(m Monster) *monsters.FetchMonsterListDto {
 	}
 }
 
-func (s *monsterQueryService) FetchList(ctx context.Context, id string) ([]*monsters.FetchMonsterListDto, error) {
+func (s *monsterQueryService) FetchList(ctx context.Context, id string) (*monsters.FetchMonsterListResult, error) {
 	var monster []Monster
 	var monsterIds []string
 	var result *gorm.DB
@@ -130,14 +130,28 @@ func (s *monsterQueryService) FetchList(ctx context.Context, id string) ([]*mons
 		sort = "CAST(monster_id AS UNSIGNED) ASC"
 	}
 
+	// 総件数を取得
+	var totalCount int64
+	db := CtxFromDB(ctx).WithContext(ctx).Model(&Monster{})
+	
 	if id != "" {
-		result = CtxFromDB(ctx).WithContext(ctx).Model(&monster).Preload("Weakness").Preload("Field").Preload("Tribe").Preload("Product").Preload("Ranking").Preload("BGM").Where("monster_id = ? ", id).Find(&monster)
+		result = db.Preload("Weakness").Preload("Field").Preload("Tribe").Preload("Product").Preload("Ranking").Preload("BGM").Where("monster_id = ? ", id).Find(&monster)
+		totalCount = result.RowsAffected
 	} else if where_clade != "" && p.MonsterIds != "" {
-		result = CtxFromDB(ctx).WithContext(ctx).Model(&monster).Preload("Weakness").Preload("Field").Preload("Tribe").Preload("Product").Preload("Ranking").Preload("BGM").Where(where_clade, monsterIds).Limit(limit).Offset(offset).Order(sort).Find(&monster)
+		// カウントクエリ
+		db.Where(where_clade, monsterIds).Count(&totalCount)
+		// データ取得クエリ
+		result = db.Preload("Weakness").Preload("Field").Preload("Tribe").Preload("Product").Preload("Ranking").Preload("BGM").Where(where_clade, monsterIds).Limit(limit).Offset(offset).Order(sort).Find(&monster)
 	} else if where_clade != "" {
-		result = CtxFromDB(ctx).WithContext(ctx).Model(&monster).Preload("Weakness").Preload("Field").Preload("Tribe").Preload("Product").Preload("Ranking").Preload("BGM").Where(where_clade).Limit(limit).Offset(offset).Order(sort).Find(&monster)
+		// カウントクエリ
+		db.Where(where_clade).Count(&totalCount)
+		// データ取得クエリ
+		result = db.Preload("Weakness").Preload("Field").Preload("Tribe").Preload("Product").Preload("Ranking").Preload("BGM").Where(where_clade).Limit(limit).Offset(offset).Order(sort).Find(&monster)
 	} else {
-		result = CtxFromDB(ctx).WithContext(ctx).Model(&monster).Preload("Weakness").Preload("Field").Preload("Tribe").Preload("Product").Preload("Ranking").Preload("BGM").Limit(limit).Offset(offset).Order(sort).Find(&monster)
+		// カウントクエリ
+		db.Count(&totalCount)
+		// データ取得クエリ
+		result = db.Preload("Weakness").Preload("Field").Preload("Tribe").Preload("Product").Preload("Ranking").Preload("BGM").Limit(limit).Offset(offset).Order(sort).Find(&monster)
 	}
 
 	if result.Error != nil {
@@ -152,7 +166,10 @@ func (s *monsterQueryService) FetchList(ctx context.Context, id string) ([]*mons
 		res = append(res, dto)
 	}
 
-	return res, err
+	return &monsters.FetchMonsterListResult{
+		Monsters: res,
+		Total:    int(totalCount),
+	}, err
 }
 
 func IsPreloadNotFound(monsters *Monster) bool {

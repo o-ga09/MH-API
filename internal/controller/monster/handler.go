@@ -71,7 +71,7 @@ func (m *MonsterHandler) GetAll(c *gin.Context) {
 		id = ""
 	}
 	ctx = context.WithValue(ctx, "param", param)
-	res, err := m.monsterService.FetchMonsterDetail(ctx, id)
+	result, err := m.monsterService.FetchMonsterDetail(ctx, id)
 
 	if err == gorm.ErrRecordNotFound {
 		slog.Log(c, constant.SeverityError, "Record Not Found", "error message", err)
@@ -86,7 +86,7 @@ func (m *MonsterHandler) GetAll(c *gin.Context) {
 	}
 
 	monsters := []ResponseJson{}
-	for _, r := range res {
+	for _, r := range result.Monsters {
 		var wa []*Weakness_attack
 		var we []*Weakness_element
 		var ranking []*Ranking
@@ -143,7 +143,7 @@ func (m *MonsterHandler) GetAll(c *gin.Context) {
 		})
 	}
 	response := Monsters{
-		Total:    len(res),
+		Total:    result.Total,
 		Monsters: monsters,
 	}
 	c.JSON(http.StatusOK, response)
@@ -176,7 +176,7 @@ func (m *MonsterHandler) GetById(c *gin.Context) {
 		return
 	}
 
-	res, err := m.monsterService.FetchMonsterDetail(ctx, id)
+	result, err := m.monsterService.FetchMonsterDetail(ctx, id)
 
 	if err == gorm.ErrRecordNotFound {
 		slog.Log(c, constant.SeverityError, "Record Not Found", "error message", err)
@@ -191,7 +191,7 @@ func (m *MonsterHandler) GetById(c *gin.Context) {
 	}
 
 	monster := ResponseJson{}
-	for _, r := range res {
+	for _, r := range result.Monsters {
 		var wa []*Weakness_attack
 		var we []*Weakness_element
 		var ranking []*Ranking

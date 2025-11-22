@@ -7,7 +7,12 @@ import (
 
 //go:generate moq -out queryService_mock.go . MonsterQueryService
 type MonsterQueryService interface {
-	FetchList(ctx context.Context, id string) ([]*FetchMonsterListDto, error)
+	FetchList(ctx context.Context, id string) (*FetchMonsterListResult, error)
+}
+
+type FetchMonsterListResult struct {
+	Monsters []*FetchMonsterListDto
+	Total    int
 }
 
 type FetchMonsterListDto struct {

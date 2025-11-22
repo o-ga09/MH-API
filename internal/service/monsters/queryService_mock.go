@@ -18,7 +18,7 @@ var _ MonsterQueryService = &MonsterQueryServiceMock{}
 //
 //		// make and configure a mocked MonsterQueryService
 //		mockedMonsterQueryService := &MonsterQueryServiceMock{
-//			FetchListFunc: func(ctx context.Context, id string) ([]*FetchMonsterListDto, error) {
+//			FetchListFunc: func(ctx context.Context, id string) (*FetchMonsterListResult, error) {
 //				panic("mock out the FetchList method")
 //			},
 //		}
@@ -29,7 +29,7 @@ var _ MonsterQueryService = &MonsterQueryServiceMock{}
 //	}
 type MonsterQueryServiceMock struct {
 	// FetchListFunc mocks the FetchList method.
-	FetchListFunc func(ctx context.Context, id string) ([]*FetchMonsterListDto, error)
+	FetchListFunc func(ctx context.Context, id string) (*FetchMonsterListResult, error)
 
 	// calls tracks calls to the methods.
 	calls struct {
@@ -45,7 +45,7 @@ type MonsterQueryServiceMock struct {
 }
 
 // FetchList calls FetchListFunc.
-func (mock *MonsterQueryServiceMock) FetchList(ctx context.Context, id string) ([]*FetchMonsterListDto, error) {
+func (mock *MonsterQueryServiceMock) FetchList(ctx context.Context, id string) (*FetchMonsterListResult, error) {
 	if mock.FetchListFunc == nil {
 		panic("MonsterQueryServiceMock.FetchListFunc: method is nil but MonsterQueryService.FetchList was just called")
 	}

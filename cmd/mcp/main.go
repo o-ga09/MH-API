@@ -271,7 +271,7 @@ func (m *MCPServer) getMonsters(ctx context.Context, args mcp.CallToolRequest) (
 	if err != nil {
 		return mcp.NewToolResultText(fmt.Sprintf("Error formatting monster data: %v", err)), nil
 	}
-	if len(monsters) == 0 {
+	if len(monsters.Monsters) == 0 {
 		return mcp.NewToolResultText("No monsters found"), nil
 	}
 

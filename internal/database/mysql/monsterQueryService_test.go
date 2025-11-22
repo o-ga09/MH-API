@@ -60,57 +60,66 @@ func Test_monsterQueryService_FetchList(t *testing.T) {
 		param param.RequestParam
 	}
 	tests := []struct {
-		name    string
-		args    args
-		want    []*monsters.FetchMonsterListDto
-		wantErr bool
+		name      string
+		args      args
+		want      []*monsters.FetchMonsterListDto
+		wantTotal int
+		wantErr   bool
 	}{
 		{
-			name:    "DBからモンスターデータを複数件取得できる",
-			args:    args{id: "", param: param1},
-			want:    []*monsters.FetchMonsterListDto{monster3, monster2, monster1},
-			wantErr: false,
+			name:      "DBからモンスターデータを複数件取得できる",
+			args:      args{id: "", param: param1},
+			want:      []*monsters.FetchMonsterListDto{monster3, monster2, monster1},
+			wantTotal: 3,
+			wantErr:   false,
 		},
 		{
-			name:    "DBからモンスターデータをmonsterIdを複数件指定して取得できる",
-			args:    args{id: "", param: param2},
-			want:    []*monsters.FetchMonsterListDto{monster2, monster1},
-			wantErr: false,
+			name:      "DBからモンスターデータをmonsterIdを複数件指定して取得できる",
+			args:      args{id: "", param: param2},
+			want:      []*monsters.FetchMonsterListDto{monster2, monster1},
+			wantTotal: 2,
+			wantErr:   false,
 		},
 		{
-			name:    "DBからモンスターの名前を部分一致検索で指定して取得できる",
-			args:    args{id: "", param: param3},
-			want:    []*monsters.FetchMonsterListDto{monster1},
-			wantErr: false,
+			name:      "DBからモンスターの名前を部分一致検索で指定して取得できる",
+			args:      args{id: "", param: param3},
+			want:      []*monsters.FetchMonsterListDto{monster1},
+			wantTotal: 1,
+			wantErr:   false,
 		},
 		{
-			name:    "DBからモンスターデータをmonsterIdでソート（昇順）して取得できる",
-			args:    args{id: "", param: param4},
-			want:    []*monsters.FetchMonsterListDto{monster3, monster2, monster1},
-			wantErr: false,
+			name:      "DBからモンスターデータをmonsterIdでソート（昇順）して取得できる",
+			args:      args{id: "", param: param4},
+			want:      []*monsters.FetchMonsterListDto{monster3, monster2, monster1},
+			wantTotal: 3,
+			wantErr:   false,
 		},
 		{
-			name:    "DBからモンスターデータをmonsterIdでソート（降順）して取得できる",
-			args:    args{id: "", param: param5},
-			want:    []*monsters.FetchMonsterListDto{monster1, monster2, monster3},
-			wantErr: false,
+			name:      "DBからモンスターデータをmonsterIdでソート（降順）して取得できる",
+			args:      args{id: "", param: param5},
+			want:      []*monsters.FetchMonsterListDto{monster1, monster2, monster3},
+			wantTotal: 3,
+			wantErr:   false,
 		},
 		{
-			name:    "DBからモンスターデータをid指定で1件取得できる",
-			args:    args{id: "0000000002", param: param.RequestParam{}},
-			want:    []*monsters.FetchMonsterListDto{monster2},
-			wantErr: false,
+			name:      "DBからモンスターデータをid指定で1件取得できる",
+			args:      args{id: "0000000002", param: param.RequestParam{}},
+			want:      []*monsters.FetchMonsterListDto{monster2},
+			wantTotal: 1,
+			wantErr:   false,
 		},
 		{
-			name:    "DBからモンスターデータを取得できない場合、NotFoundErrorで返す",
-			args:    args{id: "", param: param.RequestParam{}},
-			want:    nil,
-			wantErr: true},
+			name:      "DBからモンスターデータを取得できない場合、NotFoundErrorで返す",
+			args:      args{id: "", param: param.RequestParam{}},
+			want:      nil,
+			wantTotal: 0,
+			wantErr:   true},
 		{
-			name:    "DBからモンスターデータをmonsterIdとmonsterNameを指定して取得できる",
-			args:    args{id: "", param: param6},
-			want:    []*monsters.FetchMonsterListDto{monster1},
-			wantErr: false,
+			name:      "DBからモンスターデータをmonsterIdとmonsterNameを指定して取得できる",
+			args:      args{id: "", param: param6},
+			want:      []*monsters.FetchMonsterListDto{monster1},
+			wantTotal: 1,
+			wantErr:   false,
 		},
 	}
 	for _, tt := range tests {
@@ -120,9 +129,14 @@ func Test_monsterQueryService_FetchList(t *testing.T) {
 			got, err := s.FetchList(ctx, tt.args.id)
 			assert.True(t, (err != nil) == tt.wantErr)
 
-			assert.True(t, (err != nil) == tt.wantErr)
-			assert.True(t, len(got) == len(tt.want))
-			assert.Equal(t, tt.want, got)
+			if !tt.wantErr {
+				require.NotNil(t, got)
+				assert.Equal(t, tt.wantTotal, got.Total)
+				assert.Equal(t, len(tt.want), len(got.Monsters))
+				assert.Equal(t, tt.want, got.Monsters)
+			} else {
+				assert.Nil(t, got)
+			}
 		})
 	}
 }
