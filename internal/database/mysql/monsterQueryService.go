@@ -129,34 +129,30 @@ func (s *monsterQueryService) FetchList(ctx context.Context, id string) (*monste
 		sort = "CAST(monster_id AS UNSIGNED) ASC"
 	}
 
-	// 総件数を取得
-	var totalCount int64
-	db := CtxFromDB(ctx).WithContext(ctx).Model(&Monster{})
+	db := CtxFromDB(ctx)
 
 	if id != "" {
-		result = db.Preload("Weakness").Preload("Field").Preload("Tribe").Preload("Product").Preload("Ranking").Preload("BGM").Where("monster_id = ? ", id).Find(&monster)
-		totalCount = result.RowsAffected
+		db.Where("monster_id = ? ", id)
 	} else if where_clade != "" && p.MonsterIds != "" {
-		// カウントクエリ
-		db.Where(where_clade, monsterIds).Count(&totalCount)
-		// データ取得クエリ
-		result = db.Preload("Weakness").Preload("Field").Preload("Tribe").Preload("Product").Preload("Ranking").Preload("BGM").Where(where_clade, monsterIds).Limit(limit).Offset(offset).Order(sort).Find(&monster)
+		db.Where(where_clade, monsterIds)
 	} else if where_clade != "" {
-		// カウントクエリ
-		db.Where(where_clade).Count(&totalCount)
-		// データ取得クエリ
-		result = db.Preload("Weakness").Preload("Field").Preload("Tribe").Preload("Product").Preload("Ranking").Preload("BGM").Where(where_clade).Limit(limit).Offset(offset).Order(sort).Find(&monster)
-	} else {
-		// カウントクエリ
-		db.Count(&totalCount)
-		// データ取得クエリ
-		result = db.Preload("Weakness").Preload("Field").Preload("Tribe").Preload("Product").Preload("Ranking").Preload("BGM").Limit(limit).Offset(offset).Order(sort).Find(&monster)
+		db.Where(where_clade)
 	}
+
+	result = db.
+		Preload("Weakness").
+		Preload("Field").
+		Preload("Tribe").
+		Preload("Product").
+		Preload("Ranking").
+		Preload("BGM").
+		Limit(limit).
+		Offset(offset).
+		Order(sort).
+		Find(&monster)
 
 	if result.Error != nil {
 		return nil, result.Error
-	} else if result.RowsAffected == 0 {
-		return nil, gorm.ErrRecordNotFound
 	}
 
 	res := []*monsters.FetchMonsterListDto{}
@@ -165,9 +161,12 @@ func (s *monsterQueryService) FetchList(ctx context.Context, id string) (*monste
 		res = append(res, dto)
 	}
 
+	var total int64
+	db.Model(&Monster{}).Count(&total)
+
 	return &monsters.FetchMonsterListResult{
 		Monsters: res,
-		Total:    int(totalCount),
+		Total:    int(total),
 	}, nil
 }
 
