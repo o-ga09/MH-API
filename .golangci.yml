@@ -1,23 +1,23 @@
-linters-settings:
-  govet:
-    check-shadowing: false
-  gocyclo:
-    min-complexity: 30
-  misspell:
-    locale: US
-  skip-files:
-    - app/internal/**/*_test.go
-
-
-linters:
-  disable-all: true
+version: "2"
+formatters:
   enable:
     - goimports
+    - gofmt
+
+linters:
+  settings:
+    govet:
+      enable:
+        - shadow
+    gocyclo:
+      min-complexity: 30
+    misspell:
+      locale: US
+  enable:
     - unused
     - errcheck
-    # - gocognit
-    # - gocyclo
-    - gofmt
+    - gocognit
+    - gocyclo
     - govet
     - misspell
     - staticcheck
