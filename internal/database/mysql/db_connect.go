@@ -76,5 +76,5 @@ func connect(ctx context.Context, dialector gorm.Dialector) context.Context {
 }
 
 func CtxFromDB(ctx context.Context) *gorm.DB {
-	return ctx.Value(CtxKey).(*gorm.DB)
+	return ctx.Value(CtxKey).(*gorm.DB).WithContext(ctx)
 }

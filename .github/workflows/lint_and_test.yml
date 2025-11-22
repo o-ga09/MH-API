@@ -13,9 +13,10 @@ jobs:
       - name: golangci-lint
         uses: reviewdog/action-golangci-lint@v2
         with:
-          golangci_lint_version: v1.64.8
+          golangci_lint_version: v2.4.0
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          golangci_lint_flags: "--timeout=5m --config=./.golangci.yml ./..."
+          workdir: ./
+          golangci_lint_flags: "--timeout=5m --config=./.golangci.yaml ./..."
           fail_on_error: true
           reporter: "github-pr-review"
           
@@ -28,7 +29,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v2
         with:
-          go-version: 1.24
+          go-version: 1.25
       
       - name: run Docker
         run: |

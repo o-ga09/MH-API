@@ -18,7 +18,7 @@ var _ IMonsterService = &IMonsterServiceMock{}
 //
 //		// make and configure a mocked IMonsterService
 //		mockedIMonsterService := &IMonsterServiceMock{
-//			FetchMonsterDetailFunc: func(ctx context.Context, id string) ([]*FetchMonsterListDto, error) {
+//			FetchMonsterDetailFunc: func(ctx context.Context, id string) (*FetchMonsterListResult, error) {
 //				panic("mock out the FetchMonsterDetail method")
 //			},
 //		}
@@ -29,7 +29,7 @@ var _ IMonsterService = &IMonsterServiceMock{}
 //	}
 type IMonsterServiceMock struct {
 	// FetchMonsterDetailFunc mocks the FetchMonsterDetail method.
-	FetchMonsterDetailFunc func(ctx context.Context, id string) ([]*FetchMonsterListDto, error)
+	FetchMonsterDetailFunc func(ctx context.Context, id string) (*FetchMonsterListResult, error)
 
 	// calls tracks calls to the methods.
 	calls struct {
@@ -45,7 +45,7 @@ type IMonsterServiceMock struct {
 }
 
 // FetchMonsterDetail calls FetchMonsterDetailFunc.
-func (mock *IMonsterServiceMock) FetchMonsterDetail(ctx context.Context, id string) ([]*FetchMonsterListDto, error) {
+func (mock *IMonsterServiceMock) FetchMonsterDetail(ctx context.Context, id string) (*FetchMonsterListResult, error) {
 	if mock.FetchMonsterDetailFunc == nil {
 		panic("IMonsterServiceMock.FetchMonsterDetailFunc: method is nil but IMonsterService.FetchMonsterDetail was just called")
 	}

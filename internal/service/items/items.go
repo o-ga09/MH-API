@@ -75,7 +75,7 @@ func (s *Service) GetItemByMonsterID(ctx context.Context, monsterID string) (*It
 	if err != nil {
 		return nil, err
 	}
-	monster, err := s.monsterQueryService.FetchList(ctx, monsterID)
+	monsterResult, err := s.monsterQueryService.FetchList(ctx, monsterID)
 	if err != nil {
 		return nil, err
 	}
@@ -89,8 +89,8 @@ func (s *Service) GetItemByMonsterID(ctx context.Context, monsterID string) (*It
 	}
 
 	return &ItemByMonster{
-		MonsterID:   monster[0].Id,
-		MonsterName: monster[0].Name,
+		MonsterID:   monsterResult.Monsters[0].Id,
+		MonsterName: monsterResult.Monsters[0].Name,
 		Item:        itemDTOs,
 	}, nil
 }

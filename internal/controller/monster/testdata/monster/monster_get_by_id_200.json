@@ -2,7 +2,7 @@
   "monster": {
     "monster_id": "1",
     "name": "リオレウス",
-    "another_name": "天空を司る王者",
+    "description": "天空を司る王者",
     "location": ["森林", "砂漠"],
     "category": "飛竜種",
     "title": ["MH1", "MH2"],

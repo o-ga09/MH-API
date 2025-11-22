@@ -45,8 +45,11 @@ func TestMonsterHandler_GetAll(t *testing.T) {
 			name: "正常系: モンスター一覧が取得できる",
 			mockSetup: func() monsters.IMonsterService {
 				return &monsters.IMonsterServiceMock{
-					FetchMonsterDetailFunc: func(ctx context.Context, id string) ([]*monsters.FetchMonsterListDto, error) {
-						return createTestMonsters(), nil
+					FetchMonsterDetailFunc: func(ctx context.Context, id string) (*monsters.FetchMonsterListResult, error) {
+						return &monsters.FetchMonsterListResult{
+							Monsters: createTestMonsters(),
+							Total:    100, // 総件数を返す（テストデータの2件ではなく、全体の100件）
+						}, nil
 					},
 				}
 			},
@@ -58,7 +61,7 @@ func TestMonsterHandler_GetAll(t *testing.T) {
 			name: "異常系: バリデーションエラー",
 			mockSetup: func() monsters.IMonsterService {
 				return &monsters.IMonsterServiceMock{
-					FetchMonsterDetailFunc: func(ctx context.Context, id string) ([]*monsters.FetchMonsterListDto, error) {
+					FetchMonsterDetailFunc: func(ctx context.Context, id string) (*monsters.FetchMonsterListResult, error) {
 						// このモックは呼び出されないはず
 						return nil, nil
 					},
@@ -73,7 +76,7 @@ func TestMonsterHandler_GetAll(t *testing.T) {
 			name: "異常系: レコードが存在しない",
 			mockSetup: func() monsters.IMonsterService {
 				return &monsters.IMonsterServiceMock{
-					FetchMonsterDetailFunc: func(ctx context.Context, id string) ([]*monsters.FetchMonsterListDto, error) {
+					FetchMonsterDetailFunc: func(ctx context.Context, id string) (*monsters.FetchMonsterListResult, error) {
 						return nil, gorm.ErrRecordNotFound
 					},
 				}
@@ -86,7 +89,7 @@ func TestMonsterHandler_GetAll(t *testing.T) {
 			name: "異常系: 内部エラー",
 			mockSetup: func() monsters.IMonsterService {
 				return &monsters.IMonsterServiceMock{
-					FetchMonsterDetailFunc: func(ctx context.Context, id string) ([]*monsters.FetchMonsterListDto, error) {
+					FetchMonsterDetailFunc: func(ctx context.Context, id string) (*monsters.FetchMonsterListResult, error) {
 						return nil, errors.New("database error")
 					},
 				}
@@ -127,9 +130,12 @@ func TestMonsterHandler_GetById(t *testing.T) {
 			name: "正常系: モンスター詳細が取得できる",
 			mockSetup: func() monsters.IMonsterService {
 				return &monsters.IMonsterServiceMock{
-					FetchMonsterDetailFunc: func(ctx context.Context, id string) ([]*monsters.FetchMonsterListDto, error) {
+					FetchMonsterDetailFunc: func(ctx context.Context, id string) (*monsters.FetchMonsterListResult, error) {
 						// IDが指定されていれば1件だけ返す
-						return createTestMonsters()[:1], nil
+						return &monsters.FetchMonsterListResult{
+							Monsters: createTestMonsters()[:1],
+							Total:    1,
+						}, nil
 					},
 				}
 			},
@@ -141,7 +147,7 @@ func TestMonsterHandler_GetById(t *testing.T) {
 			name: "異常系: 不正なID形式",
 			mockSetup: func() monsters.IMonsterService {
 				return &monsters.IMonsterServiceMock{
-					FetchMonsterDetailFunc: func(ctx context.Context, id string) ([]*monsters.FetchMonsterListDto, error) {
+					FetchMonsterDetailFunc: func(ctx context.Context, id string) (*monsters.FetchMonsterListResult, error) {
 						// 無効なIDのため、レコードが見つからないエラーを返す
 						return nil, gorm.ErrRecordNotFound
 					},
@@ -155,7 +161,7 @@ func TestMonsterHandler_GetById(t *testing.T) {
 			name: "異常系: レコードが存在しない",
 			mockSetup: func() monsters.IMonsterService {
 				return &monsters.IMonsterServiceMock{
-					FetchMonsterDetailFunc: func(ctx context.Context, id string) ([]*monsters.FetchMonsterListDto, error) {
+					FetchMonsterDetailFunc: func(ctx context.Context, id string) (*monsters.FetchMonsterListResult, error) {
 						return nil, gorm.ErrRecordNotFound
 					},
 				}
@@ -168,7 +174,7 @@ func TestMonsterHandler_GetById(t *testing.T) {
 			name: "異常系: 内部エラー",
 			mockSetup: func() monsters.IMonsterService {
 				return &monsters.IMonsterServiceMock{
-					FetchMonsterDetailFunc: func(ctx context.Context, id string) ([]*monsters.FetchMonsterListDto, error) {
+					FetchMonsterDetailFunc: func(ctx context.Context, id string) (*monsters.FetchMonsterListResult, error) {
 						return nil, errors.New("database error")
 					},
 				}
