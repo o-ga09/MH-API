@@ -82,7 +82,7 @@ func MonsterToDTO(m Monster) *monsters.FetchMonsterListDto {
 		AnotherName:        m.AnotherName,
 		NameEn:             m.NameEn,
 		Location:           locations,
-		Category:           m.Tribe.Name_ja,
+		Category:           TribeToDTO(m.Tribe),
 		Title:              titles,
 		FirstWeak_Attack:   firstWeaknessAttack,
 		SecondWeak_Attack:  secondWeaknessAttack,
@@ -94,6 +94,13 @@ func MonsterToDTO(m Monster) *monsters.FetchMonsterListDto {
 		BGM:                bgm,
 		Element:            m.Element,
 	}
+}
+
+func TribeToDTO(t *Tribe) string {
+	if t == nil {
+		return ""
+	}
+	return t.Name_ja
 }
 
 func (s *monsterQueryService) FetchList(ctx context.Context, id string) (*monsters.FetchMonsterListResult, error) {
