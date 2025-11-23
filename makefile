@@ -66,7 +66,7 @@ run-agent:
 
 .PHONY: docker-build-agent
 docker-build-agent:
-	docker build -t monhun-agent -f Dockerfile.agent .
+	docker build -t monhun-agent --target deploy-agent .
 
 .PHONY: compose-up
 compose-up:

@@ -31,6 +31,17 @@ COPY . .
 
 RUN go build -trimpath -ldflags "-w -s" -o main ./cmd/mcp/main.go
 
+#Agent用コンテナに含めるバイナリを作成するコンテナ
+FROM golang:1.25.4-alpine3.22 as deploy-agent-builder
+
+WORKDIR /app
+
+COPY go.mod go.sum ./
+RUN go mod download
+COPY . .
+
+RUN go build -trimpath -ldflags "-w -s" -o main ./cmd/agent/main.go
+
 #-----------------------------------------------
 #API デプロイ用コンアテナ
 FROM ubuntu:22.04 as deploy-api
@@ -71,6 +82,19 @@ COPY --from=deploy-mcp-builder /app/main .
 CMD ["./main"]
 
 #-----------------------------------------------
+#Agent デプロイ用コンテナ
+FROM ubuntu:22.04 as deploy-agent
+
+RUN apt update
+RUN apt-get install -y ca-certificates openssl
+
+EXPOSE "8081"
+
+COPY --from=deploy-agent-builder /app/main .
+
+CMD ["./main"]
+
+#-----------------------------------------------
 #ローカル開発環境で利用するホットリロード環境
 FROM golang:1.25 as dev
 
@@ -83,6 +107,16 @@ CMD ["air"]
 #-----------------------------------------------
 #ローカル開発環境で利用するホットリロード環境
 FROM golang:1.25 as dev-mcp
+
+WORKDIR /app
+
+COPY go.mod go.sum ./
+
+RUN go install github.com/air-verse/air@latest
+CMD ["air"]
+#-----------------------------------------------
+#Agent ローカル開発環境で利用するホットリロード環境
+FROM golang:1.25 as dev-agent
 
 WORKDIR /app
 

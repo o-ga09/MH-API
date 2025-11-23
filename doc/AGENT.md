@@ -93,7 +93,10 @@ curl http://localhost:8081/v1/agent/health
 go build -o agent ./cmd/agent
 
 # Dockerイメージのビルド
-docker build -t monhun-agent -f Dockerfile.agent .
+docker build -t monhun-agent --target deploy-agent .
+
+# Docker Composeで起動（ローカル開発）
+docker compose up agent
 ```
 
 ## Cloud Runへのデプロイ
@@ -106,7 +109,7 @@ export PROJECT_ID=your-project-id
 export REGION=asia-northeast1
 
 # Artifact Registryにイメージをプッシュ
-gcloud builds submit --tag ${REGION}-docker.pkg.dev/${PROJECT_ID}/monhun/agent:latest -f Dockerfile.agent
+gcloud builds submit --tag ${REGION}-docker.pkg.dev/${PROJECT_ID}/monhun/agent:latest --target deploy-agent
 ```
 
 ### 2. Cloud Runへのデプロイ
