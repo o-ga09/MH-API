@@ -15,6 +15,7 @@ import (
 	"google.golang.org/adk/server/adkrest"
 	"google.golang.org/adk/session"
 
+	"mh-api/internal/agent/middleware"
 	"mh-api/internal/database/mysql"
 	"mh-api/internal/service/items"
 	"mh-api/internal/service/monsters"
@@ -101,8 +102,8 @@ func NewServer(cfg *Config) (*Server, error) {
 	// Create a mux for routing
 	mux := http.NewServeMux()
 
-	// Register the API handler at the /v1/agent/ path
-	mux.Handle("/v1/agent/", http.StripPrefix("/v1/agent", apiHandler))
+	// Register the API handler at the /v1/agent/ path and inject DB session via middleware
+	mux.Handle("/v1/agent/", http.StripPrefix("/v1/agent", middleware.DBSessionMiddleware(apiHandler)))
 
 	// Add a health check endpoint
 	mux.HandleFunc("/v1/agent/health", func(w http.ResponseWriter, r *http.Request) {
