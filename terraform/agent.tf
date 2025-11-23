@@ -37,6 +37,15 @@ resource "google_cloud_run_service" "stg-mh-agent" {
           }
         }
         env {
+          name = "GEMINI_API_KEY"
+          value_from {
+            secret_key_ref {
+              name = "GEMINI_API_KEY"
+              key  = "latest"
+            }
+          }
+        }
+        env {
           name  = "ENV"
           value = "PROD"
         }
