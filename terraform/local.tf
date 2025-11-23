@@ -23,8 +23,10 @@ locals {
   # Cloud Run設定
   cloud_run_service_name     = "stg-mh-api"  # APIサービスの名前
   cloud_run_mcp_service_name = "stg-mh-mcp"
+  cloud_run_agent_service_name = "stg-mh-agent"
 
   # コンテナイメージ
   container_image     = "asia-northeast1-docker.pkg.dev/${local.project_id}/mh-api/${var.service_name}:${var.image_tag}"
-  container_mcp_image = "asia-northeast1-docker.pkg.dev/${local.project_id}/mh-api/mh-mcp:${var.image_tag}"
+  container_mcp_image = "asia-northeast1-docker.pkg.dev/${local.project_id}/mh-api/mh-agent:${var.image_tag}"
+  container_agent_image = "asia-northeast1-docker.pkg.dev/${local.project_id}/mh-api/mh-agent:${var.image_tag}"
 }

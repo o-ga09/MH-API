@@ -87,6 +87,30 @@ MH-API プロジェクトに関するサポートが必要な場合は、[mhapia
 
 [API doc](https://o-ga09.github.io/MH-API/spec.html)
 
+## MonHun AI Agent 🤖
+
+**NEW!** ADK Go（Agent Development Kit for Go）を使用したモンスターハンター攻略情報専用のAIエージェントを提供しています。
+
+### 特徴
+
+- Gemini APIを使用した自然言語での対話
+- モンスター、武器、アイテム、スキル情報へのアクセス
+- RESTful APIとして利用可能
+- Cloud Run対応
+
+詳細は [AGENT.md](./doc/AGENT.md) を参照してください。
+
+### クイックスタート
+
+```bash
+# 環境変数を設定
+export GEMINI_API_KEY=your_api_key_here
+export DATABASE_URL=mh-api:P@ssw0rd@tcp(127.0.0.1:3306)/mh-api?charset=utf8&parseTime=True&loc=Local
+
+# エージェントを起動
+make run-agent
+```
+
 ## 謝辞
 
 このプロジェクトは、オープンソースコミュニティの貢献者や MH-API ユーザーのご協力によって成り立っています。多くの人々に感謝の意を表します。

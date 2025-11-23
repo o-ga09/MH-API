@@ -10,6 +10,7 @@ env:
   GCP_PROJECT_NUMBER: ${{ secrets.GCP_PROJECT_NUMBER }}
   API_IMAGE: asia-northeast1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/mh-api/mh-api:${{ github.sha }}
   MCP_IMAGE: asia-northeast1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/mh-api/mh-mcp:${{ github.sha }}
+  AGENT_IMAGE: asia-northeast1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/mh-api/mh-agent:${{ github.sha }}
   TERRAFORM_SERVICE_ACCOUNT: ${{ secrets.TERRAFORM_SERVICE_ACCOUNT }}
   TF_VAR_service_name: mh-api
   TF_VAR_image_tag: ${{ github.sha }}
@@ -50,10 +51,15 @@ jobs:
         working-directory: ./
         run: docker build --platform linux/amd64 -t ${{ env.MCP_IMAGE }} -f Dockerfile --target deploy-mcp .
 
+      - name: Build Agent docker image
+        working-directory: ./
+        run: docker build --platform linux/amd64 -t ${{ env.AGENT_IMAGE }} -f Dockerfile --target deploy-agent .
+
       - name: Push docker images
         run: |
           docker push ${{ env.API_IMAGE }}
           docker push ${{ env.MCP_IMAGE }}
+          docker push ${{ env.AGENT_IMAGE }}
 
   terraform-workflow:
     needs: build-container-image

@@ -54,5 +54,24 @@ services:
       - SENTRY_DSN=sentry
     volumes:
       - ./:/app
+  agent:
+    depends_on:
+      - mh-api-dbsrv01
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: dev-agent
+    container_name: mh-agent-server
+    ports:
+      - "8082:8081"
+    environment:
+      - DATABASE_URL=mh-api:P@ssw0rd@tcp(mh-api-dbsrv01)/mh-api?charset=utf8&parseTime=True&loc=Local
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - GEMINI_MODEL=gemini-2.0-flash-exp
+      - AGENT_PORT=8081
+      - ENV=dev
+    volumes:
+      - ./:/app
+    command: air -c .air.agent.toml
 volumes:
   mh-api-dbsrv01-data:
