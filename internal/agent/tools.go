@@ -195,12 +195,18 @@ func (m *MonHunTools) getMonsters(ctx context.Context, args GetMonstersInput) (s
 		sort = "asc"
 	}
 
+	// Calculate offset for pagination
+	calculatedOffset := offset
+	if offset > 0 {
+		calculatedOffset = offset * limit
+	}
+
 	param := request.RequestParam{
 		MonsterIds:  args.MonsterIDs,
 		MonsterName: args.Name,
 		Sort:        sort,
 		Limit:       limit,
-		Offset:      (offset - 1) * limit,
+		Offset:      calculatedOffset,
 	}
 	ctx = context.WithValue(ctx, "param", param)
 
