@@ -116,7 +116,7 @@ RUN go install github.com/air-verse/air@latest
 CMD ["air"]
 #-----------------------------------------------
 #Agent ローカル開発環境で利用するホットリロード環境
-FROM golang:1.25 as dev-agent
+FROM golang:1.25.4-alpine3.22 as dev-agent
 
 WORKDIR /app
 

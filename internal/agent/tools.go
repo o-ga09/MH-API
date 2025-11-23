@@ -144,34 +144,34 @@ func (m *MonHunTools) GetTools() ([]tool.Tool, error) {
 
 // Input/Output types for tools
 type GetMonstersInput struct {
-	MonsterIDs string `json:"monster_ids,omitempty" jsonschema:"description=モンスターIDでフィルタリング（オプション、カンマ区切りで複数指定可能）"`
-	Name       string `json:"name,omitempty" jsonschema:"description=モンスター名でフィルタリング（オプション、部分一致）"`
-	Sort       string `json:"sort,omitempty" jsonschema:"description=ソート順（オプション、'asc' または 'desc'、デフォルトは 'asc'）,enum=asc,enum=desc"`
-	Offset     int    `json:"offset,omitempty" jsonschema:"description=ページネーションのオフセット（オプション、デフォルト: 0）,minimum=0"`
-	Limit      int    `json:"limit,omitempty" jsonschema:"description=1ページあたりの件数（オプション、デフォルト: 50、最大: 100）,minimum=1,maximum=100"`
+	MonsterIDs string `json:"monster_ids,omitempty"`
+	Name       string `json:"name,omitempty"`
+	Sort       string `json:"sort,omitempty"`
+	Offset     int    `json:"offset,omitempty"`
+	Limit      int    `json:"limit,omitempty"`
 }
 
 type GetMonsterByIDInput struct {
-	MonsterID string `json:"monster_id" jsonschema:"description=モンスターの一意な識別子,required"`
+	MonsterID string `json:"monster_id"`
 }
 
 type GetWeaponsInput struct {
-	WeaponID string `json:"weapon_id,omitempty" jsonschema:"description=武器IDでフィルタリング（オプション）"`
-	Name     string `json:"name,omitempty" jsonschema:"description=武器名でフィルタリング（オプション）"`
-	Limit    int    `json:"limit,omitempty" jsonschema:"description=取得する件数（オプション、デフォルト: 50）,minimum=1,maximum=100"`
-	Offset   int    `json:"offset,omitempty" jsonschema:"description=スキップする件数（オプション、デフォルト: 0）,minimum=0"`
+	WeaponID string `json:"weapon_id,omitempty"`
+	Name     string `json:"name,omitempty"`
+	Limit    int    `json:"limit,omitempty"`
+	Offset   int    `json:"offset,omitempty"`
 }
 
 type GetItemByIDInput struct {
-	ItemID string `json:"item_id" jsonschema:"description=アイテムの一意な識別子,required"`
+	ItemID string `json:"item_id"`
 }
 
 type GetItemsByMonsterInput struct {
-	MonsterID string `json:"monster_id" jsonschema:"description=モンスターの一意な識別子,required"`
+	MonsterID string `json:"monster_id"`
 }
 
 type GetSkillByIDInput struct {
-	SkillID string `json:"skill_id" jsonschema:"description=スキルの一意な識別子,required"`
+	SkillID string `json:"skill_id"`
 }
 
 type EmptyInput struct{}
@@ -195,11 +195,8 @@ func (m *MonHunTools) getMonsters(ctx context.Context, args GetMonstersInput) (s
 		sort = "asc"
 	}
 
-	// Calculate offset for pagination
+	// offset is the number of records to skip (not page number)
 	calculatedOffset := offset
-	if offset > 0 {
-		calculatedOffset = offset * limit
-	}
 
 	param := request.RequestParam{
 		MonsterIds:  args.MonsterIDs,
@@ -292,13 +289,13 @@ func (m *MonHunTools) getItemByID(ctx context.Context, args GetItemByIDInput) (s
 		return "", fmt.Errorf("item_id is required and must be a string")
 	}
 
-	// Convert string to int as the service expects an int
-	itemIDInt, err := strconv.Atoi(args.ItemID)
+	// Validate that item_id is a valid integer
+	_, err := strconv.Atoi(args.ItemID)
 	if err != nil {
 		return "", fmt.Errorf("item_id must be a valid integer: %w", err)
 	}
 
-	item, err := m.itemService.GetItemByID(ctx, strconv.Itoa(itemIDInt))
+	item, err := m.itemService.GetItemByID(ctx, args.ItemID)
 	if err != nil {
 		return "", fmt.Errorf("error retrieving item with ID %s: %w", args.ItemID, err)
 	}
@@ -316,13 +313,13 @@ func (m *MonHunTools) getItemsByMonster(ctx context.Context, args GetItemsByMons
 		return "", fmt.Errorf("monster_id is required and must be a string")
 	}
 
-	// Convert string to int as the service expects an int
-	monsterIDInt, err := strconv.Atoi(args.MonsterID)
+	// Validate that monster_id is a valid integer
+	_, err := strconv.Atoi(args.MonsterID)
 	if err != nil {
 		return "", fmt.Errorf("monster_id must be a valid integer: %w", err)
 	}
 
-	items, err := m.itemService.GetItemByMonsterID(ctx, strconv.Itoa(monsterIDInt))
+	items, err := m.itemService.GetItemByMonsterID(ctx, args.MonsterID)
 	if err != nil {
 		return "", fmt.Errorf("error retrieving items for monster ID %s: %w", args.MonsterID, err)
 	}
