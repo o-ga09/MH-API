@@ -10,6 +10,10 @@ type Config struct {
 	Database_url string `env:"DATABASE_URL" envDefult:""`
 	ProjectID    string `env:"PROJECTID" envDefault:""`
 	SentryDSN    string `env:"SENTRY_DSN" envDefault:""`
+	// Agent specific configuration
+	GeminiAPIKey string `env:"GEMINI_API_KEY" envDefault:""`
+	GeminiModel  string `env:"GEMINI_MODEL" envDefault:"gemini-2.0-flash-exp"`
+	AgentPort    string `env:"AGENT_PORT" envDefault:"8081"`
 }
 
 func New() (*Config, error) {
