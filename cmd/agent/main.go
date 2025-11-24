@@ -20,7 +20,7 @@ func main() {
 	agentCfg := &agent.Config{
 		GeminiAPIKey: cfg.GeminiAPIKey,
 		GeminiModel:  cfg.GeminiModel,
-		Port:         cfg.AgentPort,
+		Port:         cfg.Port,
 	}
 
 	server, err := agent.NewServer(agentCfg)
