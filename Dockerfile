@@ -88,7 +88,7 @@ FROM ubuntu:22.04 as deploy-agent
 RUN apt update
 RUN apt-get install -y ca-certificates openssl
 
-EXPOSE "8081"
+EXPOSE "8080"
 
 COPY --from=deploy-agent-builder /app/main .
 
