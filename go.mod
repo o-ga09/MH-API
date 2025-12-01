@@ -6,7 +6,7 @@ require (
 	cloud.google.com/go/logging v1.13.1
 	cloud.google.com/go/storage v1.57.2
 	github.com/caarlos0/env/v6 v6.10.1
-	github.com/getsentry/sentry-go v0.38.0
+	github.com/getsentry/sentry-go v0.40.0
 	github.com/gin-contrib/cors v1.7.6
 	github.com/gin-gonic/gin v1.11.0
 	github.com/go-playground/validator/v10 v10.28.0
