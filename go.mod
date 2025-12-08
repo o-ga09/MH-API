@@ -4,7 +4,7 @@ go 1.25
 
 require (
 	cloud.google.com/go/logging v1.13.1
-	cloud.google.com/go/storage v1.57.2
+	cloud.google.com/go/storage v1.58.0
 	github.com/caarlos0/env/v6 v6.10.1
 	github.com/getsentry/sentry-go v0.38.0
 	github.com/gin-contrib/cors v1.7.6
