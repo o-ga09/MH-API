@@ -60,7 +60,7 @@ func New(ctx context.Context) context.Context {
 
 func connect(ctx context.Context, dialector gorm.Dialector) context.Context {
 	var err error
-	for i := 0; i < MAX_RETRY; i++ {
+	for i := range MAX_RETRY {
 		if db, err = gorm.Open(dialector, &gorm.Config{
 			NamingStrategy: schema.NamingStrategy{
 				SingularTable: false,
