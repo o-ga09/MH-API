@@ -5,6 +5,9 @@ on:
     paths:
       - "terraform/**"
       - ".github/workflows/terraform.yml"
+  push:
+    tags:
+      - "v*"
   workflow_dispatch:
 env:
   GCP_PROJECT_NUMBER: ${{ secrets.GCP_PROJECT_NUMBER }}
