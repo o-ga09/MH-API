@@ -31,19 +31,19 @@ func (l *SentryLogger) LogMode(level logger.LogLevel) logger.Interface {
 	return &newlogger
 }
 
-func (l *SentryLogger) Info(ctx context.Context, msg string, data ...interface{}) {
+func (l *SentryLogger) Info(ctx context.Context, msg string, data ...any) {
 	if l.logLevel >= logger.Info {
 		slog.Log(ctx, constant.SeverityInfo, fmt.Sprintf(msg, data...))
 	}
 }
 
-func (l *SentryLogger) Warn(ctx context.Context, msg string, data ...interface{}) {
+func (l *SentryLogger) Warn(ctx context.Context, msg string, data ...any) {
 	if l.logLevel >= logger.Warn {
 		slog.Log(ctx, constant.SeverityWarn, fmt.Sprintf(msg, data...))
 	}
 }
 
-func (l *SentryLogger) Error(ctx context.Context, msg string, data ...interface{}) {
+func (l *SentryLogger) Error(ctx context.Context, msg string, data ...any) {
 	if l.logLevel >= logger.Error {
 		slog.Log(ctx, constant.SeverityError, fmt.Sprintf(msg, data...))
 	}
