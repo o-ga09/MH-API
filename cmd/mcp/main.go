@@ -10,6 +10,9 @@ import (
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/mark3labs/mcp-go/server"
 
+	"mh-api/pkg/config"
+	"mh-api/pkg/profiler"
+
 	request "mh-api/internal/controller/monster"
 	"mh-api/internal/database/mysql"
 	"mh-api/internal/service/items"
@@ -26,6 +29,13 @@ type MCPServer struct {
 }
 
 func main() {
+	cfg, err := config.New()
+	if err != nil {
+		log.Fatalf("Failed to load configuration: %v", err)
+	}
+
+	profiler.StartPyroscope(cfg, "mh-mcp")
+
 	monsterRepo := mysql.NewMonsterRepository()
 	monsterQS := mysql.NewmonsterQueryService()
 	monsterService := monsters.NewMonsterService(monsterRepo, monsterQS)

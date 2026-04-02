@@ -3,6 +3,7 @@ package main
 import (
 	"mh-api/internal/presenter"
 	"mh-api/pkg/config"
+	"mh-api/pkg/profiler"
 	"time"
 
 	"github.com/getsentry/sentry-go"
@@ -22,6 +23,8 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+
+	profiler.StartPyroscope(cfg, "mh-api")
 
 	if cfg.Env == "PROD" || cfg.Env == "STAGE" {
 		// Sentryの初期化設定を強化

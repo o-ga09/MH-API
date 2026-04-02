@@ -9,9 +9,11 @@ type Config struct {
 	Port         string `env:"PORT" envDefault:"80"`
 	Database_url string `env:"DATABASE_URL" envDefult:""`
 	ProjectID    string `env:"PROJECTID" envDefault:""`
-	SentryDSN    string `env:"SENTRY_DSN" envDefault:""`
-	GeminiAPIKey string `env:"GEMINI_API_KEY" envDefault:""`
-	GeminiModel  string `env:"GEMINI_MODEL" envDefault:"gemini-2.0-flash-exp"`
+	SentryDSN              string `env:"SENTRY_DSN" envDefault:""`
+	GeminiAPIKey           string `env:"GEMINI_API_KEY" envDefault:""`
+	GeminiModel            string `env:"GEMINI_MODEL" envDefault:"gemini-2.0-flash-exp"`
+	PyroscopeServerAddress string `env:"PYROSCOPE_SERVER_ADDRESS" envDefault:""`
+	PyroscopeAPIKey        string `env:"PYROSCOPE_API_KEY" envDefault:""`
 }
 
 func New() (*Config, error) {
