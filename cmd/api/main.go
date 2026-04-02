@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"mh-api/internal/presenter"
 	"mh-api/pkg/config"
 	"time"
@@ -48,10 +49,17 @@ func main() {
 		defer sentry.Flush(2 * time.Second)
 	}
 
-	s, err := presenter.NewServer()
+	s, otelShutdown, err := presenter.NewServer()
 	if err != nil {
 		panic(err)
 	}
+
+	// OpenTelemetryのシャットダウン処理
+	defer func() {
+		if err := otelShutdown(context.Background()); err != nil {
+			panic(err)
+		}
+	}()
 
 	if err := s.Run(); err != nil {
 		panic(err)

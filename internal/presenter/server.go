@@ -5,15 +5,13 @@ import (
 	di "mh-api/internal/DI"
 	"mh-api/internal/presenter/middleware"
 	"mh-api/pkg/config"
+	"mh-api/pkg/otel"
 
 	"github.com/gin-gonic/gin"
 	"go.opentelemetry.io/contrib/instrumentation/github.com/gin-gonic/gin/otelgin"
-	"go.opentelemetry.io/contrib/propagators/autoprop"
-	"go.opentelemetry.io/otel"
-	"go.opentelemetry.io/otel/sdk/trace"
 )
 
-func NewServer() (*gin.Engine, error) {
+func NewServer() (*gin.Engine, func(context.Context) error, error) {
 	ctx := context.Background()
 	r := gin.New()
 	cfg, _ := config.New()
@@ -21,10 +19,11 @@ func NewServer() (*gin.Engine, error) {
 		gin.SetMode(gin.ReleaseMode)
 	}
 
-	tp := trace.NewTracerProvider()
-	defer tp.Shutdown(ctx)
-	otel.SetTracerProvider(tp)
-	otel.SetTextMapPropagator(autoprop.NewTextMapPropagator())
+	// OpenTelemetry SDK設定
+	otelShutdown, err := otel.SetupOTelSDK(ctx, "mh-api")
+	if err != nil {
+		return nil, nil, err
+	}
 
 	// ロガー設定
 	middleware.New()
@@ -93,5 +92,5 @@ func NewServer() (*gin.Engine, error) {
 		armors.GET("", armorHandler.GetAllArmors)
 		armors.GET("/:id", armorHandler.GetArmorByID)
 	}
-	return r, nil
+	return r, otelShutdown, nil
 }
