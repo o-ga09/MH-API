@@ -11,7 +11,6 @@ import (
 	"mh-api/pkg/validator"
 	"net/http"
 
-	"github.com/getsentry/sentry-go"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
@@ -42,10 +41,6 @@ func NewMonsterHandler(s monsters.IMonsterService) *MonsterHandler {
 // @Router /monsters [get]
 func (m *MonsterHandler) GetAll(c *gin.Context) {
 	ctx := c.Request.Context()
-
-	span := sentry.StartSpan(ctx, "handler.GetAll")
-	span.Description = "GetAll"
-	defer span.Finish()
 
 	var param RequestParam
 	err := c.ShouldBindQuery(&param)
@@ -164,10 +159,6 @@ func (m *MonsterHandler) GetAll(c *gin.Context) {
 func (m *MonsterHandler) GetById(c *gin.Context) {
 	// トレーシング用のスパンを作成（親トランザクションの子スパンとして）
 	ctx := c.Request.Context()
-
-	span := sentry.StartSpan(ctx, "handler.GetById")
-	span.SetTag("handler", "monsterHandler")
-	defer span.Finish()
 
 	id, ok := c.Params.Get("id")
 	if !ok {

@@ -9,7 +9,7 @@ type Config struct {
 	Port         string `env:"PORT" envDefault:"80"`
 	Database_url string `env:"DATABASE_URL" envDefult:""`
 	ProjectID    string `env:"PROJECTID" envDefault:""`
-	SentryDSN    string `env:"SENTRY_DSN" envDefault:""`
+	OtelExporterOtlpEndpoint string `env:"OTEL_EXPORTER_OTLP_ENDPOINT" envDefault:"localhost:4317"`
 	GeminiAPIKey string `env:"GEMINI_API_KEY" envDefault:""`
 	GeminiModel  string `env:"GEMINI_MODEL" envDefault:"gemini-2.0-flash-exp"`
 }
