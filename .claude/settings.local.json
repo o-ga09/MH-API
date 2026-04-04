@@ -1,0 +1,60 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(go test*)",
+      "Bash(go build*)",
+      "Bash(go run*)",
+      "Bash(go vet*)",
+      "Bash(go generate*)",
+      "Bash(go mod*)",
+      "Bash(go list*)",
+      "Bash(go env*)",
+      "Bash(make*)",
+      "Bash(docker compose up*)",
+      "Bash(docker compose down*)",
+      "Bash(docker compose ps*)",
+      "Bash(docker compose logs*)",
+      "Bash(golangci-lint*)",
+      "Bash(git status*)",
+      "Bash(git log*)",
+      "Bash(git diff*)",
+      "Bash(git branch*)",
+      "Bash(git show*)",
+      "Bash(git fetch*)",
+      "Bash(git pull*)",
+      "Bash(gh pr list*)",
+      "Bash(gh pr view*)",
+      "Bash(gh issue list*)",
+      "Bash(gh issue view*)",
+      "Bash(gh run list*)",
+      "Bash(gh run view*)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cmd=$(jq -r '.tool_input.command'); case \"$cmd\" in 'git commit'*) docker compose up -d mh-api-dbsrv01 2>/dev/null; make test >&2 || echo '{\"continue\":false,\"stopReason\":\"Tests failed. Check make test output.\"}';; esac",
+            "timeout": 180,
+            "statusMessage": "Running tests before commit..."
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "f=$(jq -r '.tool_input.file_path // empty'); [ -n \"$f\" ] && [ \"${f##*.}\" = go ] && gofmt -w \"$f\" 2>/dev/null; true",
+            "statusMessage": "Running gofmt..."
+          }
+        ]
+      }
+    ]
+  }
+}
