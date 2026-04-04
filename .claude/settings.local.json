@@ -1,5 +1,12 @@
 {
+  "language": "japanese",
   "permissions": {
+    "deny": [
+      "Bash(git push --force*)",
+      "Bash(git push -f*)",
+      "Bash(rm -rf*)",
+      "Bash(docker compose down -v*)"
+    ],
     "allow": [
       "Bash(go test*)",
       "Bash(go build*)",
@@ -50,8 +57,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "f=$(jq -r '.tool_input.file_path // empty'); [ -n \"$f\" ] && [ \"${f##*.}\" = go ] && gofmt -w \"$f\" 2>/dev/null; true",
-            "statusMessage": "Running gofmt..."
+            "command": "f=$(jq -r '.tool_input.file_path // empty'); [ -n \"$f\" ] && [ \"${f##*.}\" = go ] && gofmt -w \"$f\" 2>/dev/null && go vet ./$(dirname \"$f\")/... >&2; true",
+            "statusMessage": "Running gofmt and go vet..."
           }
         ]
       }
