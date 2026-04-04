@@ -70,6 +70,29 @@ go test ./internal/service/monsters/... -run TestGetMonsters
 - 外部制約を持つテーブルのテストデータは、関連テーブルのデータも合わせて作成すること
 - `pkg` 配下の共通処理を適宜利用すること
 
+### ゴールデンファイルの更新
+
+ゴールデンテストの期待値（`testdata/`以下の`.golden`ファイル）を更新する場合:
+
+```bash
+go test ./internal/controller/... -update
+```
+
+### モック再生成のタイミング
+
+`domain/` 配下のインターフェース定義を変更した場合は必ず実行すること:
+
+```bash
+make generate
+```
+
+## マイグレーション運用規約
+
+- DBスキーマ変更時は必ず専用ファイルを作成すること(`make migrate-new name=<name>`)
+- 適用後は `make migrate-status` で状態確認
+- ロールバックが必要な場合は `make migrate-down`（`docker compose down -v` は**使用しないこと**）
+- マイグレーション適用後にシードが必要な場合は `make seed`
+
 ## プルリクエスト作成規約
 
 - ベースブランチは `main` に固定
