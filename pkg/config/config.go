@@ -7,7 +7,7 @@ import (
 type Config struct {
 	Env          string `env:"ENV" envDefault:"dev"`
 	Port         string `env:"PORT" envDefault:"80"`
-	Database_url string `env:"DATABASE_URL" envDefult:""`
+	Database_url string `env:"DATABASE_URL" envDefault:""`
 	ProjectID    string `env:"PROJECTID" envDefault:""`
 	SentryDSN              string `env:"SENTRY_DSN" envDefault:""`
 	GeminiAPIKey           string `env:"GEMINI_API_KEY" envDefault:""`

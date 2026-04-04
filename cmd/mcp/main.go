@@ -34,7 +34,8 @@ func main() {
 		log.Fatalf("Failed to load configuration: %v", err)
 	}
 
-	profiler.StartPyroscope(cfg, "mh-mcp")
+	stopProfiler := profiler.StartPyroscope(cfg, "mh-mcp")
+	defer stopProfiler()
 
 	monsterRepo := mysql.NewMonsterRepository()
 	monsterQS := mysql.NewmonsterQueryService()

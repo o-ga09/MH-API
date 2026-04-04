@@ -14,7 +14,8 @@ func main() {
 		log.Fatalf("Failed to load configuration: %v", err)
 	}
 
-	profiler.StartPyroscope(cfg, "mh-agent")
+	stopProfiler := profiler.StartPyroscope(cfg, "mh-agent")
+	defer stopProfiler()
 
 	if cfg.GeminiAPIKey == "" {
 		log.Fatal("GEMINI_API_KEY environment variable is required")

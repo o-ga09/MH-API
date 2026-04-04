@@ -24,7 +24,8 @@ func main() {
 		panic(err)
 	}
 
-	profiler.StartPyroscope(cfg, "mh-api")
+	stopProfiler := profiler.StartPyroscope(cfg, "mh-api")
+	defer stopProfiler()
 
 	if cfg.Env == "PROD" || cfg.Env == "STAGE" {
 		// Sentryの初期化設定を強化
