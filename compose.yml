@@ -32,6 +32,9 @@ services:
       PORT: 8080
       DATABASE_URL: mh-api:P@ssw0rd@tcp(mh-api-dbsrv01)/mh-api?charset=utf8&parseTime=True&loc=Local
       ALLOW_URL: "*"
+      OTEL_EXPORTER_OTLP_ENDPOINT: tempo:4317
+      OTEL_EXPORTER_OTLP_INSECURE: "true"
+      PYROSCOPE_SERVER_ADDRESS: http://pyroscope:4040
     volumes:
       - ./:/app
     ports:
@@ -71,5 +74,57 @@ services:
     volumes:
       - ./:/app
     command: air -c .air.agent.toml
+
+  # ----- Observability Stack (local dev) -----
+  tempo:
+    image: grafana/tempo:latest
+    container_name: mh-tempo
+    command: ["-config.file=/etc/tempo.yml"]
+    volumes:
+      - ./docker/tempo.yml:/etc/tempo.yml
+      - mh-tempo-data:/var/tempo
+    ports:
+      - "3200:3200"   # Tempo HTTP API
+      - "4317:4317"   # OTLP gRPC
+      - "4318:4318"   # OTLP HTTP
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: mh-prometheus
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --web.enable-lifecycle
+    volumes:
+      - ./docker/prometheus.yml:/etc/prometheus/prometheus.yml
+      - mh-prometheus-data:/prometheus
+    ports:
+      - "9090:9090"
+
+  pyroscope:
+    image: grafana/pyroscope:latest
+    container_name: mh-pyroscope
+    ports:
+      - "4040:4040"
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: mh-grafana
+    environment:
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Admin
+      GF_AUTH_DISABLE_LOGIN_FORM: "true"
+    volumes:
+      - ./docker/grafana/provisioning:/etc/grafana/provisioning
+      - mh-grafana-data:/var/lib/grafana
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+      - tempo
+
 volumes:
   mh-api-dbsrv01-data:
+  mh-tempo-data:
+  mh-prometheus-data:
+  mh-grafana-data:
