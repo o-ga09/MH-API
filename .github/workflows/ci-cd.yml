@@ -1,0 +1,194 @@
+name: CI/CD
+
+on:
+  push:
+    branches:
+      - "main"
+    tags:
+      - "v*"
+  pull_request:
+    paths:
+      - "terraform/**"
+      - ".github/workflows/ci-cd.yml"
+  workflow_dispatch:
+
+env:
+  GCP_PROJECT_NUMBER: ${{ secrets.GCP_PROJECT_NUMBER }}
+  API_IMAGE: asia-northeast1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/mh-api/mh-api:${{ github.sha }}
+  MCP_IMAGE: asia-northeast1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/mh-api/mh-mcp:${{ github.sha }}
+  AGENT_IMAGE: asia-northeast1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/mh-api/mh-agent:${{ github.sha }}
+  TERRAFORM_SERVICE_ACCOUNT: ${{ secrets.TERRAFORM_SERVICE_ACCOUNT }}
+  TF_VAR_service_name: mh-api
+  TF_VAR_image_tag: ${{ github.sha }}
+  TF_VAR_project_id: ${{ secrets.GCP_PROJECT_ID }}
+
+jobs:
+  # ---------------------------------------------------------------
+  # Dockerイメージのビルド＆push（PRは除外）
+  # ---------------------------------------------------------------
+  build-and-push:
+    name: Build and Push Container Images
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: "projects/${{ env.GCP_PROJECT_NUMBER }}/locations/global/workloadIdentityPools/terraform-pool/providers/terraform-provider"
+          service_account: "${{ env.TERRAFORM_SERVICE_ACCOUNT }}"
+
+      - name: Configure Docker for Artifact Registry
+        run: gcloud auth configure-docker asia-northeast1-docker.pkg.dev
+
+      - name: Build and Push API Image
+        run: |
+          docker build --platform linux/amd64 -t ${{ env.API_IMAGE }} -f Dockerfile --target deploy-api .
+          docker push ${{ env.API_IMAGE }}
+
+      - name: Build and Push MCP Image
+        run: |
+          docker build --platform linux/amd64 -t ${{ env.MCP_IMAGE }} -f Dockerfile --target deploy-mcp .
+          docker push ${{ env.MCP_IMAGE }}
+
+      - name: Build and Push Agent Image
+        run: |
+          docker build --platform linux/amd64 -t ${{ env.AGENT_IMAGE }} -f Dockerfile --target deploy-agent .
+          docker push ${{ env.AGENT_IMAGE }}
+
+  # ---------------------------------------------------------------
+  # Cloud Run向け Terraform（PRはplan、タグ/dispatchはapply）
+  # ---------------------------------------------------------------
+  deploy-cloudrun:
+    name: Deploy to Cloud Run (Terraform)
+    needs: build-and-push
+    if: |
+      always() &&
+      needs.build-and-push.result != 'failure' &&
+      (
+        github.event_name == 'pull_request' ||
+        (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')) ||
+        github.event_name == 'workflow_dispatch'
+      )
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+      pull-requests: write
+    defaults:
+      run:
+        working-directory: ./terraform
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: "projects/${{ env.GCP_PROJECT_NUMBER }}/locations/global/workloadIdentityPools/terraform-pool/providers/terraform-provider"
+          service_account: "${{ env.TERRAFORM_SERVICE_ACCOUNT }}"
+
+      - uses: hashicorp/setup-terraform@v2
+
+      - name: Terraform fmt
+        id: fmt
+        run: terraform fmt -check -recursive
+        continue-on-error: true
+
+      - name: Terraform Init
+        id: init
+        run: terraform init
+
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate -no-color
+
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan -no-color
+        continue-on-error: true
+
+      - name: Comment Terraform Plan
+        uses: actions/github-script@v6
+        if: github.event_name == 'pull_request'
+        env:
+          PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const output = `#### Terraform Format and Style \`${{ steps.fmt.outcome }}\`
+            #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
+            #### Terraform Validation \`${{ steps.validate.outcome }}\`
+            <details><summary>Validation Output</summary>
+
+            \`\`\`\n
+            ${{ steps.validate.outputs.stdout }}
+            \`\`\`
+            </details>
+            #### Terraform Plan \`${{ steps.plan.outcome }}\`
+            <details><summary>Show Plan</summary>
+
+            \`\`\`\n
+            ${process.env.PLAN}
+            \`\`\`
+            </details>
+            *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Workflow: \`${{ github.workflow }}\`*`;
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            })
+
+      - name: Terraform Plan Status
+        if: steps.plan.outcome == 'failure'
+        run: exit 1
+
+      - name: Terraform Apply
+        if: |
+          github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v') ||
+          github.event_name == 'workflow_dispatch'
+        run: terraform apply -auto-approve -input=false
+
+  # ---------------------------------------------------------------
+  # K8s向け（ArgoCD）マニフェスト更新（PRは除外）
+  # ---------------------------------------------------------------
+  update-k8s-manifest:
+    name: Update Kubernetes Manifests (ArgoCD)
+    needs: build-and-push
+    if: needs.build-and-push.result == 'success'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout infra repository
+        uses: actions/checkout@v4
+        with:
+          repository: o-ga09/infra
+          token: ${{ secrets.GH_PAT }}
+
+      - name: Update image tags
+        env:
+          GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+          SHA: ${{ github.sha }}
+        run: |
+          REGISTRY="asia-northeast1-docker.pkg.dev/${GCP_PROJECT_ID}/mh-api"
+          sed -i "s|${REGISTRY}/mh-api:.*|${REGISTRY}/mh-api:${SHA}|" manifests/mh-api/deployments.yaml
+          sed -i "s|${REGISTRY}/mh-mcp:.*|${REGISTRY}/mh-mcp:${SHA}|" manifests/mh-api/mcp-deployment.yaml
+          sed -i "s|${REGISTRY}/mh-agent:.*|${REGISTRY}/mh-agent:${SHA}|" manifests/mh-api/agent-deployment.yaml
+
+      - name: Commit and Push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add manifests/mh-api/
+          git diff --cached --quiet || git commit -m "chore: update mh-api image tag to ${{ github.sha }}"
+          git push
