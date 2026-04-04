@@ -13,6 +13,7 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 	"gorm.io/gorm/schema"
+	"gorm.io/plugin/opentelemetry/tracing"
 )
 
 type ctxKey string
@@ -39,7 +40,11 @@ func New(ctx context.Context) context.Context {
 			},
 			Logger: logger.Default.LogMode(logger.Info),
 		})
-		if err != nil {
+		if err == nil {
+			if err := db.Use(tracing.NewPlugin()); err != nil {
+				log.Printf("failed to use tracing plugin: %v", err)
+			}
+		} else {
 			ctx = connect(ctx, dialector)
 		}
 
@@ -67,6 +72,9 @@ func connect(ctx context.Context, dialector gorm.Dialector) context.Context {
 			},
 			Logger: logger.Default.LogMode(logger.Info),
 		}); err == nil {
+			if err := db.Use(tracing.NewPlugin()); err != nil {
+				log.Printf("failed to use tracing plugin: %v", err)
+			}
 			return context.WithValue(ctx, CtxKey, db)
 		}
 		time.Sleep(5 * time.Second)
