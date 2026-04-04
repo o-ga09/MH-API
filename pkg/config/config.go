@@ -7,6 +7,7 @@ import (
 type Config struct {
 	Env                      string `env:"ENV" envDefault:"dev"`
 	Port                     string `env:"PORT" envDefault:"80"`
+	MetricsPort              string `env:"METRICS_PORT" envDefault:"9090"`
 	Database_url             string `env:"DATABASE_URL" envDefault:""`
 	ProjectID                string `env:"PROJECTID" envDefault:""`
 	OtelExporterOtlpEndpoint string `env:"OTEL_EXPORTER_OTLP_ENDPOINT" envDefault:"localhost:4317"`
