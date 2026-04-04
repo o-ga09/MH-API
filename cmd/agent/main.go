@@ -5,6 +5,7 @@ import (
 
 	"mh-api/internal/agent"
 	"mh-api/pkg/config"
+	"mh-api/pkg/profiler"
 )
 
 func main() {
@@ -12,6 +13,9 @@ func main() {
 	if err != nil {
 		log.Fatalf("Failed to load configuration: %v", err)
 	}
+
+	stopProfiler := profiler.StartPyroscope(cfg, "mh-agent")
+	defer stopProfiler()
 
 	if cfg.GeminiAPIKey == "" {
 		log.Fatal("GEMINI_API_KEY environment variable is required")

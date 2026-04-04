@@ -4,6 +4,7 @@ import (
 	"context"
 	"mh-api/internal/presenter"
 	"mh-api/pkg/config"
+	"mh-api/pkg/profiler"
 	"mh-api/pkg/telemetry"
 	"time"
 )
@@ -30,13 +31,16 @@ func main() {
 		panic(err)
 	}
 	defer func() {
-		// シャットダウン時は独立したタイムアウト付き context を使う
 		shutdownCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 		defer cancel()
 		if err := shutdown(shutdownCtx); err != nil {
 			panic(err)
 		}
 	}()
+
+	// Pyroscopeプロファイラの初期化
+	stopProfiler := profiler.StartPyroscope(cfg, "mh-api")
+	defer stopProfiler()
 
 	s, err := presenter.NewServer()
 	if err != nil {

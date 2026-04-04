@@ -7,7 +7,7 @@ import (
 type Config struct {
 	Env                      string `env:"ENV" envDefault:"dev"`
 	Port                     string `env:"PORT" envDefault:"80"`
-	Database_url             string `env:"DATABASE_URL" envDefult:""`
+	Database_url             string `env:"DATABASE_URL" envDefault:""`
 	ProjectID                string `env:"PROJECTID" envDefault:""`
 	OtelExporterOtlpEndpoint string `env:"OTEL_EXPORTER_OTLP_ENDPOINT" envDefault:"localhost:4317"`
 	// OtelInsecure: trueにすると TLS なしで OTLP エンドポイントへ接続する (ローカル・内部NW向け)
@@ -15,6 +15,8 @@ type Config struct {
 	OtelInsecure             bool   `env:"OTEL_EXPORTER_OTLP_INSECURE" envDefault:"true"`
 	GeminiAPIKey             string `env:"GEMINI_API_KEY" envDefault:""`
 	GeminiModel              string `env:"GEMINI_MODEL" envDefault:"gemini-2.0-flash-exp"`
+	PyroscopeServerAddress   string `env:"PYROSCOPE_SERVER_ADDRESS" envDefault:""`
+	PyroscopeAPIKey          string `env:"PYROSCOPE_API_KEY" envDefault:""`
 }
 
 func New() (*Config, error) {
