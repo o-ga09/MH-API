@@ -9,30 +9,35 @@ import (
 	"go.opentelemetry.io/otel/propagation"
 	"go.opentelemetry.io/otel/sdk/resource"
 	sdktrace "go.opentelemetry.io/otel/sdk/trace"
-	semconv "go.opentelemetry.io/otel/semconv/v1.17.0"
+	semconv "go.opentelemetry.io/otel/semconv/v1.24.0"
 )
 
-func InitTracer(ctx context.Context, serviceName, endpoint string) (func(context.Context) error, error) {
+// InitTracer は OpenTelemetry TracerProvider を初期化し、Grafana Tempo へ OTLP gRPC でエクスポートします。
+// insecure: true の場合 TLS なしで接続します（ローカル・内部 NW 向け）。本番環境では false にしてください。
+func InitTracer(ctx context.Context, serviceName, endpoint string, insecure bool) (func(context.Context) error, error) {
 	res, err := resource.New(ctx,
 		resource.WithAttributes(
-			semconv.ServiceNameKey.String(serviceName),
+			semconv.ServiceName(serviceName),
 		),
 	)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create resource: %w", err)
 	}
 
-	// OTLPエクスポーターの作成
-	// Insecureをデフォルトにする（ローカルや内部ネットワーク想定）
-	exporter, err := otlptracegrpc.New(ctx,
+	// OTLP gRPC エクスポーターの作成
+	opts := []otlptracegrpc.Option{
 		otlptracegrpc.WithEndpoint(endpoint),
-		otlptracegrpc.WithInsecure(),
-	)
+	}
+	if insecure {
+		// ローカル・内部 NW 向け。本番では OTEL_EXPORTER_OTLP_INSECURE=false に設定すること
+		opts = append(opts, otlptracegrpc.WithInsecure())
+	}
+	exporter, err := otlptracegrpc.New(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create trace exporter: %w", err)
 	}
 
-	// TracerProviderの作成
+	// TracerProvider の作成
 	tp := sdktrace.NewTracerProvider(
 		sdktrace.WithBatcher(exporter),
 		sdktrace.WithResource(res),

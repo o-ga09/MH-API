@@ -5,6 +5,7 @@ import (
 	"mh-api/internal/presenter"
 	"mh-api/pkg/config"
 	"mh-api/pkg/telemetry"
+	"time"
 )
 
 //		@title			MH-API
@@ -24,11 +25,18 @@ func main() {
 	}
 
 	// OpenTelemetryの初期化
-	shutdown, err := telemetry.InitTracer(ctx, "mh-api", cfg.OtelExporterOtlpEndpoint)
+	shutdown, err := telemetry.InitTracer(ctx, "mh-api", cfg.OtelExporterOtlpEndpoint, cfg.OtelInsecure)
 	if err != nil {
 		panic(err)
 	}
-	defer shutdown(ctx)
+	defer func() {
+		// シャットダウン時は独立したタイムアウト付き context を使う
+		shutdownCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+		defer cancel()
+		if err := shutdown(shutdownCtx); err != nil {
+			panic(err)
+		}
+	}()
 
 	s, err := presenter.NewServer()
 	if err != nil {
