@@ -38,11 +38,24 @@ func main() {
 		}
 	}()
 
+	// Prometheusメトリクスの初期化
+	shutdownMeter, metricsHandler, err := telemetry.InitMeter(ctx, "mh-api")
+	if err != nil {
+		panic(err)
+	}
+	defer func() {
+		shutdownCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+		defer cancel()
+		if err := shutdownMeter(shutdownCtx); err != nil {
+			panic(err)
+		}
+	}()
+
 	// Pyroscopeプロファイラの初期化
 	stopProfiler := profiler.StartPyroscope(cfg, "mh-api")
 	defer stopProfiler()
 
-	s, err := presenter.NewServer()
+	s, err := presenter.NewServer(metricsHandler)
 	if err != nil {
 		panic(err)
 	}
