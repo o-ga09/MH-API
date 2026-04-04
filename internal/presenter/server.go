@@ -2,7 +2,6 @@ package presenter
 
 import (
 	"context"
-	"net/http"
 	di "mh-api/internal/DI"
 	"mh-api/internal/presenter/middleware"
 	"mh-api/pkg/config"
@@ -11,7 +10,7 @@ import (
 	"go.opentelemetry.io/contrib/instrumentation/github.com/gin-gonic/gin/otelgin"
 )
 
-func NewServer(metricsHandler http.Handler) (*gin.Engine, error) {
+func NewServer() (*gin.Engine, error) {
 	ctx := context.Background()
 	r := gin.New()
 	cfg, _ := config.New()
@@ -35,9 +34,6 @@ func NewServer(metricsHandler http.Handler) (*gin.Engine, error) {
 	r.Use(cors)
 	r.Use(middleware.RequestLogger())
 	r.Use(middleware.WithDB())
-
-	// Prometheus メトリクスエンドポイント（ServiceMonitor / Prometheusスクレイプ対象）
-	r.GET("/metrics", gin.WrapH(metricsHandler))
 
 	// ヘルスチェック
 	v1 := r.Group("/v1")

@@ -2,10 +2,12 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"mh-api/internal/presenter"
 	"mh-api/pkg/config"
 	"mh-api/pkg/profiler"
 	"mh-api/pkg/telemetry"
+	"net/http"
 	"time"
 )
 
@@ -51,11 +53,21 @@ func main() {
 		}
 	}()
 
+	// metrics 専用サーバーを別ポートで起動（APIポートからは /metrics にアクセス不可）
+	metricsMux := http.NewServeMux()
+	metricsMux.Handle("/metrics", metricsHandler)
+	go func() {
+		addr := fmt.Sprintf(":%s", cfg.MetricsPort)
+		if err := http.ListenAndServe(addr, metricsMux); err != nil {
+			panic(err)
+		}
+	}()
+
 	// Pyroscopeプロファイラの初期化
 	stopProfiler := profiler.StartPyroscope(cfg, "mh-api")
 	defer stopProfiler()
 
-	s, err := presenter.NewServer(metricsHandler)
+	s, err := presenter.NewServer()
 	if err != nil {
 		panic(err)
 	}
