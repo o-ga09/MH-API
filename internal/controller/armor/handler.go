@@ -31,7 +31,7 @@ func NewArmorHandler(s IArmorService) *ArmorHandler {
 // @Produce json
 // @Success 200 {object} ListArmorsResponse "防具のリスト"
 // @Failure 500 {object} ErrorResponse "サーバ内部エラー"
-// @Router /skills [get]
+// @Router /armors [get]
 func (h *ArmorHandler) GetAllArmors(c *gin.Context) {
 	appCtx := c.Request.Context()
 
@@ -94,7 +94,7 @@ func (h *ArmorHandler) GetAllArmors(c *gin.Context) {
 // @Failure 400 {object} ErrorResponse "リクエストパラメータが不正な場合"
 // @Failure 404 {object} ErrorResponse "防具が見つからない場合"
 // @Failure 500 {object} ErrorResponse "サーバ内部エラー"
-// @Router /skills/{id} [get]
+// @Router /armors/{id} [get]
 func (h *ArmorHandler) GetArmorByID(c *gin.Context) {
 	appCtx := c.Request.Context()
 

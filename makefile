@@ -1,3 +1,7 @@
+.PHONY: swagger
+swagger:
+	swag init --dir cmd/api,internal/controller/monster,internal/controller/weapon,internal/controller/skill,internal/controller/item,internal/controller/armor --output doc/openapi --outputTypes yaml
+
 .PHONY: lint
 lint:
 	go vet ./...

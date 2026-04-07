@@ -150,12 +150,12 @@ func (m *MonsterHandler) GetAll(c *gin.Context) {
 // @Tags モンスター検索
 // @Accept json
 // @Produce json
-// @Param request path string ture "モンスターID"
+// @Param request path string true "モンスターID"
 // @Success 200 {object} Monster
 // @Failure      400  {object}  MessageResponse
 // @Failure      404  {object}  MessageResponse
 // @Failure      500  {object}  MessageResponse
-// @Router /monsters/:monsterid [get]
+// @Router /monsters/{id} [get]
 func (m *MonsterHandler) GetById(c *gin.Context) {
 	// トレーシング用のスパンを作成（親トランザクションの子スパンとして）
 	ctx := c.Request.Context()

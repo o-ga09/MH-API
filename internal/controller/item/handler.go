@@ -26,7 +26,7 @@ func NewItemHandler(s items.IitemService) *ItemHandler {
 // @Success 200 {object} Items
 // @Failure 400 {object} MessageResponse
 // @Failure 500 {object} MessageResponse
-// @Router /v1/items [get]
+// @Router /items [get]
 func (h *ItemHandler) GetItems(c *gin.Context) {
 	// このエンドポイントではクエリパラメータは必要ないが、将来的にページネーションなどを追加する可能性があるため
 	// バリデーションのフレームワークのみ用意しておく
@@ -49,7 +49,7 @@ func (h *ItemHandler) GetItems(c *gin.Context) {
 // @Failure      400  {object}  MessageResponse
 // @Failure      404  {object}  MessageResponse
 // @Failure      500  {object}  MessageResponse
-// @Router /v1/items/{itemId} [get]
+// @Router /items/{itemId} [get]
 func (h *ItemHandler) GetItem(c *gin.Context) {
 	var req RequestItemByID
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -89,7 +89,7 @@ func (h *ItemHandler) GetItem(c *gin.Context) {
 // @Failure      400  {object}  MessageResponse
 // @Failure      404  {object}  MessageResponse
 // @Failure      500  {object}  MessageResponse
-// @Router /v1/items/monsters/{monsterId} [get]
+// @Router /items/monsters/{monsterId} [get]
 func (h *ItemHandler) GetItemByMonster(c *gin.Context) {
 	// リクエスト構造体にURIパラメータをバインド
 	var req RequestItemByMonster
