@@ -159,7 +159,7 @@ func (s *monsterQueryService) FetchList(ctx context.Context, id string) (*monste
 			"w.lightning = ? OR " +
 			"w.ice = ? OR " +
 			"w.dragon = ?))"
-		
+
 		if where_clade != "" {
 			where_clade += " and " + weaknessJoin
 		} else {
