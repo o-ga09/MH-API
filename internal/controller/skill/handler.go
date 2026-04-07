@@ -28,7 +28,7 @@ func NewSkillHandler(s skills.ISkillService) *SkillHandler {
 // @Success 200 {object} Skills
 // @Failure 400 {object} MessageResponse
 // @Failure 500 {object} MessageResponse
-// @Router /v1/skills [get]
+// @Router /skills [get]
 func (h *SkillHandler) GetSkills(c *gin.Context) {
 	skillsResponse, err := h.service.GetAllSkills(c.Request.Context())
 	if err != nil {
@@ -49,7 +49,7 @@ func (h *SkillHandler) GetSkills(c *gin.Context) {
 // @Failure      400  {object}  MessageResponse
 // @Failure      404  {object}  MessageResponse
 // @Failure      500  {object}  MessageResponse
-// @Router /v1/skills/{skillId} [get]
+// @Router /skills/{skillId} [get]
 func (h *SkillHandler) GetSkill(c *gin.Context) {
 	var req RequestSkillByID
 	if err := c.ShouldBindUri(&req); err != nil {

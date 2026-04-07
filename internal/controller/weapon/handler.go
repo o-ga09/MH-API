@@ -26,14 +26,13 @@ func NewWeaponHandler(s IWeaponService) *WeaponHandler {
 // @Tags Weapons
 // @Accept json
 // @Produce json
-// @Param monster_id query string false "武器ID (完全一致)"
+// @Param weapon_id query string false "武器ID (完全一致)"
 // @Param name query string false "武器名 (部分一致を想定)"
-// @Param name_kana query string false "武器名かな (部分一致を想定)"
 // @Param limit query int false "取得件数" default(20)
 // @Param offset query int false "取得開始位置" default(0)
-// @Param sort query string false "ソート対象フィールド (例: attack, rare)"
+// @Param sort query string false "ソートフィールド (asc/desc)"
 // @Param order query int false "ソート順 (0:昇順, 1:降順)"
-// @Success 200 {object} ListWeaponsResponse "武器のリストとページネーション情報" // response.goで定義したListWeaponsResponse
+// @Success 200 {object} ListWeaponsResponse "武器のリストとページネーション情報"
 // @Failure 400 {object} ErrorResponse "リクエストパラメータが不正な場合"
 // @Failure 500 {object} ErrorResponse "サーバ内部エラー"
 // @Router /weapons [get]

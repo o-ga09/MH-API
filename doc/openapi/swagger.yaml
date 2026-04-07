@@ -1,9 +1,93 @@
 basePath: /v1
 definitions:
+  armor.ArmorDetailResponse:
+    properties:
+      defense:
+        type: integer
+      id:
+        type: string
+      name:
+        type: string
+      required:
+        items:
+          $ref: '#/definitions/armor.RequiredItemResponse'
+        type: array
+      resistance:
+        $ref: '#/definitions/armor.ResistanceResponse'
+      skills:
+        items:
+          $ref: '#/definitions/armor.SkillResponse'
+        type: array
+      slot:
+        type: string
+    type: object
+  armor.ErrorResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  armor.ListArmorsResponse:
+    properties:
+      armors:
+        items:
+          $ref: '#/definitions/armor.ArmorDetailResponse'
+        type: array
+    type: object
+  armor.RequiredItemResponse:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+  armor.ResistanceResponse:
+    properties:
+      dragon:
+        type: integer
+      fire:
+        type: integer
+      ice:
+        type: integer
+      lightning:
+        type: integer
+      water:
+        type: integer
+    type: object
+  armor.SkillResponse:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+    type: object
   item.Item:
     properties:
       item:
         $ref: '#/definitions/item.ResponseJson'
+    type: object
+  item.Items:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/item.ResponseJson'
+        type: array
+      limit:
+        type: integer
+      offset:
+        type: integer
+      total:
+        type: integer
+    type: object
+  item.ItemsByMonster:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/item.Item'
+        type: array
+      monster_id:
+        type: string
+      monster_name:
+        type: string
     type: object
   item.MessageResponse:
     properties:
@@ -67,6 +151,12 @@ definitions:
       category:
         description: モンスターのカテゴリ
         type: string
+      description:
+        description: モンスターの説明
+        type: string
+      element:
+        description: モンスターの属性
+        type: string
       first_weak_attack:
         description: 最有効弱点
         type: string
@@ -86,6 +176,9 @@ definitions:
         type: string
       name:
         description: モンスター名
+        type: string
+      name_en:
+        description: モンスター名（英語）
         type: string
       ranking:
         description: 人気投票ランキング
@@ -136,12 +229,67 @@ definitions:
       water:
         type: string
     type: object
-  weapon.MessageResponse:
+  skill.MessageResponse:
     properties:
       message:
         type: string
     type: object
-  weapon.ResponseJson:
+  skill.ResponseSkill:
+    properties:
+      description:
+        type: string
+      id:
+        type: string
+      level:
+        items:
+          $ref: '#/definitions/skill.ResponseSkillLevel'
+        type: array
+      name:
+        type: string
+    type: object
+  skill.ResponseSkillLevel:
+    additionalProperties:
+      type: string
+    type: object
+  skill.Skill:
+    properties:
+      description:
+        type: string
+      id:
+        type: string
+      level:
+        items:
+          $ref: '#/definitions/skill.ResponseSkillLevel'
+        type: array
+      name:
+        type: string
+    type: object
+  skill.Skills:
+    properties:
+      skills:
+        items:
+          $ref: '#/definitions/skill.ResponseSkill'
+        type: array
+    type: object
+  weapon.ErrorResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  weapon.ListWeaponsResponse:
+    properties:
+      limit:
+        type: integer
+      offset:
+        type: integer
+      total_count:
+        type: integer
+      weapons:
+        items:
+          $ref: '#/definitions/weapon.WeaponDetailResponse'
+        type: array
+    type: object
+  weapon.WeaponDetailResponse:
     properties:
       attack:
         type: string
@@ -149,23 +297,18 @@ definitions:
         type: string
       description:
         type: string
-      elemant_attaxk:
+      element_attack:
         type: string
       image_url:
-        type: string
-      monster_id:
         type: string
       name:
         type: string
       rare:
         type: string
-      shapness:
+      sharpness:
         type: string
-    type: object
-  weapon.Weapon:
-    properties:
-      monster:
-        $ref: '#/definitions/weapon.ResponseJson'
+      weapon_id:
+        type: string
     type: object
 externalDocs:
   description: OpenAPI
@@ -180,32 +323,89 @@ info:
   title: MH-API
   version: v0.1.0
 paths:
-  /items/:itemId:
+  /armors:
+    get:
+      consumes:
+      - application/json
+      description: 全ての防具のリストを返します。
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 防具のリスト
+          schema:
+            $ref: '#/definitions/armor.ListArmorsResponse'
+        "500":
+          description: サーバ内部エラー
+          schema:
+            $ref: '#/definitions/armor.ErrorResponse'
+      summary: 防具一覧を取得します
+      tags:
+      - Armors
+  /armors/{id}:
+    get:
+      consumes:
+      - application/json
+      description: 指定されたIDの防具の詳細を返します。
+      parameters:
+      - description: 防具ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 防具の詳細
+          schema:
+            $ref: '#/definitions/armor.ArmorDetailResponse'
+        "400":
+          description: リクエストパラメータが不正な場合
+          schema:
+            $ref: '#/definitions/armor.ErrorResponse'
+        "404":
+          description: 防具が見つからない場合
+          schema:
+            $ref: '#/definitions/armor.ErrorResponse'
+        "500":
+          description: サーバ内部エラー
+          schema:
+            $ref: '#/definitions/armor.ErrorResponse'
+      summary: 防具詳細を取得します
+      tags:
+      - Armors
+  /items:
+    get:
+      description: 全てのアイテム名とIDの一覧を取得する
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/item.Items'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/item.MessageResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/item.MessageResponse'
+      summary: アイテム名の一覧を取得する
+      tags:
+      - アイテム検索
+  /items/{itemId}:
     get:
       consumes:
       - application/json
       description: アイテムを検索して、条件に合致するアイテムを1件取得する
       parameters:
-      - in: query
-        name: item_name
-        type: string
-      - in: query
-        name: item_name_kana
-        type: string
-      - in: query
-        name: limit
-        type: integer
-      - in: query
-        name: monster_id
-        type: string
-      - in: query
-        name: offset
-        type: integer
-      - in: query
-        name: order
-        type: integer
-      - in: query
-        name: sort
+      - description: アイテムID
+        in: path
+        name: itemId
+        required: true
         type: string
       produces:
       - application/json
@@ -229,6 +429,39 @@ paths:
       summary: アイテム検索（1件）
       tags:
       - アイテム検索
+  /items/monsters/{monsterId}:
+    get:
+      consumes:
+      - application/json
+      description: 指定のアイテムが取得可能なモンスターの一覧
+      parameters:
+      - description: モンスターID
+        in: path
+        name: monsterId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/item.ItemsByMonster'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/item.MessageResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/item.MessageResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/item.MessageResponse'
+      summary: アイテム検索（モンスター別）
+      tags:
+      - アイテム検索
   /monsters:
     get:
       consumes:
@@ -242,12 +475,23 @@ paths:
         name: MonsterName
         type: string
       - in: query
+        name: UsageElement
+        type: string
+      - in: query
+        name: WeaknessElement
+        type: string
+      - in: query
+        minimum: 0
         name: limit
         type: integer
       - in: query
+        minimum: 0
         name: offset
         type: integer
-      - in: query
+      - enum:
+        - asc
+        - desc
+        in: query
         name: sort
         type: string
       produces:
@@ -272,7 +516,7 @@ paths:
       summary: モンスター検索（複数件）
       tags:
       - モンスター検索
-  /monsters/:monsterid:
+  /monsters/{id}:
     get:
       consumes:
       - application/json
@@ -281,6 +525,7 @@ paths:
       - description: モンスターID
         in: path
         name: request
+        required: true
         type: string
       produces:
       - application/json
@@ -304,102 +549,108 @@ paths:
       summary: モンスター検索（1件）
       tags:
       - モンスター検索
+  /skills:
+    get:
+      description: 全てのスキルとその情報の一覧を取得する
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/skill.Skills'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/skill.MessageResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/skill.MessageResponse'
+      summary: スキル一覧を取得する
+      tags:
+      - スキル検索
+  /skills/{skillId}:
+    get:
+      consumes:
+      - application/json
+      description: スキルを検索して、条件に合致するスキルを1件取得する
+      parameters:
+      - description: スキルID
+        in: path
+        name: skillId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/skill.Skill'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/skill.MessageResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/skill.MessageResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/skill.MessageResponse'
+      summary: スキル検索（1件）
+      tags:
+      - スキル検索
   /weapons:
     get:
       consumes:
       - application/json
-      description: 武器を検索して、条件に合致する武器を複数件取得する
+      description: 指定されたクエリパラメータに基づいて武器のリストを返します。
       parameters:
-      - in: query
-        name: limit
-        type: integer
-      - in: query
-        name: monster_id
+      - description: 武器ID (完全一致)
+        in: query
+        name: weapon_id
         type: string
-      - in: query
+      - description: 武器名 (部分一致を想定)
+        in: query
         name: name
         type: string
-      - in: query
-        name: name_kana
-        type: string
-      - in: query
+      - default: 20
+        description: 取得件数
+        in: query
+        name: limit
+        type: integer
+      - default: 0
+        description: 取得開始位置
+        in: query
         name: offset
         type: integer
-      - in: query
-        name: order
-        type: integer
-      - in: query
+      - description: ソートフィールド (asc/desc)
+        in: query
         name: sort
         type: string
+      - description: ソート順 (0:昇順, 1:降順)
+        in: query
+        name: order
+        type: integer
       produces:
       - application/json
       responses:
         "200":
-          description: OK
+          description: 武器のリストとページネーション情報
           schema:
-            $ref: '#/definitions/weapon.Weapon'
+            $ref: '#/definitions/weapon.ListWeaponsResponse'
         "400":
-          description: Bad Request
+          description: リクエストパラメータが不正な場合
           schema:
-            $ref: '#/definitions/weapon.MessageResponse'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/weapon.MessageResponse'
+            $ref: '#/definitions/weapon.ErrorResponse'
         "500":
-          description: Internal Server Error
+          description: サーバ内部エラー
           schema:
-            $ref: '#/definitions/weapon.MessageResponse'
-      summary: 武器検索（複数件）
+            $ref: '#/definitions/weapon.ErrorResponse'
+      summary: 武器リストを検索します (Gin版)
       tags:
-      - 武器検索
-  /weapons/:bgmid:
-    get:
-      consumes:
-      - application/json
-      description: 武器を検索して、条件に合致する武器を1件取得する
-      parameters:
-      - in: query
-        name: limit
-        type: integer
-      - in: query
-        name: monster_id
-        type: string
-      - in: query
-        name: name
-        type: string
-      - in: query
-        name: name_kana
-        type: string
-      - in: query
-        name: offset
-        type: integer
-      - in: query
-        name: order
-        type: integer
-      - in: query
-        name: sort
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/weapon.Weapon'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/weapon.MessageResponse'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/weapon.MessageResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/weapon.MessageResponse'
-      summary: 武器検索（1件）
-      tags:
-      - 武器検索
+      - Weapons
 swagger: "2.0"
