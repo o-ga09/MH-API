@@ -143,24 +143,28 @@ func Test_monsterQueryService_FetchList(t *testing.T) {
 			name:    "DBからモンスターデータを使用属性（Fire）で検索して取得できる",
 			args:    args{id: "", param: param7},
 			want:    []*monsters.FetchMonsterListDto{monster1},
+			wantTotal: 4,
 			wantErr: false,
 		},
 		{
 			name:    "DBからモンスターデータを弱点属性（龍）で検索して取得できる",
 			args:    args{id: "", param: param8},
 			want:    []*monsters.FetchMonsterListDto{monster2, monster1},
+			wantTotal: 4,
 			wantErr: false,
 		},
 		{
 			name:    "DBからモンスターデータを弱点属性（雷）で検索して取得できる",
 			args:    args{id: "", param: param9},
 			want:    []*monsters.FetchMonsterListDto{monster3, monster2, monster1},
+			wantTotal: 4,
 			wantErr: false,
 		},
 		{
 			name:    "DBからモンスターデータを使用属性（Water）と弱点属性（龍）の組み合わせで検索して取得できる",
 			args:    args{id: "", param: param10},
 			want:    []*monsters.FetchMonsterListDto{monster2},
+			wantTotal: 4,
 			wantErr: false,
 		},
 	}
