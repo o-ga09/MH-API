@@ -46,7 +46,7 @@ func (m *MonHunTools) GetTools() ([]tool.Tool, error) {
 	// get_monsters tool
 	getMonstersT, err := functiontool.New(functiontool.Config{
 		Name:        "get_monsters",
-		Description: "モンスターの一覧を取得します。名前やIDでフィルタリングでき、ページネーションもサポートしています。",
+		Description: "モンスターの一覧を取得します。名前・ID・属性（usage_element）・弱点属性（weakness_element）でフィルタリングでき、ページネーションもサポートしています。属性値の例: 火, 水, 雷, 氷, 龍",
 	}, func(ctx tool.Context, args GetMonstersInput) (string, error) {
 		return m.getMonsters(ctx, args)
 	})
@@ -144,11 +144,13 @@ func (m *MonHunTools) GetTools() ([]tool.Tool, error) {
 
 // Input/Output types for tools
 type GetMonstersInput struct {
-	MonsterIDs string `json:"monster_ids,omitempty"`
-	Name       string `json:"name,omitempty"`
-	Sort       string `json:"sort,omitempty"`
-	Offset     int    `json:"offset,omitempty"`
-	Limit      int    `json:"limit,omitempty"`
+	MonsterIDs      string `json:"monster_ids,omitempty"`
+	Name            string `json:"name,omitempty"`
+	UsageElement    string `json:"usage_element,omitempty"`
+	WeaknessElement string `json:"weakness_element,omitempty"`
+	Sort            string `json:"sort,omitempty"`
+	Offset          int    `json:"offset,omitempty"`
+	Limit           int    `json:"limit,omitempty"`
 }
 
 type GetMonsterByIDInput struct {
@@ -199,11 +201,13 @@ func (m *MonHunTools) getMonsters(ctx context.Context, args GetMonstersInput) (s
 	calculatedOffset := offset
 
 	param := request.RequestParam{
-		MonsterIds:  args.MonsterIDs,
-		MonsterName: args.Name,
-		Sort:        sort,
-		Limit:       limit,
-		Offset:      calculatedOffset,
+		MonsterIds:      args.MonsterIDs,
+		MonsterName:     args.Name,
+		UsageElement:    args.UsageElement,
+		WeaknessElement: args.WeaknessElement,
+		Sort:            sort,
+		Limit:           limit,
+		Offset:          calculatedOffset,
 	}
 	ctx = context.WithValue(ctx, "param", param)
 
