@@ -186,9 +186,9 @@ func (s *monsterQueryService) FetchList(ctx context.Context, id string) (*monste
 		Preload("BGM")
 
 	if id != "" {
-		query.Where("monster_id = ? ", id)
+		query = query.Where("monster_id = ? ", id)
 	} else if where_clade != "" {
-		query.Where(where_clade, whereArgs...)
+		query = query.Where(where_clade, whereArgs...)
 	}
 
 	result = query.
@@ -208,7 +208,13 @@ func (s *monsterQueryService) FetchList(ctx context.Context, id string) (*monste
 	}
 
 	var total int64
-	CtxFromDB(ctx).Model(&Monster{}).Count(&total)
+	countQuery := CtxFromDB(ctx).Model(&Monster{})
+	if id != "" {
+		countQuery = countQuery.Where("monster_id = ?", id)
+	} else if where_clade != "" {
+		countQuery = countQuery.Where(where_clade, whereArgs...)
+	}
+	countQuery.Count(&total)
 
 	return &monsters.FetchMonsterListResult{
 		Monsters: res,
