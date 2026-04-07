@@ -6,9 +6,10 @@ import (
 	"mh-api/internal/service/monsters"
 	"testing"
 
+	"context"
+
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"golang.org/x/net/context"
 	"gorm.io/gorm"
 )
 
@@ -20,6 +21,14 @@ func Test_monsterQueryService_FetchList(t *testing.T) {
 	defer db.Rollback()
 
 	_ = createMonsterData(t, ctx)
+
+	monsterWithoutTribe := Monster{
+		MonsterId:   "0000000004",
+		Name:        "NoTribeMonster",
+		Description: "This monster has no tribe.",
+	}
+	err := db.Create(&monsterWithoutTribe).Error
+	require.NoError(t, err)
 
 	weak_A := []monsters.Weakness_attack{
 		{PartId: "0001", Slashing: "45", Blow: "45", Bullet: "45"},
@@ -50,6 +59,7 @@ func Test_monsterQueryService_FetchList(t *testing.T) {
 	monster1 := &monsters.FetchMonsterListDto{Id: "0000000001", Name: "リオレウス", Description: "空の王者。", Element: &fireElement, Location: []string{"古代樹の森"}, Category: "飛竜種", Title: []string{"MH"}, FirstWeak_Attack: "頭部", SecondWeak_Attack: "翼", FirstWeak_Element: "龍", SecondWeak_Element: "雷", Weakness_attack: weak_A, Weakness_element: weak_E, Ranking: ranking1, BGM: []music.Music{*bgm1}}
 	monster2 := &monsters.FetchMonsterListDto{Id: "0000000002", Name: "リオレイア", Description: "陸の女王", Element: &waterElement, Location: []string{"古代樹の森"}, Category: "飛竜種", Title: []string{"MH"}, FirstWeak_Attack: "頭部", SecondWeak_Attack: "翼", FirstWeak_Element: "龍", SecondWeak_Element: "雷", Weakness_attack: weak_A, Weakness_element: weak_E, Ranking: ranking2, BGM: []music.Music{*bgm2}}
 	monster3 := &monsters.FetchMonsterListDto{Id: "0000000003", Name: "ティガレックス", Description: "絶対強者", Element: &dragonElement, Location: []string{"古代樹の森"}, Category: "飛竜種", Title: []string{"MH"}, FirstWeak_Attack: "頭部", SecondWeak_Attack: "翼", FirstWeak_Element: "雷", SecondWeak_Element: "水", Weakness_attack: weak_A, Weakness_element: weak_E, Ranking: ranking3, BGM: []music.Music{*bgm3}}
+	monster4 := &monsters.FetchMonsterListDto{Id: "0000000004", Name: "NoTribeMonster", Description: "This monster has no tribe.", Location: nil, Category: "", Title: nil, Weakness_attack: nil, Weakness_element: nil, Ranking: nil, BGM: nil, AnotherName: "", NameEn: "", FirstWeak_Attack: "", SecondWeak_Attack: "", FirstWeak_Element: "", SecondWeak_Element: "", Element: nil}
 
 	param1 := param.RequestParam{MonsterIds: "", MonsterName: "", Limit: 100, Offset: 0, Sort: "1"}
 	param2 := param.RequestParam{MonsterIds: "0000000001,0000000002", MonsterName: "", Limit: 100, Offset: 0, Sort: "1"}
@@ -67,57 +77,67 @@ func Test_monsterQueryService_FetchList(t *testing.T) {
 		param param.RequestParam
 	}
 	tests := []struct {
-		name    string
-		args    args
-		want    []*monsters.FetchMonsterListDto
-		wantErr bool
+		name      string
+		args      args
+		want      []*monsters.FetchMonsterListDto
+		wantTotal int
+		wantErr   bool
 	}{
 		{
-			name:    "DBからモンスターデータを複数件取得できる",
-			args:    args{id: "", param: param1},
-			want:    []*monsters.FetchMonsterListDto{monster3, monster2, monster1},
-			wantErr: false,
+			name:      "DBからモンスターデータを複数件取得できる",
+			args:      args{id: "", param: param1},
+			want:      []*monsters.FetchMonsterListDto{monster4, monster3, monster2, monster1},
+			wantTotal: 4,
+			wantErr:   false,
 		},
 		{
-			name:    "DBからモンスターデータをmonsterIdを複数件指定して取得できる",
-			args:    args{id: "", param: param2},
-			want:    []*monsters.FetchMonsterListDto{monster2, monster1},
-			wantErr: false,
+			name:      "DBからモンスターデータをmonsterIdを複数件指定して取得できる",
+			args:      args{id: "", param: param2},
+			want:      []*monsters.FetchMonsterListDto{monster2, monster1},
+			wantTotal: 4,
+			wantErr:   false,
 		},
 		{
-			name:    "DBからモンスターの名前を部分一致検索で指定して取得できる",
-			args:    args{id: "", param: param3},
-			want:    []*monsters.FetchMonsterListDto{monster1},
-			wantErr: false,
+			name:      "DBからモンスターの名前を部分一致検索で指定して取得できる",
+			args:      args{id: "", param: param3},
+			want:      []*monsters.FetchMonsterListDto{monster1},
+			wantTotal: 4,
+			wantErr:   false,
 		},
 		{
-			name:    "DBからモンスターデータをmonsterIdでソート（昇順）して取得できる",
-			args:    args{id: "", param: param4},
-			want:    []*monsters.FetchMonsterListDto{monster3, monster2, monster1},
-			wantErr: false,
+			name:      "DBからモンスターデータをmonsterIdでソート（昇順）して取得できる",
+			args:      args{id: "", param: param4},
+			want:      []*monsters.FetchMonsterListDto{monster4, monster3, monster2, monster1},
+			wantTotal: 4,
+			wantErr:   false,
 		},
 		{
-			name:    "DBからモンスターデータをmonsterIdでソート（降順）して取得できる",
-			args:    args{id: "", param: param5},
-			want:    []*monsters.FetchMonsterListDto{monster1, monster2, monster3},
-			wantErr: false,
+			name:      "DBからモンスターデータをmonsterIdでソート（降順）して取得できる",
+			args:      args{id: "", param: param5},
+			want:      []*monsters.FetchMonsterListDto{monster1, monster2, monster3, monster4},
+			wantTotal: 4,
+			wantErr:   false,
 		},
 		{
-			name:    "DBからモンスターデータをid指定で1件取得できる",
-			args:    args{id: "0000000002", param: param.RequestParam{}},
-			want:    []*monsters.FetchMonsterListDto{monster2},
-			wantErr: false,
+			name:      "DBからモンスターデータをid指定で1件取得できる",
+			args:      args{id: "0000000002", param: param.RequestParam{}},
+			want:      []*monsters.FetchMonsterListDto{monster2},
+			wantTotal: 4,
+			wantErr:   false,
 		},
 		{
-			name:    "DBからモンスターデータを取得できない場合、NotFoundErrorで返す",
-			args:    args{id: "", param: param.RequestParam{}},
-			want:    nil,
-			wantErr: true},
+			name:      "DBからモンスターデータをmonsterIdとmonsterNameを指定して取得できる",
+			args:      args{id: "", param: param6},
+			want:      []*monsters.FetchMonsterListDto{monster1},
+			wantTotal: 4,
+			wantErr:   false,
+		},
 		{
-			name:    "DBからモンスターデータをmonsterIdとmonsterNameを指定して取得できる",
-			args:    args{id: "", param: param6},
-			want:    []*monsters.FetchMonsterListDto{monster1},
-			wantErr: false,
+			name:      "Tribeがnilのモンスターを取得してもpanicしない",
+			args:      args{id: "0000000004", param: param.RequestParam{}},
+			want:      []*monsters.FetchMonsterListDto{monster4},
+			wantTotal: 4,
+			wantErr:   false,
 		},
 		{
 			name:    "DBからモンスターデータを使用属性（Fire）で検索して取得できる",
@@ -151,9 +171,14 @@ func Test_monsterQueryService_FetchList(t *testing.T) {
 			got, err := s.FetchList(ctx, tt.args.id)
 			assert.True(t, (err != nil) == tt.wantErr)
 
-			assert.True(t, (err != nil) == tt.wantErr)
-			assert.True(t, len(got) == len(tt.want))
-			assert.Equal(t, tt.want, got)
+			if !tt.wantErr {
+				require.NotNil(t, got)
+				assert.Equal(t, tt.wantTotal, got.Total)
+				assert.Equal(t, len(tt.want), len(got.Monsters))
+				assert.Equal(t, tt.want, got.Monsters)
+			} else {
+				assert.Nil(t, got)
+			}
 		})
 	}
 }

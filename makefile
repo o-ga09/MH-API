@@ -56,6 +56,18 @@ run:
 build:
 	go build -o bin/api cmd/api/main.go
 
+.PHONY: build-agent
+build-agent:
+	go build -o bin/agent cmd/agent/main.go
+
+.PHONY: run-agent
+run-agent:
+	go run cmd/agent/main.go
+
+.PHONY: docker-build-agent
+docker-build-agent:
+	docker build -t monhun-agent --target deploy-agent .
+
 .PHONY: compose-up
 compose-up:
 	docker compose up -d mh-api-dbsrv01

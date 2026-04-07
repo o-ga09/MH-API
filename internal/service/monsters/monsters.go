@@ -7,7 +7,7 @@ import (
 
 //go:generate moq -out monsterservice_mock.go . IMonsterService
 type IMonsterService interface {
-	FetchMonsterDetail(ctx context.Context, id string) ([]*FetchMonsterListDto, error)
+	FetchMonsterDetail(ctx context.Context, id string) (*FetchMonsterListResult, error)
 }
 
 type MonsterService struct {
@@ -22,7 +22,7 @@ func NewMonsterService(repo monsters.Repository, qs MonsterQueryService) *Monste
 	}
 }
 
-func (s *MonsterService) FetchMonsterDetail(ctx context.Context, id string) ([]*FetchMonsterListDto, error) {
+func (s *MonsterService) FetchMonsterDetail(ctx context.Context, id string) (*FetchMonsterListResult, error) {
 	res, err := s.qs.FetchList(ctx, id)
 	if err != nil {
 		return nil, err

@@ -70,9 +70,9 @@ func migrationTestData() {
 		log.Fatal(err)
 	}
 	// テーブルのクリーンアップ
-	statements := strings.Split(string(truncateSQL), ";")
+	statements := strings.SplitSeq(string(truncateSQL), ";")
 	// テーブルのクリーンアップ
-	for _, stmt := range statements {
+	for stmt := range statements {
 		// 空の文を除外
 		if strings.TrimSpace(stmt) != "" {
 			if err := testDB.Exec(stmt).Error; err != nil {

@@ -10,6 +10,9 @@ import (
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/mark3labs/mcp-go/server"
 
+	"mh-api/pkg/config"
+	"mh-api/pkg/profiler"
+
 	request "mh-api/internal/controller/monster"
 	"mh-api/internal/database/mysql"
 	"mh-api/internal/service/items"
@@ -26,6 +29,14 @@ type MCPServer struct {
 }
 
 func main() {
+	cfg, err := config.New()
+	if err != nil {
+		log.Fatalf("Failed to load configuration: %v", err)
+	}
+
+	stopProfiler := profiler.StartPyroscope(cfg, "mh-mcp")
+	defer stopProfiler()
+
 	monsterRepo := mysql.NewMonsterRepository()
 	monsterQS := mysql.NewmonsterQueryService()
 	monsterService := monsters.NewMonsterService(monsterRepo, monsterQS)
@@ -84,34 +95,34 @@ func (m *MCPServer) AddTools() []server.ServerTool {
 				Description: "Get a list of all monsters with their details",
 				InputSchema: mcp.ToolInputSchema{
 					Type: "object",
-					Properties: map[string]interface{}{
-						"monster_ids": map[string]interface{}{
+					Properties: map[string]any{
+						"monster_ids": map[string]any{
 							"type":        "string",
 							"description": "Filter by monster ID (optional, can be a comma-separated list of IDs)",
 						},
-						"name": map[string]interface{}{
+						"name": map[string]any{
 							"type":        "string",
 							"description": "Filter by monster name (optional, supports partial matches)",
 						},
-						"usage_element": map[string]interface{}{
+						"usage_element": map[string]any{
 							"type":        "string",
 							"description": "Filter by monster's usage element (optional, e.g., 'Fire', 'Water', 'Lightning', 'Ice', 'Dragon')",
 						},
-						"weakness_element": map[string]interface{}{
+						"weakness_element": map[string]any{
 							"type":        "string",
 							"description": "Filter by monster's weakness element (optional, e.g., 'Fire', 'Water', 'Lightning', 'Ice', 'Dragon')",
 						},
-						"sort": map[string]interface{}{
+						"sort": map[string]any{
 							"type":        "string",
 							"description": "Sort order for the results (optional, 'asc' for ascending, 'desc' for descending, default is 'asc')",
 							"enum":        []string{"asc", "desc"},
 						},
-						"offset": map[string]interface{}{
+						"offset": map[string]any{
 							"type":        "integer",
 							"description": "Offset for pagination (optional, default: 0)",
 							"minimum":     0,
 						},
-						"limit": map[string]interface{}{
+						"limit": map[string]any{
 							"type":        "integer",
 							"description": "Number of items per page (optional, default: 50)",
 							"minimum":     1,
@@ -128,8 +139,8 @@ func (m *MCPServer) AddTools() []server.ServerTool {
 				Description: "Get detailed information about a specific monster by ID",
 				InputSchema: mcp.ToolInputSchema{
 					Type: "object",
-					Properties: map[string]interface{}{
-						"monster_id": map[string]interface{}{
+					Properties: map[string]any{
+						"monster_id": map[string]any{
 							"type":        "string",
 							"description": "The unique identifier of the monster",
 						},
@@ -145,22 +156,22 @@ func (m *MCPServer) AddTools() []server.ServerTool {
 				Description: "Search weapons with various filters",
 				InputSchema: mcp.ToolInputSchema{
 					Type: "object",
-					Properties: map[string]interface{}{
-						"weapon_id": map[string]interface{}{
+					Properties: map[string]any{
+						"weapon_id": map[string]any{
 							"type":        "string",
 							"description": "Filter by weapon ID (optional)",
 						},
-						"name": map[string]interface{}{
+						"name": map[string]any{
 							"type":        "string",
 							"description": "Filter by weapon name (optional)",
 						},
-						"limit": map[string]interface{}{
+						"limit": map[string]any{
 							"type":        "integer",
 							"description": "Number of items to return (optional, default: 50)",
 							"minimum":     1,
 							"maximum":     100,
 						},
-						"offset": map[string]interface{}{
+						"offset": map[string]any{
 							"type":        "integer",
 							"description": "Number of items to skip (optional, default: 0)",
 							"minimum":     0,
@@ -176,7 +187,7 @@ func (m *MCPServer) AddTools() []server.ServerTool {
 				Description: "Get a list of all items",
 				InputSchema: mcp.ToolInputSchema{
 					Type:       "object",
-					Properties: map[string]interface{}{},
+					Properties: map[string]any{},
 				},
 			},
 			Handler: m.getItems,
@@ -188,8 +199,8 @@ func (m *MCPServer) AddTools() []server.ServerTool {
 				Description: "Get detailed information about a specific item by ID",
 				InputSchema: mcp.ToolInputSchema{
 					Type: "object",
-					Properties: map[string]interface{}{
-						"item_id": map[string]interface{}{
+					Properties: map[string]any{
+						"item_id": map[string]any{
 							"type":        "string",
 							"description": "The unique identifier of the item",
 						},
@@ -205,8 +216,8 @@ func (m *MCPServer) AddTools() []server.ServerTool {
 				Description: "Get items that can be obtained from a specific monster",
 				InputSchema: mcp.ToolInputSchema{
 					Type: "object",
-					Properties: map[string]interface{}{
-						"monster_id": map[string]interface{}{
+					Properties: map[string]any{
+						"monster_id": map[string]any{
 							"type":        "string",
 							"description": "The unique identifier of the monster",
 						},
@@ -222,7 +233,7 @@ func (m *MCPServer) AddTools() []server.ServerTool {
 				Description: "Get a list of all skills with their level details",
 				InputSchema: mcp.ToolInputSchema{
 					Type:       "object",
-					Properties: map[string]interface{}{},
+					Properties: map[string]any{},
 				},
 			},
 			Handler: m.getSkills,
@@ -233,8 +244,8 @@ func (m *MCPServer) AddTools() []server.ServerTool {
 				Description: "Get detailed information about a specific skill by ID",
 				InputSchema: mcp.ToolInputSchema{
 					Type: "object",
-					Properties: map[string]interface{}{
-						"skill_id": map[string]interface{}{
+					Properties: map[string]any{
+						"skill_id": map[string]any{
 							"type":        "string",
 							"description": "The unique identifier of the skill",
 						},
@@ -283,7 +294,7 @@ func (m *MCPServer) getMonsters(ctx context.Context, args mcp.CallToolRequest) (
 	if err != nil {
 		return mcp.NewToolResultText(fmt.Sprintf("Error formatting monster data: %v", err)), nil
 	}
-	if len(monsters) == 0 {
+	if len(monsters.Monsters) == 0 {
 		return mcp.NewToolResultText("No monsters found"), nil
 	}
 

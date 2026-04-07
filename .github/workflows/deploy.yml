@@ -1,0 +1,81 @@
+name: Deploy to Kubernetes
+
+on:
+  push:
+    branches:
+      - "main"
+  workflow_dispatch:
+
+env:
+  GCP_PROJECT_NUMBER: ${{ secrets.GCP_PROJECT_NUMBER }}
+  API_IMAGE: asia-northeast1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/mh-api/mh-api:${{ github.sha }}
+  MCP_IMAGE: asia-northeast1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/mh-api/mh-mcp:${{ github.sha }}
+  AGENT_IMAGE: asia-northeast1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/mh-api/mh-agent:${{ github.sha }}
+
+jobs:
+  build-and-push:
+    name: Build and Push Container Images
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: "projects/${{ env.GCP_PROJECT_NUMBER }}/locations/global/workloadIdentityPools/terraform-pool/providers/terraform-provider"
+          service_account: "${{ secrets.TERRAFORM_SERVICE_ACCOUNT }}"
+
+      - name: Configure Docker for Artifact Registry
+        run: gcloud auth configure-docker asia-northeast1-docker.pkg.dev
+
+      - name: Build and Push API Image
+        run: |
+          docker build --platform linux/amd64 -t ${{ env.API_IMAGE }} -f Dockerfile --target deploy-api .
+          docker push ${{ env.API_IMAGE }}
+
+      - name: Build and Push MCP Image
+        run: |
+          docker build --platform linux/amd64 -t ${{ env.MCP_IMAGE }} -f Dockerfile --target deploy-mcp .
+          docker push ${{ env.MCP_IMAGE }}
+
+      - name: Build and Push Agent Image
+        run: |
+          docker build --platform linux/amd64 -t ${{ env.AGENT_IMAGE }} -f Dockerfile --target deploy-agent .
+          docker push ${{ env.AGENT_IMAGE }}
+
+  update-manifest:
+    name: Update Kubernetes Manifests
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout infra repository
+        uses: actions/checkout@v4
+        with:
+          repository: o-ga09/infra
+          token: ${{ secrets.GH_PAT }}
+
+      - name: Update image tags
+        env:
+          GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+          SHA: ${{ github.sha }}
+        run: |
+          REGISTRY="asia-northeast1-docker.pkg.dev/${GCP_PROJECT_ID}/mh-api"
+          sed -i "s|${REGISTRY}/mh-api:.*|${REGISTRY}/mh-api:${SHA}|" manifests/mh-api/deployments.yaml
+          sed -i "s|${REGISTRY}/mh-mcp:.*|${REGISTRY}/mh-mcp:${SHA}|" manifests/mh-api/mcp-deployment.yaml
+          sed -i "s|${REGISTRY}/mh-agent:.*|${REGISTRY}/mh-agent:${SHA}|" manifests/mh-api/agent-deployment.yaml
+
+      - name: Commit and Push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add manifests/mh-api/
+          git diff --cached --quiet || git commit -m "chore: update mh-api image tag to ${{ github.sha }}"
+          git push

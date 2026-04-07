@@ -67,7 +67,7 @@ func TestService_GetAllItems(t *testing.T) {
 				},
 			}
 			mockMonster := &monsters.MonsterQueryServiceMock{
-				FetchListFunc: func(ctx context.Context, monsterID string) ([]*monsters.FetchMonsterListDto, error) {
+				FetchListFunc: func(ctx context.Context, monsterID string) (*monsters.FetchMonsterListResult, error) {
 					return nil, nil
 				},
 			}
@@ -150,7 +150,7 @@ func TestService_GetItemByID(t *testing.T) {
 				},
 			}
 			mockMonster := &monsters.MonsterQueryServiceMock{
-				FetchListFunc: func(ctx context.Context, monsterID string) ([]*monsters.FetchMonsterListDto, error) {
+				FetchListFunc: func(ctx context.Context, monsterID string) (*monsters.FetchMonsterListResult, error) {
 					return nil, nil
 				},
 			}
@@ -239,12 +239,15 @@ func TestService_GetItemByMonsterID(t *testing.T) {
 				},
 			}
 			mockMonster := &monsters.MonsterQueryServiceMock{
-				FetchListFunc: func(ctx context.Context, monsterID string) ([]*monsters.FetchMonsterListDto, error) {
-					return []*monsters.FetchMonsterListDto{
-						{
-							Id:   "0000000001",
-							Name: "リオレウス",
+				FetchListFunc: func(ctx context.Context, monsterID string) (*monsters.FetchMonsterListResult, error) {
+					return &monsters.FetchMonsterListResult{
+						Monsters: []*monsters.FetchMonsterListDto{
+							{
+								Id:   "0000000001",
+								Name: "リオレウス",
+							},
 						},
+						Total: 1,
 					}, nil
 				},
 			}

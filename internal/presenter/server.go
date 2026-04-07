@@ -8,9 +8,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"go.opentelemetry.io/contrib/instrumentation/github.com/gin-gonic/gin/otelgin"
-	"go.opentelemetry.io/contrib/propagators/autoprop"
-	"go.opentelemetry.io/otel"
-	"go.opentelemetry.io/otel/sdk/trace"
 )
 
 func NewServer() (*gin.Engine, error) {
@@ -21,11 +18,6 @@ func NewServer() (*gin.Engine, error) {
 		gin.SetMode(gin.ReleaseMode)
 	}
 
-	tp := trace.NewTracerProvider()
-	defer tp.Shutdown(ctx)
-	otel.SetTracerProvider(tp)
-	otel.SetTextMapPropagator(autoprop.NewTextMapPropagator())
-
 	// ロガー設定
 	middleware.New()
 
@@ -35,16 +27,13 @@ func NewServer() (*gin.Engine, error) {
 	// リクエストタイムアウト設定
 	withCtx := middleware.WithTimeout()
 
-	// Sentry設定
-	sentryMiddleware := middleware.SentryTracingMiddleware(gin.Logger())
-
 	// ミドルウェア設定
 	r.Use(otelgin.Middleware("mh-api"))
+	r.Use(middleware.MetricsMiddleware())
 	r.Use(withCtx)
 	r.Use(cors)
 	r.Use(middleware.RequestLogger())
 	r.Use(middleware.WithDB())
-	r.Use(sentryMiddleware)
 
 	// ヘルスチェック
 	v1 := r.Group("/v1")

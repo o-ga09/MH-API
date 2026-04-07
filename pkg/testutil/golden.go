@@ -30,7 +30,7 @@ func AssertGoldenJSON(t *testing.T, goldenFile string, actual []byte) {
 	require.NoError(t, err)
 
 	// JSON形式に整形して比較
-	var expectedJSON, actualJSON interface{}
+	var expectedJSON, actualJSON any
 	err = json.Unmarshal(expected, &expectedJSON)
 	require.NoError(t, err)
 

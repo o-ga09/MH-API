@@ -1,11 +1,14 @@
 package main
 
 import (
+	"context"
+	"fmt"
 	"mh-api/internal/presenter"
 	"mh-api/pkg/config"
+	"mh-api/pkg/profiler"
+	"mh-api/pkg/telemetry"
+	"net/http"
 	"time"
-
-	"github.com/getsentry/sentry-go"
 )
 
 //		@title			MH-API
@@ -18,35 +21,51 @@ import (
 //	 @externalDocs.description  OpenAPI
 //	 @externalDocs.url          https://swagger.io/resources/open-api/
 func main() {
+	ctx := context.Background()
 	cfg, err := config.New()
 	if err != nil {
 		panic(err)
 	}
 
-	if cfg.Env == "PROD" || cfg.Env == "STAGE" {
-		// Sentryの初期化設定を強化
-		if err := sentry.Init(sentry.ClientOptions{
-			Dsn:              cfg.SentryDSN,
-			EnableTracing:    true,
-			TracesSampleRate: 1.0, // 本番環境では適切な値に調整することを推奨 (0.0-1.0)
-			TracesSampler: func(ctx sentry.SamplingContext) float64 {
-				// SQLクエリを含むトレースは優先的に収集
-				if ctx.Span != nil && (ctx.Span.Op == "db.sql.query" || ctx.Span.Op == "db.sql.exec") {
-					return 1.0
-				}
-				return 1.0 // デフォルトは全トレース取得
-			},
-			Debug:            cfg.Env == "STAGE", // STAGEのみデバッグログを有効化
-			AttachStacktrace: true,               // スタックトレース情報を付加
-			// サービス名を設定
-			ServerName: "mh-api",
-			// 環境名を設定
-			Environment: cfg.Env,
-		}); err != nil {
+	// OpenTelemetryの初期化
+	shutdown, err := telemetry.InitTracer(ctx, "mh-api", cfg.OtelExporterOtlpEndpoint, cfg.OtelInsecure)
+	if err != nil {
+		panic(err)
+	}
+	defer func() {
+		shutdownCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+		defer cancel()
+		if err := shutdown(shutdownCtx); err != nil {
 			panic(err)
 		}
-		defer sentry.Flush(2 * time.Second)
+	}()
+
+	// Prometheusメトリクスの初期化
+	shutdownMeter, metricsHandler, err := telemetry.InitMeter(ctx, "mh-api")
+	if err != nil {
+		panic(err)
 	}
+	defer func() {
+		shutdownCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+		defer cancel()
+		if err := shutdownMeter(shutdownCtx); err != nil {
+			panic(err)
+		}
+	}()
+
+	// metrics 専用サーバーを別ポートで起動（APIポートからは /metrics にアクセス不可）
+	metricsMux := http.NewServeMux()
+	metricsMux.Handle("/metrics", metricsHandler)
+	go func() {
+		addr := fmt.Sprintf(":%s", cfg.MetricsPort)
+		if err := http.ListenAndServe(addr, metricsMux); err != nil {
+			panic(err)
+		}
+	}()
+
+	// Pyroscopeプロファイラの初期化
+	stopProfiler := profiler.StartPyroscope(cfg, "mh-api")
+	defer stopProfiler()
 
 	s, err := presenter.NewServer()
 	if err != nil {

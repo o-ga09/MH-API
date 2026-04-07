@@ -34,7 +34,7 @@ func TestMonsterService_FetchMonsterDetail(t *testing.T) {
 		id  string
 	}
 	type mockValue struct {
-		value []*monsterService.FetchMonsterListDto
+		value *monsterService.FetchMonsterListResult
 		err   error
 	}
 
@@ -60,16 +60,16 @@ func TestMonsterService_FetchMonsterDetail(t *testing.T) {
 		fields    fields
 		args      args
 		mockValue mockValue
-		want      []*monsterService.FetchMonsterListDto
+		want      *monsterService.FetchMonsterListResult
 		wantErr   bool
 	}{
-		{name: "モンスター検索結果を取得する(複数件)", fields: fields{repo: &repo, qs: &qs}, args: args{ctx: ctx, id: ""}, mockValue: mockValue{value: expectedMockValues, err: nil}, want: wantMonsters, wantErr: false},
-		{name: "モンスター検索結果を取得する(1件)", fields: fields{repo: &repo, qs: &qs}, args: args{ctx: ctx, id: "0000000001"}, mockValue: mockValue{value: expectedMockValues, err: nil}, want: wantMonsters, wantErr: false},
+		{name: "モンスター検索結果を取得する(複数件)", fields: fields{repo: &repo, qs: &qs}, args: args{ctx: ctx, id: ""}, mockValue: mockValue{value: &monsterService.FetchMonsterListResult{Monsters: expectedMockValues, Total: 100}, err: nil}, want: &monsterService.FetchMonsterListResult{Monsters: wantMonsters, Total: 100}, wantErr: false},
+		{name: "モンスター検索結果を取得する(1件)", fields: fields{repo: &repo, qs: &qs}, args: args{ctx: ctx, id: "0000000001"}, mockValue: mockValue{value: &monsterService.FetchMonsterListResult{Monsters: expectedMockValues, Total: 1}, err: nil}, want: &monsterService.FetchMonsterListResult{Monsters: wantMonsters, Total: 1}, wantErr: false},
 		{name: "モンスター検索結果を取得できない", fields: fields{repo: &repo, qs: &qs}, args: args{ctx: ctx, id: ""}, mockValue: mockValue{value: nil, err: fmt.Errorf("can not get record")}, want: nil, wantErr: true},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			qs.FetchListFunc = func(ctx context.Context, id string) ([]*monsterService.FetchMonsterListDto, error) {
+			qs.FetchListFunc = func(ctx context.Context, id string) (*monsterService.FetchMonsterListResult, error) {
 				return tt.mockValue.value, tt.mockValue.err
 			}
 			s := monsterService.NewMonsterService(tt.fields.repo, tt.fields.qs)

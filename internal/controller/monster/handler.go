@@ -11,7 +11,6 @@ import (
 	"mh-api/pkg/validator"
 	"net/http"
 
-	"github.com/getsentry/sentry-go"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
@@ -43,10 +42,6 @@ func NewMonsterHandler(s monsters.IMonsterService) *MonsterHandler {
 func (m *MonsterHandler) GetAll(c *gin.Context) {
 	ctx := c.Request.Context()
 
-	span := sentry.StartSpan(ctx, "handler.GetAll")
-	span.Description = "GetAll"
-	defer span.Finish()
-
 	var param RequestParam
 	err := c.ShouldBindQuery(&param)
 	if err != nil {
@@ -71,7 +66,7 @@ func (m *MonsterHandler) GetAll(c *gin.Context) {
 		id = ""
 	}
 	ctx = context.WithValue(ctx, "param", param)
-	res, err := m.monsterService.FetchMonsterDetail(ctx, id)
+	result, err := m.monsterService.FetchMonsterDetail(ctx, id)
 
 	if err == gorm.ErrRecordNotFound {
 		slog.Log(c, constant.SeverityError, "Record Not Found", "error message", err)
@@ -86,7 +81,7 @@ func (m *MonsterHandler) GetAll(c *gin.Context) {
 	}
 
 	monsters := []ResponseJson{}
-	for _, r := range res {
+	for _, r := range result.Monsters {
 		var wa []*Weakness_attack
 		var we []*Weakness_element
 		var ranking []*Ranking
@@ -143,7 +138,7 @@ func (m *MonsterHandler) GetAll(c *gin.Context) {
 		})
 	}
 	response := Monsters{
-		Total:    len(res),
+		Total:    result.Total,
 		Monsters: monsters,
 	}
 	c.JSON(http.StatusOK, response)
@@ -165,10 +160,6 @@ func (m *MonsterHandler) GetById(c *gin.Context) {
 	// トレーシング用のスパンを作成（親トランザクションの子スパンとして）
 	ctx := c.Request.Context()
 
-	span := sentry.StartSpan(ctx, "handler.GetById")
-	span.SetTag("handler", "monsterHandler")
-	defer span.Finish()
-
 	id, ok := c.Params.Get("id")
 	if !ok {
 		slog.Log(c, constant.SeverityError, "path parameter required")
@@ -176,7 +167,7 @@ func (m *MonsterHandler) GetById(c *gin.Context) {
 		return
 	}
 
-	res, err := m.monsterService.FetchMonsterDetail(ctx, id)
+	result, err := m.monsterService.FetchMonsterDetail(ctx, id)
 
 	if err == gorm.ErrRecordNotFound {
 		slog.Log(c, constant.SeverityError, "Record Not Found", "error message", err)
@@ -191,7 +182,7 @@ func (m *MonsterHandler) GetById(c *gin.Context) {
 	}
 
 	monster := ResponseJson{}
-	for _, r := range res {
+	for _, r := range result.Monsters {
 		var wa []*Weakness_attack
 		var we []*Weakness_element
 		var ranking []*Ranking
@@ -231,7 +222,9 @@ func (m *MonsterHandler) GetById(c *gin.Context) {
 		monster = ResponseJson{
 			Id:                 r.Id,
 			Name:               r.Name,
-			AnotherName:        ptr.StrToPtr(r.Description),
+			Description:        ptr.StrToPtr(r.Description),
+			AnotherName:        ptr.StrToPtr(r.AnotherName),
+			NameEn:             ptr.StrToPtr(r.NameEn),
 			Location:           ptr.StrArrayToPtr(r.Location),
 			Category:           r.Category,
 			Title:              ptr.StrArrayToPtr(r.Title),

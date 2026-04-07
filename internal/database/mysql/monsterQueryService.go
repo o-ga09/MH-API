@@ -82,7 +82,7 @@ func MonsterToDTO(m Monster) *monsters.FetchMonsterListDto {
 		AnotherName:        m.AnotherName,
 		NameEn:             m.NameEn,
 		Location:           locations,
-		Category:           m.Tribe.Name_ja,
+		Category:           TribeToDTO(m.Tribe),
 		Title:              titles,
 		FirstWeak_Attack:   firstWeaknessAttack,
 		SecondWeak_Attack:  secondWeaknessAttack,
@@ -96,12 +96,18 @@ func MonsterToDTO(m Monster) *monsters.FetchMonsterListDto {
 	}
 }
 
-func (s *monsterQueryService) FetchList(ctx context.Context, id string) ([]*monsters.FetchMonsterListDto, error) {
+func TribeToDTO(t *Tribe) string {
+	if t == nil {
+		return ""
+	}
+	return t.Name_ja
+}
+
+func (s *monsterQueryService) FetchList(ctx context.Context, id string) (*monsters.FetchMonsterListResult, error) {
 	var monster []Monster
 	var monsterIds []string
 	var result *gorm.DB
 	var p param.RequestParam
-	var err error
 
 	where_clade := ""
 	whereArgs := []interface{}{}
@@ -113,6 +119,10 @@ func (s *monsterQueryService) FetchList(ctx context.Context, id string) ([]*mons
 
 	limit := p.Limit
 	offset := p.Offset
+
+	if limit <= 0 {
+		limit = 100
+	}
 
 	if p.MonsterIds != "" {
 		monsterIds = strings.Split(p.MonsterIds, ",")
@@ -167,18 +177,28 @@ func (s *monsterQueryService) FetchList(ctx context.Context, id string) ([]*mons
 		sort = "CAST(monster_id AS UNSIGNED) ASC"
 	}
 
+	query := CtxFromDB(ctx).
+		Preload("Weakness").
+		Preload("Field").
+		Preload("Tribe").
+		Preload("Product").
+		Preload("Ranking").
+		Preload("BGM")
+
 	if id != "" {
-		result = CtxFromDB(ctx).WithContext(ctx).Model(&monster).Preload("Weakness").Preload("Field").Preload("Tribe").Preload("Product").Preload("Ranking").Preload("BGM").Where("monster_id = ? ", id).Find(&monster)
+		query.Where("monster_id = ? ", id)
 	} else if where_clade != "" {
-		result = CtxFromDB(ctx).WithContext(ctx).Model(&monster).Preload("Weakness").Preload("Field").Preload("Tribe").Preload("Product").Preload("Ranking").Preload("BGM").Where(where_clade, whereArgs...).Limit(limit).Offset(offset).Order(sort).Find(&monster)
-	} else {
-		result = CtxFromDB(ctx).WithContext(ctx).Model(&monster).Preload("Weakness").Preload("Field").Preload("Tribe").Preload("Product").Preload("Ranking").Preload("BGM").Limit(limit).Offset(offset).Order(sort).Find(&monster)
+		query.Where(where_clade, whereArgs...)
 	}
 
+	result = query.
+		Limit(limit).
+		Offset(offset).
+		Order(sort).
+		Find(&monster)
+
 	if result.Error != nil {
-		return nil, err
-	} else if result.RowsAffected == 0 {
-		return nil, gorm.ErrRecordNotFound
+		return nil, result.Error
 	}
 
 	res := []*monsters.FetchMonsterListDto{}
@@ -187,7 +207,13 @@ func (s *monsterQueryService) FetchList(ctx context.Context, id string) ([]*mons
 		res = append(res, dto)
 	}
 
-	return res, err
+	var total int64
+	CtxFromDB(ctx).Model(&Monster{}).Count(&total)
+
+	return &monsters.FetchMonsterListResult{
+		Monsters: res,
+		Total:    int(total),
+	}, nil
 }
 
 func IsPreloadNotFound(monsters *Monster) bool {
