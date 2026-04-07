@@ -13,11 +13,11 @@ type Config struct {
 	OtelExporterOtlpEndpoint string `env:"OTEL_EXPORTER_OTLP_ENDPOINT" envDefault:"localhost:4317"`
 	// OtelInsecure: trueにすると TLS なしで OTLP エンドポイントへ接続する (ローカル・内部NW向け)
 	// 本番環境では false (デフォルト) にして TLS 通信を使うこと
-	OtelInsecure             bool   `env:"OTEL_EXPORTER_OTLP_INSECURE" envDefault:"true"`
-	GeminiAPIKey             string `env:"GEMINI_API_KEY" envDefault:""`
-	GeminiModel              string `env:"GEMINI_MODEL" envDefault:"gemini-2.0-flash-exp"`
-	PyroscopeServerAddress   string `env:"PYROSCOPE_SERVER_ADDRESS" envDefault:""`
-	PyroscopeAPIKey          string `env:"PYROSCOPE_API_KEY" envDefault:""`
+	OtelInsecure           bool   `env:"OTEL_EXPORTER_OTLP_INSECURE" envDefault:"true"`
+	GeminiAPIKey           string `env:"GEMINI_API_KEY" envDefault:""`
+	GeminiModel            string `env:"GEMINI_MODEL" envDefault:"gemini-2.0-flash-exp"`
+	PyroscopeServerAddress string `env:"PYROSCOPE_SERVER_ADDRESS" envDefault:""`
+	PyroscopeAPIKey        string `env:"PYROSCOPE_API_KEY" envDefault:""`
 }
 
 func New() (*Config, error) {

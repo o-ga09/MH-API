@@ -140,32 +140,32 @@ func Test_monsterQueryService_FetchList(t *testing.T) {
 			wantErr:   false,
 		},
 		{
-			name:    "DBからモンスターデータを使用属性（Fire）で検索して取得できる",
-			args:    args{id: "", param: param7},
-			want:    []*monsters.FetchMonsterListDto{monster1},
+			name:      "DBからモンスターデータを使用属性（Fire）で検索して取得できる",
+			args:      args{id: "", param: param7},
+			want:      []*monsters.FetchMonsterListDto{monster1},
 			wantTotal: 4,
-			wantErr: false,
+			wantErr:   false,
 		},
 		{
-			name:    "DBからモンスターデータを弱点属性（龍）で検索して取得できる",
-			args:    args{id: "", param: param8},
-			want:    []*monsters.FetchMonsterListDto{monster2, monster1},
+			name:      "DBからモンスターデータを弱点属性（龍）で検索して取得できる",
+			args:      args{id: "", param: param8},
+			want:      []*monsters.FetchMonsterListDto{monster2, monster1},
 			wantTotal: 4,
-			wantErr: false,
+			wantErr:   false,
 		},
 		{
-			name:    "DBからモンスターデータを弱点属性（雷）で検索して取得できる",
-			args:    args{id: "", param: param9},
-			want:    []*monsters.FetchMonsterListDto{monster3, monster2, monster1},
+			name:      "DBからモンスターデータを弱点属性（雷）で検索して取得できる",
+			args:      args{id: "", param: param9},
+			want:      []*monsters.FetchMonsterListDto{monster3, monster2, monster1},
 			wantTotal: 4,
-			wantErr: false,
+			wantErr:   false,
 		},
 		{
-			name:    "DBからモンスターデータを使用属性（Water）と弱点属性（龍）の組み合わせで検索して取得できる",
-			args:    args{id: "", param: param10},
-			want:    []*monsters.FetchMonsterListDto{monster2},
+			name:      "DBからモンスターデータを使用属性（Water）と弱点属性（龍）の組み合わせで検索して取得できる",
+			args:      args{id: "", param: param10},
+			want:      []*monsters.FetchMonsterListDto{monster2},
 			wantTotal: 4,
-			wantErr: false,
+			wantErr:   false,
 		},
 	}
 	for _, tt := range tests {
@@ -202,7 +202,7 @@ func createMonsterData(t *testing.T, ctx context.Context) []*monsters.FetchMonst
 	fireElement := "Fire"
 	waterElement := "Water"
 	dragonElement := "Dragon"
-	
+
 	monster := []Monster{
 		{MonsterId: "0000000001", Name: "リオレウス", Description: "空の王者。", Element: &fireElement, Field: []*Field{{FieldId: "0001", MonsterId: "0000000001", Name: "古代樹の森", ImageUrl: "images/kodaizyu.png"}}, Tribe: &Tribe{TribeId: "0001", MonsterId: "0000000001", Name_ja: "飛竜種", Name_en: "wibarn", Description: "飛竜種"}, Product: []*Product{{ProductId: "0001", MonsterId: "0000000001", Name: "MH", PublishYear: "2004", TotalSales: "200万本"}}, Weakness: weak1, Ranking: []*Ranking{{MonsterId: "0000000001", Ranking: "1", VoteYear: "2024/3/12"}}},
 		{MonsterId: "0000000002", Name: "リオレイア", Description: "陸の女王", Element: &waterElement, Field: []*Field{{FieldId: "0001", MonsterId: "0000000002", Name: "古代樹の森", ImageUrl: "images/kodaizyu.png"}}, Tribe: &Tribe{TribeId: "0001", MonsterId: "0000000002", Name_ja: "飛竜種", Name_en: "wibarn", Description: "飛竜種"}, Product: []*Product{{ProductId: "0001", MonsterId: "0000000002", Name: "MH", PublishYear: "2004", TotalSales: "200万本"}}, Weakness: weak2, Ranking: []*Ranking{{MonsterId: "0000000002", Ranking: "2", VoteYear: "2024/3/12"}}},
