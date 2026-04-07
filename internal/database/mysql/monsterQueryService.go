@@ -110,6 +110,7 @@ func (s *monsterQueryService) FetchList(ctx context.Context, id string) (*monste
 	var p param.RequestParam
 
 	where_clade := ""
+	whereArgs := []interface{}{}
 	sort := ""
 
 	if id == "" {
@@ -126,12 +127,48 @@ func (s *monsterQueryService) FetchList(ctx context.Context, id string) (*monste
 	if p.MonsterIds != "" {
 		monsterIds = strings.Split(p.MonsterIds, ",")
 		where_clade = "monster_id IN (?)"
+		whereArgs = append(whereArgs, monsterIds)
 	}
 
-	if p.MonsterName != "" && p.MonsterIds != "" {
-		where_clade += " and name LIKE '%" + p.MonsterName + "%' "
-	} else if p.MonsterName != "" {
-		where_clade += " name LIKE '%" + p.MonsterName + "%' "
+	if p.MonsterName != "" {
+		if where_clade != "" {
+			where_clade += " and name LIKE ?"
+		} else {
+			where_clade = "name LIKE ?"
+		}
+		whereArgs = append(whereArgs, "%"+p.MonsterName+"%")
+	}
+
+	// Add usage element search
+	if p.UsageElement != "" {
+		if where_clade != "" {
+			where_clade += " and element = ?"
+		} else {
+			where_clade = "element = ?"
+		}
+		whereArgs = append(whereArgs, p.UsageElement)
+	}
+
+	// Add weakness element search - need to join with Weakness table
+	if p.WeaknessElement != "" {
+		weaknessJoin := " EXISTS (SELECT 1 FROM weakness w WHERE w.monster_id = monster.monster_id AND " +
+			"(w.first_weak_element = ? OR " +
+			"w.second_weak_element = ? OR " +
+			"w.fire = ? OR " +
+			"w.water = ? OR " +
+			"w.lightning = ? OR " +
+			"w.ice = ? OR " +
+			"w.dragon = ?))"
+
+		if where_clade != "" {
+			where_clade += " and " + weaknessJoin
+		} else {
+			where_clade = weaknessJoin
+		}
+		// Add the same value 7 times for the 7 placeholders
+		for i := 0; i < 7; i++ {
+			whereArgs = append(whereArgs, p.WeaknessElement)
+		}
 	}
 
 	if p.Sort == "1" {
@@ -150,10 +187,8 @@ func (s *monsterQueryService) FetchList(ctx context.Context, id string) (*monste
 
 	if id != "" {
 		query.Where("monster_id = ? ", id)
-	} else if where_clade != "" && p.MonsterIds != "" {
-		query.Where(where_clade, monsterIds)
 	} else if where_clade != "" {
-		query.Where(where_clade)
+		query.Where(where_clade, whereArgs...)
 	}
 
 	result = query.
