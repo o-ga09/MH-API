@@ -79,6 +79,12 @@ func Test_monsterRepository_FindAll(t *testing.T) {
 			wantTotal: 2,
 		},
 		{
+			name:      "弱点属性「Dragon」（英語）で検索",
+			params:    monsters.SearchParams{WeaknessElement: "Dragon", Limit: 100},
+			wantIDs:   []string{"0000000001", "0000000002"},
+			wantTotal: 2,
+		},
+		{
 			name:      "使用属性Water＋弱点属性「龍」の複合検索",
 			params:    monsters.SearchParams{UsageElement: "Water", WeaknessElement: "龍", Limit: 100},
 			wantIDs:   []string{"0000000002"},
@@ -151,9 +157,9 @@ func Test_monsterRepository_FindById(t *testing.T) {
 func createMonsterData(t *testing.T, ctx context.Context) {
 	t.Helper()
 
-	fireElement := "Fire"
-	waterElement := "Water"
-	dragonElement := "Dragon"
+	fireElement := "火"
+	waterElement := "水"
+	dragonElement := "龍"
 
 	monsterList := []*monsters.Monster{
 		{MonsterId: "0000000001", Name: "リオレウス", Description: "空の王者。", Element: &fireElement},
