@@ -8,23 +8,21 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"mh-api/internal/service/items"
+	"mh-api/internal/domain/items"
+	"mh-api/internal/domain/monsters"
+	Tribes "mh-api/internal/domain/tribes"
 	"mh-api/pkg/testutil"
 
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 )
 
-// MockNewServer はテスト用のサーバーを初期化する関数
-func MockNewServer(t *testing.T, itemHandler *ItemHandler) *gin.Engine {
+func MockNewServer(t *testing.T, handler *ItemHandler) *gin.Engine {
 	t.Helper()
 	gin.SetMode(gin.TestMode)
-	e := gin.New()
-
-	return e
+	return gin.New()
 }
 
-// SetupRouter はテスト用のルーターを設定する関数
 func (h *ItemHandler) SetupRouter(r *gin.Engine) {
 	r.GET("/v1/items", h.GetItems)
 	r.GET("/v1/items/:itemId", h.GetItem)
@@ -32,49 +30,65 @@ func (h *ItemHandler) SetupRouter(r *gin.Engine) {
 }
 
 func TestItemHandler_GetItems(t *testing.T) {
-	// テストケースを定義
 	tests := []struct {
 		name       string
-		input      map[string]any
-		mock       func() *items.IitemServiceMock
+		mock       func() (items.Repository, monsters.Repository)
 		wantStatus int
 		goldenFile string
 	}{
 		{
-			name:  "正常系：アイテムの一覧が取得できる",
-			input: map[string]any{},
-			mock: func() *items.IitemServiceMock {
-				mock := &items.IitemServiceMock{
-					GetAllItemsFunc: func(ctx context.Context) (*items.ItemListResponseDTO, error) {
-						return &items.ItemListResponseDTO{
-							Items: []items.ItemDTO{
-								{
-									ItemID:   "1",
-									ItemName: "回復薬",
-								},
-								{
-									ItemID:   "2",
-									ItemName: "回復薬グレート",
-								},
-							},
+			name: "正常系：アイテムの一覧が取得できる",
+			mock: func() (items.Repository, monsters.Repository) {
+				itemRepo := &items.RepositoryMock{
+					FindAllFunc: func(ctx context.Context) (items.Items, error) {
+						return items.Items{
+							{ItemId: "1", Name: "回復薬"},
+							{ItemId: "2", Name: "回復薬グレート"},
 						}, nil
 					},
+					FindByIDFunc: func(ctx context.Context, itemID string) (*items.Item, error) {
+						return nil, nil
+					},
+					FindByMonsterIDFunc: func(ctx context.Context, monsterID string) (items.Items, error) {
+						return nil, nil
+					},
 				}
-				return mock
+				monsterRepo := &monsters.RepositoryMock{
+					FindAllFunc: func(ctx context.Context, params monsters.SearchParams) (*monsters.SearchResult, error) {
+						return nil, nil
+					},
+					FindByIdFunc: func(ctx context.Context, id string) (*monsters.Monster, error) {
+						return nil, nil
+					},
+				}
+				return itemRepo, monsterRepo
 			},
 			wantStatus: http.StatusOK,
 			goldenFile: "items/get_items_success.json",
 		},
 		{
-			name:  "異常系：サービスからのエラーが発生",
-			input: map[string]any{},
-			mock: func() *items.IitemServiceMock {
-				mock := &items.IitemServiceMock{
-					GetAllItemsFunc: func(ctx context.Context) (*items.ItemListResponseDTO, error) {
-						return nil, errors.New("service error")
+			name: "異常系：リポジトリでエラーが発生",
+			mock: func() (items.Repository, monsters.Repository) {
+				itemRepo := &items.RepositoryMock{
+					FindAllFunc: func(ctx context.Context) (items.Items, error) {
+						return nil, errors.New("repository error")
+					},
+					FindByIDFunc: func(ctx context.Context, itemID string) (*items.Item, error) {
+						return nil, nil
+					},
+					FindByMonsterIDFunc: func(ctx context.Context, monsterID string) (items.Items, error) {
+						return nil, nil
 					},
 				}
-				return mock
+				monsterRepo := &monsters.RepositoryMock{
+					FindAllFunc: func(ctx context.Context, params monsters.SearchParams) (*monsters.SearchResult, error) {
+						return nil, nil
+					},
+					FindByIdFunc: func(ctx context.Context, id string) (*monsters.Monster, error) {
+						return nil, nil
+					},
+				}
+				return itemRepo, monsterRepo
 			},
 			wantStatus: http.StatusInternalServerError,
 			goldenFile: "items/get_items_error.json",
@@ -83,98 +97,109 @@ func TestItemHandler_GetItems(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			// モックの初期化
-			mock := tt.mock()
+			itemRepo, monsterRepo := tt.mock()
+			handler := NewItemHandler(itemRepo, monsterRepo)
+			r := MockNewServer(t, handler)
+			handler.SetupRouter(r)
 
-			// ハンドラーの初期化
-			itemHandler := NewItemHandler(mock)
-
-			// ルーターの設定
-			r := MockNewServer(t, itemHandler)
-			itemHandler.SetupRouter(r)
-
-			// リクエストの作成
 			w := httptest.NewRecorder()
 			req, _ := http.NewRequest(http.MethodGet, "/v1/items", nil)
-
-			// リクエストの実行
 			r.ServeHTTP(w, req)
 
-			// レスポンスの検証
 			assert.Equal(t, tt.wantStatus, w.Code)
-
-			// ゴールデンファイルとの比較
-			if tt.goldenFile != "" {
-				testutil.AssertGoldenJSON(t, tt.goldenFile, w.Body.Bytes())
-			}
+			testutil.AssertGoldenJSON(t, tt.goldenFile, w.Body.Bytes())
 		})
 	}
 }
 
 func TestItemHandler_GetItem(t *testing.T) {
-	// テストケースを定義
 	tests := []struct {
 		name       string
 		pathParam  string
-		mock       func() *items.IitemServiceMock
+		mock       func() (items.Repository, monsters.Repository)
 		wantStatus int
 		goldenFile string
 	}{
 		{
 			name:      "正常系：アイテムが取得できる",
 			pathParam: "1",
-			mock: func() *items.IitemServiceMock {
-				mock := &items.IitemServiceMock{
-					GetItemByIDFunc: func(ctx context.Context, itemID string) (*items.ItemDTO, error) {
-						return &items.ItemDTO{
-							ItemID:   "1",
-							ItemName: "回復薬",
-						}, nil
+			mock: func() (items.Repository, monsters.Repository) {
+				itemRepo := &items.RepositoryMock{
+					FindAllFunc: func(ctx context.Context) (items.Items, error) {
+						return nil, nil
+					},
+					FindByIDFunc: func(ctx context.Context, itemID string) (*items.Item, error) {
+						return &items.Item{ItemId: "1", Name: "回復薬"}, nil
+					},
+					FindByMonsterIDFunc: func(ctx context.Context, monsterID string) (items.Items, error) {
+						return nil, nil
 					},
 				}
-				return mock
+				monsterRepo := &monsters.RepositoryMock{
+					FindAllFunc: func(ctx context.Context, params monsters.SearchParams) (*monsters.SearchResult, error) {
+						return nil, nil
+					},
+					FindByIdFunc: func(ctx context.Context, id string) (*monsters.Monster, error) {
+						return nil, nil
+					},
+				}
+				return itemRepo, monsterRepo
 			},
 			wantStatus: http.StatusOK,
 			goldenFile: "items/get_item_success.json",
 		},
 		{
-			name:      "異常系：アイテムが見つからない場合（404エラー）",
-			pathParam: "999",
-			mock: func() *items.IitemServiceMock {
-				mock := &items.IitemServiceMock{
-					GetItemByIDFunc: func(ctx context.Context, itemID string) (*items.ItemDTO, error) {
-						return nil, nil
-					},
-				}
-				return mock
-			},
-			wantStatus: http.StatusNotFound,
-			goldenFile: "items/get_item_not_found.json",
-		},
-		{
 			name:      "異常系：アイテムが見つからない場合",
 			pathParam: "999",
-			mock: func() *items.IitemServiceMock {
-				mock := &items.IitemServiceMock{
-					GetItemByIDFunc: func(ctx context.Context, itemID string) (*items.ItemDTO, error) {
+			mock: func() (items.Repository, monsters.Repository) {
+				itemRepo := &items.RepositoryMock{
+					FindAllFunc: func(ctx context.Context) (items.Items, error) {
+						return nil, nil
+					},
+					FindByIDFunc: func(ctx context.Context, itemID string) (*items.Item, error) {
+						return nil, nil
+					},
+					FindByMonsterIDFunc: func(ctx context.Context, monsterID string) (items.Items, error) {
 						return nil, nil
 					},
 				}
-				return mock
+				monsterRepo := &monsters.RepositoryMock{
+					FindAllFunc: func(ctx context.Context, params monsters.SearchParams) (*monsters.SearchResult, error) {
+						return nil, nil
+					},
+					FindByIdFunc: func(ctx context.Context, id string) (*monsters.Monster, error) {
+						return nil, nil
+					},
+				}
+				return itemRepo, monsterRepo
 			},
 			wantStatus: http.StatusNotFound,
 			goldenFile: "items/get_item_not_found.json",
 		},
 		{
-			name:      "異常系：サービスからのエラーが発生",
+			name:      "異常系：リポジトリでエラーが発生",
 			pathParam: "1",
-			mock: func() *items.IitemServiceMock {
-				mock := &items.IitemServiceMock{
-					GetItemByIDFunc: func(ctx context.Context, itemID string) (*items.ItemDTO, error) {
-						return nil, errors.New("service error")
+			mock: func() (items.Repository, monsters.Repository) {
+				itemRepo := &items.RepositoryMock{
+					FindAllFunc: func(ctx context.Context) (items.Items, error) {
+						return nil, nil
+					},
+					FindByIDFunc: func(ctx context.Context, itemID string) (*items.Item, error) {
+						return nil, errors.New("repository error")
+					},
+					FindByMonsterIDFunc: func(ctx context.Context, monsterID string) (items.Items, error) {
+						return nil, nil
 					},
 				}
-				return mock
+				monsterRepo := &monsters.RepositoryMock{
+					FindAllFunc: func(ctx context.Context, params monsters.SearchParams) (*monsters.SearchResult, error) {
+						return nil, nil
+					},
+					FindByIdFunc: func(ctx context.Context, id string) (*monsters.Monster, error) {
+						return nil, nil
+					},
+				}
+				return itemRepo, monsterRepo
 			},
 			wantStatus: http.StatusInternalServerError,
 			goldenFile: "items/get_item_error.json",
@@ -183,113 +208,116 @@ func TestItemHandler_GetItem(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			// モックの初期化
-			mock := tt.mock()
+			itemRepo, monsterRepo := tt.mock()
+			handler := NewItemHandler(itemRepo, monsterRepo)
+			r := MockNewServer(t, handler)
+			handler.SetupRouter(r)
 
-			// ハンドラーの初期化
-			itemHandler := NewItemHandler(mock)
-
-			// ルーターの設定
-			r := MockNewServer(t, itemHandler)
-			itemHandler.SetupRouter(r)
-
-			// リクエストの作成
 			w := httptest.NewRecorder()
-			var req *http.Request
-			req, _ = http.NewRequest(http.MethodGet, fmt.Sprintf("/v1/items/%s", tt.pathParam), nil)
-
-			// リクエストの実行
+			req, _ := http.NewRequest(http.MethodGet, fmt.Sprintf("/v1/items/%s", tt.pathParam), nil)
 			r.ServeHTTP(w, req)
 
-			// レスポンスの検証
 			assert.Equal(t, tt.wantStatus, w.Code)
-
-			// ゴールデンファイルとの比較
-			if tt.goldenFile != "" {
-				testutil.AssertGoldenJSON(t, tt.goldenFile, w.Body.Bytes())
-			}
+			testutil.AssertGoldenJSON(t, tt.goldenFile, w.Body.Bytes())
 		})
 	}
 }
 
 func TestItemHandler_GetItemByMonster(t *testing.T) {
-	// テストケースを定義
 	tests := []struct {
 		name       string
 		pathParam  string
-		mock       func() *items.IitemServiceMock
+		mock       func() (items.Repository, monsters.Repository)
 		wantStatus int
 		goldenFile string
 	}{
 		{
 			name:      "正常系：モンスターIDに紐づくアイテムが取得できる",
 			pathParam: "1",
-			mock: func() *items.IitemServiceMock {
-				mock := &items.IitemServiceMock{
-					GetItemByMonsterIDFunc: func(ctx context.Context, monsterID string) (*items.ItemByMonster, error) {
-						return &items.ItemByMonster{
-							MonsterID:   "1",
-							MonsterName: "イャンクック",
-							Item: []items.ItemDTO{
-								{
-									ItemID:   "1",
-									ItemName: "イャンクックの羽",
-								},
-								{
-									ItemID:   "2",
-									ItemName: "イャンクックの鱗",
-								},
-							},
+			mock: func() (items.Repository, monsters.Repository) {
+				itemRepo := &items.RepositoryMock{
+					FindAllFunc: func(ctx context.Context) (items.Items, error) {
+						return nil, nil
+					},
+					FindByIDFunc: func(ctx context.Context, itemID string) (*items.Item, error) {
+						return nil, nil
+					},
+					FindByMonsterIDFunc: func(ctx context.Context, monsterID string) (items.Items, error) {
+						return items.Items{
+							{ItemId: "1", Name: "イャンクックの羽"},
+							{ItemId: "2", Name: "イャンクックの鱗"},
 						}, nil
 					},
 				}
-				return mock
+				monsterRepo := &monsters.RepositoryMock{
+					FindAllFunc: func(ctx context.Context, params monsters.SearchParams) (*monsters.SearchResult, error) {
+						return nil, nil
+					},
+					FindByIdFunc: func(ctx context.Context, id string) (*monsters.Monster, error) {
+						return &monsters.Monster{
+							MonsterId: "1",
+							Name:      "イャンクック",
+							Tribe:     &Tribes.Tribe{Name_ja: "鳥竜種"},
+						}, nil
+					},
+				}
+				return itemRepo, monsterRepo
 			},
 			wantStatus: http.StatusOK,
 			goldenFile: "items/get_item_by_monster_success.json",
 		},
 		{
-			name:      "異常系：モンスターIDが空の場合",
-			pathParam: "",
-			mock: func() *items.IitemServiceMock {
-				mock := &items.IitemServiceMock{
-					GetItemByMonsterIDFunc: func(ctx context.Context, monsterID string) (*items.ItemByMonster, error) {
-						return nil, errors.New("invalid monster ID")
-					},
-				}
-				return mock
-			},
-			wantStatus: http.StatusInternalServerError,
-			goldenFile: "items/get_item_by_monster_bad_request.json",
-		},
-		{
-			name:      "正常系：アイテムが空の場合",
+			name:      "異常系：アイテムが存在しない場合",
 			pathParam: "999",
-			mock: func() *items.IitemServiceMock {
-				mock := &items.IitemServiceMock{
-					GetItemByMonsterIDFunc: func(ctx context.Context, monsterID string) (*items.ItemByMonster, error) {
-						return &items.ItemByMonster{
-							MonsterID:   "999",
-							MonsterName: "テストモンスター",
-							Item:        []items.ItemDTO{},
-						}, nil
+			mock: func() (items.Repository, monsters.Repository) {
+				itemRepo := &items.RepositoryMock{
+					FindAllFunc: func(ctx context.Context) (items.Items, error) {
+						return nil, nil
+					},
+					FindByIDFunc: func(ctx context.Context, itemID string) (*items.Item, error) {
+						return nil, nil
+					},
+					FindByMonsterIDFunc: func(ctx context.Context, monsterID string) (items.Items, error) {
+						return nil, nil
 					},
 				}
-				return mock
+				monsterRepo := &monsters.RepositoryMock{
+					FindAllFunc: func(ctx context.Context, params monsters.SearchParams) (*monsters.SearchResult, error) {
+						return nil, nil
+					},
+					FindByIdFunc: func(ctx context.Context, id string) (*monsters.Monster, error) {
+						return nil, nil
+					},
+				}
+				return itemRepo, monsterRepo
 			},
-			wantStatus: http.StatusOK,
+			wantStatus: http.StatusNotFound,
 			goldenFile: "items/get_item_by_monster_empty.json",
 		},
 		{
-			name:      "異常系：サービスからのエラーが発生",
+			name:      "異常系：リポジトリでエラーが発生",
 			pathParam: "1",
-			mock: func() *items.IitemServiceMock {
-				mock := &items.IitemServiceMock{
-					GetItemByMonsterIDFunc: func(ctx context.Context, monsterID string) (*items.ItemByMonster, error) {
-						return nil, errors.New("service error")
+			mock: func() (items.Repository, monsters.Repository) {
+				itemRepo := &items.RepositoryMock{
+					FindAllFunc: func(ctx context.Context) (items.Items, error) {
+						return nil, nil
+					},
+					FindByIDFunc: func(ctx context.Context, itemID string) (*items.Item, error) {
+						return nil, nil
+					},
+					FindByMonsterIDFunc: func(ctx context.Context, monsterID string) (items.Items, error) {
+						return nil, errors.New("repository error")
 					},
 				}
-				return mock
+				monsterRepo := &monsters.RepositoryMock{
+					FindAllFunc: func(ctx context.Context, params monsters.SearchParams) (*monsters.SearchResult, error) {
+						return nil, nil
+					},
+					FindByIdFunc: func(ctx context.Context, id string) (*monsters.Monster, error) {
+						return nil, nil
+					},
+				}
+				return itemRepo, monsterRepo
 			},
 			wantStatus: http.StatusInternalServerError,
 			goldenFile: "items/get_item_by_monster_error.json",
@@ -298,39 +326,17 @@ func TestItemHandler_GetItemByMonster(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			// モックの初期化
-			mock := tt.mock()
+			itemRepo, monsterRepo := tt.mock()
+			handler := NewItemHandler(itemRepo, monsterRepo)
+			r := MockNewServer(t, handler)
+			handler.SetupRouter(r)
 
-			// ハンドラーの初期化
-			itemHandler := NewItemHandler(mock)
-
-			// ルーターの設定
-			r := MockNewServer(t, itemHandler)
-			itemHandler.SetupRouter(r)
-
-			// リクエストの作成
 			w := httptest.NewRecorder()
-
-			// リクエストを作成
-			var req *http.Request
-			// 空のパスパラメータの場合はクエリパラメータで処理（リダイレクトを避けるため）
-			if tt.pathParam == "" {
-				// 不正なIDとして空文字列を渡す
-				req, _ = http.NewRequest(http.MethodGet, "/v1/items/monsters/ ", nil)
-			} else {
-				req, _ = http.NewRequest(http.MethodGet, fmt.Sprintf("/v1/items/monsters/%s", tt.pathParam), nil)
-			}
-
-			// リクエストの実行
+			req, _ := http.NewRequest(http.MethodGet, fmt.Sprintf("/v1/items/monsters/%s", tt.pathParam), nil)
 			r.ServeHTTP(w, req)
 
-			// レスポンスの検証
 			assert.Equal(t, tt.wantStatus, w.Code)
-
-			// ゴールデンファイルとの比較
-			if tt.goldenFile != "" {
-				testutil.AssertGoldenJSON(t, tt.goldenFile, w.Body.Bytes())
-			}
+			testutil.AssertGoldenJSON(t, tt.goldenFile, w.Body.Bytes())
 		})
 	}
 }

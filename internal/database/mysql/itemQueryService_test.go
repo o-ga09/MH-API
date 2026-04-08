@@ -3,8 +3,9 @@ package mysql
 import (
 	"context"
 	"errors"
-	"mh-api/internal/domain/items"
 	"testing"
+
+	"mh-api/internal/domain/items"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -18,36 +19,31 @@ func TestItemQueryService_FindAll(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
 
-	// テストデータを準備
 	testItems := createItemData(t, ctx)
 
-	// テストケースを定義
 	tests := []struct {
 		name    string
 		want    int
 		wantErr bool
 	}{
-		{
-			name:    "正常系: アイテムを全件取得できる",
-			want:    3,
-			wantErr: false,
-		},
+		{name: "正常系: アイテムを全件取得できる", want: 3},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			service := &itemQueryService{}
-
 			got, err := service.FindAll(ctx)
 
-			assert.True(t, (err != nil) == tt.wantErr)
-			if !tt.wantErr {
-				assert.Len(t, got, tt.want)
-				for i, item := range got {
-					assert.Equal(t, testItems[i].GetID(), item.GetID())
-					assert.Equal(t, testItems[i].GetName(), item.GetName())
-					assert.Equal(t, testItems[i].GetURL(), item.GetURL())
-				}
+			if tt.wantErr {
+				assert.Error(t, err)
+				return
+			}
+			require.NoError(t, err)
+			assert.Len(t, got, tt.want)
+			for i, item := range got {
+				assert.Equal(t, testItems[i].ItemId, item.ItemId)
+				assert.Equal(t, testItems[i].Name, item.Name)
+				assert.Equal(t, testItems[i].ImageUrl, item.ImageUrl)
 			}
 		})
 	}
@@ -60,10 +56,8 @@ func TestItemQueryService_FindByID(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
 
-	// テストデータを準備
 	testItems := createItemData(t, ctx)
 
-	// テストケースを定義
 	tests := []struct {
 		name    string
 		itemID  string
@@ -72,23 +66,19 @@ func TestItemQueryService_FindByID(t *testing.T) {
 		errType error
 	}{
 		{
-			name:    "正常系: 存在するIDの場合",
-			itemID:  testItems[0].GetID(),
-			want:    &testItems[0],
-			wantErr: false,
-			errType: nil,
+			name:   "正常系: 存在するIDの場合",
+			itemID: testItems[0].ItemId,
+			want:   testItems[0],
 		},
 		{
 			name:    "異常系: 存在しないIDの場合",
 			itemID:  "non-existent-id",
-			want:    nil,
 			wantErr: true,
 			errType: gorm.ErrRecordNotFound,
 		},
 		{
 			name:    "異常系: 空のIDの場合",
 			itemID:  "",
-			want:    nil,
 			wantErr: true,
 			errType: gorm.ErrRecordNotFound,
 		},
@@ -96,46 +86,34 @@ func TestItemQueryService_FindByID(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			// クエリサービスの初期化
 			service := &itemQueryService{}
-
-			// テスト対象メソッド実行
 			got, err := service.FindByID(ctx, tt.itemID)
 
-			// アサーション
 			if tt.wantErr {
 				require.Error(t, err)
 				if tt.errType != nil {
-					assert.True(t, errors.Is(err, tt.errType), "expected error type: %v, got: %v", tt.errType, err)
+					assert.True(t, errors.Is(err, tt.errType))
 				}
-			} else {
-				require.NoError(t, err)
-				assert.NotNil(t, got)
-				assert.Equal(t, tt.want.GetID(), got.GetID())
-				assert.Equal(t, tt.want.GetName(), got.GetName())
-				assert.Equal(t, tt.want.GetURL(), got.GetURL())
+				return
 			}
+			require.NoError(t, err)
+			assert.NotNil(t, got)
+			assert.Equal(t, tt.want.ItemId, got.ItemId)
+			assert.Equal(t, tt.want.Name, got.Name)
+			assert.Equal(t, tt.want.ImageUrl, got.ImageUrl)
 		})
 	}
 }
 
-func createItemData(t *testing.T, ctx context.Context) items.Items {
+func createItemData(t *testing.T, ctx context.Context) []*items.Item {
 	t.Helper()
 
-	itemModels := []Item{
+	itemList := []*items.Item{
 		{ItemId: "0000000001", Name: "ポーション", ImageUrl: "images/potion.png"},
 		{ItemId: "0000000002", Name: "グレートポーション", ImageUrl: "images/great_potion.png"},
 		{ItemId: "0000000003", Name: "メガポーション", ImageUrl: "images/mega_potion.png"},
 	}
+	require.NoError(t, CtxFromTestDB(ctx).Create(itemList).Error)
 
-	err := CtxFromTestDB(ctx).Create(itemModels).Error
-	require.NoError(t, err)
-
-	var domainItems items.Items
-	for _, model := range itemModels {
-		domainItem := items.NewItem(model.ItemId, model.Name, model.ImageUrl)
-		domainItems = append(domainItems, *domainItem)
-	}
-
-	return domainItems
+	return itemList
 }

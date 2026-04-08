@@ -1,4 +1,6 @@
 {
+  "monster_id": "1",
+  "monster_name": "イャンクック",
   "items": [
     {
       "item": {
@@ -12,7 +14,5 @@
         "item_name": "イャンクックの鱗"
       }
     }
-  ],
-  "monster_id": "1",
-  "monster_name": "イャンクック"
+  ]
 }

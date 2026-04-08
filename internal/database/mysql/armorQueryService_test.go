@@ -5,49 +5,21 @@ import (
 	"errors"
 	"testing"
 
+	"mh-api/internal/domain/armors"
+
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"gorm.io/gorm"
 )
 
-func createTestArmors(t *testing.T, ctx context.Context) []*Armor {
-	testArmors := []*Armor{
-		{
-			ArmorId:             "armor001",
-			Name:                "レウスヘルム",
-			Slot:                "①②③",
-			Defense:             100,
-			FireResistance:      10,
-			WaterResistance:     5,
-			LightningResistance: -10,
-			IceResistance:       5,
-			DragonResistance:    15,
-		},
-		{
-			ArmorId:             "armor002",
-			Name:                "レウスメイル",
-			Slot:                "①①②",
-			Defense:             120,
-			FireResistance:      15,
-			WaterResistance:     0,
-			LightningResistance: -5,
-			IceResistance:       0,
-			DragonResistance:    20,
-		},
-		{
-			ArmorId:             "armor003",
-			Name:                "レウスアーム",
-			Slot:                "①②",
-			Defense:             80,
-			FireResistance:      8,
-			WaterResistance:     3,
-			LightningResistance: -8,
-			IceResistance:       3,
-			DragonResistance:    12,
-		},
+func createTestArmors(t *testing.T, ctx context.Context) []*armors.Armor {
+	testArmors := []*armors.Armor{
+		{ArmorId: "armor001", Name: "レウスヘルム", Slot: "①②③", Defense: 100, FireResistance: 10, WaterResistance: 5, LightningResistance: -10, IceResistance: 5, DragonResistance: 15},
+		{ArmorId: "armor002", Name: "レウスメイル", Slot: "①①②", Defense: 120, FireResistance: 15, WaterResistance: 0, LightningResistance: -5, IceResistance: 0, DragonResistance: 20},
+		{ArmorId: "armor003", Name: "レウスアーム", Slot: "①②", Defense: 80, FireResistance: 8, WaterResistance: 3, LightningResistance: -8, IceResistance: 3, DragonResistance: 12},
 	}
 
-	testSkills := []*ArmorSkill{
+	testSkills := []*armors.ArmorSkill{
 		{ArmorId: "armor001", SkillId: "1", SkillName: "攻撃LV1"},
 		{ArmorId: "armor001", SkillId: "2", SkillName: "火属性攻撃強化LV1"},
 		{ArmorId: "armor002", SkillId: "1", SkillName: "攻撃LV2"},
@@ -55,7 +27,7 @@ func createTestArmors(t *testing.T, ctx context.Context) []*Armor {
 		{ArmorId: "armor003", SkillId: "4", SkillName: "見切りLV1"},
 	}
 
-	testRequiredItems := []*ArmorRequiredItem{
+	testRequiredItems := []*armors.ArmorRequiredItem{
 		{ArmorId: "armor001", ItemId: "ITM0019", ItemName: "リオレウスの鱗"},
 		{ArmorId: "armor001", ItemId: "ITM0016", ItemName: "ドラグライト鉱石"},
 		{ArmorId: "armor002", ItemId: "ITM0019", ItemName: "リオレウスの鱗"},
@@ -63,30 +35,21 @@ func createTestArmors(t *testing.T, ctx context.Context) []*Armor {
 		{ArmorId: "armor003", ItemId: "ITM0019", ItemName: "リオレウスの鱗"},
 	}
 
-	gormDB := CtxFromTestDB(ctx)
-
+	armorDB := CtxFromTestDB(ctx)
 	for _, armor := range testArmors {
-		if err := gormDB.Create(armor).Error; err != nil {
-			t.Fatalf("failed to create test armor: %v", err)
-		}
+		require.NoError(t, armorDB.Create(armor).Error)
 	}
-
 	for _, skill := range testSkills {
-		if err := gormDB.Create(skill).Error; err != nil {
-			t.Fatalf("failed to create test armor skill: %v", err)
-		}
+		require.NoError(t, armorDB.Create(skill).Error)
 	}
-
 	for _, item := range testRequiredItems {
-		if err := gormDB.Create(item).Error; err != nil {
-			t.Fatalf("failed to create test armor required item: %v", err)
-		}
+		require.NoError(t, armorDB.Create(item).Error)
 	}
 
 	return testArmors
 }
 
-func TestArmorQueryService_GetAll(t *testing.T) {
+func TestArmorRepository_GetAll(t *testing.T) {
 	ctx := t.Context()
 	ctx = setupTestDB(ctx)
 	db := ctx.Value(CtxKey).(*gorm.DB)
@@ -100,45 +63,35 @@ func TestArmorQueryService_GetAll(t *testing.T) {
 		wantCount int
 		wantErr   bool
 	}{
-		{
-			name:      "正常系: すべての防具を取得",
-			wantCount: 3,
-			wantErr:   false,
-		},
+		{name: "正常系: すべての防具を取得", wantCount: 3},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			qs := NewArmorQueryService()
+			repo := NewArmorRepository()
+			got, err := repo.GetAll(ctx)
 
-			got, err := qs.GetAll(ctx)
+			if tt.wantErr {
+				assert.Error(t, err)
+				return
+			}
+			require.NoError(t, err)
+			assert.Len(t, got, tt.wantCount)
 
-			assert.True(t, (err != nil) == tt.wantErr)
-			if !tt.wantErr {
-				assert.Len(t, got, tt.wantCount)
-
-				// 最初の防具の詳細をチェック
-				if len(got) > 0 {
-					firstArmor := got[0]
-					assert.NotEmpty(t, firstArmor.GetID())
-					assert.NotEmpty(t, firstArmor.GetName())
-					assert.NotEmpty(t, firstArmor.GetSlot())
-					assert.Greater(t, firstArmor.GetDefense(), 0)
-
-					// スキルがロードされているかチェック
-					skills := firstArmor.GetSkills()
-					assert.GreaterOrEqual(t, len(skills), 1)
-
-					// 必要素材がロードされているかチェック
-					required := firstArmor.GetRequiredItems()
-					assert.GreaterOrEqual(t, len(required), 1)
-				}
+			if len(got) > 0 {
+				first := got[0]
+				assert.NotEmpty(t, first.ArmorId)
+				assert.NotEmpty(t, first.Name)
+				assert.NotEmpty(t, first.Slot)
+				assert.Greater(t, first.Defense, 0)
+				assert.GreaterOrEqual(t, len(first.Skills), 1)
+				assert.GreaterOrEqual(t, len(first.RequiredItems), 1)
 			}
 		})
 	}
 }
 
-func TestArmorQueryService_GetByID(t *testing.T) {
+func TestArmorRepository_GetByID(t *testing.T) {
 	ctx := t.Context()
 	ctx = setupTestDB(ctx)
 	db := ctx.Value(CtxKey).(*gorm.DB)
@@ -150,7 +103,7 @@ func TestArmorQueryService_GetByID(t *testing.T) {
 	tests := []struct {
 		name    string
 		armorID string
-		want    *Armor
+		want    *armors.Armor
 		wantErr bool
 		errType error
 	}{
@@ -158,20 +111,16 @@ func TestArmorQueryService_GetByID(t *testing.T) {
 			name:    "正常系: 存在するIDの場合",
 			armorID: testArmors[0].ArmorId,
 			want:    testArmors[0],
-			wantErr: false,
-			errType: nil,
 		},
 		{
 			name:    "異常系: 存在しないIDの場合",
 			armorID: "non-existent-id",
-			want:    nil,
 			wantErr: true,
 			errType: gorm.ErrRecordNotFound,
 		},
 		{
 			name:    "異常系: 空のIDの場合",
 			armorID: "",
-			want:    nil,
 			wantErr: true,
 			errType: gorm.ErrRecordNotFound,
 		},
@@ -179,35 +128,28 @@ func TestArmorQueryService_GetByID(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			qs := NewArmorQueryService()
-
-			got, err := qs.GetByID(ctx, tt.armorID)
+			repo := NewArmorRepository()
+			got, err := repo.GetByID(ctx, tt.armorID)
 
 			if tt.wantErr {
 				require.Error(t, err)
 				if tt.errType != nil {
-					assert.True(t, errors.Is(err, tt.errType), "expected error type: %v, got: %v", tt.errType, err)
+					assert.True(t, errors.Is(err, tt.errType))
 				}
-			} else {
-				require.NoError(t, err)
-				assert.Equal(t, tt.want.ArmorId, got.GetID())
-				assert.Equal(t, tt.want.Name, got.GetName())
-				assert.Equal(t, tt.want.Slot, got.GetSlot())
-				assert.Equal(t, tt.want.Defense, got.GetDefense())
-				assert.Equal(t, tt.want.FireResistance, got.GetFireResistance())
-				assert.Equal(t, tt.want.WaterResistance, got.GetWaterResistance())
-				assert.Equal(t, tt.want.LightningResistance, got.GetLightningResistance())
-				assert.Equal(t, tt.want.IceResistance, got.GetIceResistance())
-				assert.Equal(t, tt.want.DragonResistance, got.GetDragonResistance())
-
-				// スキルがロードされているかチェック
-				skills := got.GetSkills()
-				assert.GreaterOrEqual(t, len(skills), 1)
-
-				// 必要素材がロードされているかチェック
-				required := got.GetRequiredItems()
-				assert.GreaterOrEqual(t, len(required), 1)
+				return
 			}
+			require.NoError(t, err)
+			assert.Equal(t, tt.want.ArmorId, got.ArmorId)
+			assert.Equal(t, tt.want.Name, got.Name)
+			assert.Equal(t, tt.want.Slot, got.Slot)
+			assert.Equal(t, tt.want.Defense, got.Defense)
+			assert.Equal(t, tt.want.FireResistance, got.FireResistance)
+			assert.Equal(t, tt.want.WaterResistance, got.WaterResistance)
+			assert.Equal(t, tt.want.LightningResistance, got.LightningResistance)
+			assert.Equal(t, tt.want.IceResistance, got.IceResistance)
+			assert.Equal(t, tt.want.DragonResistance, got.DragonResistance)
+			assert.GreaterOrEqual(t, len(got.Skills), 1)
+			assert.GreaterOrEqual(t, len(got.RequiredItems), 1)
 		})
 	}
 }

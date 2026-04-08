@@ -10,22 +10,20 @@ import (
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 
+	"mh-api/internal/database/mysql"
+	"mh-api/internal/domain/items"
+	"mh-api/internal/domain/monsters"
+	"mh-api/internal/domain/skills"
+	"mh-api/internal/domain/weapons"
 	"mh-api/pkg/config"
 	"mh-api/pkg/profiler"
-
-	request "mh-api/internal/controller/monster"
-	"mh-api/internal/database/mysql"
-	"mh-api/internal/service/items"
-	"mh-api/internal/service/monsters"
-	"mh-api/internal/service/skills"
-	"mh-api/internal/service/weapons"
 )
 
 type MCPServer struct {
-	monsterService monsters.IMonsterService
-	weaponService  *weapons.WeaponService
-	itemService    items.IitemService
-	skillService   skills.ISkillService
+	monsterRepo monsters.Repository
+	weaponRepo  weapons.Repository
+	itemRepo    items.Repository
+	skillRepo   skills.Repository
 }
 
 func main() {
@@ -37,24 +35,11 @@ func main() {
 	stopProfiler := profiler.StartPyroscope(cfg, "mh-mcp")
 	defer stopProfiler()
 
-	monsterRepo := mysql.NewMonsterRepository()
-	monsterQS := mysql.NewmonsterQueryService()
-	monsterService := monsters.NewMonsterService(monsterRepo, monsterQS)
-
-	weaponQS := mysql.NewWeaponQueryService()
-	weaponService := weapons.NewWeaponService(weaponQS)
-
-	itemRepo := mysql.NewItemQueryService()
-	itemService := items.NewService(monsterQS, itemRepo)
-
-	skillRepo := mysql.NewSkillQueryService()
-	skillService := skills.NewService(skillRepo)
-
 	m := &MCPServer{
-		monsterService: monsterService,
-		weaponService:  weaponService,
-		itemService:    itemService,
-		skillService:   skillService,
+		monsterRepo: mysql.NewMonsterRepository(),
+		weaponRepo:  mysql.NewWeaponRepository(),
+		itemRepo:    mysql.NewItemQueryService(),
+		skillRepo:   mysql.NewSkillQueryService(),
 	}
 
 	s := mcp.NewServer(&mcp.Implementation{Name: "MH-API MCP Server", Version: "1.0.0"}, nil)
@@ -68,7 +53,6 @@ func main() {
 	}
 }
 
-// getMonstersInput はモンスター一覧取得ツールの入力パラメータです。
 type getMonstersInput struct {
 	MonsterIDs      string `json:"monster_ids"      jsonschema:"Filter by monster ID (optional, can be a comma-separated list of IDs)"`
 	Name            string `json:"name"             jsonschema:"Filter by monster name (optional, supports partial matches)"`
@@ -122,12 +106,11 @@ func textResult(text string) (*mcp.CallToolResult, any, error) {
 func (m *MCPServer) getMonsters(ctx context.Context, _ *mcp.CallToolRequest, in getMonstersInput) (*mcp.CallToolResult, any, error) {
 	ctx = mysql.New(ctx)
 
-	offset := in.Offset
 	limit := in.Limit
 	if limit == 0 {
 		limit = 50
 	}
-	if offset < 0 {
+	if in.Offset < 0 {
 		return textResult("Error: offset must be greater than or equal to 0")
 	}
 	if limit < 1 || limit > 100 {
@@ -138,18 +121,17 @@ func (m *MCPServer) getMonsters(ctx context.Context, _ *mcp.CallToolRequest, in 
 		sort = "asc"
 	}
 
-	param := request.RequestParam{
+	params := monsters.SearchParams{
 		MonsterIds:      in.MonsterIDs,
 		MonsterName:     in.Name,
 		UsageElement:    in.UsageElement,
 		WeaknessElement: in.WeaknessElement,
 		Sort:            sort,
 		Limit:           limit,
-		Offset:          (offset - 1) * limit,
+		Offset:          in.Offset,
 	}
-	ctx = context.WithValue(ctx, request.CtxParamKey, param)
 
-	result, err := m.monsterService.FetchMonsterDetail(ctx, "")
+	result, err := m.monsterRepo.FindAll(ctx, params)
 	if err != nil {
 		return textResult(fmt.Sprintf("Error retrieving monsters: %v", err))
 	}
@@ -170,11 +152,11 @@ func (m *MCPServer) getMonsterByID(ctx context.Context, _ *mcp.CallToolRequest, 
 		return textResult("Error: monster_id is required and must be a string")
 	}
 
-	result, err := m.monsterService.FetchMonsterDetail(ctx, in.MonsterID)
+	monster, err := m.monsterRepo.FindById(ctx, in.MonsterID)
 	if err != nil {
 		return textResult(fmt.Sprintf("Error retrieving monster with ID %s: %v", in.MonsterID, err))
 	}
-	content, err := json.MarshalIndent(result, "", "  ")
+	content, err := json.MarshalIndent(monster, "", "  ")
 	if err != nil {
 		return textResult(fmt.Sprintf("Error formatting monster data: %v", err))
 	}
@@ -190,14 +172,14 @@ func (m *MCPServer) getWeapons(ctx context.Context, _ *mcp.CallToolRequest, in g
 	}
 	offset := in.Offset
 
-	params := weapons.SearchWeaponsParams{
+	params := weapons.SearchParams{
 		WeaponID: &in.WeaponID,
 		Name:     &in.Name,
 		Limit:    &limit,
 		Offset:   &offset,
 	}
 
-	result, err := m.weaponService.SearchWeapons(ctx, params)
+	result, err := m.weaponRepo.Find(ctx, params)
 	if err != nil {
 		return textResult(fmt.Sprintf("Error retrieving weapons: %v", err))
 	}
@@ -211,11 +193,11 @@ func (m *MCPServer) getWeapons(ctx context.Context, _ *mcp.CallToolRequest, in g
 func (m *MCPServer) getItems(ctx context.Context, _ *mcp.CallToolRequest, _ any) (*mcp.CallToolResult, any, error) {
 	ctx = mysql.New(ctx)
 
-	result, err := m.itemService.GetAllItems(ctx)
+	itemList, err := m.itemRepo.FindAll(ctx)
 	if err != nil {
 		return textResult(fmt.Sprintf("Error retrieving items: %v", err))
 	}
-	content, err := json.MarshalIndent(result, "", "  ")
+	content, err := json.MarshalIndent(itemList, "", "  ")
 	if err != nil {
 		return textResult(fmt.Sprintf("Error formatting items data: %v", err))
 	}
@@ -232,11 +214,11 @@ func (m *MCPServer) getItemByID(ctx context.Context, _ *mcp.CallToolRequest, in 
 	if err != nil {
 		return textResult(fmt.Sprintf("Error: item_id must be a valid integer: %v", err))
 	}
-	result, err := m.itemService.GetItemByID(ctx, strconv.Itoa(itemIDInt))
+	item, err := m.itemRepo.FindByID(ctx, strconv.Itoa(itemIDInt))
 	if err != nil {
 		return textResult(fmt.Sprintf("Error retrieving item with ID %s: %v", in.ItemID, err))
 	}
-	content, err := json.MarshalIndent(result, "", "  ")
+	content, err := json.MarshalIndent(item, "", "  ")
 	if err != nil {
 		return textResult(fmt.Sprintf("Error formatting item data: %v", err))
 	}
@@ -253,11 +235,11 @@ func (m *MCPServer) getItemsByMonster(ctx context.Context, _ *mcp.CallToolReques
 	if err != nil {
 		return textResult(fmt.Sprintf("Error: monster_id must be a valid integer: %v", err))
 	}
-	result, err := m.itemService.GetItemByMonsterID(ctx, strconv.Itoa(monsterIDInt))
+	itemList, err := m.itemRepo.FindByMonsterID(ctx, strconv.Itoa(monsterIDInt))
 	if err != nil {
 		return textResult(fmt.Sprintf("Error retrieving items for monster ID %s: %v", in.MonsterID, err))
 	}
-	content, err := json.MarshalIndent(result, "", "  ")
+	content, err := json.MarshalIndent(itemList, "", "  ")
 	if err != nil {
 		return textResult(fmt.Sprintf("Error formatting items data: %v", err))
 	}
@@ -267,11 +249,11 @@ func (m *MCPServer) getItemsByMonster(ctx context.Context, _ *mcp.CallToolReques
 func (m *MCPServer) getSkills(ctx context.Context, _ *mcp.CallToolRequest, _ any) (*mcp.CallToolResult, any, error) {
 	ctx = mysql.New(ctx)
 
-	result, err := m.skillService.GetAllSkills(ctx)
+	skillList, err := m.skillRepo.FindAll(ctx)
 	if err != nil {
 		return textResult(fmt.Sprintf("Error retrieving skills: %v", err))
 	}
-	content, err := json.MarshalIndent(result, "", "  ")
+	content, err := json.MarshalIndent(skillList, "", "  ")
 	if err != nil {
 		return textResult(fmt.Sprintf("Error formatting skills data: %v", err))
 	}
@@ -284,11 +266,11 @@ func (m *MCPServer) getSkillByID(ctx context.Context, _ *mcp.CallToolRequest, in
 	if in.SkillID == "" {
 		return textResult("Error: skill_id is required and must be a string")
 	}
-	result, err := m.skillService.GetSkillByID(ctx, in.SkillID)
+	skill, err := m.skillRepo.FindById(ctx, in.SkillID)
 	if err != nil {
 		return textResult(fmt.Sprintf("Error retrieving skill with ID %s: %v", in.SkillID, err))
 	}
-	content, err := json.MarshalIndent(result, "", "  ")
+	content, err := json.MarshalIndent(skill, "", "  ")
 	if err != nil {
 		return textResult(fmt.Sprintf("Error formatting skill data: %v", err))
 	}

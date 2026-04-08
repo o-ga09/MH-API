@@ -1,4 +1,5 @@
 {
+  "total": 2,
   "items": [
     {
       "item_id": "1",
@@ -8,6 +9,5 @@
       "item_id": "2",
       "item_name": "回復薬グレート"
     }
-  ],
-  "total": 2
+  ]
 }

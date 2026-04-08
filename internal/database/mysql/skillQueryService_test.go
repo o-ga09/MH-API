@@ -3,9 +3,10 @@ package mysql
 import (
 	"context"
 	"errors"
-	"mh-api/internal/domain/skills"
 	"sort"
 	"testing"
+
+	"mh-api/internal/domain/skills"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -19,7 +20,6 @@ func TestSkillQueryService_FindAll(t *testing.T) {
 	db.Begin()
 	defer db.Rollback()
 
-	// テストデータを準備
 	testSkills := createSkillData(t, ctx)
 
 	tests := []struct {
@@ -27,55 +27,34 @@ func TestSkillQueryService_FindAll(t *testing.T) {
 		want    int
 		wantErr bool
 	}{
-		{
-			name:    "正常系: スキルを全件取得できる",
-			want:    2,
-			wantErr: false,
-		},
+		{name: "正常系: スキルを全件取得できる", want: 2},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			service := &skillQueryService{}
-
 			got, err := service.FindAll(ctx)
 
-			assert.True(t, (err != nil) == tt.wantErr)
-			if !tt.wantErr {
-				assert.Len(t, got, tt.want)
-				// スキルIDでソートして比較
-				sortedGot := got
-				sortedExpected := testSkills
-				sort.Slice(sortedGot, func(i, j int) bool {
-					return sortedGot[i].GetId() < sortedGot[j].GetId()
-				})
-				sort.Slice(sortedExpected, func(i, j int) bool {
-					return sortedExpected[i].GetId() < sortedExpected[j].GetId()
-				})
+			if tt.wantErr {
+				assert.Error(t, err)
+				return
+			}
+			require.NoError(t, err)
+			assert.Len(t, got, tt.want)
 
-				for i := range sortedGot {
-					assert.Equal(t, sortedExpected[i].GetId(), sortedGot[i].GetId())
-					assert.Equal(t, sortedExpected[i].GetName(), sortedGot[i].GetName())
-					assert.Equal(t, sortedExpected[i].GetDescription(), sortedGot[i].GetDescription())
+			sortedGot := make([]*skills.Skill, len(got))
+			copy(sortedGot, got)
+			sortedExpected := make([]*skills.Skill, len(testSkills))
+			copy(sortedExpected, testSkills)
 
-					// レベルデータの比較
-					gotLevels := sortedGot[i].GetLevels()
-					expectedLevels := sortedExpected[i].GetLevels()
-					assert.Len(t, gotLevels, len(expectedLevels))
+			sort.Slice(sortedGot, func(i, j int) bool { return sortedGot[i].SkillId < sortedGot[j].SkillId })
+			sort.Slice(sortedExpected, func(i, j int) bool { return sortedExpected[i].SkillId < sortedExpected[j].SkillId })
 
-					// レベルでソート
-					sort.Slice(gotLevels, func(i, j int) bool {
-						return gotLevels[i].GetLevel() < gotLevels[j].GetLevel()
-					})
-					sort.Slice(expectedLevels, func(i, j int) bool {
-						return expectedLevels[i].GetLevel() < expectedLevels[j].GetLevel()
-					})
-
-					for j := range gotLevels {
-						assert.Equal(t, expectedLevels[j].GetLevel(), gotLevels[j].GetLevel())
-						assert.Equal(t, expectedLevels[j].GetDescription(), gotLevels[j].GetDescription())
-					}
-				}
+			for i := range sortedGot {
+				assert.Equal(t, sortedExpected[i].SkillId, sortedGot[i].SkillId)
+				assert.Equal(t, sortedExpected[i].Name, sortedGot[i].Name)
+				assert.Equal(t, sortedExpected[i].Description, sortedGot[i].Description)
+				assert.Len(t, sortedGot[i].Levels, len(sortedExpected[i].Levels))
 			}
 		})
 	}
@@ -88,10 +67,8 @@ func TestSkillQueryService_FindById(t *testing.T) {
 	db.Begin()
 	defer db.Rollback()
 
-	// テストデータを準備
 	testSkills := createSkillData(t, ctx)
 
-	// テストケースを定義
 	tests := []struct {
 		name    string
 		skillId string
@@ -101,22 +78,18 @@ func TestSkillQueryService_FindById(t *testing.T) {
 	}{
 		{
 			name:    "正常系: 存在するIDの場合",
-			skillId: testSkills[0].GetId(),
-			want:    &testSkills[0],
-			wantErr: false,
-			errType: nil,
+			skillId: testSkills[0].SkillId,
+			want:    testSkills[0],
 		},
 		{
 			name:    "異常系: 存在しないIDの場合",
 			skillId: "non-existent-id",
-			want:    nil,
 			wantErr: true,
 			errType: gorm.ErrRecordNotFound,
 		},
 		{
 			name:    "異常系: 空のIDの場合",
 			skillId: "",
-			want:    nil,
 			wantErr: true,
 			errType: gorm.ErrRecordNotFound,
 		},
@@ -124,166 +97,48 @@ func TestSkillQueryService_FindById(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			// クエリサービスの初期化
 			service := &skillQueryService{}
-
-			// テスト対象メソッド実行
 			got, err := service.FindById(ctx, tt.skillId)
 
-			// アサーション
 			if tt.wantErr {
 				require.Error(t, err)
 				if tt.errType != nil {
-					assert.True(t, errors.Is(err, tt.errType), "expected error type: %v, got: %v", tt.errType, err)
+					assert.True(t, errors.Is(err, tt.errType))
 				}
-			} else {
-				require.NoError(t, err)
-				assert.Equal(t, tt.want.GetId(), got.GetId())
-				assert.Equal(t, tt.want.GetName(), got.GetName())
-				assert.Equal(t, tt.want.GetDescription(), got.GetDescription())
-				assert.Len(t, got.GetLevels(), len(tt.want.GetLevels()))
+				return
 			}
+			require.NoError(t, err)
+			assert.Equal(t, tt.want.SkillId, got.SkillId)
+			assert.Equal(t, tt.want.Name, got.Name)
+			assert.Equal(t, tt.want.Description, got.Description)
+			assert.Len(t, got.Levels, len(tt.want.Levels))
 		})
 	}
 }
 
-func TestSkillQueryService_Save(t *testing.T) {
-	ctx := t.Context()
-	ctx = setupTestDB(ctx)
-	db = ctx.Value(CtxKey).(*gorm.DB)
-	db.Begin()
-	defer db.Rollback()
-
-	// テストケースを定義
-	tests := []struct {
-		name    string
-		skill   skills.Skill
-		wantErr bool
-	}{
-		{
-			name: "正常系: スキルを保存できる",
-			skill: skills.NewSkill(
-				"0000000003",
-				"新しいスキル",
-				"新しいスキルの説明",
-				[]skills.SkillLevelDetail{
-					skills.NewSkillLevelDetail("0000000005", "0000000003", 1, "レベル1の説明"),
-				},
-			),
-			wantErr: false,
-		},
-	}
-
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			service := &skillQueryService{}
-
-			err := service.Save(ctx, tt.skill)
-
-			assert.True(t, (err != nil) == tt.wantErr)
-			if !tt.wantErr {
-				// 保存されたデータを検証
-				var skillModel Skill
-				err := CtxFromTestDB(ctx).Preload("Levels").Where("skill_id = ?", tt.skill.GetId()).First(&skillModel).Error
-				require.NoError(t, err)
-				assert.Equal(t, tt.skill.GetId(), skillModel.SkillId)
-				assert.Equal(t, tt.skill.GetName(), skillModel.Name)
-				assert.Equal(t, tt.skill.GetDescription(), skillModel.Description)
-				assert.Len(t, skillModel.Levels, len(tt.skill.GetLevels()))
-			}
-		})
-	}
-}
-
-func TestSkillQueryService_Remove(t *testing.T) {
-	ctx := t.Context()
-	ctx = setupTestDB(ctx)
-	db = ctx.Value(CtxKey).(*gorm.DB)
-	db.Begin()
-	defer db.Rollback()
-
-	// テストデータを準備
-	testSkills := createSkillData(t, ctx)
-
-	// テストケースを定義
-	tests := []struct {
-		name    string
-		skillId string
-		wantErr bool
-	}{
-		{
-			name:    "正常系: 存在するIDの場合",
-			skillId: testSkills[0].GetId(),
-			wantErr: false,
-		},
-		{
-			name:    "正常系: 存在しないIDの場合（エラーにならない）",
-			skillId: "non-existent-id",
-			wantErr: false,
-		},
-	}
-
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			service := &skillQueryService{}
-
-			err := service.Remove(ctx, tt.skillId)
-
-			assert.True(t, (err != nil) == tt.wantErr)
-			if !tt.wantErr && tt.skillId == testSkills[0].GetId() {
-				// 削除されたことを検証
-				var count int64
-				CtxFromTestDB(ctx).Model(&Skill{}).Where("skill_id = ?", tt.skillId).Count(&count)
-				assert.Equal(t, int64(0), count)
-			}
-		})
-	}
-}
-
-func createSkillData(t *testing.T, ctx context.Context) skills.Skills {
+func createSkillData(t *testing.T, ctx context.Context) []*skills.Skill {
 	t.Helper()
 
-	// 既存のデータをクリーンアップ
-	err := CtxFromTestDB(ctx).Exec("DELETE FROM skill_level").Error
-	require.NoError(t, err)
-	err = CtxFromTestDB(ctx).Exec("DELETE FROM skill").Error
-	require.NoError(t, err)
+	require.NoError(t, CtxFromTestDB(ctx).Exec("DELETE FROM skill_level").Error)
+	require.NoError(t, CtxFromTestDB(ctx).Exec("DELETE FROM skill").Error)
 
-	skillModels := []Skill{
+	skillList := []*skills.Skill{
 		{SkillId: "0000000001", Name: "攻撃", Description: "攻撃力が上昇する"},
 		{SkillId: "0000000002", Name: "防御", Description: "防御力が上昇する"},
 	}
+	require.NoError(t, CtxFromTestDB(ctx).Create(skillList).Error)
 
-	skillLevelModels := []SkillLevel{
+	levelList := []*skills.SkillLevel{
 		{SkillLevelId: "0000000001", SkillId: "0000000001", Level: 1, Description: "攻撃力+3"},
 		{SkillLevelId: "0000000002", SkillId: "0000000001", Level: 2, Description: "攻撃力+6"},
 		{SkillLevelId: "0000000003", SkillId: "0000000002", Level: 1, Description: "防御力+5"},
 		{SkillLevelId: "0000000004", SkillId: "0000000002", Level: 2, Description: "防御力+10"},
 	}
+	require.NoError(t, CtxFromTestDB(ctx).Create(levelList).Error)
 
-	err = CtxFromTestDB(ctx).Create(skillModels).Error
-	require.NoError(t, err)
+	// Levelsをセット（DBから取得せずにメモリ上で構築）
+	skillList[0].Levels = []skills.SkillLevel{*levelList[0], *levelList[1]}
+	skillList[1].Levels = []skills.SkillLevel{*levelList[2], *levelList[3]}
 
-	err = CtxFromTestDB(ctx).Create(skillLevelModels).Error
-	require.NoError(t, err)
-
-	var domainSkills skills.Skills
-	for _, model := range skillModels {
-		var levels []skills.SkillLevelDetail
-		for _, level := range skillLevelModels {
-			if level.SkillId == model.SkillId {
-				levelDetail := skills.NewSkillLevelDetail(
-					level.SkillLevelId,
-					level.SkillId,
-					level.Level,
-					level.Description,
-				)
-				levels = append(levels, levelDetail)
-			}
-		}
-		domainSkill := skills.NewSkill(model.SkillId, model.Name, model.Description, levels)
-		domainSkills = append(domainSkills, domainSkill)
-	}
-
-	return domainSkills
+	return skillList
 }

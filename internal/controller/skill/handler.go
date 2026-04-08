@@ -2,7 +2,7 @@ package skill
 
 import (
 	"errors"
-	"mh-api/internal/service/skills"
+	"mh-api/internal/domain/skills"
 	"mh-api/pkg/validator"
 	"net/http"
 
@@ -11,13 +11,11 @@ import (
 )
 
 type SkillHandler struct {
-	service skills.ISkillService
+	repo skills.Repository
 }
 
-func NewSkillHandler(s skills.ISkillService) *SkillHandler {
-	return &SkillHandler{
-		service: s,
-	}
+func NewSkillHandler(repo skills.Repository) *SkillHandler {
+	return &SkillHandler{repo: repo}
 }
 
 // GetSkills godoc
@@ -30,12 +28,12 @@ func NewSkillHandler(s skills.ISkillService) *SkillHandler {
 // @Failure 500 {object} MessageResponse
 // @Router /skills [get]
 func (h *SkillHandler) GetSkills(c *gin.Context) {
-	skillsResponse, err := h.service.GetAllSkills(c.Request.Context())
+	skillsResult, err := h.repo.FindAll(c.Request.Context())
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, MessageResponse{Message: "Failed to get skills"})
 		return
 	}
-	c.JSON(http.StatusOK, ToSkillListResponse(*skillsResponse))
+	c.JSON(http.StatusOK, ToSkillListResponse(skillsResult))
 }
 
 // GetSkill godoc
@@ -57,7 +55,6 @@ func (h *SkillHandler) GetSkill(c *gin.Context) {
 		return
 	}
 
-	// バリデーション実行
 	validate := validator.GetValidator()
 	if err := validate.Struct(req); err != nil {
 		c.JSON(http.StatusBadRequest, MessageResponse{Message: "Validation failed: " + err.Error()})
@@ -68,7 +65,7 @@ func (h *SkillHandler) GetSkill(c *gin.Context) {
 		return
 	}
 
-	skill, err := h.service.GetSkillByID(c.Request.Context(), req.SkillId)
+	skill, err := h.repo.FindById(c.Request.Context(), req.SkillId)
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			c.JSON(http.StatusNotFound, MessageResponse{Message: "Skill not found"})

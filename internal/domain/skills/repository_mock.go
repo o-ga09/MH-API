@@ -21,14 +21,8 @@ var _ Repository = &RepositoryMock{}
 //			FindAllFunc: func(ctx context.Context) (Skills, error) {
 //				panic("mock out the FindAll method")
 //			},
-//			FindByIdFunc: func(ctx context.Context, skillId string) (Skill, error) {
+//			FindByIdFunc: func(ctx context.Context, skillId string) (*Skill, error) {
 //				panic("mock out the FindById method")
-//			},
-//			RemoveFunc: func(ctx context.Context, skillId string) error {
-//				panic("mock out the Remove method")
-//			},
-//			SaveFunc: func(ctx context.Context, s Skill) error {
-//				panic("mock out the Save method")
 //			},
 //		}
 //
@@ -41,13 +35,7 @@ type RepositoryMock struct {
 	FindAllFunc func(ctx context.Context) (Skills, error)
 
 	// FindByIdFunc mocks the FindById method.
-	FindByIdFunc func(ctx context.Context, skillId string) (Skill, error)
-
-	// RemoveFunc mocks the Remove method.
-	RemoveFunc func(ctx context.Context, skillId string) error
-
-	// SaveFunc mocks the Save method.
-	SaveFunc func(ctx context.Context, s Skill) error
+	FindByIdFunc func(ctx context.Context, skillId string) (*Skill, error)
 
 	// calls tracks calls to the methods.
 	calls struct {
@@ -63,25 +51,9 @@ type RepositoryMock struct {
 			// SkillId is the skillId argument value.
 			SkillId string
 		}
-		// Remove holds details about calls to the Remove method.
-		Remove []struct {
-			// Ctx is the ctx argument value.
-			Ctx context.Context
-			// SkillId is the skillId argument value.
-			SkillId string
-		}
-		// Save holds details about calls to the Save method.
-		Save []struct {
-			// Ctx is the ctx argument value.
-			Ctx context.Context
-			// S is the s argument value.
-			S Skill
-		}
 	}
 	lockFindAll  sync.RWMutex
 	lockFindById sync.RWMutex
-	lockRemove   sync.RWMutex
-	lockSave     sync.RWMutex
 }
 
 // FindAll calls FindAllFunc.
@@ -117,7 +89,7 @@ func (mock *RepositoryMock) FindAllCalls() []struct {
 }
 
 // FindById calls FindByIdFunc.
-func (mock *RepositoryMock) FindById(ctx context.Context, skillId string) (Skill, error) {
+func (mock *RepositoryMock) FindById(ctx context.Context, skillId string) (*Skill, error) {
 	if mock.FindByIdFunc == nil {
 		panic("RepositoryMock.FindByIdFunc: method is nil but Repository.FindById was just called")
 	}
@@ -149,77 +121,5 @@ func (mock *RepositoryMock) FindByIdCalls() []struct {
 	mock.lockFindById.RLock()
 	calls = mock.calls.FindById
 	mock.lockFindById.RUnlock()
-	return calls
-}
-
-// Remove calls RemoveFunc.
-func (mock *RepositoryMock) Remove(ctx context.Context, skillId string) error {
-	if mock.RemoveFunc == nil {
-		panic("RepositoryMock.RemoveFunc: method is nil but Repository.Remove was just called")
-	}
-	callInfo := struct {
-		Ctx     context.Context
-		SkillId string
-	}{
-		Ctx:     ctx,
-		SkillId: skillId,
-	}
-	mock.lockRemove.Lock()
-	mock.calls.Remove = append(mock.calls.Remove, callInfo)
-	mock.lockRemove.Unlock()
-	return mock.RemoveFunc(ctx, skillId)
-}
-
-// RemoveCalls gets all the calls that were made to Remove.
-// Check the length with:
-//
-//	len(mockedRepository.RemoveCalls())
-func (mock *RepositoryMock) RemoveCalls() []struct {
-	Ctx     context.Context
-	SkillId string
-} {
-	var calls []struct {
-		Ctx     context.Context
-		SkillId string
-	}
-	mock.lockRemove.RLock()
-	calls = mock.calls.Remove
-	mock.lockRemove.RUnlock()
-	return calls
-}
-
-// Save calls SaveFunc.
-func (mock *RepositoryMock) Save(ctx context.Context, s Skill) error {
-	if mock.SaveFunc == nil {
-		panic("RepositoryMock.SaveFunc: method is nil but Repository.Save was just called")
-	}
-	callInfo := struct {
-		Ctx context.Context
-		S   Skill
-	}{
-		Ctx: ctx,
-		S:   s,
-	}
-	mock.lockSave.Lock()
-	mock.calls.Save = append(mock.calls.Save, callInfo)
-	mock.lockSave.Unlock()
-	return mock.SaveFunc(ctx, s)
-}
-
-// SaveCalls gets all the calls that were made to Save.
-// Check the length with:
-//
-//	len(mockedRepository.SaveCalls())
-func (mock *RepositoryMock) SaveCalls() []struct {
-	Ctx context.Context
-	S   Skill
-} {
-	var calls []struct {
-		Ctx context.Context
-		S   Skill
-	}
-	mock.lockSave.RLock()
-	calls = mock.calls.Save
-	mock.lockSave.RUnlock()
 	return calls
 }

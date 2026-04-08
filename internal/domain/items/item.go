@@ -1,19 +1,13 @@
 package items
 
+import "gorm.io/gorm"
+
+type Items []*Item
+
 type Item struct {
-	itemId   ItemId
-	name     ItemName
-	imageUrl ItemImageUrl
-}
-
-func newItem(itemId ItemId, name ItemName, imageUrl ItemImageUrl) *Item {
-	return &Item{itemId, name, imageUrl}
-}
-
-func NewItem(itemId string, name string, imageUrl string) *Item {
-	return newItem(
-		ItemId{value: itemId},
-		ItemName{value: name},
-		ItemImageUrl{value: imageUrl},
-	)
+	gorm.Model
+	ItemId    string `gorm:"column:item_id;primaryKey;type:varchar(10);not null"`
+	Name      string `gorm:"column:name;type:varchar(255);not null"`
+	ImageUrl  string `gorm:"column:image_url;type:varchar(255)"`
+	MonsterId string `gorm:"column:monster_id;type:varchar(10)"`
 }

@@ -1,27 +1,23 @@
 package weapon
 
 import (
-	"context"
-	"mh-api/internal/service/weapons"
 	"net/http"
+
+	"mh-api/internal/domain/weapons"
 
 	"github.com/gin-gonic/gin"
 )
 
-type IWeaponService interface {
-	SearchWeapons(ctx context.Context, params weapons.SearchWeaponsParams) (*weapons.ListWeaponsResponse, error)
-}
-
 type WeaponHandler struct {
-	service IWeaponService
+	repo weapons.Repository
 }
 
-func NewWeaponHandler(s IWeaponService) *WeaponHandler {
-	return &WeaponHandler{service: s}
+func NewWeaponHandler(repo weapons.Repository) *WeaponHandler {
+	return &WeaponHandler{repo: repo}
 }
 
 // SearchWeapons godoc
-// @Summary 武器リストを検索します (Gin版)
+// @Summary 武器リストを検索します
 // @Description 指定されたクエリパラメータに基づいて武器のリストを返します。
 // @Tags Weapons
 // @Accept json
@@ -36,16 +32,14 @@ func NewWeaponHandler(s IWeaponService) *WeaponHandler {
 // @Failure 400 {object} ErrorResponse "リクエストパラメータが不正な場合"
 // @Failure 500 {object} ErrorResponse "サーバ内部エラー"
 // @Router /weapons [get]
-func (h *WeaponHandler) SearchWeapons(c *gin.Context) { // 引数を *gin.Context に変更
-	appCtx := c.Request.Context() // Ginのコンテキストから標準のcontext.Contextを取得
-
+func (h *WeaponHandler) SearchWeapons(c *gin.Context) {
 	var req SearchWeaponsRequest
 	if err := c.ShouldBindQuery(&req); err != nil {
-		c.JSON(http.StatusBadRequest, ErrorResponse{Message: "Invalid request parameters: " + err.Error()}) // Ginのレスポンス方法
+		c.JSON(http.StatusBadRequest, ErrorResponse{Message: "Invalid request parameters: " + err.Error()})
 		return
 	}
 
-	serviceParams := weapons.SearchWeaponsParams{
+	params := weapons.SearchParams{
 		Limit:    req.Limit,
 		Offset:   req.Offset,
 		Sort:     req.Sort,
@@ -54,35 +48,33 @@ func (h *WeaponHandler) SearchWeapons(c *gin.Context) { // 引数を *gin.Contex
 		Name:     req.Name,
 	}
 
-	serviceRes, err := h.service.SearchWeapons(appCtx, serviceParams)
+	result, err := h.repo.Find(c.Request.Context(), params)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, ErrorResponse{Message: "Failed to search weapons: " + err.Error()})
 		return
 	}
 
-	ctrlResponseWeapons := make([]WeaponDetailResponse, len(serviceRes.Weapons))
-	for i, sw := range serviceRes.Weapons {
-		ctrlResponseWeapons[i] = WeaponDetailResponse{
-			WeaponID:      sw.WeaponID,
-			Name:          sw.Name,
-			ImageURL:      sw.ImageURL,
-			Rare:          sw.Rare,
-			Attack:        sw.Attack,
-			ElementAttack: sw.ElementAttack,
-			Sharpness:     sw.Sharpness,
-			Critical:      sw.Critical,
-			Description:   sw.Description,
+	weaponResponses := make([]WeaponDetailResponse, len(result.Weapons))
+	for i, w := range result.Weapons {
+		weaponResponses[i] = WeaponDetailResponse{
+			WeaponID:      w.WeaponID,
+			Name:          w.Name,
+			ImageURL:      w.ImageUrl,
+			Rare:          w.Rarerity,
+			Attack:        w.Attack,
+			ElementAttack: w.ElementAttack,
+			Sharpness:     w.Shapness,
+			Critical:      w.Critical,
+			Description:   w.Description,
 		}
 	}
 
-	ctrlResponse := ListWeaponsResponse{
-		TotalCount: serviceRes.TotalCount,
-		Limit:      serviceRes.Limit,
-		Offset:     serviceRes.Offset,
-		Weapons:    ctrlResponseWeapons,
-	}
-
-	c.JSON(http.StatusOK, ctrlResponse)
+	c.JSON(http.StatusOK, ListWeaponsResponse{
+		TotalCount: result.TotalCount,
+		Limit:      result.Limit,
+		Offset:     result.Offset,
+		Weapons:    weaponResponses,
+	})
 }
 
 type ErrorResponse struct {

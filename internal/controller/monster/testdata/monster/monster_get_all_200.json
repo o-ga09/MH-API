@@ -5,12 +5,19 @@
       "monster_id": "1",
       "name": "リオレウス",
       "description": "天空を司る王者",
-      "location": ["森林", "砂漠"],
+      "element": "火",
+      "location": [
+        "森林",
+        "砂漠"
+      ],
       "category": "飛竜種",
-      "title": ["MH1", "MH2"],
+      "title": [
+        "MH1",
+        "MH2"
+      ],
       "first_weak_attack": "頭部",
-      "first_weak_element": "雷",
       "second_weak_attack": "翼",
+      "first_weak_element": "雷",
       "second_weak_element": "龍",
       "weakness_attack": [
         {
@@ -22,9 +29,9 @@
       "weakness_element": [
         {
           "fire": "0",
+          "ice": "15",
           "water": "10",
           "thunder": "20",
-          "ice": "15",
           "dragon": "15"
         }
       ],
@@ -40,19 +47,25 @@
           "name": "森と火の戦い",
           "url": "https://www.youtube.com/watch?v=abcdefg"
         }
-      ],
-      "element": "火"
+      ]
     },
     {
       "monster_id": "2",
       "name": "ジンオウガ",
       "description": "雷を纏いし獣",
-      "location": ["高地", "森林"],
+      "element": "雷",
+      "location": [
+        "高地",
+        "森林"
+      ],
       "category": "牙獣種",
-      "title": ["MH3", "MH4"],
+      "title": [
+        "MH3",
+        "MH4"
+      ],
       "first_weak_attack": "頭部",
-      "first_weak_element": "水",
       "second_weak_attack": "尻尾",
+      "first_weak_element": "水",
       "second_weak_element": "氷",
       "weakness_attack": [
         {
@@ -64,9 +77,9 @@
       "weakness_element": [
         {
           "fire": "5",
+          "ice": "15",
           "water": "20",
           "thunder": "0",
-          "ice": "15",
           "dragon": "10"
         }
       ],
@@ -82,8 +95,7 @@
           "name": "雷鳴の如く",
           "url": "https://www.youtube.com/watch?v=hijklmn"
         }
-      ],
-      "element": "雷"
+      ]
     }
   ]
 }

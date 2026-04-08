@@ -1,41 +1,36 @@
 package weapons
 
+import "gorm.io/gorm"
+
+type Weapons []*Weapon
+
 type Weapon struct {
-	weaponID      WeaponId
-	name          WeaponName
-	imageUrl      WeaponImageUrl
-	rare          WeaponRarity
-	attack        WeaponAttack
-	elementAttack WeaponElementAttack
-	sharpness     WeaponShapness
-	critical      WeaponCritical
-	description   WeaponDescription
+	gorm.Model
+	WeaponID      string `gorm:"column:weapon_id;primaryKey;type:varchar(255);not null"`
+	Name          string `gorm:"column:name;type:varchar(255);not null"`
+	ImageUrl      string `gorm:"column:image_url;type:varchar(255)"`
+	Rarerity      string `gorm:"column:rarerity;type:varchar(255)"`
+	Attack        string `gorm:"column:attack;type:varchar(255)"`
+	ElementAttack string `gorm:"column:element_attack;type:varchar(255)"`
+	Shapness      string `gorm:"column:shapness;type:varchar(255)"`
+	Critical      string `gorm:"column:critical;type:varchar(255)"`
+	Description   string `gorm:"column:description;type:varchar(255)"`
 }
 
-func newWeapon(
-	monsterId WeaponId,
-	name WeaponName,
-	imageUrl WeaponImageUrl,
-	rarity WeaponRarity,
-	attack WeaponAttack,
-	elementAttack WeaponElementAttack,
-	sharpness WeaponShapness,
-	critical WeaponCritical,
-	description WeaponDescription,
-) *Weapon {
-	return &Weapon{monsterId, name, imageUrl, rarity, attack, elementAttack, sharpness, critical, description}
+// SearchParams は武器検索の条件を表す
+type SearchParams struct {
+	WeaponID *string
+	Name     *string
+	Limit    *int
+	Offset   *int
+	Sort     *string
+	Order    *int
 }
 
-func NewWeapon(monsterId string, name string, imageUrl string, rarity string, attack string, elementAttack string, sharpness string, critical string, description string) *Weapon {
-	return newWeapon(
-		WeaponId{value: monsterId},
-		WeaponName{value: name},
-		WeaponImageUrl{value: imageUrl},
-		WeaponRarity{value: rarity},
-		WeaponAttack{value: attack},
-		WeaponElementAttack{value: elementAttack},
-		WeaponShapness{value: sharpness},
-		WeaponCritical{value: critical},
-		WeaponDescription{value: description},
-	)
+// SearchResult は武器検索の結果を表す
+type SearchResult struct {
+	Weapons    []*Weapon
+	TotalCount int
+	Offset     int
+	Limit      int
 }

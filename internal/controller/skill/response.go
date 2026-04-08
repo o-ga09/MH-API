@@ -1,7 +1,7 @@
 package skill
 
 import (
-	"mh-api/internal/service/skills"
+	"mh-api/internal/domain/skills"
 	"strconv"
 )
 
@@ -29,36 +29,38 @@ type ResponseSkill struct {
 
 type ResponseSkillLevel map[string]string
 
-func ToSkillListResponse(skills skills.SkillListResponseDTO) Skills {
-	res := make([]ResponseSkill, len(skills.Skills))
-	for i, skill := range skills.Skills {
-		levels := make([]ResponseSkillLevel, len(skill.Level))
-		for j, level := range skill.Level {
-			levels[j] = ResponseSkillLevel{
-				strconv.Itoa(level.Level): level.Description,
-			}
-		}
-		res[i] = ResponseSkill{
-			ID:          skill.ID,
-			Name:        skill.Name,
-			Description: skill.Description,
-			Level:       levels,
-		}
+func ToSkillListResponse(skillList skills.Skills) Skills {
+	res := make([]ResponseSkill, len(skillList))
+	for i, skill := range skillList {
+		res[i] = toResponseSkill(skill)
 	}
-	return Skills{
-		Skills: res,
-	}
+	return Skills{Skills: res}
 }
 
-func ToSkillResponse(skill skills.SkillDTO) Skill {
-	levels := make([]ResponseSkillLevel, len(skill.Level))
-	for i, level := range skill.Level {
+func ToSkillResponse(skill skills.Skill) Skill {
+	levels := make([]ResponseSkillLevel, len(skill.Levels))
+	for i, level := range skill.Levels {
 		levels[i] = ResponseSkillLevel{
 			strconv.Itoa(level.Level): level.Description,
 		}
 	}
 	return Skill{
-		ID:          skill.ID,
+		ID:          skill.SkillId,
+		Name:        skill.Name,
+		Description: skill.Description,
+		Level:       levels,
+	}
+}
+
+func toResponseSkill(skill *skills.Skill) ResponseSkill {
+	levels := make([]ResponseSkillLevel, len(skill.Levels))
+	for i, level := range skill.Levels {
+		levels[i] = ResponseSkillLevel{
+			strconv.Itoa(level.Level): level.Description,
+		}
+	}
+	return ResponseSkill{
+		ID:          skill.SkillId,
 		Name:        skill.Name,
 		Description: skill.Description,
 		Level:       levels,

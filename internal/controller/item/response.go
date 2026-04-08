@@ -1,8 +1,6 @@
 package item
 
-import (
-	"mh-api/internal/service/items"
-)
+import "mh-api/internal/domain/items"
 
 type Items struct {
 	Total  int            `json:"total,omitempty"`
@@ -30,45 +28,42 @@ type ResponseJson struct {
 	ItemName string `json:"item_name,omitempty"`
 }
 
-func ToItemListResponse(items items.ItemListResponseDTO) Items {
-	res := make([]ResponseJson, len(items.Items))
-	for i, item := range items.Items {
+func toItemListResponse(itemList items.Items) Items {
+	res := make([]ResponseJson, len(itemList))
+	for i, item := range itemList {
 		res[i] = ResponseJson{
-			Id:       item.ItemID,
-			ItemName: item.ItemName,
+			Id:       item.ItemId,
+			ItemName: item.Name,
 		}
 	}
 	return Items{
-		Total:  len(items.Items),
-		Limit:  items.Limit,
-		Offset: items.Offset,
-		Item:   res,
+		Total: len(itemList),
+		Item:  res,
 	}
 }
 
-func ToItemResponse(item items.ItemDTO) Item {
+func toItemResponse(item *items.Item) Item {
 	return Item{
 		Item: ResponseJson{
-			Id:       item.ItemID,
-			ItemName: item.ItemName,
+			Id:       item.ItemId,
+			ItemName: item.Name,
 		},
 	}
 }
 
-func ToItemByMonsterResponse(item items.ItemByMonster) ItemsByMonster {
-	resItem := make([]Item, len(item.Item))
-	for i, it := range item.Item {
-		resItem[i] = Item{
+func toItemByMonsterResponse(monsterId, monsterName string, itemList items.Items) ItemsByMonster {
+	resItems := make([]Item, len(itemList))
+	for i, it := range itemList {
+		resItems[i] = Item{
 			Item: ResponseJson{
-				Id:       it.ItemID,
-				ItemName: it.ItemName,
+				Id:       it.ItemId,
+				ItemName: it.Name,
 			},
 		}
 	}
-
 	return ItemsByMonster{
-		MonsterId:   item.MonsterID,
-		MonsterName: item.MonsterName,
-		Item:        resItem,
+		MonsterId:   monsterId,
+		MonsterName: monsterName,
+		Item:        resItems,
 	}
 }

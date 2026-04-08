@@ -4,14 +4,10 @@ import (
 	"context"
 	"mh-api/internal/controller"
 	"mh-api/internal/database/mysql"
-
-	"mh-api/internal/service/health"
 )
 
 func InitHealthService(ctx context.Context) *controller.SystemHandler {
-	driver := mysql.NewHealthRepository()
-	service := health.NewHealthService(driver)
-	h := controller.NewHealthService(*service)
-
+	repo := mysql.NewHealthRepository()
+	h := controller.NewHealthService(repo)
 	return &h
 }

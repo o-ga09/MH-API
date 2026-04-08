@@ -4,73 +4,72 @@ import (
 	"context"
 	"errors"
 	"mh-api/internal/domain/weapons"
-	weaponService "mh-api/internal/service/weapons"
 
 	"gorm.io/gorm"
 )
 
-type WeaponQueryService struct{}
+type weaponRepository struct{}
 
-func NewWeaponQueryService() *WeaponQueryService {
-	return &WeaponQueryService{}
+func NewWeaponRepository() weapons.Repository {
+	return &weaponRepository{}
 }
 
-func (qs *WeaponQueryService) FindWeapons(ctx context.Context, params weaponService.SearchWeaponsParams) ([]*weapons.Weapon, int, error) {
-	var weaponsList []*Weapon
-	var total int64
+func (r *weaponRepository) Find(ctx context.Context, params weapons.SearchParams) (*weapons.SearchResult, error) {
+	var weaponsList []*weapons.Weapon
 
-	// コンテキストからDBを取得
-	gormDB := CtxFromDB(ctx)
+	query := CtxFromDB(ctx)
 
 	if params.WeaponID != nil {
-		gormDB = gormDB.Where("weapon_id = ?", *params.WeaponID)
+		query = query.Where("weapon_id = ?", *params.WeaponID)
 	}
 
 	if params.Name != nil {
-		gormDB = gormDB.Where("name LIKE ?", "%"+*params.Name+"%")
+		query = query.Where("name LIKE ?", "%"+*params.Name+"%")
 	}
 
 	if params.Sort != nil {
 		switch *params.Sort {
 		case "asc":
-			gormDB = gormDB.Order("id ASC")
+			query = query.Order("id ASC")
 		case "desc":
-			gormDB = gormDB.Order("id DESC")
+			query = query.Order("id DESC")
 		}
-	}
-
-	if params.Order != nil {
+	} else if params.Order != nil {
 		switch *params.Order {
+		case 0:
+			query = query.Order("id ASC")
 		case 1:
-			gormDB = gormDB.Order("id ASC")
-		case 2:
-			gormDB = gormDB.Order("id DESC")
+			query = query.Order("id DESC")
 		}
 	}
+
+	limit := 20
 	if params.Limit != nil && *params.Limit > 0 {
-		gormDB = gormDB.Limit(*params.Limit)
-	} else {
-		defaultLimit := 20
-		gormDB = gormDB.Limit(defaultLimit)
+		limit = *params.Limit
 	}
+	query = query.Limit(limit)
 
+	offset := 0
 	if params.Offset != nil {
-		gormDB = gormDB.Offset(*params.Offset)
+		offset = *params.Offset
+		query = query.Offset(offset)
 	}
 
-	result := gormDB.Find(&weaponsList)
+	result := query.Find(&weaponsList)
 	if result.Error != nil {
-		return nil, 0, result.Error
+		return nil, result.Error
 	}
 
-	total = result.RowsAffected
-	weaponDomainList := ToWeaponList(weaponsList)
-
-	return weaponDomainList, int(total), nil
+	return &weapons.SearchResult{
+		Weapons:    weaponsList,
+		TotalCount: int(result.RowsAffected),
+		Limit:      limit,
+		Offset:     offset,
+	}, nil
 }
 
-func (qs *WeaponQueryService) FindWeaponByID(ctx context.Context, weaponID string) (*weapons.Weapon, error) {
-	var weapon Weapon
+func (r *weaponRepository) FindByID(ctx context.Context, weaponID string) (*weapons.Weapon, error) {
+	var weapon weapons.Weapon
 	result := CtxFromDB(ctx).Where("weapon_id = ?", weaponID).First(&weapon)
 	if result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
@@ -78,27 +77,5 @@ func (qs *WeaponQueryService) FindWeaponByID(ctx context.Context, weaponID strin
 		}
 		return nil, result.Error
 	}
-	res := ToWeapon(&weapon)
-	return res, nil
-}
-
-func ToWeapon(weapon *Weapon) *weapons.Weapon {
-	return weapons.NewWeapon(
-		weapon.WeaponID,
-		weapon.Name,
-		weapon.ImageUrl,
-		weapon.Rarerity,
-		weapon.Attack,
-		weapon.ElementAttack,
-		weapon.Shapness,
-		weapon.Critical,
-		weapon.Description,
-	)
-}
-func ToWeaponList(weaponsList []*Weapon) []*weapons.Weapon {
-	weaponDomainList := make([]*weapons.Weapon, len(weaponsList))
-	for i, w := range weaponsList {
-		weaponDomainList[i] = ToWeapon(w)
-	}
-	return weaponDomainList
+	return &weapon, nil
 }

@@ -18,11 +18,11 @@ var _ Repository = &RepositoryMock{}
 //
 //		// make and configure a mocked Repository
 //		mockedRepository := &RepositoryMock{
-//			RemoveFunc: func(ctx context.Context, monsterId string) error {
-//				panic("mock out the Remove method")
+//			FindAllFunc: func(ctx context.Context, params SearchParams) (*SearchResult, error) {
+//				panic("mock out the FindAll method")
 //			},
-//			SaveFunc: func(ctx context.Context, m Monster) error {
-//				panic("mock out the Save method")
+//			FindByIdFunc: func(ctx context.Context, id string) (*Monster, error) {
+//				panic("mock out the FindById method")
 //			},
 //		}
 //
@@ -31,101 +31,101 @@ var _ Repository = &RepositoryMock{}
 //
 //	}
 type RepositoryMock struct {
-	// RemoveFunc mocks the Remove method.
-	RemoveFunc func(ctx context.Context, monsterId string) error
+	// FindAllFunc mocks the FindAll method.
+	FindAllFunc func(ctx context.Context, params SearchParams) (*SearchResult, error)
 
-	// SaveFunc mocks the Save method.
-	SaveFunc func(ctx context.Context, m Monster) error
+	// FindByIdFunc mocks the FindById method.
+	FindByIdFunc func(ctx context.Context, id string) (*Monster, error)
 
 	// calls tracks calls to the methods.
 	calls struct {
-		// Remove holds details about calls to the Remove method.
-		Remove []struct {
+		// FindAll holds details about calls to the FindAll method.
+		FindAll []struct {
 			// Ctx is the ctx argument value.
 			Ctx context.Context
-			// MonsterId is the monsterId argument value.
-			MonsterId string
+			// Params is the params argument value.
+			Params SearchParams
 		}
-		// Save holds details about calls to the Save method.
-		Save []struct {
+		// FindById holds details about calls to the FindById method.
+		FindById []struct {
 			// Ctx is the ctx argument value.
 			Ctx context.Context
-			// M is the m argument value.
-			M Monster
+			// ID is the id argument value.
+			ID string
 		}
 	}
-	lockRemove sync.RWMutex
-	lockSave   sync.RWMutex
+	lockFindAll  sync.RWMutex
+	lockFindById sync.RWMutex
 }
 
-// Remove calls RemoveFunc.
-func (mock *RepositoryMock) Remove(ctx context.Context, monsterId string) error {
-	if mock.RemoveFunc == nil {
-		panic("RepositoryMock.RemoveFunc: method is nil but Repository.Remove was just called")
+// FindAll calls FindAllFunc.
+func (mock *RepositoryMock) FindAll(ctx context.Context, params SearchParams) (*SearchResult, error) {
+	if mock.FindAllFunc == nil {
+		panic("RepositoryMock.FindAllFunc: method is nil but Repository.FindAll was just called")
 	}
 	callInfo := struct {
-		Ctx       context.Context
-		MonsterId string
+		Ctx    context.Context
+		Params SearchParams
 	}{
-		Ctx:       ctx,
-		MonsterId: monsterId,
+		Ctx:    ctx,
+		Params: params,
 	}
-	mock.lockRemove.Lock()
-	mock.calls.Remove = append(mock.calls.Remove, callInfo)
-	mock.lockRemove.Unlock()
-	return mock.RemoveFunc(ctx, monsterId)
+	mock.lockFindAll.Lock()
+	mock.calls.FindAll = append(mock.calls.FindAll, callInfo)
+	mock.lockFindAll.Unlock()
+	return mock.FindAllFunc(ctx, params)
 }
 
-// RemoveCalls gets all the calls that were made to Remove.
+// FindAllCalls gets all the calls that were made to FindAll.
 // Check the length with:
 //
-//	len(mockedRepository.RemoveCalls())
-func (mock *RepositoryMock) RemoveCalls() []struct {
-	Ctx       context.Context
-	MonsterId string
+//	len(mockedRepository.FindAllCalls())
+func (mock *RepositoryMock) FindAllCalls() []struct {
+	Ctx    context.Context
+	Params SearchParams
 } {
 	var calls []struct {
-		Ctx       context.Context
-		MonsterId string
+		Ctx    context.Context
+		Params SearchParams
 	}
-	mock.lockRemove.RLock()
-	calls = mock.calls.Remove
-	mock.lockRemove.RUnlock()
+	mock.lockFindAll.RLock()
+	calls = mock.calls.FindAll
+	mock.lockFindAll.RUnlock()
 	return calls
 }
 
-// Save calls SaveFunc.
-func (mock *RepositoryMock) Save(ctx context.Context, m Monster) error {
-	if mock.SaveFunc == nil {
-		panic("RepositoryMock.SaveFunc: method is nil but Repository.Save was just called")
+// FindById calls FindByIdFunc.
+func (mock *RepositoryMock) FindById(ctx context.Context, id string) (*Monster, error) {
+	if mock.FindByIdFunc == nil {
+		panic("RepositoryMock.FindByIdFunc: method is nil but Repository.FindById was just called")
 	}
 	callInfo := struct {
 		Ctx context.Context
-		M   Monster
+		ID  string
 	}{
 		Ctx: ctx,
-		M:   m,
+		ID:  id,
 	}
-	mock.lockSave.Lock()
-	mock.calls.Save = append(mock.calls.Save, callInfo)
-	mock.lockSave.Unlock()
-	return mock.SaveFunc(ctx, m)
+	mock.lockFindById.Lock()
+	mock.calls.FindById = append(mock.calls.FindById, callInfo)
+	mock.lockFindById.Unlock()
+	return mock.FindByIdFunc(ctx, id)
 }
 
-// SaveCalls gets all the calls that were made to Save.
+// FindByIdCalls gets all the calls that were made to FindById.
 // Check the length with:
 //
-//	len(mockedRepository.SaveCalls())
-func (mock *RepositoryMock) SaveCalls() []struct {
+//	len(mockedRepository.FindByIdCalls())
+func (mock *RepositoryMock) FindByIdCalls() []struct {
 	Ctx context.Context
-	M   Monster
+	ID  string
 } {
 	var calls []struct {
 		Ctx context.Context
-		M   Monster
+		ID  string
 	}
-	mock.lockSave.RLock()
-	calls = mock.calls.Save
-	mock.lockSave.RUnlock()
+	mock.lockFindById.RLock()
+	calls = mock.calls.FindById
+	mock.lockFindById.RUnlock()
 	return calls
 }

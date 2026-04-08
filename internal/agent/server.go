@@ -6,21 +6,16 @@ import (
 	"log"
 	"net/http"
 
-	"google.golang.org/genai"
-
 	"google.golang.org/adk/agent"
 	"google.golang.org/adk/agent/llmagent"
 	"google.golang.org/adk/cmd/launcher"
 	"google.golang.org/adk/model/gemini"
 	"google.golang.org/adk/server/adkrest"
 	"google.golang.org/adk/session"
+	"google.golang.org/genai"
 
 	"mh-api/internal/agent/middleware"
 	"mh-api/internal/database/mysql"
-	"mh-api/internal/service/items"
-	"mh-api/internal/service/monsters"
-	"mh-api/internal/service/skills"
-	"mh-api/internal/service/weapons"
 )
 
 // Server represents the ADK agent server
@@ -40,22 +35,14 @@ type Config struct {
 func NewServer(cfg *Config) (*Server, error) {
 	ctx := context.Background()
 
-	// Initialize services
+	// Initialize repositories
 	monsterRepo := mysql.NewMonsterRepository()
-	monsterQS := mysql.NewmonsterQueryService()
-	monsterService := monsters.NewMonsterService(monsterRepo, monsterQS)
-
-	weaponQS := mysql.NewWeaponQueryService()
-	weaponService := weapons.NewWeaponService(weaponQS)
-
+	weaponRepo := mysql.NewWeaponRepository()
 	itemRepo := mysql.NewItemQueryService()
-	itemService := items.NewService(monsterQS, itemRepo)
-
 	skillRepo := mysql.NewSkillQueryService()
-	skillService := skills.NewService(skillRepo)
 
 	// Create tools
-	monHunTools := NewMonHunTools(monsterService, weaponService, itemService, skillService)
+	monHunTools := NewMonHunTools(monsterRepo, weaponRepo, itemRepo, skillRepo)
 	tools, err := monHunTools.GetTools()
 	if err != nil {
 		return nil, fmt.Errorf("failed to create tools: %w", err)

@@ -9,7 +9,7 @@ lint:
 
 .PHONY: test
 test:
-	docker compose up -d mh-api-dbsrv01
+	docker compose up -d --wait mh-api-dbsrv01
 	go test -parallel 1 ./...
 
 .PHONY: test-coverage
@@ -74,7 +74,7 @@ docker-build-agent:
 
 .PHONY: compose-up
 compose-up:
-	docker compose up -d mh-api-dbsrv01
+	docker compose up -d --wait mh-api-dbsrv01
 
 .PHONY: compose-down
 compose-down:
