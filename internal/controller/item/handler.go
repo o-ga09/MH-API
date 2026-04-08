@@ -109,7 +109,7 @@ func (h *ItemHandler) GetItemByMonster(c *gin.Context) {
 		return
 	}
 
-	if itemList == nil {
+	if len(itemList) == 0 {
 		c.JSON(http.StatusNotFound, MessageResponse{Message: "Item not found"})
 		return
 	}

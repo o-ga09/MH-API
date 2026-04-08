@@ -1,9 +1,9 @@
 package weapon
 
 import (
-	"context"
-	"mh-api/internal/domain/weapons"
 	"net/http"
+
+	"mh-api/internal/domain/weapons"
 
 	"github.com/gin-gonic/gin"
 )
@@ -48,7 +48,7 @@ func (h *WeaponHandler) SearchWeapons(c *gin.Context) {
 		Name:     req.Name,
 	}
 
-	result, err := h.repo.Find(context.Background(), params)
+	result, err := h.repo.Find(c.Request.Context(), params)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, ErrorResponse{Message: "Failed to search weapons: " + err.Error()})
 		return

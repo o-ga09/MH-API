@@ -34,6 +34,13 @@ func (r *weaponRepository) Find(ctx context.Context, params weapons.SearchParams
 		case "desc":
 			query = query.Order("id DESC")
 		}
+	} else if params.Order != nil {
+		switch *params.Order {
+		case 0:
+			query = query.Order("id ASC")
+		case 1:
+			query = query.Order("id DESC")
+		}
 	}
 
 	limit := 20
@@ -42,8 +49,10 @@ func (r *weaponRepository) Find(ctx context.Context, params weapons.SearchParams
 	}
 	query = query.Limit(limit)
 
+	offset := 0
 	if params.Offset != nil {
-		query = query.Offset(*params.Offset)
+		offset = *params.Offset
+		query = query.Offset(offset)
 	}
 
 	result := query.Find(&weaponsList)
@@ -55,6 +64,7 @@ func (r *weaponRepository) Find(ctx context.Context, params weapons.SearchParams
 		Weapons:    weaponsList,
 		TotalCount: int(result.RowsAffected),
 		Limit:      limit,
+		Offset:     offset,
 	}, nil
 }
 
