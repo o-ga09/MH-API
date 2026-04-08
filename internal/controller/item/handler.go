@@ -1,24 +1,24 @@
 package item
 
 import (
-"mh-api/internal/domain/items"
-"mh-api/internal/domain/monsters"
-"mh-api/pkg/validator"
-"net/http"
+	"mh-api/internal/domain/items"
+	"mh-api/internal/domain/monsters"
+	"mh-api/pkg/validator"
+	"net/http"
 
-"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin"
 )
 
 type ItemHandler struct {
-itemRepo    items.Repository
-monsterRepo monsters.Repository
+	itemRepo    items.Repository
+	monsterRepo monsters.Repository
 }
 
 func NewItemHandler(itemRepo items.Repository, monsterRepo monsters.Repository) *ItemHandler {
-return &ItemHandler{
-itemRepo:    itemRepo,
-monsterRepo: monsterRepo,
-}
+	return &ItemHandler{
+		itemRepo:    itemRepo,
+		monsterRepo: monsterRepo,
+	}
 }
 
 // GetItems godoc
@@ -31,12 +31,12 @@ monsterRepo: monsterRepo,
 // @Failure 500 {object} MessageResponse
 // @Router /items [get]
 func (h *ItemHandler) GetItems(c *gin.Context) {
-itemList, err := h.itemRepo.FindAll(c.Request.Context())
-if err != nil {
-c.JSON(http.StatusInternalServerError, MessageResponse{Message: "Failed to get items"})
-return
-}
-c.JSON(http.StatusOK, toItemListResponse(itemList))
+	itemList, err := h.itemRepo.FindAll(c.Request.Context())
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, MessageResponse{Message: "Failed to get items"})
+		return
+	}
+	c.JSON(http.StatusOK, toItemListResponse(itemList))
 }
 
 // GetItem godoc
@@ -52,30 +52,30 @@ c.JSON(http.StatusOK, toItemListResponse(itemList))
 // @Failure      500  {object}  MessageResponse
 // @Router /items/{itemId} [get]
 func (h *ItemHandler) GetItem(c *gin.Context) {
-var req RequestItemByID
-if err := c.ShouldBindUri(&req); err != nil {
-c.JSON(http.StatusBadRequest, MessageResponse{Message: "Invalid item ID"})
-return
-}
+	var req RequestItemByID
+	if err := c.ShouldBindUri(&req); err != nil {
+		c.JSON(http.StatusBadRequest, MessageResponse{Message: "Invalid item ID"})
+		return
+	}
 
-validate := validator.GetValidator()
-if err := validate.Struct(req); err != nil {
-c.JSON(http.StatusBadRequest, MessageResponse{Message: "Validation failed: " + err.Error()})
-return
-}
+	validate := validator.GetValidator()
+	if err := validate.Struct(req); err != nil {
+		c.JSON(http.StatusBadRequest, MessageResponse{Message: "Validation failed: " + err.Error()})
+		return
+	}
 
-item, err := h.itemRepo.FindByID(c.Request.Context(), req.ItemId)
-if err != nil {
-c.JSON(http.StatusInternalServerError, MessageResponse{Message: "Failed to get item"})
-return
-}
+	item, err := h.itemRepo.FindByID(c.Request.Context(), req.ItemId)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, MessageResponse{Message: "Failed to get item"})
+		return
+	}
 
-if item == nil {
-c.JSON(http.StatusNotFound, MessageResponse{Message: "Item not found"})
-return
-}
+	if item == nil {
+		c.JSON(http.StatusNotFound, MessageResponse{Message: "Item not found"})
+		return
+	}
 
-c.JSON(http.StatusOK, toItemResponse(item))
+	c.JSON(http.StatusOK, toItemResponse(item))
 }
 
 // GetItemByMonster godoc
@@ -91,34 +91,34 @@ c.JSON(http.StatusOK, toItemResponse(item))
 // @Failure      500  {object}  MessageResponse
 // @Router /items/monsters/{monsterId} [get]
 func (h *ItemHandler) GetItemByMonster(c *gin.Context) {
-var req RequestItemByMonster
-if err := c.ShouldBindUri(&req); err != nil {
-c.JSON(http.StatusBadRequest, MessageResponse{Message: "Invalid monster ID"})
-return
-}
+	var req RequestItemByMonster
+	if err := c.ShouldBindUri(&req); err != nil {
+		c.JSON(http.StatusBadRequest, MessageResponse{Message: "Invalid monster ID"})
+		return
+	}
 
-validate := validator.GetValidator()
-if err := validate.Struct(req); err != nil {
-c.JSON(http.StatusBadRequest, MessageResponse{Message: "Validation failed: " + err.Error()})
-return
-}
+	validate := validator.GetValidator()
+	if err := validate.Struct(req); err != nil {
+		c.JSON(http.StatusBadRequest, MessageResponse{Message: "Validation failed: " + err.Error()})
+		return
+	}
 
-itemList, err := h.itemRepo.FindByMonsterID(c.Request.Context(), req.MonsterId)
-if err != nil {
-c.JSON(http.StatusInternalServerError, MessageResponse{Message: "Failed to get item by monster ID"})
-return
-}
+	itemList, err := h.itemRepo.FindByMonsterID(c.Request.Context(), req.MonsterId)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, MessageResponse{Message: "Failed to get item by monster ID"})
+		return
+	}
 
-if itemList == nil {
-c.JSON(http.StatusNotFound, MessageResponse{Message: "Item not found"})
-return
-}
+	if itemList == nil {
+		c.JSON(http.StatusNotFound, MessageResponse{Message: "Item not found"})
+		return
+	}
 
-monsterName := ""
-monster, err := h.monsterRepo.FindById(c.Request.Context(), req.MonsterId)
-if err == nil && monster != nil {
-monsterName = monster.Name
-}
+	monsterName := ""
+	monster, err := h.monsterRepo.FindById(c.Request.Context(), req.MonsterId)
+	if err == nil && monster != nil {
+		monsterName = monster.Name
+	}
 
-c.JSON(http.StatusOK, toItemByMonsterResponse(req.MonsterId, monsterName, itemList))
+	c.JSON(http.StatusOK, toItemByMonsterResponse(req.MonsterId, monsterName, itemList))
 }

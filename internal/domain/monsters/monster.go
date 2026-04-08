@@ -20,10 +20,10 @@ type Monster struct {
 	Element     *string              `gorm:"column:element;type:varchar(255)"`
 	AnotherName string               `gorm:"column:another_name;type:varchar(255)"`
 	NameEn      string               `gorm:"column:name_en;type:varchar(255)"`
-	Weakness    []*weakness.Weakness  `gorm:"foreignKey:monster_id;references:monster_id"`
-	Tribe       *Tribes.Tribe         `gorm:"foreignKey:monster_id;references:monster_id"`
-	Product     []*Products.Product   `gorm:"foreignKey:monster_id;references:monster_id"`
-	Field       []*fields.Field       `gorm:"foreignKey:monster_id;references:monster_id"`
-	Ranking     []*ranking.Ranking    `gorm:"foreignKey:monster_id;references:monster_id"`
-	BGM         []*music.Music        `gorm:"foreignKey:monster_id;references:monster_id"`
+	Weakness    []*weakness.Weakness `gorm:"foreignKey:monster_id;references:monster_id"`
+	Tribe       *Tribes.Tribe        `gorm:"foreignKey:monster_id;references:monster_id"`
+	Product     []*Products.Product  `gorm:"foreignKey:monster_id;references:monster_id"`
+	Field       []*fields.Field      `gorm:"foreignKey:monster_id;references:monster_id"`
+	Ranking     []*ranking.Ranking   `gorm:"foreignKey:monster_id;references:monster_id"`
+	BGM         []*music.Music       `gorm:"foreignKey:monster_id;references:monster_id"`
 }

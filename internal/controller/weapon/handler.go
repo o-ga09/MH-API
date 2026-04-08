@@ -1,19 +1,19 @@
 package weapon
 
 import (
-"context"
-"mh-api/internal/domain/weapons"
-"net/http"
+	"context"
+	"mh-api/internal/domain/weapons"
+	"net/http"
 
-"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin"
 )
 
 type WeaponHandler struct {
-repo weapons.Repository
+	repo weapons.Repository
 }
 
 func NewWeaponHandler(repo weapons.Repository) *WeaponHandler {
-return &WeaponHandler{repo: repo}
+	return &WeaponHandler{repo: repo}
 }
 
 // SearchWeapons godoc
@@ -33,50 +33,50 @@ return &WeaponHandler{repo: repo}
 // @Failure 500 {object} ErrorResponse "サーバ内部エラー"
 // @Router /weapons [get]
 func (h *WeaponHandler) SearchWeapons(c *gin.Context) {
-var req SearchWeaponsRequest
-if err := c.ShouldBindQuery(&req); err != nil {
-c.JSON(http.StatusBadRequest, ErrorResponse{Message: "Invalid request parameters: " + err.Error()})
-return
-}
+	var req SearchWeaponsRequest
+	if err := c.ShouldBindQuery(&req); err != nil {
+		c.JSON(http.StatusBadRequest, ErrorResponse{Message: "Invalid request parameters: " + err.Error()})
+		return
+	}
 
-params := weapons.SearchParams{
-Limit:    req.Limit,
-Offset:   req.Offset,
-Sort:     req.Sort,
-Order:    req.Order,
-WeaponID: req.WeaponID,
-Name:     req.Name,
-}
+	params := weapons.SearchParams{
+		Limit:    req.Limit,
+		Offset:   req.Offset,
+		Sort:     req.Sort,
+		Order:    req.Order,
+		WeaponID: req.WeaponID,
+		Name:     req.Name,
+	}
 
-result, err := h.repo.Find(context.Background(), params)
-if err != nil {
-c.JSON(http.StatusInternalServerError, ErrorResponse{Message: "Failed to search weapons: " + err.Error()})
-return
-}
+	result, err := h.repo.Find(context.Background(), params)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, ErrorResponse{Message: "Failed to search weapons: " + err.Error()})
+		return
+	}
 
-weaponResponses := make([]WeaponDetailResponse, len(result.Weapons))
-for i, w := range result.Weapons {
-weaponResponses[i] = WeaponDetailResponse{
-WeaponID:      w.WeaponID,
-Name:          w.Name,
-ImageURL:      w.ImageUrl,
-Rare:          w.Rarerity,
-Attack:        w.Attack,
-ElementAttack: w.ElementAttack,
-Sharpness:     w.Shapness,
-Critical:      w.Critical,
-Description:   w.Description,
-}
-}
+	weaponResponses := make([]WeaponDetailResponse, len(result.Weapons))
+	for i, w := range result.Weapons {
+		weaponResponses[i] = WeaponDetailResponse{
+			WeaponID:      w.WeaponID,
+			Name:          w.Name,
+			ImageURL:      w.ImageUrl,
+			Rare:          w.Rarerity,
+			Attack:        w.Attack,
+			ElementAttack: w.ElementAttack,
+			Sharpness:     w.Shapness,
+			Critical:      w.Critical,
+			Description:   w.Description,
+		}
+	}
 
-c.JSON(http.StatusOK, ListWeaponsResponse{
-TotalCount: result.TotalCount,
-Limit:      result.Limit,
-Offset:     result.Offset,
-Weapons:    weaponResponses,
-})
+	c.JSON(http.StatusOK, ListWeaponsResponse{
+		TotalCount: result.TotalCount,
+		Limit:      result.Limit,
+		Offset:     result.Offset,
+		Weapons:    weaponResponses,
+	})
 }
 
 type ErrorResponse struct {
-Message string `json:"message"`
+	Message string `json:"message"`
 }
