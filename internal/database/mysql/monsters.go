@@ -36,6 +36,7 @@ func (r *monsterRepository) FindAll(ctx context.Context, params monsters.SearchP
 	}
 
 	if params.WeaknessElement != "" {
+		normalizedWeakness := element.NormalizeToJapanese(params.WeaknessElement)
 		weaknessJoin := "EXISTS (SELECT 1 FROM weakness w WHERE w.monster_id = monster.monster_id AND " +
 			"(w.first_weak_element = ? OR " +
 			"w.second_weak_element = ? OR " +
@@ -46,7 +47,7 @@ func (r *monsterRepository) FindAll(ctx context.Context, params monsters.SearchP
 			"w.dragon = ?))"
 		whereClauses = append(whereClauses, weaknessJoin)
 		for i := 0; i < 7; i++ {
-			whereArgs = append(whereArgs, params.WeaknessElement)
+			whereArgs = append(whereArgs, normalizedWeakness)
 		}
 	}
 

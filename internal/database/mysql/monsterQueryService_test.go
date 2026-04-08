@@ -79,6 +79,12 @@ func Test_monsterRepository_FindAll(t *testing.T) {
 			wantTotal: 2,
 		},
 		{
+			name:      "弱点属性「Dragon」（英語）で検索",
+			params:    monsters.SearchParams{WeaknessElement: "Dragon", Limit: 100},
+			wantIDs:   []string{"0000000001", "0000000002"},
+			wantTotal: 2,
+		},
+		{
 			name:      "使用属性Water＋弱点属性「龍」の複合検索",
 			params:    monsters.SearchParams{UsageElement: "Water", WeaknessElement: "龍", Limit: 100},
 			wantIDs:   []string{"0000000002"},
