@@ -41,8 +41,8 @@ func New(ctx context.Context) context.Context {
 			Logger: logger.Default.LogMode(logger.Info),
 		})
 		if err == nil {
-			if err := db.Use(tracing.NewPlugin()); err != nil {
-				log.Printf("failed to use tracing plugin: %v", err)
+			if pluginErr := db.Use(tracing.NewPlugin()); pluginErr != nil {
+				log.Printf("failed to use tracing plugin: %v", pluginErr)
 			}
 		} else {
 			ctx = connect(ctx, dialector)

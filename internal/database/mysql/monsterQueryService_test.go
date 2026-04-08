@@ -170,7 +170,7 @@ func Test_monsterQueryService_FetchList(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			ctx = context.WithValue(ctx, "param", tt.args.param)
+			ctx = context.WithValue(ctx, param.CtxParamKey, tt.args.param)
 			s := &monsterQueryService{}
 			got, err := s.FetchList(ctx, tt.args.id)
 			assert.True(t, (err != nil) == tt.wantErr)

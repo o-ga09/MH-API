@@ -35,8 +35,8 @@ func main() {
 	defer func() {
 		shutdownCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 		defer cancel()
-		if err := shutdown(shutdownCtx); err != nil {
-			panic(err)
+		if shutdownErr := shutdown(shutdownCtx); shutdownErr != nil {
+			panic(shutdownErr)
 		}
 	}()
 
@@ -48,8 +48,8 @@ func main() {
 	defer func() {
 		shutdownCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 		defer cancel()
-		if err := shutdownMeter(shutdownCtx); err != nil {
-			panic(err)
+		if meterErr := shutdownMeter(shutdownCtx); meterErr != nil {
+			panic(meterErr)
 		}
 	}()
 
@@ -58,8 +58,8 @@ func main() {
 	metricsMux.Handle("/metrics", metricsHandler)
 	go func() {
 		addr := fmt.Sprintf(":%s", cfg.MetricsPort)
-		if err := http.ListenAndServe(addr, metricsMux); err != nil {
-			panic(err)
+		if listenErr := http.ListenAndServe(addr, metricsMux); listenErr != nil {
+			panic(listenErr)
 		}
 	}()
 

@@ -20,7 +20,9 @@ var testDB *gorm.DB
 
 // setupTestDB はテスト用のDBセットアップを行うヘルパー関数
 func setupTestDB(ctx context.Context) context.Context {
-	os.Setenv("DATABASE_URL", "mh-api:P@ssw0rd@tcp(127.0.0.1:3306)/ci?charset=utf8&parseTime=True&loc=Local")
+	if err := os.Setenv("DATABASE_URL", "mh-api:P@ssw0rd@tcp(127.0.0.1:3306)/ci?charset=utf8&parseTime=True&loc=Local"); err != nil {
+		log.Fatal(err)
+	}
 	cfg, err := config.New()
 	if err != nil {
 		log.Fatal(err)

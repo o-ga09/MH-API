@@ -63,22 +63,22 @@ func createTestArmors(t *testing.T, ctx context.Context) []*Armor {
 		{ArmorId: "armor003", ItemId: "ITM0019", ItemName: "リオレウスの鱗"},
 	}
 
-	db := CtxFromTestDB(ctx)
+	gormDB := CtxFromTestDB(ctx)
 
 	for _, armor := range testArmors {
-		if err := db.Create(armor).Error; err != nil {
+		if err := gormDB.Create(armor).Error; err != nil {
 			t.Fatalf("failed to create test armor: %v", err)
 		}
 	}
 
 	for _, skill := range testSkills {
-		if err := db.Create(skill).Error; err != nil {
+		if err := gormDB.Create(skill).Error; err != nil {
 			t.Fatalf("failed to create test armor skill: %v", err)
 		}
 	}
 
 	for _, item := range testRequiredItems {
-		if err := db.Create(item).Error; err != nil {
+		if err := gormDB.Create(item).Error; err != nil {
 			t.Fatalf("failed to create test armor required item: %v", err)
 		}
 	}
