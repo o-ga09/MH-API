@@ -1,91 +1,23 @@
 package weakness
 
-import (
-	"mh-api/internal/domain/monsters"
-	"mh-api/internal/domain/part"
-)
+import "gorm.io/gorm"
+
+type Weaknesses []*Weakness
 
 type Weakness struct {
-	monsterId         monsters.MonsterId
-	partId            part.PartId
-	fire              FireRV
-	water             WaterRV
-	lightning         LightningRV
-	ice               IceRV
-	dragon            DragonRV
-	slashing          SlashingRV
-	blow              BlowRV
-	bullet            BulletRV
-	firstWeakAttack   FirstWeakAttack
-	secondWeakAttack  SecondWeakAttack
-	firstWeakElement  FirstWeakElement
-	secondWeakElement SecondWeakElement
-}
-
-func newWeakness(
-	monsterId monsters.MonsterId,
-	pointId part.PartId,
-	fire FireRV,
-	water WaterRV,
-	lightning LightningRV,
-	ice IceRV,
-	dragon DragonRV,
-	slashing SlashingRV,
-	blow BlowRV,
-	bullet BulletRV,
-	firstWeakAttack FirstWeakAttack,
-	secondWeakAttack SecondWeakAttack,
-	firstWeakElement FirstWeakElement,
-	secondWeakElement SecondWeakElement,
-) *Weakness {
-	return &Weakness{
-		monsterId:         monsterId,
-		partId:            pointId,
-		fire:              fire,
-		water:             water,
-		lightning:         lightning,
-		ice:               ice,
-		dragon:            dragon,
-		slashing:          slashing,
-		blow:              blow,
-		bullet:            bullet,
-		firstWeakAttack:   firstWeakAttack,
-		secondWeakAttack:  secondWeakAttack,
-		firstWeakElement:  firstWeakElement,
-		secondWeakElement: secondWeakElement,
-	}
-}
-
-func NewWeakness(
-	monsterId string,
-	partId string,
-	fireRV string,
-	waterRV string,
-	lightningRV string,
-	iceRV string,
-	dragonRV string,
-	slashingRV string,
-	blowRV string,
-	bulletRV string,
-	firstWeakAttack string,
-	secondWeakAttack string,
-	firstWeakElement string,
-	secondWeakElement string,
-) *Weakness {
-	return newWeakness(
-		monsters.MonsterId{Value: monsterId},
-		part.PartId{},
-		FireRV{value: fireRV},
-		WaterRV{value: waterRV},
-		LightningRV{value: lightningRV},
-		IceRV{value: iceRV},
-		DragonRV{value: dragonRV},
-		SlashingRV{value: slashingRV},
-		BlowRV{value: blowRV},
-		BulletRV{value: bulletRV},
-		FirstWeakAttack{value: firstWeakAttack},
-		SecondWeakAttack{value: secondWeakAttack},
-		FirstWeakElement{value: firstWeakElement},
-		SecondWeakElement{value: secondWeakElement},
-	)
+	gorm.Model
+	MonsterId         string `gorm:"column:monster_id;type:varchar(10);not null"`
+	PartId            string `gorm:"column:aprt_id;type:varchar(255);not null"`
+	Fire              string `gorm:"column:fire;type:varchar(255)"`
+	Water             string `gorm:"column:water;type:varchar(255)"`
+	Lightning         string `gorm:"column:lightning;type:varchar(255)"`
+	Ice               string `gorm:"column:ice;type:varchar(255)"`
+	Dragon            string `gorm:"column:dragon;type:varchar(255)"`
+	Slashing          string `gorm:"column:slashing;type:varchar(255)"`
+	Blow              string `gorm:"column:blow;type:varchar(255)"`
+	Bullet            string `gorm:"column:bullet;type:varchar(255)"`
+	FirstWeakAttack   string `gorm:"column:first_weak_attack;type:varchar(255)"`
+	SecondWeakAttack  string `gorm:"column:second_weak_attack;type:varchar(255)"`
+	FirstWeakElement  string `gorm:"column:first_weak_element;type:varchar(255)"`
+	SecondWeakElement string `gorm:"column:second_weak_element;type:varchar(255)"`
 }

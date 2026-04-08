@@ -1,231 +1,206 @@
 package mysql
 
 import (
-	param "mh-api/internal/controller/monster"
-	"mh-api/internal/domain/music"
-	"mh-api/internal/service/monsters"
-	"testing"
+"context"
+"testing"
 
-	"context"
+"mh-api/internal/domain/fields"
+"mh-api/internal/domain/monsters"
+"mh-api/internal/domain/music"
+Products "mh-api/internal/domain/products"
+"mh-api/internal/domain/ranking"
+Tribes "mh-api/internal/domain/tribes"
+"mh-api/internal/domain/weakness"
 
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
-	"gorm.io/gorm"
+"github.com/stretchr/testify/assert"
+"github.com/stretchr/testify/require"
+"gorm.io/gorm"
 )
 
-func Test_monsterQueryService_FetchList(t *testing.T) {
-	ctx := t.Context()
-	ctx = setupTestDB(ctx)
-	db = ctx.Value(CtxKey).(*gorm.DB)
-	db.Begin()
-	defer db.Rollback()
+func Test_monsterRepository_FindAll(t *testing.T) {
+ctx := t.Context()
+ctx = setupTestDB(ctx)
+db = ctx.Value(CtxKey).(*gorm.DB)
+db.Begin()
+defer db.Rollback()
 
-	_ = createMonsterData(t, ctx)
+createMonsterData(t, ctx)
 
-	monsterWithoutTribe := Monster{
-		MonsterId:   "0000000004",
-		Name:        "NoTribeMonster",
-		Description: "This monster has no tribe.",
-	}
-	err := db.Create(&monsterWithoutTribe).Error
-	require.NoError(t, err)
+noTribeMonster := &monsters.Monster{MonsterId: "0000000004", Name: "NoTribeMonster", Description: "This monster has no tribe."}
+require.NoError(t, CtxFromTestDB(ctx).Create(noTribeMonster).Error)
 
-	weak_A := []monsters.Weakness_attack{
-		{PartId: "0001", Slashing: "45", Blow: "45", Bullet: "45"},
-	}
-	weak_E := []monsters.Weakness_element{
-		{PartId: "0001", Fire: "45", Water: "45", Thunder: "45", Ice: "45", Dragon: "45"},
-	}
-
-	// ランキングとBGM情報を追加
-	ranking1 := []monsters.Ranking{
-		{Ranking: "1", VoteYear: "2024/3/12"},
-	}
-	ranking2 := []monsters.Ranking{
-		{Ranking: "2", VoteYear: "2024/3/12"},
-	}
-	ranking3 := []monsters.Ranking{
-		{Ranking: "3", VoteYear: "2024/3/12"},
-	}
-
-	bgm1 := music.NewMusic("0000000001", "0000000001", "リオレウスのテーマ", "https://www.youtube.com/watch?v=1")
-	bgm2 := music.NewMusic("0000000002", "0000000002", "リオレイアのテーマ", "https://www.youtube.com/watch?v=2")
-	bgm3 := music.NewMusic("0000000003", "0000000003", "ティガレックスのテーマ", "https://www.youtube.com/watch?v=3")
-
-	// ID順に並んでいるデータを適応
-	fireElement := "Fire"
-	waterElement := "Water"
-	dragonElement := "Dragon"
-	monster1 := &monsters.FetchMonsterListDto{Id: "0000000001", Name: "リオレウス", Description: "空の王者。", Element: &fireElement, Location: []string{"古代樹の森"}, Category: "飛竜種", Title: []string{"MH"}, FirstWeak_Attack: "頭部", SecondWeak_Attack: "翼", FirstWeak_Element: "龍", SecondWeak_Element: "雷", Weakness_attack: weak_A, Weakness_element: weak_E, Ranking: ranking1, BGM: []music.Music{*bgm1}}
-	monster2 := &monsters.FetchMonsterListDto{Id: "0000000002", Name: "リオレイア", Description: "陸の女王", Element: &waterElement, Location: []string{"古代樹の森"}, Category: "飛竜種", Title: []string{"MH"}, FirstWeak_Attack: "頭部", SecondWeak_Attack: "翼", FirstWeak_Element: "龍", SecondWeak_Element: "雷", Weakness_attack: weak_A, Weakness_element: weak_E, Ranking: ranking2, BGM: []music.Music{*bgm2}}
-	monster3 := &monsters.FetchMonsterListDto{Id: "0000000003", Name: "ティガレックス", Description: "絶対強者", Element: &dragonElement, Location: []string{"古代樹の森"}, Category: "飛竜種", Title: []string{"MH"}, FirstWeak_Attack: "頭部", SecondWeak_Attack: "翼", FirstWeak_Element: "雷", SecondWeak_Element: "水", Weakness_attack: weak_A, Weakness_element: weak_E, Ranking: ranking3, BGM: []music.Music{*bgm3}}
-	monster4 := &monsters.FetchMonsterListDto{Id: "0000000004", Name: "NoTribeMonster", Description: "This monster has no tribe.", Location: nil, Category: "", Title: nil, Weakness_attack: nil, Weakness_element: nil, Ranking: nil, BGM: nil, AnotherName: "", NameEn: "", FirstWeak_Attack: "", SecondWeak_Attack: "", FirstWeak_Element: "", SecondWeak_Element: "", Element: nil}
-
-	param1 := param.RequestParam{MonsterIds: "", MonsterName: "", Limit: 100, Offset: 0, Sort: "1"}
-	param2 := param.RequestParam{MonsterIds: "0000000001,0000000002", MonsterName: "", Limit: 100, Offset: 0, Sort: "1"}
-	param3 := param.RequestParam{MonsterIds: "", MonsterName: "リオレウス", Limit: 100, Offset: 0, Sort: "1"}
-	param4 := param.RequestParam{MonsterIds: "", MonsterName: "", Limit: 100, Offset: 0, Sort: "1"}
-	param5 := param.RequestParam{MonsterIds: "", MonsterName: "", Limit: 100, Offset: 0, Sort: "2"}
-	param6 := param.RequestParam{MonsterIds: "0000000001", MonsterName: "リオレウス", Limit: 100, Offset: 0, Sort: "1"}
-	param7 := param.RequestParam{MonsterIds: "", MonsterName: "", UsageElement: "Fire", Limit: 100, Offset: 0, Sort: "1"}
-	param8 := param.RequestParam{MonsterIds: "", MonsterName: "", WeaknessElement: "龍", Limit: 100, Offset: 0, Sort: "1"}
-	param9 := param.RequestParam{MonsterIds: "", MonsterName: "", WeaknessElement: "雷", Limit: 100, Offset: 0, Sort: "1"}
-	param10 := param.RequestParam{MonsterIds: "", MonsterName: "", UsageElement: "Water", WeaknessElement: "龍", Limit: 100, Offset: 0, Sort: "1"}
-
-	type args struct {
-		id    string
-		param param.RequestParam
-	}
-	tests := []struct {
-		name      string
-		args      args
-		want      []*monsters.FetchMonsterListDto
-		wantTotal int
-		wantErr   bool
-	}{
-		{
-			name:      "DBからモンスターデータを複数件取得できる",
-			args:      args{id: "", param: param1},
-			want:      []*monsters.FetchMonsterListDto{monster4, monster3, monster2, monster1},
-			wantTotal: 4,
-			wantErr:   false,
-		},
-		{
-			name:      "DBからモンスターデータをmonsterIdを複数件指定して取得できる",
-			args:      args{id: "", param: param2},
-			want:      []*monsters.FetchMonsterListDto{monster2, monster1},
-			wantTotal: 2,
-			wantErr:   false,
-		},
-		{
-			name:      "DBからモンスターの名前を部分一致検索で指定して取得できる",
-			args:      args{id: "", param: param3},
-			want:      []*monsters.FetchMonsterListDto{monster1},
-			wantTotal: 1,
-			wantErr:   false,
-		},
-		{
-			name:      "DBからモンスターデータをmonsterIdでソート（昇順）して取得できる",
-			args:      args{id: "", param: param4},
-			want:      []*monsters.FetchMonsterListDto{monster4, monster3, monster2, monster1},
-			wantTotal: 4,
-			wantErr:   false,
-		},
-		{
-			name:      "DBからモンスターデータをmonsterIdでソート（降順）して取得できる",
-			args:      args{id: "", param: param5},
-			want:      []*monsters.FetchMonsterListDto{monster1, monster2, monster3, monster4},
-			wantTotal: 4,
-			wantErr:   false,
-		},
-		{
-			name:      "DBからモンスターデータをid指定で1件取得できる",
-			args:      args{id: "0000000002", param: param.RequestParam{}},
-			want:      []*monsters.FetchMonsterListDto{monster2},
-			wantTotal: 1,
-			wantErr:   false,
-		},
-		{
-			name:      "DBからモンスターデータをmonsterIdとmonsterNameを指定して取得できる",
-			args:      args{id: "", param: param6},
-			want:      []*monsters.FetchMonsterListDto{monster1},
-			wantTotal: 1,
-			wantErr:   false,
-		},
-		{
-			name:      "Tribeがnilのモンスターを取得してもpanicしない",
-			args:      args{id: "0000000004", param: param.RequestParam{}},
-			want:      []*monsters.FetchMonsterListDto{monster4},
-			wantTotal: 1,
-			wantErr:   false,
-		},
-		{
-			name:      "DBからモンスターデータを使用属性（Fire）で検索して取得できる",
-			args:      args{id: "", param: param7},
-			want:      []*monsters.FetchMonsterListDto{monster1},
-			wantTotal: 1,
-			wantErr:   false,
-		},
-		{
-			name:      "DBからモンスターデータを弱点属性（龍）で検索して取得できる",
-			args:      args{id: "", param: param8},
-			want:      []*monsters.FetchMonsterListDto{monster2, monster1},
-			wantTotal: 2,
-			wantErr:   false,
-		},
-		{
-			name:      "DBからモンスターデータを弱点属性（雷）で検索して取得できる",
-			args:      args{id: "", param: param9},
-			want:      []*monsters.FetchMonsterListDto{monster3, monster2, monster1},
-			wantTotal: 3,
-			wantErr:   false,
-		},
-		{
-			name:      "DBからモンスターデータを使用属性（Water）と弱点属性（龍）の組み合わせで検索して取得できる",
-			args:      args{id: "", param: param10},
-			want:      []*monsters.FetchMonsterListDto{monster2},
-			wantTotal: 1,
-			wantErr:   false,
-		},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			ctx = context.WithValue(ctx, "param", tt.args.param)
-			s := &monsterQueryService{}
-			got, err := s.FetchList(ctx, tt.args.id)
-			assert.True(t, (err != nil) == tt.wantErr)
-
-			if !tt.wantErr {
-				require.NotNil(t, got)
-				assert.Equal(t, tt.wantTotal, got.Total)
-				assert.Equal(t, len(tt.want), len(got.Monsters))
-				assert.Equal(t, tt.want, got.Monsters)
-			} else {
-				assert.Nil(t, got)
-			}
-		})
-	}
+tests := []struct {
+name      string
+params    monsters.SearchParams
+wantIDs   []string
+wantTotal int
+wantErr   bool
+}{
+{
+name:      "全件取得（降順）",
+params:    monsters.SearchParams{Limit: 100, Sort: "desc"},
+wantIDs:   []string{"0000000004", "0000000003", "0000000002", "0000000001"},
+wantTotal: 4,
+},
+{
+name:      "monsterIdを複数指定",
+params:    monsters.SearchParams{MonsterIds: "0000000001,0000000002", Limit: 100, Sort: "desc"},
+wantIDs:   []string{"0000000002", "0000000001"},
+wantTotal: 2,
+},
+{
+name:      "名前部分一致検索",
+params:    monsters.SearchParams{MonsterName: "リオレウス", Limit: 100},
+wantIDs:   []string{"0000000001"},
+wantTotal: 1,
+},
+{
+name:      "昇順",
+params:    monsters.SearchParams{Limit: 100},
+wantIDs:   []string{"0000000001", "0000000002", "0000000003", "0000000004"},
+wantTotal: 4,
+},
+{
+name:      "降順（Sort=1）",
+params:    monsters.SearchParams{Limit: 100, Sort: "desc"},
+wantIDs:   []string{"0000000004", "0000000003", "0000000002", "0000000001"},
+wantTotal: 4,
+},
+{
+name:      "使用属性Fireで検索",
+params:    monsters.SearchParams{UsageElement: "Fire", Limit: 100},
+wantIDs:   []string{"0000000001"},
+wantTotal: 1,
+},
+{
+name:      "弱点属性「龍」で検索",
+params:    monsters.SearchParams{WeaknessElement: "龍", Limit: 100},
+wantIDs:   []string{"0000000001", "0000000002"},
+wantTotal: 2,
+},
+{
+name:      "使用属性Water＋弱点属性「龍」の複合検索",
+params:    monsters.SearchParams{UsageElement: "Water", WeaknessElement: "龍", Limit: 100},
+wantIDs:   []string{"0000000002"},
+wantTotal: 1,
+},
+{
+name:      "Tribeなしモンスターでpanicしない",
+params:    monsters.SearchParams{MonsterIds: "0000000004", Limit: 100},
+wantIDs:   []string{"0000000004"},
+wantTotal: 1,
+},
 }
 
-func createMonsterData(t *testing.T, ctx context.Context) []*monsters.FetchMonsterListDto {
-	t.Helper()
+for _, tt := range tests {
+t.Run(tt.name, func(t *testing.T) {
+repo := &monsterRepository{}
+got, err := repo.FindAll(ctx, tt.params)
 
-	weak1 := []*Weakness{
-		{MonsterId: "0000000001", PartId: "0001", Fire: "45", Water: "45", Lightning: "45", Ice: "45", Dragon: "45", Slashing: "45", Blow: "45", Bullet: "45", FirstWeakAttack: "頭部", SecondWeakAttack: "翼", FirstWeakElement: "龍", SecondWeakElement: "雷"},
-	}
-	weak2 := []*Weakness{
-		{MonsterId: "0000000002", PartId: "0001", Fire: "45", Water: "45", Lightning: "45", Ice: "45", Dragon: "45", Slashing: "45", Blow: "45", Bullet: "45", FirstWeakAttack: "頭部", SecondWeakAttack: "翼", FirstWeakElement: "龍", SecondWeakElement: "雷"},
-	}
-	weak3 := []*Weakness{
-		{MonsterId: "0000000003", PartId: "0001", Fire: "45", Water: "45", Lightning: "45", Ice: "45", Dragon: "45", Slashing: "45", Blow: "45", Bullet: "45", FirstWeakAttack: "頭部", SecondWeakAttack: "翼", FirstWeakElement: "雷", SecondWeakElement: "水"},
-	}
-	fireElement := "Fire"
-	waterElement := "Water"
-	dragonElement := "Dragon"
+if tt.wantErr {
+assert.Error(t, err)
+return
+}
+require.NoError(t, err)
+require.NotNil(t, got)
+assert.Equal(t, tt.wantTotal, got.Total)
+require.Len(t, got.Monsters, len(tt.wantIDs))
+for i, id := range tt.wantIDs {
+assert.Equal(t, id, got.Monsters[i].MonsterId)
+}
+})
+}
+}
 
-	monster := []Monster{
-		{MonsterId: "0000000001", Name: "リオレウス", Description: "空の王者。", Element: &fireElement, Field: []*Field{{FieldId: "0001", MonsterId: "0000000001", Name: "古代樹の森", ImageUrl: "images/kodaizyu.png"}}, Tribe: &Tribe{TribeId: "0001", MonsterId: "0000000001", Name_ja: "飛竜種", Name_en: "wibarn", Description: "飛竜種"}, Product: []*Product{{ProductId: "0001", MonsterId: "0000000001", Name: "MH", PublishYear: "2004", TotalSales: "200万本"}}, Weakness: weak1, Ranking: []*Ranking{{MonsterId: "0000000001", Ranking: "1", VoteYear: "2024/3/12"}}},
-		{MonsterId: "0000000002", Name: "リオレイア", Description: "陸の女王", Element: &waterElement, Field: []*Field{{FieldId: "0001", MonsterId: "0000000002", Name: "古代樹の森", ImageUrl: "images/kodaizyu.png"}}, Tribe: &Tribe{TribeId: "0001", MonsterId: "0000000002", Name_ja: "飛竜種", Name_en: "wibarn", Description: "飛竜種"}, Product: []*Product{{ProductId: "0001", MonsterId: "0000000002", Name: "MH", PublishYear: "2004", TotalSales: "200万本"}}, Weakness: weak2, Ranking: []*Ranking{{MonsterId: "0000000002", Ranking: "2", VoteYear: "2024/3/12"}}},
-		{MonsterId: "0000000003", Name: "ティガレックス", Description: "絶対強者", Element: &dragonElement, Field: []*Field{{FieldId: "0001", MonsterId: "0000000003", Name: "古代樹の森", ImageUrl: "images/kodaizyu.png"}}, Tribe: &Tribe{TribeId: "0001", MonsterId: "0000000003", Name_ja: "飛竜種", Name_en: "wibarn", Description: "飛竜種"}, Product: []*Product{{ProductId: "0001", MonsterId: "0000000003", Name: "MH", PublishYear: "2004", TotalSales: "200万本"}}, Weakness: weak3, Ranking: []*Ranking{{MonsterId: "0000000003", Ranking: "3", VoteYear: "2024/3/12"}}},
-	}
+func Test_monsterRepository_FindById(t *testing.T) {
+ctx := t.Context()
+ctx = setupTestDB(ctx)
+db = ctx.Value(CtxKey).(*gorm.DB)
+db.Begin()
+defer db.Rollback()
 
-	bgms := []Music{
-		{MusicId: "0000000001", MonsterId: "0000000001", Name: "リオレウスのテーマ", Url: "https://www.youtube.com/watch?v=1"},
-		{MusicId: "0000000002", MonsterId: "0000000002", Name: "リオレイアのテーマ", Url: "https://www.youtube.com/watch?v=2"},
-		{MusicId: "0000000003", MonsterId: "0000000003", Name: "ティガレックスのテーマ", Url: "https://www.youtube.com/watch?v=3"},
-	}
+createMonsterData(t, ctx)
 
-	err := CtxFromTestDB(ctx).Create(monster).Error
-	require.NoError(t, err)
+tests := []struct {
+name    string
+id      string
+wantID  string
+wantErr bool
+}{
+{name: "正常系: 存在するID", id: "0000000001", wantID: "0000000001"},
+{name: "異常系: 存在しないID", id: "9999999999", wantErr: true},
+{name: "異常系: 空のID", id: "", wantErr: true},
+}
 
-	err = CtxFromTestDB(ctx).Create(bgms).Error
-	require.NoError(t, err)
+for _, tt := range tests {
+t.Run(tt.name, func(t *testing.T) {
+repo := &monsterRepository{}
+got, err := repo.FindById(ctx, tt.id)
 
-	result := []*monsters.FetchMonsterListDto{}
-	for _, m := range monster {
-		dto := MonsterToDTO(m)
-		result = append(result, dto)
-	}
+if tt.wantErr {
+assert.Error(t, err)
+return
+}
+require.NoError(t, err)
+assert.Equal(t, tt.wantID, got.MonsterId)
+assert.NotEmpty(t, got.Name)
+})
+}
+}
 
-	return result
+func createMonsterData(t *testing.T, ctx context.Context) {
+t.Helper()
+
+fireElement := "Fire"
+waterElement := "Water"
+dragonElement := "Dragon"
+
+monsterList := []*monsters.Monster{
+{MonsterId: "0000000001", Name: "リオレウス", Description: "空の王者。", Element: &fireElement},
+{MonsterId: "0000000002", Name: "リオレイア", Description: "陸の女王", Element: &waterElement},
+{MonsterId: "0000000003", Name: "ティガレックス", Description: "絶対強者", Element: &dragonElement},
+}
+require.NoError(t, CtxFromTestDB(ctx).Create(monsterList).Error)
+
+weaknesses := []*weakness.Weakness{
+{MonsterId: "0000000001", PartId: "0001", Fire: "45", Water: "45", Lightning: "45", Ice: "45", Dragon: "45", Slashing: "45", Blow: "45", Bullet: "45", FirstWeakAttack: "頭部", SecondWeakAttack: "翼", FirstWeakElement: "龍", SecondWeakElement: "雷"},
+{MonsterId: "0000000002", PartId: "0001", Fire: "45", Water: "45", Lightning: "45", Ice: "45", Dragon: "45", Slashing: "45", Blow: "45", Bullet: "45", FirstWeakAttack: "頭部", SecondWeakAttack: "翼", FirstWeakElement: "龍", SecondWeakElement: "雷"},
+{MonsterId: "0000000003", PartId: "0001", Fire: "45", Water: "45", Lightning: "45", Ice: "45", Dragon: "45", Slashing: "45", Blow: "45", Bullet: "45", FirstWeakAttack: "頭部", SecondWeakAttack: "翼", FirstWeakElement: "雷", SecondWeakElement: "水"},
+}
+require.NoError(t, CtxFromTestDB(ctx).Create(weaknesses).Error)
+
+fieldList := []*fields.Field{
+{FieldId: "0001", MonsterId: "0000000001", Name: "古代樹の森", ImageUrl: "images/kodaizyu.png"},
+{FieldId: "0002", MonsterId: "0000000002", Name: "古代樹の森", ImageUrl: "images/kodaizyu.png"},
+{FieldId: "0003", MonsterId: "0000000003", Name: "古代樹の森", ImageUrl: "images/kodaizyu.png"},
+}
+require.NoError(t, CtxFromTestDB(ctx).Create(fieldList).Error)
+
+tribeList := []*Tribes.Tribe{
+{TribeId: "0001", MonsterId: "0000000001", Name_ja: "飛竜種", Name_en: "wibarn", Description: "飛竜種"},
+{TribeId: "0002", MonsterId: "0000000002", Name_ja: "飛竜種", Name_en: "wibarn", Description: "飛竜種"},
+{TribeId: "0003", MonsterId: "0000000003", Name_ja: "飛竜種", Name_en: "wibarn", Description: "飛竜種"},
+}
+require.NoError(t, CtxFromTestDB(ctx).Create(tribeList).Error)
+
+productList := []*Products.Product{
+{ProductId: "0001", MonsterId: "0000000001", Name: "MH", PublishYear: "2004", TotalSales: "200万本"},
+{ProductId: "0002", MonsterId: "0000000002", Name: "MH", PublishYear: "2004", TotalSales: "200万本"},
+{ProductId: "0003", MonsterId: "0000000003", Name: "MH", PublishYear: "2004", TotalSales: "200万本"},
+}
+require.NoError(t, CtxFromTestDB(ctx).Create(productList).Error)
+
+rankingList := []*ranking.Ranking{
+{MonsterId: "0000000001", Ranking: "1", VoteYear: "2024/3/12"},
+{MonsterId: "0000000002", Ranking: "2", VoteYear: "2024/3/12"},
+{MonsterId: "0000000003", Ranking: "3", VoteYear: "2024/3/12"},
+}
+require.NoError(t, CtxFromTestDB(ctx).Create(rankingList).Error)
+
+bgmList := []*music.Music{
+{MusicId: "0000000001", MonsterId: "0000000001", Name: "リオレウスのテーマ", Url: "https://www.youtube.com/watch?v=1"},
+{MusicId: "0000000002", MonsterId: "0000000002", Name: "リオレイアのテーマ", Url: "https://www.youtube.com/watch?v=2"},
+{MusicId: "0000000003", MonsterId: "0000000003", Name: "ティガレックスのテーマ", Url: "https://www.youtube.com/watch?v=3"},
+}
+require.NoError(t, CtxFromTestDB(ctx).Create(bgmList).Error)
 }

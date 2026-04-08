@@ -1,31 +1,14 @@
 package Tribes
 
-import "mh-api/internal/domain/monsters"
+import "gorm.io/gorm"
+
+type Tribes []*Tribe
 
 type Tribe struct {
-	tribeId     TribeId
-	monsterId   monsters.MonsterId
-	name_ja     TribeNameJA
-	name_en     TribeNameEN
-	description TribeDescription
-}
-
-func newTribe(TribeId TribeId, monsterId monsters.MonsterId, name_ja TribeNameJA, name_en TribeNameEN, description TribeDescription) *Tribe {
-	return &Tribe{
-		tribeId:     TribeId,
-		monsterId:   monsterId,
-		name_ja:     name_ja,
-		name_en:     name_en,
-		description: description,
-	}
-}
-
-func NewTribe(tribeId string, monsterId string, name_ja string, name_en string, description string) *Tribe {
-	return newTribe(
-		TribeId{value: tribeId},
-		monsters.MonsterId{Value: monsterId},
-		TribeNameJA{value: name_ja},
-		TribeNameEN{value: name_en},
-		TribeDescription{value: description},
-	)
+	gorm.Model
+	TribeId     string `gorm:"column:tribe_id;primaryKey;type:varchar(10);not null"`
+	MonsterId   string `gorm:"column:monster_id;type:varchar(10);not null"`
+	Name_ja     string `gorm:"column:name_ja;type:varchar(255);not null"`
+	Name_en     string `gorm:"column:name_en;type:varchar(255);not null"`
+	Description string `gorm:"column:description;type:varchar(255)"`
 }

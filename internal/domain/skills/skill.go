@@ -1,76 +1,21 @@
 package skills
 
-type Skills []Skill
+import "gorm.io/gorm"
+
+type Skills []*Skill
 
 type Skill struct {
-	id          SkillId
-	name        SkillName
-	description SkillDesc
-	levels      []SkillLevelDetail
+	gorm.Model
+	SkillId     string       `gorm:"column:skill_id;primaryKey;type:varchar(10);not null;index"`
+	Name        string       `gorm:"column:name;type:varchar(255);not null"`
+	Description string       `gorm:"column:description;type:varchar(500)"`
+	Levels      []SkillLevel `gorm:"foreignKey:skill_id;references:skill_id"`
 }
 
-type SkillLevelDetail struct {
-	levelId     SkillLevelId
-	skillId     SkillId
-	level       SkillLevel
-	description SkillLevelDesc
-}
-
-func newSkill(id SkillId, name SkillName, description SkillDesc, levels []SkillLevelDetail) Skill {
-	return Skill{
-		id:          id,
-		name:        name,
-		description: description,
-		levels:      levels,
-	}
-}
-
-func NewSkill(id string, name string, description string, levels []SkillLevelDetail) Skill {
-	return newSkill(
-		SkillId{Value: id},
-		SkillName{Value: name},
-		SkillDesc{Value: description},
-		levels,
-	)
-}
-
-func NewSkillLevelDetail(levelId string, skillId string, level int, description string) SkillLevelDetail {
-	return SkillLevelDetail{
-		levelId:     SkillLevelId{Value: levelId},
-		skillId:     SkillId{Value: skillId},
-		level:       SkillLevel{Value: level},
-		description: SkillLevelDesc{Value: description},
-	}
-}
-
-func (s *Skill) GetId() string {
-	return s.id.Value
-}
-
-func (s *Skill) GetName() string {
-	return s.name.Value
-}
-
-func (s *Skill) GetDescription() string {
-	return s.description.Value
-}
-
-func (s *Skill) GetLevels() []SkillLevelDetail {
-	return s.levels
-}
-
-func (sld *SkillLevelDetail) GetLevelId() string {
-	return sld.levelId.Value
-}
-
-func (sld *SkillLevelDetail) GetSkillId() string {
-	return sld.skillId.Value
-}
-
-func (sld *SkillLevelDetail) GetLevel() int {
-	return sld.level.Value
-}
-
-func (sld *SkillLevelDetail) GetDescription() string {
-	return sld.description.Value
+type SkillLevel struct {
+	gorm.Model
+	SkillLevelId string `gorm:"column:skill_level_id;primaryKey;type:varchar(10);not null;index"`
+	SkillId      string `gorm:"column:skill_id;type:varchar(10);not null"`
+	Level        int    `gorm:"column:level;type:int;not null"`
+	Description  string `gorm:"column:description;type:varchar(500);not null"`
 }

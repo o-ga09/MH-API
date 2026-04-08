@@ -1,26 +1,20 @@
 package armor
 
 import (
-	"context"
-	"errors"
-	"mh-api/internal/service/armors"
-	"net/http"
+"errors"
+"mh-api/internal/domain/armors"
+"net/http"
 
-	"github.com/gin-gonic/gin"
-	"gorm.io/gorm"
+"github.com/gin-gonic/gin"
+"gorm.io/gorm"
 )
 
-type IArmorService interface {
-	GetAllArmors(ctx context.Context) (*armors.ListArmorsResponse, error)
-	GetArmorByID(ctx context.Context, armorId string) (*armors.ArmorData, error)
-}
-
 type ArmorHandler struct {
-	service IArmorService
+repo armors.Repository
 }
 
-func NewArmorHandler(s IArmorService) *ArmorHandler {
-	return &ArmorHandler{service: s}
+func NewArmorHandler(repo armors.Repository) *ArmorHandler {
+return &ArmorHandler{repo: repo}
 }
 
 // GetAllArmors godoc
@@ -33,54 +27,15 @@ func NewArmorHandler(s IArmorService) *ArmorHandler {
 // @Failure 500 {object} ErrorResponse "サーバ内部エラー"
 // @Router /armors [get]
 func (h *ArmorHandler) GetAllArmors(c *gin.Context) {
-	appCtx := c.Request.Context()
+armorList, err := h.repo.GetAll(c.Request.Context())
+if err != nil {
+c.JSON(http.StatusInternalServerError, ErrorResponse{Message: "Failed to get armors: " + err.Error()})
+return
+}
 
-	serviceRes, err := h.service.GetAllArmors(appCtx)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, ErrorResponse{Message: "Failed to get armors: " + err.Error()})
-		return
-	}
-
-	ctrlResponseArmors := make([]ArmorDetailResponse, len(serviceRes.Armors))
-	for i, sa := range serviceRes.Armors {
-		skills := make([]SkillResponse, len(sa.Skill))
-		for j, skill := range sa.Skill {
-			skills[j] = SkillResponse{
-				ID:   skill.ID,
-				Name: skill.Name,
-			}
-		}
-
-		requiredItems := make([]RequiredItemResponse, len(sa.Required))
-		for k, item := range sa.Required {
-			requiredItems[k] = RequiredItemResponse{
-				ID:   item.ID,
-				Name: item.Name,
-			}
-		}
-
-		ctrlResponseArmors[i] = ArmorDetailResponse{
-			ID:      sa.ID,
-			Name:    sa.Name,
-			Skills:  skills,
-			Slot:    sa.Slot,
-			Defense: sa.Defense,
-			Resistance: ResistanceResponse{
-				Fire:      sa.Resistance.Fire,
-				Water:     sa.Resistance.Water,
-				Lightning: sa.Resistance.Lightning,
-				Ice:       sa.Resistance.Ice,
-				Dragon:    sa.Resistance.Dragon,
-			},
-			Required: requiredItems,
-		}
-	}
-
-	ctrlResponse := ListArmorsResponse{
-		Armors: ctrlResponseArmors,
-	}
-
-	c.JSON(http.StatusOK, ctrlResponse)
+c.JSON(http.StatusOK, ListArmorsResponse{
+Armors: toArmorDetailResponses(armorList),
+})
 }
 
 // GetArmorByID godoc
@@ -96,59 +51,67 @@ func (h *ArmorHandler) GetAllArmors(c *gin.Context) {
 // @Failure 500 {object} ErrorResponse "サーバ内部エラー"
 // @Router /armors/{id} [get]
 func (h *ArmorHandler) GetArmorByID(c *gin.Context) {
-	appCtx := c.Request.Context()
+var req GetArmorByIDRequest
+if err := c.ShouldBindUri(&req); err != nil {
+c.JSON(http.StatusBadRequest, ErrorResponse{Message: "Invalid request parameters"})
+return
+}
+if req.ArmorID == " " {
+c.JSON(http.StatusBadRequest, ErrorResponse{Message: "Armor ID cannot be empty"})
+return
+}
 
-	var req GetArmorByIDRequest
-	if err := c.ShouldBindUri(&req); err != nil {
-		c.JSON(http.StatusBadRequest, ErrorResponse{Message: "Invalid request parameters"})
-		return
-	}
-	if req.ArmorID == " " {
-		c.JSON(http.StatusBadRequest, ErrorResponse{Message: "Armor ID cannot be empty"})
-		return
-	}
+armor, err := h.repo.GetByID(c.Request.Context(), req.ArmorID)
+if err != nil {
+if errors.Is(err, gorm.ErrRecordNotFound) {
+c.JSON(http.StatusNotFound, ErrorResponse{Message: "Armor not found"})
+return
+}
+c.JSON(http.StatusInternalServerError, ErrorResponse{Message: "Failed to get armor: " + err.Error()})
+return
+}
 
-	serviceRes, err := h.service.GetArmorByID(appCtx, req.ArmorID)
-	if err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			c.JSON(http.StatusNotFound, ErrorResponse{Message: "Armor not found"})
-			return
-		}
-		c.JSON(http.StatusInternalServerError, ErrorResponse{Message: "Failed to get armor: " + err.Error()})
-		return
-	}
+c.JSON(http.StatusOK, toArmorDetailResponse(armor))
+}
 
-	skills := make([]SkillResponse, len(serviceRes.Skill))
-	for j, skill := range serviceRes.Skill {
-		skills[j] = SkillResponse{
-			ID:   skill.ID,
-			Name: skill.Name,
-		}
-	}
+func toArmorDetailResponse(a *armors.Armor) ArmorDetailResponse {
+skillResponses := make([]SkillResponse, len(a.Skills))
+for i, s := range a.Skills {
+skillResponses[i] = SkillResponse{
+ID:   s.SkillId,
+Name: s.SkillName,
+}
+}
 
-	requiredItems := make([]RequiredItemResponse, len(serviceRes.Required))
-	for k, item := range serviceRes.Required {
-		requiredItems[k] = RequiredItemResponse{
-			ID:   item.ID,
-			Name: item.Name,
-		}
-	}
+requiredItems := make([]RequiredItemResponse, len(a.RequiredItems))
+for i, item := range a.RequiredItems {
+requiredItems[i] = RequiredItemResponse{
+ID:   item.ItemId,
+Name: item.ItemName,
+}
+}
 
-	ctrlResponse := ArmorDetailResponse{
-		ID:      serviceRes.ID,
-		Name:    serviceRes.Name,
-		Skills:  skills,
-		Slot:    serviceRes.Slot,
-		Defense: serviceRes.Defense,
-		Resistance: ResistanceResponse{
-			Fire:      serviceRes.Resistance.Fire,
-			Water:     serviceRes.Resistance.Water,
-			Lightning: serviceRes.Resistance.Lightning,
-			Ice:       serviceRes.Resistance.Ice,
-			Dragon:    serviceRes.Resistance.Dragon,
-		},
-		Required: requiredItems,
-	}
+return ArmorDetailResponse{
+ID:      a.ArmorId,
+Name:    a.Name,
+Skills:  skillResponses,
+Slot:    a.Slot,
+Defense: a.Defense,
+Resistance: ResistanceResponse{
+Fire:      a.FireResistance,
+Water:     a.WaterResistance,
+Lightning: a.LightningResistance,
+Ice:       a.IceResistance,
+Dragon:    a.DragonResistance,
+},
+Required: requiredItems,
+}
+}
 
-	c.JSON(http.StatusOK, ctrlResponse)
+func toArmorDetailResponses(armorList armors.Armors) []ArmorDetailResponse {
+res := make([]ArmorDetailResponse, len(armorList))
+for i, a := range armorList {
+res[i] = toArmorDetailResponse(a)
+}
+return res
 }

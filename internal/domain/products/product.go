@@ -1,26 +1,14 @@
 package Products
 
+import "gorm.io/gorm"
+
+type Products []*Product
+
 type Product struct {
-	productId   ProductId
-	name        ProductName
-	publishYear ProductPublishYear
-	totalSales  ProductTotalSales
-}
-
-func newProduct(productId ProductId, name ProductName, publishYear ProductPublishYear, ProductTotalSales ProductTotalSales) *Product {
-	return &Product{
-		productId:   productId,
-		name:        name,
-		publishYear: publishYear,
-		totalSales:  ProductTotalSales,
-	}
-}
-
-func NewProduct(productId string, name string, publishYear string, productTotalSales string) *Product {
-	return newProduct(
-		ProductId{value: productId},
-		ProductName{value: name},
-		ProductPublishYear{value: publishYear},
-		ProductTotalSales{value: productTotalSales},
-	)
+	gorm.Model
+	ProductId   string `gorm:"column:product_id;primaryKey;type:varchar(255);not null"`
+	MonsterId   string `gorm:"column:monster_id;type:varchar(10);not null"`
+	Name        string `gorm:"column:name;type:varchar(255);not null"`
+	PublishYear string `gorm:"column:publish_year;type:varchar(20)"`
+	TotalSales  string `gorm:"column:total_sales;type:varchar(255)"`
 }
