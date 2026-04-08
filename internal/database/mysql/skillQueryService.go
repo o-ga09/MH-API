@@ -16,10 +16,10 @@ func NewSkillQueryService() skills.Repository {
 }
 
 func (s *skillQueryService) FindAll(ctx context.Context) (skills.Skills, error) {
-	db := CtxFromDB(ctx)
+	gormDB := CtxFromDB(ctx)
 
 	var skillModels []Skill
-	if err := db.Preload("Levels").Find(&skillModels).Error; err != nil {
+	if err := gormDB.Preload("Levels").Find(&skillModels).Error; err != nil {
 		return nil, fmt.Errorf("failed to fetch skills: %w", err)
 	}
 
@@ -44,10 +44,10 @@ func (s *skillQueryService) FindAll(ctx context.Context) (skills.Skills, error) 
 }
 
 func (s *skillQueryService) FindById(ctx context.Context, skillId string) (skills.Skill, error) {
-	db := CtxFromDB(ctx)
+	gormDB := CtxFromDB(ctx)
 
 	var skillModel Skill
-	if err := db.Preload("Levels").Where("skill_id = ?", skillId).First(&skillModel).Error; err != nil {
+	if err := gormDB.Preload("Levels").Where("skill_id = ?", skillId).First(&skillModel).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return skills.Skill{}, gorm.ErrRecordNotFound
 		}
@@ -70,7 +70,7 @@ func (s *skillQueryService) FindById(ctx context.Context, skillId string) (skill
 }
 
 func (s *skillQueryService) Save(ctx context.Context, skill skills.Skill) error {
-	db := CtxFromDB(ctx)
+	gormDB := CtxFromDB(ctx)
 
 	skillModel := Skill{
 		SkillId:     skill.GetId(),
@@ -88,7 +88,7 @@ func (s *skillQueryService) Save(ctx context.Context, skill skills.Skill) error 
 		skillModel.Levels = append(skillModel.Levels, levelModel)
 	}
 
-	if err := db.Create(&skillModel).Error; err != nil {
+	if err := gormDB.Create(&skillModel).Error; err != nil {
 		return fmt.Errorf("failed to save skill: %w", err)
 	}
 
@@ -96,9 +96,9 @@ func (s *skillQueryService) Save(ctx context.Context, skill skills.Skill) error 
 }
 
 func (s *skillQueryService) Remove(ctx context.Context, skillId string) error {
-	db := CtxFromDB(ctx)
+	gormDB := CtxFromDB(ctx)
 
-	if err := db.Where("skill_id = ?", skillId).Delete(&Skill{}).Error; err != nil {
+	if err := gormDB.Where("skill_id = ?", skillId).Delete(&Skill{}).Error; err != nil {
 		return fmt.Errorf("failed to remove skill: %w", err)
 	}
 

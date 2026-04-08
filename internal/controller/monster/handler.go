@@ -17,6 +17,11 @@ import (
 
 const YOUTUBE_URL = "https://www.youtube.com/watch?v="
 
+type ctxParamKey string
+
+// CtxParamKey はリクエストパラメータをコンテキストに格納する際のキー
+const CtxParamKey ctxParamKey = "param"
+
 type MonsterHandler struct {
 	monsterService monsters.IMonsterService
 }
@@ -65,7 +70,7 @@ func (m *MonsterHandler) GetAll(c *gin.Context) {
 	if ok {
 		id = ""
 	}
-	ctx = context.WithValue(ctx, "param", param)
+	ctx = context.WithValue(ctx, CtxParamKey, param)
 	result, err := m.monsterService.FetchMonsterDetail(ctx, id)
 
 	if err == gorm.ErrRecordNotFound {

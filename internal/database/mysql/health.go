@@ -12,11 +12,11 @@ func NewHealthRepository() *healthRepository {
 }
 
 func (h *healthRepository) GetStatus(ctx context.Context) error {
-	db := CtxFromDB(ctx)
-	if db == nil {
+	gormDB := CtxFromDB(ctx)
+	if gormDB == nil {
 		return errors.New("database connection not found")
 	}
-	conn, err := db.DB()
+	conn, err := gormDB.DB()
 	if err != nil {
 		return err
 	}

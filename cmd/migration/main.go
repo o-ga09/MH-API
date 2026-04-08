@@ -58,7 +58,7 @@ func main() {
 		if err != nil {
 			log.Fatal("failed to create file:", err)
 		}
-		defer f.Close()
+		defer func() { _ = f.Close() }()
 
 		f.WriteString("-- +migrate Up\n\n\n") //nolint:all
 		f.WriteString("-- +migrate Down\n\n") //nolint:all
@@ -109,7 +109,7 @@ func executeSeedFile(db *sql.DB, filePath string) error {
 	if err != nil {
 		return err
 	}
-	defer file.Close()
+	defer func() { _ = file.Close() }()
 
 	var queries []string
 	var currentQuery strings.Builder
@@ -133,8 +133,8 @@ func executeSeedFile(db *sql.DB, filePath string) error {
 		}
 	}
 
-	if err := scanner.Err(); err != nil {
-		return err
+	if scanErr := scanner.Err(); scanErr != nil {
+		return scanErr
 	}
 
 	// トランザクション内でクエリを実行

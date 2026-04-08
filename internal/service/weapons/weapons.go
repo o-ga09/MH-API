@@ -19,7 +19,6 @@ func NewWeaponService(qs IWeaponQueryService) *WeaponService {
 }
 
 func (s *WeaponService) SearchWeapons(ctx context.Context, params SearchWeaponsParams) (*ListWeaponsResponse, error) {
-
 	domainWeapons, totalCount, err := s.queryService.FindWeapons(ctx, params)
 	if err != nil {
 		return nil, err

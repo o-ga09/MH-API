@@ -20,43 +20,45 @@ func (qs *WeaponQueryService) FindWeapons(ctx context.Context, params weaponServ
 	var total int64
 
 	// コンテキストからDBを取得
-	db := CtxFromDB(ctx)
+	gormDB := CtxFromDB(ctx)
 
 	if params.WeaponID != nil {
-		db = db.Where("weapon_id = ?", *params.WeaponID)
+		gormDB = gormDB.Where("weapon_id = ?", *params.WeaponID)
 	}
 
 	if params.Name != nil {
-		db = db.Where("name LIKE ?", "%"+*params.Name+"%")
+		gormDB = gormDB.Where("name LIKE ?", "%"+*params.Name+"%")
 	}
 
 	if params.Sort != nil {
-		if *params.Sort == "asc" {
-			db = db.Order("id ASC")
-		} else if *params.Sort == "desc" {
-			db = db.Order("id DESC")
+		switch *params.Sort {
+		case "asc":
+			gormDB = gormDB.Order("id ASC")
+		case "desc":
+			gormDB = gormDB.Order("id DESC")
 		}
 	}
 
 	if params.Order != nil {
-		if *params.Order == 1 {
-			db = db.Order("id ASC")
-		} else if *params.Order == 2 {
-			db = db.Order("id DESC")
+		switch *params.Order {
+		case 1:
+			gormDB = gormDB.Order("id ASC")
+		case 2:
+			gormDB = gormDB.Order("id DESC")
 		}
 	}
 	if params.Limit != nil && *params.Limit > 0 {
-		db = db.Limit(*params.Limit)
+		gormDB = gormDB.Limit(*params.Limit)
 	} else {
 		defaultLimit := 20
-		db = db.Limit(defaultLimit)
+		gormDB = gormDB.Limit(defaultLimit)
 	}
 
 	if params.Offset != nil {
-		db = db.Offset(*params.Offset)
+		gormDB = gormDB.Offset(*params.Offset)
 	}
 
-	result := db.Find(&weaponsList)
+	result := gormDB.Find(&weaponsList)
 	if result.Error != nil {
 		return nil, 0, result.Error
 	}

@@ -114,7 +114,7 @@ func (s *monsterQueryService) FetchList(ctx context.Context, id string) (*monste
 	sort := ""
 
 	if id == "" {
-		p = ctx.Value("param").(param.RequestParam)
+		p = ctx.Value(param.CtxParamKey).(param.RequestParam)
 	}
 
 	limit := p.Limit

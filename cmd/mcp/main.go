@@ -147,7 +147,7 @@ func (m *MCPServer) getMonsters(ctx context.Context, _ *mcp.CallToolRequest, in 
 		Limit:           limit,
 		Offset:          (offset - 1) * limit,
 	}
-	ctx = context.WithValue(ctx, "param", param)
+	ctx = context.WithValue(ctx, request.CtxParamKey, param)
 
 	result, err := m.monsterService.FetchMonsterDetail(ctx, "")
 	if err != nil {

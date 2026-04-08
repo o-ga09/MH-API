@@ -34,7 +34,6 @@ func (h *traceHandler) Handle(ctx context.Context, r slog.Record) error {
 			slog.String("logging.googleapis.com/spanId", sc.SpanID().String()),
 			slog.Bool("logging.googleapis.com/trace_sampled", sc.TraceFlags().IsSampled()),
 		)
-
 	}
 	r.AddAttrs(
 		slog.Group("logging.googleapis.com/labels",
@@ -46,7 +45,7 @@ func (h *traceHandler) Handle(ctx context.Context, r slog.Record) error {
 }
 
 func (h *traceHandler) WithAttr(attrs []slog.Attr) slog.Handler {
-	return &traceHandler{h.Handler.WithAttrs(attrs), h.projectID, h.env}
+	return &traceHandler{h.WithAttrs(attrs), h.projectID, h.env}
 }
 
 func (h *traceHandler) WithGroup(g string) slog.Handler {

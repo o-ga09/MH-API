@@ -209,7 +209,7 @@ func (m *MonHunTools) getMonsters(ctx context.Context, args GetMonstersInput) (s
 		Limit:           limit,
 		Offset:          calculatedOffset,
 	}
-	ctx = context.WithValue(ctx, "param", param)
+	ctx = context.WithValue(ctx, request.CtxParamKey, param)
 
 	monsters, err := m.monsterService.FetchMonsterDetail(ctx, "")
 	if err != nil {
