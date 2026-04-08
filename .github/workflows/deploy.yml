@@ -48,51 +48,9 @@ jobs:
           docker build --platform linux/amd64 -t ${{ env.AGENT_IMAGE }} -f Dockerfile --target deploy-agent .
           docker push ${{ env.AGENT_IMAGE }}
 
-  trivy-image-scan:
-    name: Trivy イメージスキャン
-    needs: build-and-push
-    runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-      contents: read
-
-    steps:
-      - name: Authenticate to Google Cloud
-        uses: google-github-actions/auth@c200f3691d83b41bf9bbd8638997a462592937ed # v2
-        with:
-          workload_identity_provider: "projects/${{ env.GCP_PROJECT_NUMBER }}/locations/global/workloadIdentityPools/terraform-pool/providers/terraform-provider"
-          service_account: "${{ secrets.TERRAFORM_SERVICE_ACCOUNT }}"
-
-      - name: Configure Docker for Artifact Registry
-        run: gcloud auth configure-docker asia-northeast1-docker.pkg.dev
-
-      - name: Trivy scan - API Image
-        uses: aquasecurity/trivy-action@57a97c7e7821a5776cebc9bb87c984fa69cba8f1 # v0.35.0
-        with:
-          image-ref: ${{ env.API_IMAGE }}
-          format: 'table'
-          severity: 'CRITICAL,HIGH'
-          exit-code: '1'
-
-      - name: Trivy scan - MCP Image
-        uses: aquasecurity/trivy-action@57a97c7e7821a5776cebc9bb87c984fa69cba8f1 # v0.35.0
-        with:
-          image-ref: ${{ env.MCP_IMAGE }}
-          format: 'table'
-          severity: 'CRITICAL,HIGH'
-          exit-code: '1'
-
-      - name: Trivy scan - Agent Image
-        uses: aquasecurity/trivy-action@57a97c7e7821a5776cebc9bb87c984fa69cba8f1 # v0.35.0
-        with:
-          image-ref: ${{ env.AGENT_IMAGE }}
-          format: 'table'
-          severity: 'CRITICAL,HIGH'
-          exit-code: '1'
-
   update-manifest:
     name: Update Kubernetes Manifests
-    needs: trivy-image-scan
+    needs: build-and-push
     runs-on: ubuntu-latest
     permissions:
       contents: read

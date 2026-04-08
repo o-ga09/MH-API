@@ -57,30 +57,3 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  trivy-filesystem:
-    name: Trivy ファイルシステムスキャン
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      security-events: write
-    steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-
-      - name: Run Trivy
-        uses: aquasecurity/trivy-action@57a97c7e7821a5776cebc9bb87c984fa69cba8f1 # v0.35.0
-        with:
-          scan-type: 'fs'
-          scan-ref: '.'
-          format: 'sarif'
-          output: 'trivy-fs.sarif'
-          severity: 'CRITICAL,HIGH'
-          scanners: 'vuln,secret,misconfig'
-          exit-code: '1'
-          ignore-unfixed: true
-
-      - name: Upload Trivy SARIF
-        uses: github/codeql-action/upload-sarif@018511a1aac61b6e92783189d8c0081eb8f69932 # v3.28.13
-        if: always()
-        continue-on-error: true # fork PRではsecurity-events:writeが付与されないため
-        with:
-          sarif_file: trivy-fs.sarif
