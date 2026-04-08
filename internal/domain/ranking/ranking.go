@@ -1,25 +1,12 @@
 package ranking
 
-import "mh-api/internal/domain/monsters"
+import "gorm.io/gorm"
+
+type Rankings []*Ranking
 
 type Ranking struct {
-	monsterId monsters.MonsterId
-	ranking   Rank
-	voteYear  VoteYear
-}
-
-func NewRanking(monsterId, rank, voteYear string) *Ranking {
-	return newRanking(
-		monsters.MonsterId{Value: monsterId},
-		Rank{value: rank},
-		VoteYear{value: voteYear},
-	)
-}
-
-func newRanking(monsterId monsters.MonsterId, ranking Rank, voteYear VoteYear) *Ranking {
-	return &Ranking{
-		monsterId: monsterId,
-		ranking:   ranking,
-		voteYear:  voteYear,
-	}
+	gorm.Model
+	MonsterId string `gorm:"column:monster_id;type:varchar(10); not null"`
+	Ranking   string `gorm:"column:ranking;type:varchar(10)"`
+	VoteYear  string `gorm:"column:vote_year;type:varchar(20)"`
 }

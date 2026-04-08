@@ -1,23 +1,13 @@
 package fields
 
-import "mh-api/internal/domain/monsters"
+import "gorm.io/gorm"
+
+type Fields []*Field
 
 type Field struct {
-	fieldId   FieldId
-	monsterId monsters.MonsterId
-	name      FieldName
-	imageUrl  FieldImageUrl
-}
-
-func newField(fieldId FieldId, monsterId monsters.MonsterId, name FieldName, imageUrl FieldImageUrl) *Field {
-	return &Field{fieldId, monsterId, name, imageUrl}
-}
-
-func NewField(fieldId string, monsterId string, name string, imageUrl string) *Field {
-	return newField(
-		FieldId{value: fieldId},
-		monsters.MonsterId{Value: monsterId},
-		FieldName{value: name},
-		FieldImageUrl{value: imageUrl},
-	)
+	gorm.Model
+	FieldId   string `gorm:"column:field_id;primaryKey;type:varchar(10);not null"`
+	MonsterId string `gorm:"column:monster_id;type:varchar(10);not null"`
+	Name      string `gorm:"column:name;type:varchar(255);not null"`
+	ImageUrl  string `gorm:"column:image_url;type:varchar(255)"`
 }

@@ -1,15 +1,14 @@
 package monster
 
 import (
-	"context"
 	"fmt"
-
 	"log/slog"
-	"mh-api/internal/service/monsters"
+	"net/http"
+
+	"mh-api/internal/domain/monsters"
 	"mh-api/pkg/constant"
 	"mh-api/pkg/ptr"
 	"mh-api/pkg/validator"
-	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -17,33 +16,14 @@ import (
 
 const YOUTUBE_URL = "https://www.youtube.com/watch?v="
 
-type ctxParamKey string
-
-// CtxParamKey はリクエストパラメータをコンテキストに格納する際のキー
-const CtxParamKey ctxParamKey = "param"
-
 type MonsterHandler struct {
-	monsterService monsters.IMonsterService
+	repo monsters.Repository
 }
 
-func NewMonsterHandler(s monsters.IMonsterService) *MonsterHandler {
-	return &MonsterHandler{
-		monsterService: s,
-	}
+func NewMonsterHandler(repo monsters.Repository) *MonsterHandler {
+	return &MonsterHandler{repo: repo}
 }
 
-// GetAll godoc
-// @Summary モンスター検索（複数件）
-// @Description モンスターを検索して、条件に合致するモンスターを複数件取得する
-// @Tags モンスター検索
-// @Accept json
-// @Produce json
-// @Param request query RequestParam true  "クエリパラメータ"
-// @Success 200 {object} Monsters
-// @Failure      400  {object}  MessageResponse
-// @Failure      404  {object}  MessageResponse
-// @Failure      500  {object}  MessageResponse
-// @Router /monsters [get]
 func (m *MonsterHandler) GetAll(c *gin.Context) {
 	ctx := c.Request.Context()
 
@@ -66,87 +46,35 @@ func (m *MonsterHandler) GetAll(c *gin.Context) {
 		return
 	}
 
-	id, ok := c.Params.Get("id")
-	if ok {
-		id = ""
+	searchParams := monsters.SearchParams{
+		MonsterIds:      param.MonsterIds,
+		MonsterName:     param.MonsterName,
+		UsageElement:    param.UsageElement,
+		WeaknessElement: param.WeaknessElement,
+		Limit:           param.Limit,
+		Offset:          param.Offset,
+		Sort:            param.Sort,
 	}
-	ctx = context.WithValue(ctx, CtxParamKey, param)
-	result, err := m.monsterService.FetchMonsterDetail(ctx, id)
+	result, err := m.repo.FindAll(ctx, searchParams)
 
 	if err == gorm.ErrRecordNotFound {
 		slog.Log(c, constant.SeverityError, "Record Not Found", "error message", err)
 		c.JSON(http.StatusNotFound, MessageResponse{Message: "NOT FOUND"})
 		return
 	} else if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"err": "can not get records",
-		})
+		c.JSON(http.StatusInternalServerError, gin.H{"err": "can not get records"})
 		slog.Log(c, constant.SeverityError, "database error", "error", err)
 		return
 	}
 
-	monsters := []ResponseJson{}
+	list := make([]ResponseJson, 0, len(result.Monsters))
 	for _, r := range result.Monsters {
-		var wa []*Weakness_attack
-		var we []*Weakness_element
-		var ranking []*Ranking
-		var bgm []*Music
-		for _, w := range r.Weakness_attack {
-			wa = append(wa, &Weakness_attack{
-				Slashing: w.Slashing,
-				Blow:     w.Blow,
-				Bullet:   w.Bullet,
-			})
-		}
-
-		for _, w := range r.Weakness_element {
-			we = append(we, &Weakness_element{
-				Fire:    w.Fire,
-				Water:   w.Water,
-				Thunder: w.Thunder,
-				Ice:     w.Ice,
-				Dragon:  w.Dragon,
-			})
-		}
-		for _, r := range r.Ranking {
-			ranking = append(ranking, &Ranking{
-				Ranking:  r.Ranking,
-				VoteYear: r.VoteYear,
-			})
-		}
-		for _, bg := range r.BGM {
-			bgm = append(bgm, &Music{
-				Name: bg.GetName(),
-				Url:  fmt.Sprintf("%s%s", YOUTUBE_URL, bg.GetURL()),
-			})
-		}
-
-		monsters = append(monsters, ResponseJson{
-			Id:                 r.Id,
-			Name:               r.Name,
-			Description:        ptr.StrToPtr(r.Description),
-			AnotherName:        ptr.StrToPtr(r.AnotherName),
-			NameEn:             ptr.StrToPtr(r.NameEn),
-			Location:           ptr.StrArrayToPtr(r.Location),
-			Category:           r.Category,
-			Title:              ptr.StrArrayToPtr(r.Title),
-			FirstWeak_Attack:   ptr.StrToPtr(r.FirstWeak_Attack),
-			FirstWeak_Element:  ptr.StrToPtr(r.FirstWeak_Element),
-			SecondWeak_Attack:  ptr.StrToPtr(r.SecondWeak_Attack),
-			SecondWeak_Element: ptr.StrToPtr(r.SecondWeak_Element),
-			Weakness_attack:    wa,
-			Weakness_element:   we,
-			Ranking:            ranking,
-			ImageUrl:           ptr.CreateImageURL(r.Id),
-			BGM:                bgm,
-			Element:            r.Element,
-		})
+		list = append(list, toResponseJson(r))
 	}
-	response := Monsters{
+	c.JSON(http.StatusOK, Monsters{
 		Total:    result.Total,
-		Monsters: monsters,
-	}
-	c.JSON(http.StatusOK, response)
+		Monsters: list,
+	})
 }
 
 // GetById godoc
@@ -162,7 +90,6 @@ func (m *MonsterHandler) GetAll(c *gin.Context) {
 // @Failure      500  {object}  MessageResponse
 // @Router /monsters/{id} [get]
 func (m *MonsterHandler) GetById(c *gin.Context) {
-	// トレーシング用のスパンを作成（親トランザクションの子スパンとして）
 	ctx := c.Request.Context()
 
 	id, ok := c.Params.Get("id")
@@ -172,81 +99,92 @@ func (m *MonsterHandler) GetById(c *gin.Context) {
 		return
 	}
 
-	result, err := m.monsterService.FetchMonsterDetail(ctx, id)
-
+	r, err := m.repo.FindById(ctx, id)
 	if err == gorm.ErrRecordNotFound {
 		slog.Log(c, constant.SeverityError, "Record Not Found", "error message", err)
 		c.JSON(http.StatusNotFound, MessageResponse{Message: "NOT FOUND"})
 		return
 	} else if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"err": "can not get records",
-		})
+		c.JSON(http.StatusInternalServerError, gin.H{"err": "can not get records"})
 		slog.Log(c, constant.SeverityError, "database error", "error", err)
 		return
 	}
 
-	monster := ResponseJson{}
-	for _, r := range result.Monsters {
-		var wa []*Weakness_attack
-		var we []*Weakness_element
-		var ranking []*Ranking
-		var bgm []*Music
-		for _, w := range r.Weakness_attack {
-			wa = append(wa, &Weakness_attack{
-				Slashing: w.Slashing,
-				Blow:     w.Blow,
-				Bullet:   w.Bullet,
-			})
-		}
+	c.JSON(http.StatusOK, Monster{Monster: toResponseJson(r)})
+}
 
-		for _, w := range r.Weakness_element {
-			we = append(we, &Weakness_element{
-				Fire:    w.Fire,
-				Water:   w.Water,
-				Thunder: w.Thunder,
-				Ice:     w.Ice,
-				Dragon:  w.Dragon,
-			})
-		}
+func toResponseJson(r *monsters.Monster) ResponseJson {
+	var wa []*Weakness_attack
+	var we []*Weakness_element
+	var ranking []*Ranking
+	var bgm []*Music
+	var locations []string
+	var titles []string
 
-		for _, rank := range r.Ranking {
-			ranking = append(ranking, &Ranking{
-				Ranking:  rank.Ranking,
-				VoteYear: rank.VoteYear,
-			})
-		}
-
-		for _, bg := range r.BGM {
-			bgm = append(bgm, &Music{
-				Name: bg.GetName(),
-				Url:  fmt.Sprintf("%s%s", YOUTUBE_URL, bg.GetURL()),
-			})
-		}
-
-		monster = ResponseJson{
-			Id:                 r.Id,
-			Name:               r.Name,
-			Description:        ptr.StrToPtr(r.Description),
-			AnotherName:        ptr.StrToPtr(r.AnotherName),
-			NameEn:             ptr.StrToPtr(r.NameEn),
-			Location:           ptr.StrArrayToPtr(r.Location),
-			Category:           r.Category,
-			Title:              ptr.StrArrayToPtr(r.Title),
-			FirstWeak_Attack:   ptr.StrToPtr(r.FirstWeak_Attack),
-			FirstWeak_Element:  ptr.StrToPtr(r.FirstWeak_Element),
-			SecondWeak_Attack:  ptr.StrToPtr(r.SecondWeak_Attack),
-			SecondWeak_Element: ptr.StrToPtr(r.SecondWeak_Element),
-			Weakness_attack:    wa,
-			Weakness_element:   we,
-			Ranking:            ranking,
-			ImageUrl:           ptr.CreateImageURL(r.Id),
-			BGM:                bgm,
-			Element:            r.Element, // Added Element
-		}
+	for _, w := range r.Weakness {
+		wa = append(wa, &Weakness_attack{
+			Slashing: w.Slashing,
+			Blow:     w.Blow,
+			Bullet:   w.Bullet,
+		})
+		we = append(we, &Weakness_element{
+			Fire:    w.Fire,
+			Water:   w.Water,
+			Thunder: w.Lightning,
+			Ice:     w.Ice,
+			Dragon:  w.Dragon,
+		})
 	}
-	response := Monster{
-		Monster: monster,
+	for _, rank := range r.Ranking {
+		ranking = append(ranking, &Ranking{
+			Ranking:  rank.Ranking,
+			VoteYear: rank.VoteYear,
+		})
 	}
-	c.JSON(http.StatusOK, response)
+	for _, bg := range r.BGM {
+		bgm = append(bgm, &Music{
+			Name: bg.Name,
+			Url:  fmt.Sprintf("%s%s", YOUTUBE_URL, bg.Url),
+		})
+	}
+	for _, f := range r.Field {
+		locations = append(locations, f.Name)
+	}
+	for _, p := range r.Product {
+		titles = append(titles, p.Name)
+	}
+
+	category := ""
+	if r.Tribe != nil {
+		category = r.Tribe.Name_ja
+	}
+
+	var firstWeakAttack, secondWeakAttack, firstWeakElement, secondWeakElement *string
+	if len(r.Weakness) > 0 {
+		firstWeakAttack = ptr.StrToPtr(r.Weakness[0].FirstWeakAttack)
+		secondWeakAttack = ptr.StrToPtr(r.Weakness[0].SecondWeakAttack)
+		firstWeakElement = ptr.StrToPtr(r.Weakness[0].FirstWeakElement)
+		secondWeakElement = ptr.StrToPtr(r.Weakness[0].SecondWeakElement)
+	}
+
+	return ResponseJson{
+		Id:                 r.MonsterId,
+		Name:               r.Name,
+		Description:        ptr.StrToPtr(r.Description),
+		AnotherName:        ptr.StrToPtr(r.AnotherName),
+		NameEn:             ptr.StrToPtr(r.NameEn),
+		Location:           ptr.StrArrayToPtr(locations),
+		Category:           category,
+		Title:              ptr.StrArrayToPtr(titles),
+		FirstWeak_Attack:   firstWeakAttack,
+		FirstWeak_Element:  firstWeakElement,
+		SecondWeak_Attack:  secondWeakAttack,
+		SecondWeak_Element: secondWeakElement,
+		Weakness_attack:    wa,
+		Weakness_element:   we,
+		Ranking:            ranking,
+		ImageUrl:           ptr.CreateImageURL(r.MonsterId),
+		BGM:                bgm,
+		Element:            r.Element,
+	}
 }

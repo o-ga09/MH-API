@@ -1,71 +1,34 @@
 package armors
 
+import "gorm.io/gorm"
+
+type Armors []*Armor
+
 type Armor struct {
-	armorId             ArmorId
-	name                ArmorName
-	slot                ArmorSlot
-	defense             ArmorDefense
-	fireResistance      ArmorFireResistance
-	waterResistance     ArmorWaterResistance
-	lightningResistance ArmorLightningResistance
-	iceResistance       ArmorIceResistance
-	dragonResistance    ArmorDragonResistance
-	skills              []Skill
-	requiredItems       []RequiredItem
+	gorm.Model
+	ArmorId             string               `gorm:"column:armor_id;type:varchar(255);not null"`
+	Name                string               `gorm:"column:name;type:varchar(255);not null"`
+	Slot                string               `gorm:"column:slot;type:varchar(255)"`
+	Defense             int                  `gorm:"column:defense;type:int"`
+	FireResistance      int                  `gorm:"column:fire_resistance;type:int"`
+	WaterResistance     int                  `gorm:"column:water_resistance;type:int"`
+	LightningResistance int                  `gorm:"column:lightning_resistance;type:int"`
+	IceResistance       int                  `gorm:"column:ice_resistance;type:int"`
+	DragonResistance    int                  `gorm:"column:dragon_resistance;type:int"`
+	Skills              []*ArmorSkill        `gorm:"foreignKey:armor_id;references:armor_id"`
+	RequiredItems       []*ArmorRequiredItem `gorm:"foreignKey:armor_id;references:armor_id"`
 }
 
-func newArmor(
-	armorId ArmorId,
-	name ArmorName,
-	slot ArmorSlot,
-	defense ArmorDefense,
-	fireResistance ArmorFireResistance,
-	waterResistance ArmorWaterResistance,
-	lightningResistance ArmorLightningResistance,
-	iceResistance ArmorIceResistance,
-	dragonResistance ArmorDragonResistance,
-	skills []Skill,
-	requiredItems []RequiredItem,
-) *Armor {
-	return &Armor{
-		armorId:             armorId,
-		name:                name,
-		slot:                slot,
-		defense:             defense,
-		fireResistance:      fireResistance,
-		waterResistance:     waterResistance,
-		lightningResistance: lightningResistance,
-		iceResistance:       iceResistance,
-		dragonResistance:    dragonResistance,
-		skills:              skills,
-		requiredItems:       requiredItems,
-	}
+type ArmorSkill struct {
+	gorm.Model
+	ArmorId   string `gorm:"column:armor_id;type:varchar(255);not null"`
+	SkillId   string `gorm:"column:skill_id;type:varchar(255);not null"`
+	SkillName string `gorm:"column:skill_name;type:varchar(255);not null"`
 }
 
-func NewArmor(
-	id string,
-	name string,
-	slot string,
-	defense int,
-	fireResistance int,
-	waterResistance int,
-	lightningResistance int,
-	iceResistance int,
-	dragonResistance int,
-	skills []Skill,
-	requiredItems []RequiredItem,
-) *Armor {
-	return newArmor(
-		ArmorId{value: id},
-		ArmorName{value: name},
-		ArmorSlot{value: slot},
-		ArmorDefense{value: defense},
-		ArmorFireResistance{value: fireResistance},
-		ArmorWaterResistance{value: waterResistance},
-		ArmorLightningResistance{value: lightningResistance},
-		ArmorIceResistance{value: iceResistance},
-		ArmorDragonResistance{value: dragonResistance},
-		skills,
-		requiredItems,
-	)
+type ArmorRequiredItem struct {
+	gorm.Model
+	ArmorId  string `gorm:"column:armor_id;type:varchar(255);not null"`
+	ItemId   string `gorm:"column:item_id;type:varchar(255);not null"`
+	ItemName string `gorm:"column:item_name;type:varchar(255);not null"`
 }

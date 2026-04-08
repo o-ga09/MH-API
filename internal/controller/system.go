@@ -1,39 +1,34 @@
 package controller
 
 import (
-	"mh-api/internal/service/health"
-	"net/http"
+"context"
+"net/http"
 
-	"github.com/gin-gonic/gin"
+"github.com/gin-gonic/gin"
 )
 
-type SystemHandler struct {
-	service health.HealthService
+type HealthRepository interface {
+GetStatus(ctx context.Context) error
 }
 
-func NewHealthService(service health.HealthService) SystemHandler {
-	return SystemHandler{
-		service: service,
-	}
+type SystemHandler struct {
+healthRepo HealthRepository
+}
+
+func NewHealthService(repo HealthRepository) SystemHandler {
+return SystemHandler{healthRepo: repo}
 }
 
 func (s *SystemHandler) Health(c *gin.Context) {
-	c.JSON(200, gin.H{
-		"Message": "ok",
-	})
+c.JSON(200, gin.H{"Message": "ok"})
 }
 
 func (s *SystemHandler) DBHealth(c *gin.Context) {
-	ctx := c.Request.Context()
-
-	err := s.service.GetStatus(ctx)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"Message": err.Error(),
-		})
-		return
-	}
-	c.JSON(http.StatusOK, gin.H{
-		"Message": "db ok",
-	})
+ctx := c.Request.Context()
+err := s.healthRepo.GetStatus(ctx)
+if err != nil {
+c.JSON(http.StatusInternalServerError, gin.H{"Message": err.Error()})
+return
+}
+c.JSON(http.StatusOK, gin.H{"Message": "db ok"})
 }
