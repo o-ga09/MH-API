@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"mh-api/internal/domain/monsters"
+	"mh-api/pkg/element"
 )
 
 type monsterRepository struct{}
@@ -31,7 +32,7 @@ func (r *monsterRepository) FindAll(ctx context.Context, params monsters.SearchP
 
 	if params.UsageElement != "" {
 		whereClauses = append(whereClauses, "element = ?")
-		whereArgs = append(whereArgs, params.UsageElement)
+		whereArgs = append(whereArgs, element.NormalizeToJapanese(params.UsageElement))
 	}
 
 	if params.WeaknessElement != "" {

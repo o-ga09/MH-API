@@ -151,9 +151,9 @@ func Test_monsterRepository_FindById(t *testing.T) {
 func createMonsterData(t *testing.T, ctx context.Context) {
 	t.Helper()
 
-	fireElement := "Fire"
-	waterElement := "Water"
-	dragonElement := "Dragon"
+	fireElement := "火"
+	waterElement := "水"
+	dragonElement := "龍"
 
 	monsterList := []*monsters.Monster{
 		{MonsterId: "0000000001", Name: "リオレウス", Description: "空の王者。", Element: &fireElement},
