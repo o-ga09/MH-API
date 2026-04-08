@@ -79,6 +79,12 @@ MH-API プロジェクトは、[MIT ライセンス](https://opensource.org/lice
 
 MH-API プロジェクトへの貢献に関するガイドラインについては、[CONTRIBUTING.md](./CONTRIBUTING_JA.md)を参照してください。プロジェクトにコードやドキュメントの貢献をする前に、ガイドラインをお読みください。
 
+## リリース管理
+
+本プロジェクトでは [tagpr](https://github.com/Songmu/tagpr) を使用してリリースを自動化しています。PR をマージするだけでタグ付けと GitHub Releases が自動作成されます。
+
+詳細は [リリース管理ガイド](./doc/RELEASE.md) を参照してください。
+
 ## サポート
 
 MH-API プロジェクトに関するサポートが必要な場合は、[mhapiadm@gmail.com](mailto:mhapiadm@gmail.com)までお問い合わせください。
