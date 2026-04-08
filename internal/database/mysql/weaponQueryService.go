@@ -28,9 +28,10 @@ func (r *weaponRepository) Find(ctx context.Context, params weapons.SearchParams
 	}
 
 	if params.Sort != nil {
-		if *params.Sort == "asc" {
+		switch *params.Sort {
+		case "asc":
 			query = query.Order("id ASC")
-		} else if *params.Sort == "desc" {
+		case "desc":
 			query = query.Order("id DESC")
 		}
 	}

@@ -1,13 +1,14 @@
 package monsters
 
 import (
-	"gorm.io/gorm"
 	"mh-api/internal/domain/fields"
 	"mh-api/internal/domain/music"
 	Products "mh-api/internal/domain/products"
 	"mh-api/internal/domain/ranking"
 	Tribes "mh-api/internal/domain/tribes"
 	"mh-api/internal/domain/weakness"
+
+	"gorm.io/gorm"
 )
 
 type Monsters []*Monster

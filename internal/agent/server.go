@@ -16,10 +16,6 @@ import (
 
 	"mh-api/internal/agent/middleware"
 	"mh-api/internal/database/mysql"
-	"mh-api/internal/domain/items"
-	"mh-api/internal/domain/monsters"
-	"mh-api/internal/domain/skills"
-	"mh-api/internal/domain/weapons"
 )
 
 // Server represents the ADK agent server
@@ -40,10 +36,10 @@ func NewServer(cfg *Config) (*Server, error) {
 	ctx := context.Background()
 
 	// Initialize repositories
-	var monsterRepo monsters.Repository = mysql.NewMonsterRepository()
-	var weaponRepo weapons.Repository = mysql.NewWeaponRepository()
-	var itemRepo items.Repository = mysql.NewItemQueryService()
-	var skillRepo skills.Repository = mysql.NewSkillQueryService()
+	monsterRepo := mysql.NewMonsterRepository()
+	weaponRepo := mysql.NewWeaponRepository()
+	itemRepo := mysql.NewItemQueryService()
+	skillRepo := mysql.NewSkillQueryService()
 
 	// Create tools
 	monHunTools := NewMonHunTools(monsterRepo, weaponRepo, itemRepo, skillRepo)
@@ -100,7 +96,7 @@ func NewServer(cfg *Config) (*Server, error) {
 	mux.HandleFunc("/v1/agent/health", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(`{"status":"ok"}`))
+		_, _ = w.Write([]byte(`{"status":"ok"}`))
 	})
 
 	return &Server{

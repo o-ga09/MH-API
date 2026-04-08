@@ -35,15 +35,15 @@ func createTestArmors(t *testing.T, ctx context.Context) []*armors.Armor {
 		{ArmorId: "armor003", ItemId: "ITM0019", ItemName: "リオレウスの鱗"},
 	}
 
-	db := CtxFromTestDB(ctx)
+	armorDB := CtxFromTestDB(ctx)
 	for _, armor := range testArmors {
-		require.NoError(t, db.Create(armor).Error)
+		require.NoError(t, armorDB.Create(armor).Error)
 	}
 	for _, skill := range testSkills {
-		require.NoError(t, db.Create(skill).Error)
+		require.NoError(t, armorDB.Create(skill).Error)
 	}
 	for _, item := range testRequiredItems {
-		require.NoError(t, db.Create(item).Error)
+		require.NoError(t, armorDB.Create(item).Error)
 	}
 
 	return testArmors
