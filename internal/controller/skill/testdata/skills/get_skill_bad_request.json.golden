@@ -1,1 +1,3 @@
-{"message":"Skill ID is required"}
+{
+  "message": "Skill ID is required"
+}

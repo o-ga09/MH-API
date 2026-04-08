@@ -1,1 +1,3 @@
-{"message":"Failed to get armors: database error"}
+{
+  "message": "Failed to get armors: database error"
+}

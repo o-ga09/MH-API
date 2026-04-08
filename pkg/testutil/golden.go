@@ -1,6 +1,7 @@
 package testutil
 
 import (
+	"bytes"
 	"encoding/json"
 	"os"
 	"path/filepath"
@@ -21,7 +22,11 @@ func AssertGoldenJSON(t *testing.T, goldenFile string, actual []byte) {
 		err := os.MkdirAll(filepath.Dir(goldenPath), 0755)
 		require.NoError(t, err)
 
-		err = os.WriteFile(goldenPath, actual, 0644)
+		var pretty bytes.Buffer
+		err = json.Indent(&pretty, actual, "", "  ")
+		require.NoError(t, err)
+
+		err = os.WriteFile(goldenPath, append(pretty.Bytes(), '\n'), 0644)
 		require.NoError(t, err)
 	}
 
