@@ -60,8 +60,8 @@ func main() {
 		}
 		defer func() { _ = f.Close() }()
 
-		f.WriteString("-- +migrate Up\n\n\n") //nolint:all
-		f.WriteString("-- +migrate Down\n\n") //nolint:all
+		_, _ = f.WriteString("-- +migrate Up\n\n\n")
+		_, _ = f.WriteString("-- +migrate Down\n\n")
 		fmt.Printf("Created new migration: %s\n", filename)
 
 	case "status":
@@ -105,7 +105,7 @@ func seedData(db *sql.DB) error {
 }
 
 func executeSeedFile(db *sql.DB, filePath string) error {
-	file, err := os.Open(filePath)
+	file, err := os.Open(filePath) // #nosec G304 -- filePath is constructed from a controlled directory walk (db/seeds/)
 	if err != nil {
 		return err
 	}
@@ -145,7 +145,7 @@ func executeSeedFile(db *sql.DB, filePath string) error {
 
 	for _, query := range queries {
 		if _, err := tx.Exec(query); err != nil {
-			tx.Rollback() //nolint:all
+			_ = tx.Rollback() //nolint:all
 			return fmt.Errorf("failed to execute query: %w", err)
 		}
 	}

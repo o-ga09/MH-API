@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 
@@ -48,7 +49,12 @@ func main() {
 	handler := mcp.NewSSEHandler(func(r *http.Request) *mcp.Server { return s }, nil)
 	http.Handle("/sse", handler)
 	log.Print("Starting SSE server on :8080")
-	if err := http.ListenAndServe(":8080", nil); err != nil {
+	srv := &http.Server{
+		Addr:        ":8080",
+		ReadTimeout: 30 * time.Second,
+		// WriteTimeout は SSE のストリーミング接続のために設定しない
+	}
+	if err := srv.ListenAndServe(); err != nil {
 		log.Fatalf("Failed to start server: %v", err)
 	}
 }
