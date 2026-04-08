@@ -58,7 +58,13 @@ func main() {
 	metricsMux.Handle("/metrics", metricsHandler)
 	go func() {
 		addr := fmt.Sprintf(":%s", cfg.MetricsPort)
-		if listenErr := http.ListenAndServe(addr, metricsMux); listenErr != nil {
+		srv := &http.Server{
+			Addr:         addr,
+			Handler:      metricsMux,
+			ReadTimeout:  10 * time.Second,
+			WriteTimeout: 10 * time.Second,
+		}
+		if listenErr := srv.ListenAndServe(); listenErr != nil {
 			panic(listenErr)
 		}
 	}()

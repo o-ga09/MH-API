@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"time"
 
 	"google.golang.org/adk/agent"
 	"google.golang.org/adk/agent/llmagent"
@@ -110,5 +111,11 @@ func (s *Server) Start() error {
 	log.Printf("Starting MonHun AI Agent server on port %s", s.port)
 	log.Printf("API available at http://localhost:%s/v1/agent/", s.port)
 	log.Printf("Health check at http://localhost:%s/v1/agent/health", s.port)
-	return http.ListenAndServe(":"+s.port, s.handler)
+	srv := &http.Server{
+		Addr:         ":" + s.port,
+		Handler:      s.handler,
+		ReadTimeout:  30 * time.Second,
+		WriteTimeout: 30 * time.Second,
+	}
+	return srv.ListenAndServe()
 }

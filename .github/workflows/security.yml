@@ -27,6 +27,7 @@ jobs:
       - name: Upload gosec SARIF
         uses: github/codeql-action/upload-sarif@018511a1aac61b6e92783189d8c0081eb8f69932 # v3.28.13
         if: always()
+        continue-on-error: true # fork PRではsecurity-events:writeが付与されないため
         with:
           sarif_file: gosec.sarif
 
@@ -74,9 +75,12 @@ jobs:
           output: 'trivy-fs.sarif'
           severity: 'CRITICAL,HIGH'
           scanners: 'vuln,secret,misconfig'
+          exit-code: '1'
+          ignore-unfixed: true
 
       - name: Upload Trivy SARIF
         uses: github/codeql-action/upload-sarif@018511a1aac61b6e92783189d8c0081eb8f69932 # v3.28.13
         if: always()
+        continue-on-error: true # fork PRではsecurity-events:writeが付与されないため
         with:
           sarif_file: trivy-fs.sarif
