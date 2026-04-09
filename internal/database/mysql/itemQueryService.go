@@ -15,6 +15,40 @@ func NewItemQueryService() items.Repository {
 	return &itemQueryService{}
 }
 
+func (s *itemQueryService) Find(ctx context.Context, params items.SearchParams) (*items.SearchResult, error) {
+	var itemList []*items.Item
+	query := CtxFromDB(ctx)
+
+	if params.Name != "" {
+		query = query.Where("name LIKE ?", "%"+params.Name+"%")
+	}
+	if params.MonsterID != "" {
+		query = query.Where("monster_id = ?", params.MonsterID)
+	}
+
+	limit := params.Limit
+	if limit <= 0 {
+		limit = 100
+	}
+
+	var total int64
+	countQuery := CtxFromDB(ctx).Model(&items.Item{})
+	if params.Name != "" {
+		countQuery = countQuery.Where("name LIKE ?", "%"+params.Name+"%")
+	}
+	if params.MonsterID != "" {
+		countQuery = countQuery.Where("monster_id = ?", params.MonsterID)
+	}
+	if err := countQuery.Count(&total).Error; err != nil {
+		return nil, fmt.Errorf("failed to count items: %w", err)
+	}
+
+	if err := query.Limit(limit).Offset(params.Offset).Find(&itemList).Error; err != nil {
+		return nil, fmt.Errorf("failed to fetch items: %w", err)
+	}
+	return &items.SearchResult{Items: itemList, Total: int(total)}, nil
+}
+
 func (s *itemQueryService) FindAll(ctx context.Context) (items.Items, error) {
 	var itemList []*items.Item
 	if err := CtxFromDB(ctx).Find(&itemList).Error; err != nil {

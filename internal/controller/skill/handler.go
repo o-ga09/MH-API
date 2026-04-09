@@ -20,20 +20,37 @@ func NewSkillHandler(repo skills.Repository) *SkillHandler {
 
 // GetSkills godoc
 // @Summary スキル一覧を取得する
-// @Description 全てのスキルとその情報の一覧を取得する
+// @Description スキルを検索して一覧を取得する（名前・説明文による絞り込み・ページネーション対応）
 // @Tags スキル検索
 // @Produce json
+// @Param name query string false "スキル名（部分一致）"
+// @Param description query string false "説明文（部分一致）"
+// @Param limit query int false "取得件数" default(100)
+// @Param offset query int false "取得開始位置" default(0)
 // @Success 200 {object} Skills
 // @Failure 400 {object} MessageResponse
 // @Failure 500 {object} MessageResponse
 // @Router /skills [get]
 func (h *SkillHandler) GetSkills(c *gin.Context) {
-	skillsResult, err := h.repo.FindAll(c.Request.Context())
+	var req SearchSkillsRequest
+	if err := c.ShouldBindQuery(&req); err != nil {
+		c.JSON(http.StatusBadRequest, MessageResponse{Message: "Invalid request parameters: " + err.Error()})
+		return
+	}
+
+	params := skills.SearchParams{
+		Name:        req.Name,
+		Description: req.Description,
+		Limit:       req.Limit,
+		Offset:      req.Offset,
+	}
+
+	result, err := h.repo.Find(c.Request.Context(), params)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, MessageResponse{Message: "Failed to get skills"})
 		return
 	}
-	c.JSON(http.StatusOK, ToSkillListResponse(skillsResult))
+	c.JSON(http.StatusOK, ToSkillSearchResponse(result))
 }
 
 // GetSkill godoc

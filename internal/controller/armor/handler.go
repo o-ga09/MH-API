@@ -19,22 +19,45 @@ func NewArmorHandler(repo armors.Repository) *ArmorHandler {
 
 // GetAllArmors godoc
 // @Summary 防具一覧を取得します
-// @Description 全ての防具のリストを返します。
+// @Description 防具を検索して一覧を返します（名前・スキル名・スロットによる絞り込み・ページネーション対応）
 // @Tags Armors
 // @Accept json
 // @Produce json
+// @Param name query string false "防具名（部分一致）"
+// @Param skill_name query string false "スキル名（部分一致）"
+// @Param slot query string false "スロット（完全一致）"
+// @Param limit query int false "取得件数" default(100)
+// @Param offset query int false "取得開始位置" default(0)
+// @Param sort query string false "ソート順 (asc/desc)"
 // @Success 200 {object} ListArmorsResponse "防具のリスト"
+// @Failure 400 {object} ErrorResponse "リクエストパラメータが不正な場合"
 // @Failure 500 {object} ErrorResponse "サーバ内部エラー"
 // @Router /armors [get]
 func (h *ArmorHandler) GetAllArmors(c *gin.Context) {
-	armorList, err := h.repo.GetAll(c.Request.Context())
+	var req SearchArmorsRequest
+	if err := c.ShouldBindQuery(&req); err != nil {
+		c.JSON(http.StatusBadRequest, ErrorResponse{Message: "Invalid request parameters: " + err.Error()})
+		return
+	}
+
+	params := armors.SearchParams{
+		Name:      req.Name,
+		SkillName: req.SkillName,
+		Slot:      req.Slot,
+		Limit:     req.Limit,
+		Offset:    req.Offset,
+		Sort:      req.Sort,
+	}
+
+	result, err := h.repo.Find(c.Request.Context(), params)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, ErrorResponse{Message: "Failed to get armors: " + err.Error()})
 		return
 	}
 
 	c.JSON(http.StatusOK, ListArmorsResponse{
-		Armors: toArmorDetailResponses(armorList),
+		Total:  result.Total,
+		Armors: toArmorDetailResponses(result.Armors),
 	})
 }
 

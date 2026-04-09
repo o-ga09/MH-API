@@ -23,20 +23,37 @@ func NewItemHandler(itemRepo items.Repository, monsterRepo monsters.Repository) 
 
 // GetItems godoc
 // @Summary アイテム名の一覧を取得する
-// @Description 全てのアイテム名とIDの一覧を取得する
+// @Description アイテムを検索して一覧を取得する（名前・モンスターIDによる絞り込み・ページネーション対応）
 // @Tags アイテム検索
 // @Produce json
+// @Param name query string false "アイテム名（部分一致）"
+// @Param monster_id query string false "モンスターID（完全一致）"
+// @Param limit query int false "取得件数" default(100)
+// @Param offset query int false "取得開始位置" default(0)
 // @Success 200 {object} Items
 // @Failure 400 {object} MessageResponse
 // @Failure 500 {object} MessageResponse
 // @Router /items [get]
 func (h *ItemHandler) GetItems(c *gin.Context) {
-	itemList, err := h.itemRepo.FindAll(c.Request.Context())
+	var req SearchItemsRequest
+	if err := c.ShouldBindQuery(&req); err != nil {
+		c.JSON(http.StatusBadRequest, MessageResponse{Message: "Invalid request parameters: " + err.Error()})
+		return
+	}
+
+	params := items.SearchParams{
+		Name:      req.Name,
+		MonsterID: req.MonsterID,
+		Limit:     req.Limit,
+		Offset:    req.Offset,
+	}
+
+	result, err := h.itemRepo.Find(c.Request.Context(), params)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, MessageResponse{Message: "Failed to get items"})
 		return
 	}
-	c.JSON(http.StatusOK, toItemListResponse(itemList))
+	c.JSON(http.StatusOK, toItemSearchResponse(result, req.Limit, req.Offset))
 }
 
 // GetItem godoc

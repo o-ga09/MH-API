@@ -11,3 +11,17 @@ type Item struct {
 	ImageUrl  string `gorm:"column:image_url;type:varchar(255)"`
 	MonsterId string `gorm:"column:monster_id;type:varchar(10)"`
 }
+
+// SearchParams はアイテム検索の条件を表す
+type SearchParams struct {
+	Name      string
+	MonsterID string
+	Limit     int
+	Offset    int
+}
+
+// SearchResult はアイテム検索の結果を表す
+type SearchResult struct {
+	Items Items
+	Total int
+}

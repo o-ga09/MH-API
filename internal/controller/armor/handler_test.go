@@ -38,8 +38,11 @@ func TestArmorHandler_GetAllArmors(t *testing.T) {
 			name: "正常系: 防具一覧が取得できる",
 			mockSetup: func() armors.Repository {
 				return &armors.RepositoryMock{
+					FindFunc: func(ctx context.Context, params armors.SearchParams) (*armors.SearchResult, error) {
+						return &armors.SearchResult{Armors: createTestArmors(), Total: 2}, nil
+					},
 					GetAllFunc: func(ctx context.Context) (armors.Armors, error) {
-						return createTestArmors(), nil
+						return nil, nil
 					},
 					GetByIDFunc: func(ctx context.Context, armorId string) (*armors.Armor, error) {
 						return nil, nil
@@ -53,8 +56,11 @@ func TestArmorHandler_GetAllArmors(t *testing.T) {
 			name: "正常系: 防具一覧が空の場合",
 			mockSetup: func() armors.Repository {
 				return &armors.RepositoryMock{
+					FindFunc: func(ctx context.Context, params armors.SearchParams) (*armors.SearchResult, error) {
+						return &armors.SearchResult{Armors: armors.Armors{}, Total: 0}, nil
+					},
 					GetAllFunc: func(ctx context.Context) (armors.Armors, error) {
-						return armors.Armors{}, nil
+						return nil, nil
 					},
 					GetByIDFunc: func(ctx context.Context, armorId string) (*armors.Armor, error) {
 						return nil, nil
@@ -68,8 +74,11 @@ func TestArmorHandler_GetAllArmors(t *testing.T) {
 			name: "異常系: 内部エラー",
 			mockSetup: func() armors.Repository {
 				return &armors.RepositoryMock{
-					GetAllFunc: func(ctx context.Context) (armors.Armors, error) {
+					FindFunc: func(ctx context.Context, params armors.SearchParams) (*armors.SearchResult, error) {
 						return nil, errors.New("database error")
+					},
+					GetAllFunc: func(ctx context.Context) (armors.Armors, error) {
+						return nil, nil
 					},
 					GetByIDFunc: func(ctx context.Context, armorId string) (*armors.Armor, error) {
 						return nil, nil

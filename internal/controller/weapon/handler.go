@@ -40,12 +40,14 @@ func (h *WeaponHandler) SearchWeapons(c *gin.Context) {
 	}
 
 	params := weapons.SearchParams{
-		Limit:    req.Limit,
-		Offset:   req.Offset,
-		Sort:     req.Sort,
-		Order:    req.Order,
-		WeaponID: req.WeaponID,
-		Name:     req.Name,
+		Limit:         req.Limit,
+		Offset:        req.Offset,
+		Sort:          req.Sort,
+		Order:         req.Order,
+		WeaponID:      req.WeaponID,
+		Name:          req.Name,
+		Rarity:        req.Rarity,
+		ElementAttack: req.ElementAttack,
 	}
 
 	result, err := h.repo.Find(c.Request.Context(), params)

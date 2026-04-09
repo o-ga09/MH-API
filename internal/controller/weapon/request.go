@@ -22,10 +22,12 @@ package weapon
 
 // SearchWeaponsRequest は武器検索APIのクエリパラメータを保持します。
 type SearchWeaponsRequest struct {
-	WeaponID *string `form:"weapon_id"`
-	Name     *string `form:"name"`
-	Limit    *int    `form:"limit" binding:"omitempty,min=1"`
-	Offset   *int    `form:"offset" binding:"omitempty,min=0"`
-	Sort     *string `form:"sort"`
-	Order    *int    `form:"order"`
+	WeaponID      *string `form:"weapon_id"`
+	Name          *string `form:"name"`
+	Rarity        *string `form:"rarity"`
+	ElementAttack *string `form:"element_attack"`
+	Limit         *int    `form:"limit" binding:"omitempty,min=1"`
+	Offset        *int    `form:"offset" binding:"omitempty,min=0"`
+	Sort          *string `form:"sort"`
+	Order         *int    `form:"order"`
 }

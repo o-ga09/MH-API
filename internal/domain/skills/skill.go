@@ -19,3 +19,17 @@ type SkillLevel struct {
 	Level        int    `gorm:"column:level;type:int;not null"`
 	Description  string `gorm:"column:description;type:varchar(500);not null"`
 }
+
+// SearchParams はスキル検索の条件を表す
+type SearchParams struct {
+	Name        string
+	Description string
+	Limit       int
+	Offset      int
+}
+
+// SearchResult はスキル検索の結果を表す
+type SearchResult struct {
+	Skills Skills
+	Total  int
+}
