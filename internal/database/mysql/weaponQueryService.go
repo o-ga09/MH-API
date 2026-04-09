@@ -27,6 +27,14 @@ func (r *weaponRepository) Find(ctx context.Context, params weapons.SearchParams
 		query = query.Where("name LIKE ?", "%"+*params.Name+"%")
 	}
 
+	if params.Rarity != nil {
+		query = query.Where("rarerity = ?", *params.Rarity)
+	}
+
+	if params.ElementAttack != nil {
+		query = query.Where("element_attack LIKE ?", "%"+*params.ElementAttack+"%")
+	}
+
 	if params.Sort != nil {
 		switch *params.Sort {
 		case "asc":

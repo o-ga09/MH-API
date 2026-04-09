@@ -51,6 +51,21 @@ func (r *monsterRepository) FindAll(ctx context.Context, params monsters.SearchP
 		}
 	}
 
+	if params.TribeName != "" {
+		whereClauses = append(whereClauses, "EXISTS (SELECT 1 FROM tribe t WHERE t.monster_id = monster.monster_id AND t.name_ja LIKE ?)")
+		whereArgs = append(whereArgs, "%"+params.TribeName+"%")
+	}
+
+	if params.FieldName != "" {
+		whereClauses = append(whereClauses, "EXISTS (SELECT 1 FROM field f WHERE f.monster_id = monster.monster_id AND f.name LIKE ?)")
+		whereArgs = append(whereArgs, "%"+params.FieldName+"%")
+	}
+
+	if params.ProductName != "" {
+		whereClauses = append(whereClauses, "EXISTS (SELECT 1 FROM product p WHERE p.monster_id = monster.monster_id AND p.name LIKE ?)")
+		whereArgs = append(whereArgs, "%"+params.ProductName+"%")
+	}
+
 	limit := params.Limit
 	if limit <= 0 {
 		limit = 100

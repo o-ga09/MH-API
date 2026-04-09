@@ -6,6 +6,7 @@ import (
 )
 
 type Skills struct {
+	Total  int             `json:"total"`
 	Skills []ResponseSkill `json:"skills,omitempty"`
 }
 
@@ -34,7 +35,15 @@ func ToSkillListResponse(skillList skills.Skills) Skills {
 	for i, skill := range skillList {
 		res[i] = toResponseSkill(skill)
 	}
-	return Skills{Skills: res}
+	return Skills{Total: len(skillList), Skills: res}
+}
+
+func ToSkillSearchResponse(result *skills.SearchResult) Skills {
+	res := make([]ResponseSkill, len(result.Skills))
+	for i, skill := range result.Skills {
+		res[i] = toResponseSkill(skill)
+	}
+	return Skills{Total: result.Total, Skills: res}
 }
 
 func ToSkillResponse(skill skills.Skill) Skill {

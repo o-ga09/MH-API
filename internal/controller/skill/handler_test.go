@@ -37,26 +37,32 @@ func TestSkillHandler_GetSkills(t *testing.T) {
 			name: "正常系：スキルの一覧が取得できる",
 			mock: func() skills.Repository {
 				return &skills.RepositoryMock{
-					FindAllFunc: func(ctx context.Context) (skills.Skills, error) {
-						return skills.Skills{
-							{
-								SkillId:     "0000000001",
-								Name:        "攻撃",
-								Description: "攻撃力が上昇する",
-								Levels: []skills.SkillLevel{
-									{Level: 1, Description: "攻撃力+3"},
-									{Level: 2, Description: "攻撃力+6"},
+					FindFunc: func(ctx context.Context, params skills.SearchParams) (*skills.SearchResult, error) {
+						return &skills.SearchResult{
+							Skills: skills.Skills{
+								{
+									SkillId:     "0000000001",
+									Name:        "攻撃",
+									Description: "攻撃力が上昇する",
+									Levels: []skills.SkillLevel{
+										{Level: 1, Description: "攻撃力+3"},
+										{Level: 2, Description: "攻撃力+6"},
+									},
+								},
+								{
+									SkillId:     "0000000002",
+									Name:        "防御",
+									Description: "防御力が上昇する",
+									Levels: []skills.SkillLevel{
+										{Level: 1, Description: "防御力+5"},
+									},
 								},
 							},
-							{
-								SkillId:     "0000000002",
-								Name:        "防御",
-								Description: "防御力が上昇する",
-								Levels: []skills.SkillLevel{
-									{Level: 1, Description: "防御力+5"},
-								},
-							},
+							Total: 2,
 						}, nil
+					},
+					FindAllFunc: func(ctx context.Context) (skills.Skills, error) {
+						return nil, nil
 					},
 					FindByIdFunc: func(ctx context.Context, skillId string) (*skills.Skill, error) {
 						return nil, nil
@@ -70,8 +76,11 @@ func TestSkillHandler_GetSkills(t *testing.T) {
 			name: "異常系：リポジトリでエラーが発生する",
 			mock: func() skills.Repository {
 				return &skills.RepositoryMock{
-					FindAllFunc: func(ctx context.Context) (skills.Skills, error) {
+					FindFunc: func(ctx context.Context, params skills.SearchParams) (*skills.SearchResult, error) {
 						return nil, errors.New("repository error")
+					},
+					FindAllFunc: func(ctx context.Context) (skills.Skills, error) {
+						return nil, nil
 					},
 					FindByIdFunc: func(ctx context.Context, skillId string) (*skills.Skill, error) {
 						return nil, nil

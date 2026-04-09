@@ -30,3 +30,10 @@ type RequestItemByID struct {
 type RequestItemByMonster struct {
 	MonsterId string `uri:"monsterId" form:"monsterId" validate:"required" binding:"required"`
 }
+
+type SearchItemsRequest struct {
+	Name      string `form:"name"`
+	MonsterID string `form:"monster_id"`
+	Limit     int    `form:"limit" binding:"omitempty,min=0"`
+	Offset    int    `form:"offset" binding:"omitempty,min=0"`
+}

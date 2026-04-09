@@ -18,6 +18,9 @@ var _ Repository = &RepositoryMock{}
 //
 //		// make and configure a mocked Repository
 //		mockedRepository := &RepositoryMock{
+//			FindFunc: func(ctx context.Context, params SearchParams) (*SearchResult, error) {
+//				panic("mock out the Find method")
+//			},
 //			GetAllFunc: func(ctx context.Context) (Armors, error) {
 //				panic("mock out the GetAll method")
 //			},
@@ -31,6 +34,9 @@ var _ Repository = &RepositoryMock{}
 //
 //	}
 type RepositoryMock struct {
+	// FindFunc mocks the Find method.
+	FindFunc func(ctx context.Context, params SearchParams) (*SearchResult, error)
+
 	// GetAllFunc mocks the GetAll method.
 	GetAllFunc func(ctx context.Context) (Armors, error)
 
@@ -39,6 +45,13 @@ type RepositoryMock struct {
 
 	// calls tracks calls to the methods.
 	calls struct {
+		// Find holds details about calls to the Find method.
+		Find []struct {
+			// Ctx is the ctx argument value.
+			Ctx context.Context
+			// Params is the params argument value.
+			Params SearchParams
+		}
 		// GetAll holds details about calls to the GetAll method.
 		GetAll []struct {
 			// Ctx is the ctx argument value.
@@ -52,8 +65,45 @@ type RepositoryMock struct {
 			ArmorId string
 		}
 	}
+	lockFind    sync.RWMutex
 	lockGetAll  sync.RWMutex
 	lockGetByID sync.RWMutex
+}
+
+// Find calls FindFunc.
+func (mock *RepositoryMock) Find(ctx context.Context, params SearchParams) (*SearchResult, error) {
+	if mock.FindFunc == nil {
+		panic("RepositoryMock.FindFunc: method is nil but Repository.Find was just called")
+	}
+	callInfo := struct {
+		Ctx    context.Context
+		Params SearchParams
+	}{
+		Ctx:    ctx,
+		Params: params,
+	}
+	mock.lockFind.Lock()
+	mock.calls.Find = append(mock.calls.Find, callInfo)
+	mock.lockFind.Unlock()
+	return mock.FindFunc(ctx, params)
+}
+
+// FindCalls gets all the calls that were made to Find.
+// Check the length with:
+//
+//	len(mockedRepository.FindCalls())
+func (mock *RepositoryMock) FindCalls() []struct {
+	Ctx    context.Context
+	Params SearchParams
+} {
+	var calls []struct {
+		Ctx    context.Context
+		Params SearchParams
+	}
+	mock.lockFind.RLock()
+	calls = mock.calls.Find
+	mock.lockFind.RUnlock()
+	return calls
 }
 
 // GetAll calls GetAllFunc.

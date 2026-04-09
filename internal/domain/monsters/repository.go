@@ -8,6 +8,9 @@ type SearchParams struct {
 	MonsterName     string
 	UsageElement    string
 	WeaknessElement string
+	TribeName       string
+	FieldName       string
+	ProductName     string
 	Limit           int
 	Offset          int
 	Sort            string

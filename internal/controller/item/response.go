@@ -42,6 +42,22 @@ func toItemListResponse(itemList items.Items) Items {
 	}
 }
 
+func toItemSearchResponse(result *items.SearchResult, limit, offset int) Items {
+	res := make([]ResponseJson, len(result.Items))
+	for i, item := range result.Items {
+		res[i] = ResponseJson{
+			Id:       item.ItemId,
+			ItemName: item.Name,
+		}
+	}
+	return Items{
+		Total:  result.Total,
+		Limit:  limit,
+		Offset: offset,
+		Item:   res,
+	}
+}
+
 func toItemResponse(item *items.Item) Item {
 	return Item{
 		Item: ResponseJson{

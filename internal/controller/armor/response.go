@@ -29,6 +29,7 @@ type ArmorDetailResponse struct {
 }
 
 type ListArmorsResponse struct {
+	Total  int                   `json:"total"`
 	Armors []ArmorDetailResponse `json:"armors"`
 }
 

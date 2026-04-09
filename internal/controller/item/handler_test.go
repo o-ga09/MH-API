@@ -40,11 +40,17 @@ func TestItemHandler_GetItems(t *testing.T) {
 			name: "正常系：アイテムの一覧が取得できる",
 			mock: func() (items.Repository, monsters.Repository) {
 				itemRepo := &items.RepositoryMock{
-					FindAllFunc: func(ctx context.Context) (items.Items, error) {
-						return items.Items{
-							{ItemId: "1", Name: "回復薬"},
-							{ItemId: "2", Name: "回復薬グレート"},
+					FindFunc: func(ctx context.Context, params items.SearchParams) (*items.SearchResult, error) {
+						return &items.SearchResult{
+							Items: items.Items{
+								{ItemId: "1", Name: "回復薬"},
+								{ItemId: "2", Name: "回復薬グレート"},
+							},
+							Total: 2,
 						}, nil
+					},
+					FindAllFunc: func(ctx context.Context) (items.Items, error) {
+						return nil, nil
 					},
 					FindByIDFunc: func(ctx context.Context, itemID string) (*items.Item, error) {
 						return nil, nil
@@ -70,8 +76,11 @@ func TestItemHandler_GetItems(t *testing.T) {
 			name: "異常系：リポジトリでエラーが発生",
 			mock: func() (items.Repository, monsters.Repository) {
 				itemRepo := &items.RepositoryMock{
-					FindAllFunc: func(ctx context.Context) (items.Items, error) {
+					FindFunc: func(ctx context.Context, params items.SearchParams) (*items.SearchResult, error) {
 						return nil, errors.New("repository error")
+					},
+					FindAllFunc: func(ctx context.Context) (items.Items, error) {
+						return nil, nil
 					},
 					FindByIDFunc: func(ctx context.Context, itemID string) (*items.Item, error) {
 						return nil, nil

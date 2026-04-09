@@ -19,12 +19,14 @@ type Weapon struct {
 
 // SearchParams は武器検索の条件を表す
 type SearchParams struct {
-	WeaponID *string
-	Name     *string
-	Limit    *int
-	Offset   *int
-	Sort     *string
-	Order    *int
+	WeaponID      *string
+	Name          *string
+	Rarity        *string
+	ElementAttack *string
+	Limit         *int
+	Offset        *int
+	Sort          *string
+	Order         *int
 }
 
 // SearchResult は武器検索の結果を表す

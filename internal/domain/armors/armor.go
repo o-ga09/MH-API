@@ -32,3 +32,19 @@ type ArmorRequiredItem struct {
 	ItemId   string `gorm:"column:item_id;type:varchar(255);not null"`
 	ItemName string `gorm:"column:item_name;type:varchar(255);not null"`
 }
+
+// SearchParams は防具検索の条件を表す
+type SearchParams struct {
+	Name      string
+	SkillName string
+	Slot      string
+	Limit     int
+	Offset    int
+	Sort      string
+}
+
+// SearchResult は防具検索の結果を表す
+type SearchResult struct {
+	Armors Armors
+	Total  int
+}
