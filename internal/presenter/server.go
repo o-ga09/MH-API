@@ -56,8 +56,8 @@ func NewServer() (*gin.Engine, error) {
 	items := v1.Group("/items")
 	{
 		items.GET("", itemHandler.GetItems)
-		items.GET("/:id", itemHandler.GetItem)
-		items.GET("/monster/:monster_id", itemHandler.GetItemByMonster)
+		items.GET("/:itemId", itemHandler.GetItem)
+		items.GET("/monster/:monsterId", itemHandler.GetItemByMonster)
 	}
 
 	// 武器検索

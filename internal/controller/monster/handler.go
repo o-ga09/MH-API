@@ -24,6 +24,27 @@ func NewMonsterHandler(repo monsters.Repository) *MonsterHandler {
 	return &MonsterHandler{repo: repo}
 }
 
+// GetAll godoc
+// @Summary モンスター検索（複数件）
+// @Description モンスターを検索して、条件に合致するモンスターを複数件取得する
+// @Tags モンスター検索
+// @Accept json
+// @Produce json
+// @Param MonsterIds query string false "モンスターIDs (カンマ区切り)"
+// @Param MonsterName query string false "モンスター名"
+// @Param UsageElement query string false "使用属性"
+// @Param WeaknessElement query string false "弱点属性"
+// @Param TribeName query string false "種族名"
+// @Param FieldName query string false "フィールド名"
+// @Param ProductName query string false "作品名"
+// @Param limit query int false "取得件数" default(100)
+// @Param offset query int false "取得開始位置" default(0)
+// @Param sort query string false "ソート順 (asc/desc)"
+// @Success 200 {object} Monsters
+// @Failure 400 {object} MessageResponse
+// @Failure 404 {object} MessageResponse
+// @Failure 500 {object} MessageResponse
+// @Router /monsters [get]
 func (m *MonsterHandler) GetAll(c *gin.Context) {
 	ctx := c.Request.Context()
 
@@ -86,7 +107,7 @@ func (m *MonsterHandler) GetAll(c *gin.Context) {
 // @Tags モンスター検索
 // @Accept json
 // @Produce json
-// @Param request path string true "モンスターID"
+// @Param id path string true "モンスターID"
 // @Success 200 {object} Monster
 // @Failure      400  {object}  MessageResponse
 // @Failure      404  {object}  MessageResponse

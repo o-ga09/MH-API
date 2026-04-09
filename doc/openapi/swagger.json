@@ -13,7 +13,297 @@
     "host": "https://mh-api-v2-8aznfogc.an.gateway.dev/",
     "basePath": "/v1",
     "paths": {
-        "/items/:itemId": {
+        "/armors": {
+            "get": {
+                "description": "防具を検索して一覧を返します（名前・スキル名・スロットによる絞り込み・ページネーション対応）",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Armors"
+                ],
+                "summary": "防具一覧を取得します",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "防具名（部分一致）",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "スキル名（部分一致）",
+                        "name": "skill_name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "スロット（完全一致）",
+                        "name": "slot",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 100,
+                        "description": "取得件数",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 0,
+                        "description": "取得開始位置",
+                        "name": "offset",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "ソート順 (asc/desc)",
+                        "name": "sort",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "防具のリスト",
+                        "schema": {
+                            "$ref": "#/definitions/armor.ListArmorsResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "リクエストパラメータが不正な場合",
+                        "schema": {
+                            "$ref": "#/definitions/armor.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "サーバ内部エラー",
+                        "schema": {
+                            "$ref": "#/definitions/armor.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/armors/{id}": {
+            "get": {
+                "description": "指定されたIDの防具の詳細を返します。",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Armors"
+                ],
+                "summary": "防具詳細を取得します",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "防具ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "防具の詳細",
+                        "schema": {
+                            "$ref": "#/definitions/armor.ArmorDetailResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "リクエストパラメータが不正な場合",
+                        "schema": {
+                            "$ref": "#/definitions/armor.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "防具が見つからない場合",
+                        "schema": {
+                            "$ref": "#/definitions/armor.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "サーバ内部エラー",
+                        "schema": {
+                            "$ref": "#/definitions/armor.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/health": {
+            "get": {
+                "description": "システムが稼働しているか確認する",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "System"
+                ],
+                "summary": "ヘルスチェック",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/health/db": {
+            "get": {
+                "description": "データベースへの接続を確認する",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "System"
+                ],
+                "summary": "DBヘルスチェック",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/items": {
+            "get": {
+                "description": "アイテムを検索して一覧を取得する（名前・モンスターIDによる絞り込み・ページネーション対応）",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "アイテム検索"
+                ],
+                "summary": "アイテム名の一覧を取得する",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "アイテム名（部分一致）",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "モンスターID（完全一致）",
+                        "name": "monster_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 100,
+                        "description": "取得件数",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 0,
+                        "description": "取得開始位置",
+                        "name": "offset",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/item.Items"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/item.MessageResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/item.MessageResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/items/monster/{monsterId}": {
+            "get": {
+                "description": "指定のアイテムが取得可能なモンスターの一覧",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "アイテム検索"
+                ],
+                "summary": "アイテム検索（モンスター別）",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "モンスターID",
+                        "name": "monsterId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/item.ItemsByMonster"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/item.MessageResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/item.MessageResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/item.MessageResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/items/{itemId}": {
             "get": {
                 "description": "アイテムを検索して、条件に合致するアイテムを1件取得する",
                 "consumes": [
@@ -29,38 +319,10 @@
                 "parameters": [
                     {
                         "type": "string",
-                        "name": "item_name",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "name": "item_name_kana",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "name": "limit",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "name": "monster_id",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "name": "offset",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "name": "order",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "name": "sort",
-                        "in": "query"
+                        "description": "アイテムID",
+                        "name": "itemId",
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -107,26 +369,63 @@
                 "parameters": [
                     {
                         "type": "string",
+                        "description": "モンスターIDs (カンマ区切り)",
                         "name": "MonsterIds",
                         "in": "query"
                     },
                     {
                         "type": "string",
+                        "description": "モンスター名",
                         "name": "MonsterName",
                         "in": "query"
                     },
                     {
+                        "type": "string",
+                        "description": "使用属性",
+                        "name": "UsageElement",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "弱点属性",
+                        "name": "WeaknessElement",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "種族名",
+                        "name": "TribeName",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "フィールド名",
+                        "name": "FieldName",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "作品名",
+                        "name": "ProductName",
+                        "in": "query"
+                    },
+                    {
                         "type": "integer",
+                        "default": 100,
+                        "description": "取得件数",
                         "name": "limit",
                         "in": "query"
                     },
                     {
                         "type": "integer",
+                        "default": 0,
+                        "description": "取得開始位置",
                         "name": "offset",
                         "in": "query"
                     },
                     {
                         "type": "string",
+                        "description": "ソート順 (asc/desc)",
                         "name": "sort",
                         "in": "query"
                     }
@@ -159,7 +458,7 @@
                 }
             }
         },
-        "/monsters/:monsterid": {
+        "/monsters/{id}": {
             "get": {
                 "description": "モンスターを検索して、条件に合致するモンスターを1件取得する",
                 "consumes": [
@@ -176,8 +475,9 @@
                     {
                         "type": "string",
                         "description": "モンスターID",
-                        "name": "request",
-                        "in": "path"
+                        "name": "id",
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -208,53 +508,41 @@
                 }
             }
         },
-        "/weapons": {
+        "/skills": {
             "get": {
-                "description": "武器を検索して、条件に合致する武器を複数件取得する",
-                "consumes": [
-                    "application/json"
-                ],
+                "description": "スキルを検索して一覧を取得する（名前・説明文による絞り込み・ページネーション対応）",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "武器検索"
+                    "スキル検索"
                 ],
-                "summary": "武器検索（複数件）",
+                "summary": "スキル一覧を取得する",
                 "parameters": [
                     {
-                        "type": "integer",
-                        "name": "limit",
-                        "in": "query"
-                    },
-                    {
                         "type": "string",
-                        "name": "monster_id",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
+                        "description": "スキル名（部分一致）",
                         "name": "name",
                         "in": "query"
                     },
                     {
                         "type": "string",
-                        "name": "name_kana",
+                        "description": "説明文（部分一致）",
+                        "name": "description",
                         "in": "query"
                     },
                     {
                         "type": "integer",
+                        "default": 100,
+                        "description": "取得件数",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 0,
+                        "description": "取得開始位置",
                         "name": "offset",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "name": "order",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "name": "sort",
                         "in": "query"
                     }
                 ],
@@ -262,33 +550,27 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/weapon.Weapon"
+                            "$ref": "#/definitions/skill.Skills"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/weapon.MessageResponse"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/weapon.MessageResponse"
+                            "$ref": "#/definitions/skill.MessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/weapon.MessageResponse"
+                            "$ref": "#/definitions/skill.MessageResponse"
                         }
                     }
                 }
             }
         },
-        "/weapons/:bgmid": {
+        "/skills/{skillId}": {
             "get": {
-                "description": "武器を検索して、条件に合致する武器を1件取得する",
+                "description": "スキルを検索して、条件に合致するスキルを1件取得する",
                 "consumes": [
                     "application/json"
                 ],
@@ -296,69 +578,116 @@
                     "application/json"
                 ],
                 "tags": [
-                    "武器検索"
+                    "スキル検索"
                 ],
-                "summary": "武器検索（1件）",
+                "summary": "スキル検索（1件）",
                 "parameters": [
                     {
-                        "type": "integer",
-                        "name": "limit",
-                        "in": "query"
-                    },
-                    {
                         "type": "string",
-                        "name": "monster_id",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "name": "name",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "name": "name_kana",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "name": "offset",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "name": "order",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "name": "sort",
-                        "in": "query"
+                        "description": "スキルID",
+                        "name": "skillId",
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/weapon.Weapon"
+                            "$ref": "#/definitions/skill.Skill"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/weapon.MessageResponse"
+                            "$ref": "#/definitions/skill.MessageResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/weapon.MessageResponse"
+                            "$ref": "#/definitions/skill.MessageResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/weapon.MessageResponse"
+                            "$ref": "#/definitions/skill.MessageResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/weapons": {
+            "get": {
+                "description": "指定されたクエリパラメータに基づいて武器のリストを返します。",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Weapons"
+                ],
+                "summary": "武器リストを検索します",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "武器ID (完全一致)",
+                        "name": "weapon_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "武器名 (部分一致を想定)",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 20,
+                        "description": "取得件数",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 0,
+                        "description": "取得開始位置",
+                        "name": "offset",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "ソートフィールド (asc/desc)",
+                        "name": "sort",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "ソート順 (0:昇順, 1:降順)",
+                        "name": "order",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "武器のリストとページネーション情報",
+                        "schema": {
+                            "$ref": "#/definitions/weapon.ListWeaponsResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "リクエストパラメータが不正な場合",
+                        "schema": {
+                            "$ref": "#/definitions/weapon.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "サーバ内部エラー",
+                        "schema": {
+                            "$ref": "#/definitions/weapon.ErrorResponse"
                         }
                     }
                 }
@@ -366,11 +695,144 @@
         }
     },
     "definitions": {
+        "armor.ArmorDetailResponse": {
+            "type": "object",
+            "properties": {
+                "defense": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "required": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/armor.RequiredItemResponse"
+                    }
+                },
+                "resistance": {
+                    "$ref": "#/definitions/armor.ResistanceResponse"
+                },
+                "skills": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/armor.SkillResponse"
+                    }
+                },
+                "slot": {
+                    "type": "string"
+                }
+            }
+        },
+        "armor.ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "armor.ListArmorsResponse": {
+            "type": "object",
+            "properties": {
+                "armors": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/armor.ArmorDetailResponse"
+                    }
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
+        "armor.RequiredItemResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "armor.ResistanceResponse": {
+            "type": "object",
+            "properties": {
+                "dragon": {
+                    "type": "integer"
+                },
+                "fire": {
+                    "type": "integer"
+                },
+                "ice": {
+                    "type": "integer"
+                },
+                "lightning": {
+                    "type": "integer"
+                },
+                "water": {
+                    "type": "integer"
+                }
+            }
+        },
+        "armor.SkillResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
         "item.Item": {
             "type": "object",
             "properties": {
                 "item": {
                     "$ref": "#/definitions/item.ResponseJson"
+                }
+            }
+        },
+        "item.Items": {
+            "type": "object",
+            "properties": {
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/item.ResponseJson"
+                    }
+                },
+                "limit": {
+                    "type": "integer"
+                },
+                "offset": {
+                    "type": "integer"
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
+        "item.ItemsByMonster": {
+            "type": "object",
+            "properties": {
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/item.Item"
+                    }
+                },
+                "monster_id": {
+                    "type": "string"
+                },
+                "monster_name": {
+                    "type": "string"
                 }
             }
         },
@@ -469,6 +931,14 @@
                     "description": "モンスターのカテゴリ",
                     "type": "string"
                 },
+                "description": {
+                    "description": "モンスターの説明",
+                    "type": "string"
+                },
+                "element": {
+                    "description": "モンスターの属性",
+                    "type": "string"
+                },
                 "first_weak_attack": {
                     "description": "最有効弱点",
                     "type": "string"
@@ -494,6 +964,10 @@
                 },
                 "name": {
                     "description": "モンスター名",
+                    "type": "string"
+                },
+                "name_en": {
+                    "description": "モンスター名（英語）",
                     "type": "string"
                 },
                 "ranking": {
@@ -568,7 +1042,7 @@
                 }
             }
         },
-        "weapon.MessageResponse": {
+        "skill.MessageResponse": {
             "type": "object",
             "properties": {
                 "message": {
@@ -576,7 +1050,95 @@
                 }
             }
         },
-        "weapon.ResponseJson": {
+        "skill.ResponseSkill": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "level": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/skill.ResponseSkillLevel"
+                    }
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "skill.ResponseSkillLevel": {
+            "type": "object",
+            "additionalProperties": {
+                "type": "string"
+            }
+        },
+        "skill.Skill": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "level": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/skill.ResponseSkillLevel"
+                    }
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "skill.Skills": {
+            "type": "object",
+            "properties": {
+                "skills": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/skill.ResponseSkill"
+                    }
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
+        "weapon.ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "weapon.ListWeaponsResponse": {
+            "type": "object",
+            "properties": {
+                "limit": {
+                    "type": "integer"
+                },
+                "offset": {
+                    "type": "integer"
+                },
+                "total_count": {
+                    "type": "integer"
+                },
+                "weapons": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/weapon.WeaponDetailResponse"
+                    }
+                }
+            }
+        },
+        "weapon.WeaponDetailResponse": {
             "type": "object",
             "properties": {
                 "attack": {
@@ -588,13 +1150,10 @@
                 "description": {
                     "type": "string"
                 },
-                "elemant_attaxk": {
+                "element_attack": {
                     "type": "string"
                 },
                 "image_url": {
-                    "type": "string"
-                },
-                "monster_id": {
                     "type": "string"
                 },
                 "name": {
@@ -603,16 +1162,11 @@
                 "rare": {
                     "type": "string"
                 },
-                "shapness": {
+                "sharpness": {
                     "type": "string"
-                }
-            }
-        },
-        "weapon.Weapon": {
-            "type": "object",
-            "properties": {
-                "monster": {
-                    "$ref": "#/definitions/weapon.ResponseJson"
+                },
+                "weapon_id": {
+                    "type": "string"
                 }
             }
         }
