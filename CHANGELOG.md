@@ -1,5 +1,11 @@
 # Changelog
 
+## [v1.2.3](https://github.com/o-ga09/MH-API/compare/v1.2.2...v1.2.3) - 2026-04-09
+- feat: 検索の汎用性を高める by @o-ga09 in https://github.com/o-ga09/MH-API/pull/223
+- chore: tagでCloudRunにデプロイできるように修正 by @o-ga09 in https://github.com/o-ga09/MH-API/pull/226
+- Fix OpenAPI Spec Discrepancy by @o-ga09 in https://github.com/o-ga09/MH-API/pull/228
+- chore: fix ci by @o-ga09 in https://github.com/o-ga09/MH-API/pull/229
+
 ## [v1.2.2](https://github.com/o-ga09/MH-API/compare/v1.2.1...v1.2.2) - 2026-04-08
 - Bump golang.org/x/net from 0.17.0 to 0.28.0 by @dependabot[bot] in https://github.com/o-ga09/MH-API/pull/106
 - APIのリアーキテクチャ by @o-ga09 in https://github.com/o-ga09/MH-API/pull/108
