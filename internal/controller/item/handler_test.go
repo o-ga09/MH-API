@@ -26,7 +26,7 @@ func MockNewServer(t *testing.T, handler *ItemHandler) *gin.Engine {
 func (h *ItemHandler) SetupRouter(r *gin.Engine) {
 	r.GET("/v1/items", h.GetItems)
 	r.GET("/v1/items/:itemId", h.GetItem)
-	r.GET("/v1/items/monsters/:monsterId", h.GetItemByMonster)
+	r.GET("/v1/items/monster/:monsterId", h.GetItemByMonster)
 }
 
 func TestItemHandler_GetItems(t *testing.T) {
@@ -341,7 +341,7 @@ func TestItemHandler_GetItemByMonster(t *testing.T) {
 			handler.SetupRouter(r)
 
 			w := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodGet, fmt.Sprintf("/v1/items/monsters/%s", tt.pathParam), nil)
+			req, _ := http.NewRequest(http.MethodGet, fmt.Sprintf("/v1/items/monster/%s", tt.pathParam), nil)
 			r.ServeHTTP(w, req)
 
 			assert.Equal(t, tt.wantStatus, w.Code)

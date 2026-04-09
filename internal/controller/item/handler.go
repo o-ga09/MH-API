@@ -106,7 +106,7 @@ func (h *ItemHandler) GetItem(c *gin.Context) {
 // @Failure      400  {object}  MessageResponse
 // @Failure      404  {object}  MessageResponse
 // @Failure      500  {object}  MessageResponse
-// @Router /items/monsters/{monsterId} [get]
+// @Router /items/monster/{monsterId} [get]
 func (h *ItemHandler) GetItemByMonster(c *gin.Context) {
 	var req RequestItemByMonster
 	if err := c.ShouldBindUri(&req); err != nil {

@@ -32,6 +32,8 @@ definitions:
         items:
           $ref: '#/definitions/armor.ArmorDetailResponse'
         type: array
+      total:
+        type: integer
     type: object
   armor.RequiredItemResponse:
     properties:
@@ -270,6 +272,8 @@ definitions:
         items:
           $ref: '#/definitions/skill.ResponseSkill'
         type: array
+      total:
+        type: integer
     type: object
   weapon.ErrorResponse:
     properties:
@@ -327,7 +331,34 @@ paths:
     get:
       consumes:
       - application/json
-      description: 全ての防具のリストを返します。
+      description: 防具を検索して一覧を返します（名前・スキル名・スロットによる絞り込み・ページネーション対応）
+      parameters:
+      - description: 防具名（部分一致）
+        in: query
+        name: name
+        type: string
+      - description: スキル名（部分一致）
+        in: query
+        name: skill_name
+        type: string
+      - description: スロット（完全一致）
+        in: query
+        name: slot
+        type: string
+      - default: 100
+        description: 取得件数
+        in: query
+        name: limit
+        type: integer
+      - default: 0
+        description: 取得開始位置
+        in: query
+        name: offset
+        type: integer
+      - description: ソート順 (asc/desc)
+        in: query
+        name: sort
+        type: string
       produces:
       - application/json
       responses:
@@ -335,6 +366,10 @@ paths:
           description: 防具のリスト
           schema:
             $ref: '#/definitions/armor.ListArmorsResponse'
+        "400":
+          description: リクエストパラメータが不正な場合
+          schema:
+            $ref: '#/definitions/armor.ErrorResponse'
         "500":
           description: サーバ内部エラー
           schema:
@@ -375,9 +410,64 @@ paths:
       summary: 防具詳細を取得します
       tags:
       - Armors
+  /health:
+    get:
+      description: システムが稼働しているか確認する
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: ヘルスチェック
+      tags:
+      - System
+  /health/db:
+    get:
+      description: データベースへの接続を確認する
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: DBヘルスチェック
+      tags:
+      - System
   /items:
     get:
-      description: 全てのアイテム名とIDの一覧を取得する
+      description: アイテムを検索して一覧を取得する（名前・モンスターIDによる絞り込み・ページネーション対応）
+      parameters:
+      - description: アイテム名（部分一致）
+        in: query
+        name: name
+        type: string
+      - description: モンスターID（完全一致）
+        in: query
+        name: monster_id
+        type: string
+      - default: 100
+        description: 取得件数
+        in: query
+        name: limit
+        type: integer
+      - default: 0
+        description: 取得開始位置
+        in: query
+        name: offset
+        type: integer
       produces:
       - application/json
       responses:
@@ -429,7 +519,7 @@ paths:
       summary: アイテム検索（1件）
       tags:
       - アイテム検索
-  /items/monsters/{monsterId}:
+  /items/monster/{monsterId}:
     get:
       consumes:
       - application/json
@@ -468,29 +558,45 @@ paths:
       - application/json
       description: モンスターを検索して、条件に合致するモンスターを複数件取得する
       parameters:
-      - in: query
+      - description: モンスターIDs (カンマ区切り)
+        in: query
         name: MonsterIds
         type: string
-      - in: query
+      - description: モンスター名
+        in: query
         name: MonsterName
         type: string
-      - in: query
+      - description: 使用属性
+        in: query
         name: UsageElement
         type: string
-      - in: query
+      - description: 弱点属性
+        in: query
         name: WeaknessElement
         type: string
-      - in: query
-        minimum: 0
+      - description: 種族名
+        in: query
+        name: TribeName
+        type: string
+      - description: フィールド名
+        in: query
+        name: FieldName
+        type: string
+      - description: 作品名
+        in: query
+        name: ProductName
+        type: string
+      - default: 100
+        description: 取得件数
+        in: query
         name: limit
         type: integer
-      - in: query
-        minimum: 0
+      - default: 0
+        description: 取得開始位置
+        in: query
         name: offset
         type: integer
-      - enum:
-        - asc
-        - desc
+      - description: ソート順 (asc/desc)
         in: query
         name: sort
         type: string
@@ -524,7 +630,7 @@ paths:
       parameters:
       - description: モンスターID
         in: path
-        name: request
+        name: id
         required: true
         type: string
       produces:
@@ -551,7 +657,26 @@ paths:
       - モンスター検索
   /skills:
     get:
-      description: 全てのスキルとその情報の一覧を取得する
+      description: スキルを検索して一覧を取得する（名前・説明文による絞り込み・ページネーション対応）
+      parameters:
+      - description: スキル名（部分一致）
+        in: query
+        name: name
+        type: string
+      - description: 説明文（部分一致）
+        in: query
+        name: description
+        type: string
+      - default: 100
+        description: 取得件数
+        in: query
+        name: limit
+        type: integer
+      - default: 0
+        description: 取得開始位置
+        in: query
+        name: offset
+        type: integer
       produces:
       - application/json
       responses:
@@ -650,7 +775,7 @@ paths:
           description: サーバ内部エラー
           schema:
             $ref: '#/definitions/weapon.ErrorResponse'
-      summary: 武器リストを検索します (Gin版)
+      summary: 武器リストを検索します
       tags:
       - Weapons
 swagger: "2.0"
