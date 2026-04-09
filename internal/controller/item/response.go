@@ -28,20 +28,6 @@ type ResponseJson struct {
 	ItemName string `json:"item_name,omitempty"`
 }
 
-func toItemListResponse(itemList items.Items) Items {
-	res := make([]ResponseJson, len(itemList))
-	for i, item := range itemList {
-		res[i] = ResponseJson{
-			Id:       item.ItemId,
-			ItemName: item.Name,
-		}
-	}
-	return Items{
-		Total: len(itemList),
-		Item:  res,
-	}
-}
-
 func toItemSearchResponse(result *items.SearchResult, limit, offset int) Items {
 	res := make([]ResponseJson, len(result.Items))
 	for i, item := range result.Items {
