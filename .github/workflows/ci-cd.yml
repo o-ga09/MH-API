@@ -73,7 +73,7 @@ jobs:
       needs.build-and-push.result != 'failure' &&
       (
         github.event_name == 'pull_request' ||
-        (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')) ||
+        tartsWith(github.ref, 'refs/tags/v') ||
         github.event_name == 'workflow_dispatch'
       )
     runs-on: ubuntu-latest
@@ -153,7 +153,7 @@ jobs:
 
       - name: Terraform Apply
         if: |
-          github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v') ||
+          startsWith(github.ref, 'refs/tags/v') ||
           github.event_name == 'workflow_dispatch'
         run: terraform apply -auto-approve -input=false
 
