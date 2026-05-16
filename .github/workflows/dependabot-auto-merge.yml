@@ -89,7 +89,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh pr merge --auto --squash "${{ steps.pr.outputs.number }}"
+          gh pr merge --auto --squash "${{ steps.pr.outputs.number }}" --repo "${{ github.repository }}"
           echo "Auto-merge enabled for PR #${{ steps.pr.outputs.number }} (all packages are 7+ days old)"
 
       - name: Close PR (package released less than 7 days ago)
@@ -98,7 +98,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TOO_RECENT_PKG: ${{ steps.age-check.outputs.too_recent_pkg }}
         run: |
-          gh pr close "${{ steps.pr.outputs.number }}" \
+          gh pr close "${{ steps.pr.outputs.number }}" --repo "${{ github.repository }}" \
             --comment "## 自動マージ対象外のためクローズ
 
           **対象パッケージ:** \`${TOO_RECENT_PKG}\`
