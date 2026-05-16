@@ -20,13 +20,17 @@ const _layout = "20060102150405"
 func main() {
 	var command string
 	var name string
+	var migrationDir string
+	var seedDir string
 
 	flag.StringVar(&command, "command", "", "migrate command (up|down|new|status|seed)")
 	flag.StringVar(&name, "name", "", "name for new migration")
+	flag.StringVar(&migrationDir, "migration-dir", "db/migrations", "directory containing migration files")
+	flag.StringVar(&seedDir, "seed-dir", "db/seed", "directory containing seed files")
 	flag.Parse()
 
 	migrations := &migrate.FileMigrationSource{
-		Dir: "db/migrations", // パスを修正
+		Dir: migrationDir,
 	}
 
 	db, err := setupDB()
@@ -54,7 +58,7 @@ func main() {
 			log.Fatal("Migration name is required")
 		}
 		filename := fmt.Sprintf("%s_%s.sql", time.Now().Format(_layout), name)
-		f, err := os.Create(fmt.Sprintf("db/migrations/%s", filename))
+		f, err := os.Create(fmt.Sprintf("%s/%s", migrationDir, filename))
 		if err != nil {
 			log.Fatal("failed to create file:", err)
 		}
@@ -73,7 +77,7 @@ func main() {
 			fmt.Printf("Applied: %s\n", record.Id)
 		}
 	case "seed":
-		if err := seedData(db); err != nil {
+		if err := seedData(db, seedDir); err != nil {
 			log.Fatal(err)
 		}
 		fmt.Println("Seed data inserted successfully")
@@ -89,8 +93,8 @@ func setupDB() (*sql.DB, error) {
 	return sql.Open("mysql", dsn)
 }
 
-func seedData(db *sql.DB) error {
-	seedFiles, err := filepath.Glob("db/seed/*.sql")
+func seedData(db *sql.DB, seedDir string) error {
+	seedFiles, err := filepath.Glob(seedDir + "/*.sql")
 	if err != nil {
 		return fmt.Errorf("failed to find seed files: %w", err)
 	}

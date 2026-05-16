@@ -9,6 +9,17 @@ COPY . .
 
 RUN go build -trimpath -ldflags "-w -s" -o main ./cmd/api/main.go
 
+#マイグレーション用バイナリを作成するコンテナ
+FROM golang:1.25.4-alpine3.22 as deploy-migration-builder
+
+WORKDIR /app
+
+COPY go.mod go.sum ./
+RUN go mod download
+COPY . .
+
+RUN go build -trimpath -ldflags "-w -s" -o migrate ./cmd/migration/main.go
+
 #バッチ用コンテナに含めるバイナリを作成するコンテナ
 FROM golang:1.25.4-alpine3.22 as deploy-batch-builder
 
@@ -52,6 +63,9 @@ RUN apt-get install -y ca-certificates openssl
 EXPOSE "8080"
 
 COPY --from=deploy-builder /app/main .
+COPY --from=deploy-migration-builder /app/migrate /migrate
+COPY db/migrations /db/migrations
+COPY db/seed /db/seed
 
 CMD ["./main"]
 
