@@ -10,6 +10,7 @@ import (
 	"google.golang.org/adk/agent"
 	"google.golang.org/adk/agent/llmagent"
 	"google.golang.org/adk/cmd/launcher"
+	"google.golang.org/adk/model"
 	"google.golang.org/adk/model/gemini"
 	"google.golang.org/adk/server/adkrest"
 	"google.golang.org/adk/session"
@@ -17,6 +18,7 @@ import (
 
 	"mh-api/internal/agent/middleware"
 	"mh-api/internal/database/mysql"
+	"mh-api/pkg/metrics"
 )
 
 // Server represents the ADK agent server
@@ -33,7 +35,7 @@ type Config struct {
 }
 
 // NewServer creates a new agent server
-func NewServer(cfg *Config) (*Server, error) {
+func NewServer(cfg *Config, agentMetrics *metrics.AgentMetrics) (*Server, error) {
 	ctx := context.Background()
 
 	// Initialize repositories
@@ -50,17 +52,27 @@ func NewServer(cfg *Config) (*Server, error) {
 	}
 
 	// Initialize Gemini model
-	model, err := gemini.NewModel(ctx, cfg.GeminiModel, &genai.ClientConfig{
+	geminiModel, err := gemini.NewModel(ctx, cfg.GeminiModel, &genai.ClientConfig{
 		APIKey: cfg.GeminiAPIKey,
 	})
 	if err != nil {
 		return nil, fmt.Errorf("failed to initialize Gemini: %w", err)
 	}
 
+	// AfterModelCallback records Gemini token usage to Prometheus via OTEL.
+	tokenCallback := func(_ agent.CallbackContext, resp *model.LLMResponse, respErr error) (*model.LLMResponse, error) {
+		if respErr != nil || resp == nil || resp.UsageMetadata == nil {
+			return nil, nil
+		}
+		u := resp.UsageMetadata
+		agentMetrics.RecordTokens(ctx, cfg.GeminiModel, u.PromptTokenCount, u.CandidatesTokenCount, u.ThoughtsTokenCount)
+		return nil, nil
+	}
+
 	// Create agent with tools
 	a, err := llmagent.New(llmagent.Config{
 		Name:        "monhun_ai_agent",
-		Model:       model,
+		Model:       geminiModel,
 		Description: "モンスターハンターの攻略情報に特化したAIアシスタント",
 		Instruction: `あなたはモンスターハンターの攻略情報に特化したAIアシスタントです。
 ユーザーの質問に対して、利用可能なツールを使用してモンスター、武器、アイテム、スキルなどの情報を検索し、
@@ -72,7 +84,8 @@ func NewServer(cfg *Config) (*Server, error) {
 - ユーザーにとって有用な追加情報も提供する
 - 専門用語は適切に説明する
 - 情報が見つからない場合は、その旨を明確に伝える`,
-		Tools: tools,
+		Tools:               tools,
+		AfterModelCallbacks: []llmagent.AfterModelCallback{tokenCallback},
 	})
 	if err != nil {
 		return nil, fmt.Errorf("failed to create agent: %w", err)
