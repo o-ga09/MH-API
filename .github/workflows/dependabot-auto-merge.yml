@@ -26,6 +26,7 @@ jobs:
           UPDATED_VERSIONS: ${{ steps.metadata.outputs.updated-dependency-versions }}
         run: |
           ALL_OLD_ENOUGH=true
+          TOO_RECENT_PKG=""
           SEVEN_DAYS_AGO_EPOCH=$(date -u -d "7 days ago" +%s)
           NOW_EPOCH=$(date -u +%s)
 
@@ -44,11 +45,15 @@ jobs:
 
             echo "Checking ${DEP}@${VER} ..."
 
+            # Go proxy API はローカル実行不要で同等の Time 情報を返すため直接利用する
+            # (go list -m -json も内部的に同 API を叩くが、pull_request_target で
+            # チェックアウト+コード実行を避けるためここでは curl で直接取得する)
             INFO=$(curl -sf --max-time 10 "https://proxy.golang.org/${DEP}/@v/${VER}.info" || true)
 
             if [ -z "$INFO" ]; then
-              echo "::warning::Cannot fetch release info for ${DEP}@${VER} from Go proxy. Skipping auto-merge for safety."
+              echo "::warning::Cannot fetch release info for ${DEP}@${VER} from Go proxy. Closing PR for safety."
               ALL_OLD_ENOUGH=false
+              TOO_RECENT_PKG="${DEP}@${VER} (release date unknown)"
               break
             fi
 
@@ -59,13 +64,15 @@ jobs:
             echo "${DEP}@${VER}: released ${RELEASE_DATE} (${AGE_DAYS} days ago)"
 
             if [ "$RELEASE_EPOCH" -gt "$SEVEN_DAYS_AGO_EPOCH" ]; then
-              echo "::notice::${DEP}@${VER} is only ${AGE_DAYS} day(s) old. Auto-merge requires 7+ days."
+              echo "::notice::${DEP}@${VER} is only ${AGE_DAYS} day(s) old. Requires 7+ days."
               ALL_OLD_ENOUGH=false
+              TOO_RECENT_PKG="${DEP}@${VER} (${AGE_DAYS} day(s) old)"
               break
             fi
           done
 
           echo "all_old_enough=${ALL_OLD_ENOUGH}" >> "$GITHUB_OUTPUT"
+          echo "too_recent_pkg=${TOO_RECENT_PKG}" >> "$GITHUB_OUTPUT"
 
       - name: Enable auto-merge
         if: steps.age-check.outputs.all_old_enough == 'true'
@@ -75,7 +82,16 @@ jobs:
           gh pr merge --auto --squash "${{ github.event.pull_request.number }}"
           echo "Auto-merge enabled for PR #${{ github.event.pull_request.number }} (all packages are 7+ days old)"
 
-      - name: Skip auto-merge (package too recent)
+      - name: Close PR (package released less than 7 days ago)
         if: steps.age-check.outputs.all_old_enough == 'false'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TOO_RECENT_PKG: ${{ steps.age-check.outputs.too_recent_pkg }}
         run: |
-          echo "Auto-merge skipped: one or more packages were released less than 7 days ago."
+          gh pr close "${{ github.event.pull_request.number }}" \
+            --comment "## 自動マージ対象外のためクローズ
+
+          **対象パッケージ:** \`${TOO_RECENT_PKG}\`
+
+          リリースから 7 日未満のバージョンはサプライチェーン攻撃のリスク低減のため自動マージしません。
+          7 日経過後に DependaBot が再度 PR を作成します。"
