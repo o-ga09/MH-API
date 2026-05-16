@@ -184,6 +184,7 @@ jobs:
           sed -i "s|${REGISTRY}/mh-api:.*|${REGISTRY}/mh-api:${SHA}|" manifests/mh-api/deployments.yaml
           sed -i "s|${REGISTRY}/mh-mcp:.*|${REGISTRY}/mh-mcp:${SHA}|" manifests/mh-api/mcp-deployment.yaml
           sed -i "s|${REGISTRY}/mh-agent:.*|${REGISTRY}/mh-agent:${SHA}|" manifests/mh-api/agent-deployment.yaml
+          sed -i "s|${REGISTRY}/mh-api:.*|${REGISTRY}/mh-api:${SHA}|" manifests/mh-api/migration-job.yaml
 
       - name: Commit and Push
         run: |
