@@ -17,7 +17,7 @@ type AgentMetrics struct {
 	requests        metric.Int64Counter
 }
 
-// NewAgentMetrics initialises the Gemini token counters.
+// NewAgentMetrics initializes the Gemini token counters.
 func NewAgentMetrics() (*AgentMetrics, error) {
 	meter := otel.Meter(agentMeterName)
 
