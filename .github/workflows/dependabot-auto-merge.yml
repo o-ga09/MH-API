@@ -1,8 +1,9 @@
 name: Dependabot Auto Merge
 
 on:
-  pull_request_target:
-    types: [opened, synchronize, reopened]
+  push:
+    branches:
+      - 'dependabot/**'
 
 permissions:
   pull-requests: write
@@ -11,49 +12,50 @@ permissions:
 jobs:
   auto-merge:
     runs-on: ubuntu-latest
-    if: github.event.pull_request.user.login == 'dependabot[bot]'
     steps:
-      - name: Fetch Dependabot metadata
-        id: metadata
-        uses: dependabot/fetch-metadata@v2
+      - uses: actions/checkout@v4
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 2
+
+      - name: Find PR number for this branch
+        id: pr
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          PR_NUMBER=$(gh pr list --head "${{ github.ref_name }}" --state open --json number --jq '.[0].number // empty')
+          if [ -z "$PR_NUMBER" ]; then
+            echo "No open PR found for branch ${{ github.ref_name }}. Skipping."
+            echo "number=" >> "$GITHUB_OUTPUT"
+          else
+            echo "number=${PR_NUMBER}" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Check release age (7 days minimum)
         id: age-check
-        env:
-          UPDATED_DEPS: ${{ steps.metadata.outputs.updated-dependency-names }}
-          UPDATED_VERSIONS: ${{ steps.metadata.outputs.updated-dependency-versions }}
+        if: steps.pr.outputs.number != ''
         run: |
           ALL_OLD_ENOUGH=true
           TOO_RECENT_PKG=""
           SEVEN_DAYS_AGO_EPOCH=$(date -u -d "7 days ago" +%s)
           NOW_EPOCH=$(date -u +%s)
 
-          # カンマ+スペース区切りを配列に変換
-          IFS=', ' read -ra DEPS <<< "$UPDATED_DEPS"
-          IFS=', ' read -ra VERS <<< "$UPDATED_VERSIONS"
-
-          for i in "${!DEPS[@]}"; do
-            DEP="${DEPS[$i]}"
-            VER="${VERS[$i]:-${VERS[0]}}"
-
-            [ -z "$DEP" ] && continue
-
-            # v プレフィックスを補完
+          # go.mod の差分から追加されたパッケージとバージョンを抽出
+          # 例: +	github.com/foo/bar v1.2.3
+          while IFS=' ' read -r PKG VER; do
+            [ -z "$PKG" ] || [ -z "$VER" ] && continue
             [[ "$VER" != v* ]] && VER="v${VER}"
 
-            echo "Checking ${DEP}@${VER} ..."
+            echo "Checking ${PKG}@${VER} ..."
 
             # Go proxy API はローカル実行不要で同等の Time 情報を返すため直接利用する
             # (go list -m -json も内部的に同 API を叩くが、pull_request_target で
             # チェックアウト+コード実行を避けるためここでは curl で直接取得する)
-            INFO=$(curl -sf --max-time 10 "https://proxy.golang.org/${DEP}/@v/${VER}.info" || true)
+            INFO=$(curl -sf --max-time 10 "https://proxy.golang.org/${PKG}/@v/${VER}.info" || true)
 
             if [ -z "$INFO" ]; then
-              echo "::warning::Cannot fetch release info for ${DEP}@${VER} from Go proxy. Closing PR for safety."
+              echo "::warning::Cannot fetch release info for ${PKG}@${VER} from Go proxy. Closing PR for safety."
               ALL_OLD_ENOUGH=false
-              TOO_RECENT_PKG="${DEP}@${VER} (release date unknown)"
+              TOO_RECENT_PKG="${PKG}@${VER} (release date unknown)"
               break
             fi
 
@@ -61,34 +63,42 @@ jobs:
             RELEASE_EPOCH=$(date -u -d "$RELEASE_DATE" +%s)
             AGE_DAYS=$(( (NOW_EPOCH - RELEASE_EPOCH) / 86400 ))
 
-            echo "${DEP}@${VER}: released ${RELEASE_DATE} (${AGE_DAYS} days ago)"
+            echo "${PKG}@${VER}: released ${RELEASE_DATE} (${AGE_DAYS} days ago)"
 
             if [ "$RELEASE_EPOCH" -gt "$SEVEN_DAYS_AGO_EPOCH" ]; then
-              echo "::notice::${DEP}@${VER} is only ${AGE_DAYS} day(s) old. Requires 7+ days."
+              echo "::notice::${PKG}@${VER} is only ${AGE_DAYS} day(s) old. Requires 7+ days."
               ALL_OLD_ENOUGH=false
-              TOO_RECENT_PKG="${DEP}@${VER} (${AGE_DAYS} day(s) old)"
+              TOO_RECENT_PKG="${PKG}@${VER} (${AGE_DAYS} day(s) old)"
               break
             fi
-          done
+          done < <(
+            git diff HEAD~1 -- go.mod \
+              | grep '^+' \
+              | grep -v '^+++' \
+              | grep -E 'v[0-9]+\.[0-9]+\.[0-9]+' \
+              | sed 's/^+[[:space:]]*//' \
+              | sed 's|[[:space:]]//.*||' \
+              | awk '{print $1, $2}'
+          )
 
           echo "all_old_enough=${ALL_OLD_ENOUGH}" >> "$GITHUB_OUTPUT"
           echo "too_recent_pkg=${TOO_RECENT_PKG}" >> "$GITHUB_OUTPUT"
 
       - name: Enable auto-merge
-        if: steps.age-check.outputs.all_old_enough == 'true'
+        if: steps.pr.outputs.number != '' && steps.age-check.outputs.all_old_enough == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh pr merge --auto --squash "${{ github.event.pull_request.number }}"
-          echo "Auto-merge enabled for PR #${{ github.event.pull_request.number }} (all packages are 7+ days old)"
+          gh pr merge --auto --squash "${{ steps.pr.outputs.number }}"
+          echo "Auto-merge enabled for PR #${{ steps.pr.outputs.number }} (all packages are 7+ days old)"
 
       - name: Close PR (package released less than 7 days ago)
-        if: steps.age-check.outputs.all_old_enough == 'false'
+        if: steps.pr.outputs.number != '' && steps.age-check.outputs.all_old_enough == 'false'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TOO_RECENT_PKG: ${{ steps.age-check.outputs.too_recent_pkg }}
         run: |
-          gh pr close "${{ github.event.pull_request.number }}" \
+          gh pr close "${{ steps.pr.outputs.number }}" \
             --comment "## 自動マージ対象外のためクローズ
 
           **対象パッケージ:** \`${TOO_RECENT_PKG}\`
