@@ -18,9 +18,9 @@ const meterName = "mh-api"
 //   - http.server.request.count:    リクエスト数（カウンター）
 //
 // 各メトリクスには以下の属性が付与されます:
-//   - http.route:        リクエストにマッチした Gin ルートパターン（例: /v1/monsters/:id）
-//   - http.method:       HTTP メソッド（GET, POST, ...）
-//   - http.status_code:  レスポンスステータスコード
+//   - http.route:                    リクエストにマッチした Gin ルートパターン（例: /v1/monsters/:id）
+//   - http.method:                   HTTP メソッド（GET, POST, ...）
+//   - http.response.status_code:     レスポンスステータスコード
 func MetricsMiddleware() gin.HandlerFunc {
 	meter := otel.Meter(meterName)
 
@@ -47,7 +47,7 @@ func MetricsMiddleware() gin.HandlerFunc {
 		attrs := []attribute.KeyValue{
 			attribute.String("http.route", route),
 			attribute.String("http.method", c.Request.Method),
-			attribute.String("http.status_code", strconv.Itoa(c.Writer.Status())),
+			attribute.String("http.response.status_code", strconv.Itoa(c.Writer.Status())),
 		}
 		opt := metric.WithAttributes(attrs...)
 
