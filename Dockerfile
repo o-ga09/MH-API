@@ -63,7 +63,7 @@ RUN apt-get install -y ca-certificates openssl
 EXPOSE "8080"
 
 COPY --from=deploy-builder /app/main .
-COPY --from=deploy-migration-builder /app/migrate /migrate
+COPY --from=deploy-migration-builder /app/migrate .
 COPY db/migrations /db/migrations
 COPY db/seed /db/seed
 
