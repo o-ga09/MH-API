@@ -12,7 +12,7 @@ require (
 	github.com/go-sql-driver/mysql v1.10.0
 	github.com/google/uuid v1.6.0
 	github.com/grafana/pyroscope-go v1.3.0
-	github.com/modelcontextprotocol/go-sdk v1.6.0
+	github.com/modelcontextprotocol/go-sdk v1.6.1
 	github.com/prometheus/client_golang v1.23.2
 	github.com/rubenv/sql-migrate v1.8.1
 	github.com/stretchr/testify v1.11.1
