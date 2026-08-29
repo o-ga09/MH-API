@@ -1,5 +1,15 @@
 # Changelog
 
+## [v1.2.4](https://github.com/o-ga09/MH-API/compare/v1.2.3...v1.2.4) - 2026-05-16
+- feat: エージェントメトリクスの追加とメトリクスサーバーの実装 by @o-ga09 in https://github.com/o-ga09/MH-API/pull/235
+- chore(deps): DependaBotのPRをまとめて対応（依存関係の一括更新） by @o-ga09 in https://github.com/o-ga09/MH-API/pull/238
+- feat: DependaBotのPR自動マージワークフローを追加 by @o-ga09 in https://github.com/o-ga09/MH-API/pull/239
+- feat: mh-agentのGeminiトークンメトリクス計測とDependaBot自動マージを追加 by @o-ga09 in https://github.com/o-ga09/MH-API/pull/241
+- feat: DependaBot自動マージ対応とマイグレーションのArgoフック対応 by @o-ga09 in https://github.com/o-ga09/MH-API/pull/242
+- fix: DependaBot以外のPRにチェックが表示される問題を修正 by @o-ga09 in https://github.com/o-ga09/MH-API/pull/243
+- chore(deps): bump the go_modules group across 1 directory with 3 updates by @dependabot[bot] in https://github.com/o-ga09/MH-API/pull/240
+- fix: マイグレーションジョブのデプロイメントファイルにイメージタグの置換を追加 🐛 by @o-ga09 in https://github.com/o-ga09/MH-API/pull/244
+
 ## [v1.2.3](https://github.com/o-ga09/MH-API/compare/v1.2.2...v1.2.3) - 2026-04-09
 - feat: 検索の汎用性を高める by @o-ga09 in https://github.com/o-ga09/MH-API/pull/223
 - chore: tagでCloudRunにデプロイできるように修正 by @o-ga09 in https://github.com/o-ga09/MH-API/pull/226
