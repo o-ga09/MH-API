@@ -1,3 +1,3 @@
 package mhapi
 
-const Version = "v1.2.3"
+const Version = "v1.2.4"
